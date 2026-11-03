@@ -1,8 +1,48 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.App"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Light">
+             <!-- Light by default (matches the legacy app's white-background look);
+                  toggled to Dark at runtime from MainWindow's theme switch. -->
+
+    <Application.Resources>
+        <!--
+            Color palette sampled from https://www.rsugramedika10.com/ (the user's
+            reference for "how it should look"): deep blue primary (#1E3A8A),
+            red accent (#DC2626), white background, slate neutrals. Dark variant
+            uses the same blue/red accents on a comfortable (not black) gray.
+            See docs/audit/PLANNING_APLIKASI.md for why the shell mirrors the
+            legacy frmUtama layout (two-row shortcut toolbar + status bar).
+        -->
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#1E3A8A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#172B66</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#3B82F6</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#DC2626</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#F1F5F9</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#E2E8F0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#1E293B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#64748B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#2E4F9E</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#223B78</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#60A5FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#F87171</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#2A2E35</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#363B44</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#454B56</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#E2E8F0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#94A3B8</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />

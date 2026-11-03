@@ -171,12 +171,27 @@ Dokumen `PLANNING_APLIKASI.md` sudah dibuat: hasil survei struktur navigasi `src
 - **Total 5 unit test, semua PASS** (4 lama + 1 integration test baru).
 - App (`dotnet run`) dicoba lagi dengan env var DB nyata terpasang — tidak crash.
 
+## Redesign UI shell meniru tampilan asli SIMRS Khanza — SELESAI (2026-11-03)
+User menunjukkan 2 screenshot aplikasi Khanza asli (layar login kosong "RS GRAMEDIKA 10" dan layar Menu dengan grid ikon) + referensi warna dari situs rsugramedika10.com. Permintaan: tampilan topbar 2 baris (shortcut), grid menu saat "Menu" diklik, status bar bawah, warna dominan biru + aksen merah tipis, background putih, plus dark mode abu-abu nyaman.
+- **Palet warna** diambil nyata dari https://www.rsugramedika10.com/ via browser (bukan tebakan): primary blue `#1E3A8A`, accent red `#DC2626`, neutral slate (`#1E293B`/`#64748B`/`#E2E8F0`/`#F1F5F9`). Dituangkan di `App.axaml` sebagai `ResourceDictionary.ThemeDictionaries` (Light/Dark) — light pakai palet di atas, dark pakai varian abu-abu nyaman (`#2A2E35` bg, bukan hitam pekat) dengan blue/red yang di-lighten biar tetap kontras.
+- **`MainWindow.axaml` dirombak total** meniru struktur legacy:
+  - Row 0: topbar biru — shortcut "Program / Presensi Pegawai / Informasi / Anjungan & Antrian / Tentang Program" + toggle dark/light mode (🌙/☀) di kanan.
+  - Row 1: toolbar kedua (background surface terang) — "Menu" (toggle ke grid dashboard), lalu shortcut fitur langsung (Registrasi, IGD/UGD, Labgrat, Radiologi, Farmasi, Rawat Inap, Rawat Jalan), "Keluar" (merah, accent) di kanan.
+  - Row 2: area konten — default tampil **hero/welcome panel** (nama app + instruksi), begitu "Menu" diklik berganti ke **panel dashboard**: dropdown "Tampilkan Menu" (baru 1 kategori karena katalog baru 6 modul, meniru dropdown kategori A/B/C/dst di legacy) + grid ikon tile (data-driven dari `IMenuPermissionService`, sama seperti sebelumnya, cuma di-restyle).
+  - Row 3: status bar biru tua — nama user login, jam real-time (update tiap detik), teks kredit.
+- **Dark mode nyata berfungsi**: toggle button mengubah `Application.Current.RequestedThemeVariant` antara `Light`/`Dark`, semua warna di XAML pakai `DynamicResource` jadi otomatis ganti tanpa restart app.
+- Sempat ada bug build: `ToggleButton` ternyata TIDAK mewarisi `Button` di Avalonia (sama-sama turunan `ButtonBase` tapi grammar selector XAML tidak resolve `ButtonBase` langsung) — diperbaiki dengan selector ganda `Button.shortcut, ToggleButton.shortcut`.
+- Build sukses, 5 unit test tetap pass, app dicoba jalan (`dotnet run` dengan env var DB nyata) — tidak crash.
+- **TIDAK bisa diverifikasi secara visual** (screenshot/klik manual) — environment sesi ini tidak punya tool computer-use/screenshot desktop yang aktif. Verifikasi sejauh ini murni dari review kode + build sukses + smoke-run tanpa crash. **User disarankan menjalankan `dotnet run` sendiri di proyek `SimrsKhanza.UI` untuk konfirmasi visual** sebelum dianggap final.
+
 ## Belum dilakukan (menunggu keputusan/aksi user)
-- Commit ke-4 untuk semua perubahan di atas — belum di-commit.
+- Commit ke-5 untuk redesign UI di atas — belum di-commit.
+- **Verifikasi visual oleh user sendiri** — ini prioritas, karena sesi ini tidak bisa screenshot desktop app.
 - **MariaDB perlu di-install sebagai service permanen oleh user sendiri** (butuh admin elevation yang sesi ini tidak punya) kalau mau tetap jalan setelah reboot.
-- Belum ada verifikasi visual/klik manual di UI (dashboard → Cari Dokter → lihat hasil dari DB asli) — hanya diverifikasi lewat integration test otomatis, bukan observasi GUI langsung.
 - Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — masih menunggu persetujuan, belum dieksekusi.
+- Shortcut toolbar baris 1 & 2 (selain "Menu") masih placeholder dialog "belum diimplementasikan" — belum ada halaman nyata di baliknya.
 - Tile dashboard selain "Rekam Medis" (Keuangan, Kepegawaian, Inventaris, Laporan, Bridging) masih placeholder kosong.
+- Dropdown "Tampilkan Menu" baru 1 kategori — belum meniru pengelompokan A/B/C/... seperti legacy (butuh katalog menu yang jauh lebih besar dulu).
 - 1.189 tabel sisanya belum diimpor/didokumentasikan satu per satu — baru 10 tabel inti yang ada di database dev ini.
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).

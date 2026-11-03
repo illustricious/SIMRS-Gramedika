@@ -1,21 +1,18 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Styling;
+using Avalonia.Threading;
 using SimrsKhanza.Core.Auth;
 
 namespace SimrsKhanza.UI;
 
 public partial class MainWindow : Window
 {
-    private static readonly Dictionary<string, string> TileColors = new()
-    {
-        ["rekammedis"] = "#4F6D7A",
-        ["keuangan"] = "#5B8C5A",
-        ["kepegawaian"] = "#C97B63",
-        ["inventaris"] = "#6B5B95",
-        ["laporan"] = "#D4A017",
-        ["bridging"] = "#3E7CB1",
-    };
+    private readonly DispatcherTimer _clockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+    private AuthenticatedUser? _user;
 
     public MainWindow() : this(null)
     {
@@ -24,6 +21,7 @@ public partial class MainWindow : Window
     public MainWindow(AuthenticatedUser? user)
     {
         InitializeComponent();
+        _user = user;
 
         var loginLabel = this.FindControl<TextBlock>("LoggedInUserText");
         if (loginLabel is not null)
@@ -33,10 +31,61 @@ public partial class MainWindow : Window
                 : $"Login sebagai: {user.DisplayName}";
         }
 
+        _clockTimer.Tick += (_, _) => UpdateClock();
+        _clockTimer.Start();
+        UpdateClock();
+
         if (user is not null)
         {
-            BuildDashboard(user);
+            SetupMenuCategoryCombo(user);
         }
+    }
+
+    private void UpdateClock()
+    {
+        var clock = this.FindControl<TextBlock>("ClockText");
+        if (clock is not null)
+        {
+            clock.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        }
+    }
+
+    private void OnThemeToggleClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (Application.Current is null) return;
+
+        var goingDark = Application.Current.RequestedThemeVariant != ThemeVariant.Dark;
+        Application.Current.RequestedThemeVariant = goingDark ? ThemeVariant.Dark : ThemeVariant.Light;
+
+        if (sender is ToggleButton toggle)
+        {
+            toggle.Content = goingDark ? "☀  Mode Terang" : "🌙  Mode Gelap";
+        }
+    }
+
+    private void OnMenuShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var hero = this.FindControl<StackPanel>("HeroPanel")!;
+        var menu = this.FindControl<Grid>("MenuPanel")!;
+
+        // "Menu" toggles between the hero/welcome panel and the icon-grid
+        // dashboard, mirroring the legacy app's behavior where clicking
+        // "Menu" opens the module grid over the home screen.
+        var showingMenu = menu.IsVisible;
+        hero.IsVisible = showingMenu;
+        menu.IsVisible = !showingMenu;
+    }
+
+    private void SetupMenuCategoryCombo(AuthenticatedUser user)
+    {
+        var combo = this.FindControl<ComboBox>("MenuCategoryCombo")!;
+        // Single category for now — the legacy app groups ~1200 features into
+        // lettered categories (A, B, C, ...); our catalog only has the 6
+        // top-level modules so far, so there is one category until more are added.
+        combo.ItemsSource = new List<string> { "Menu Utama — Modul Tersedia" };
+        combo.SelectedIndex = 0;
+
+        BuildDashboard(user);
     }
 
     private void BuildDashboard(AuthenticatedUser user)
@@ -50,19 +99,12 @@ public partial class MainWindow : Window
         panel.Children.Clear();
         foreach (var item in visibleItems)
         {
-            var color = TileColors.GetValueOrDefault(item.Key, "#4F6D7A");
             var button = new Button
             {
+                Classes = { "menuTile" },
                 Content = item.Label,
-                Background = new SolidColorBrush(Color.Parse(color)),
-                Width = 160,
-                Height = 120,
-                Margin = new Avalonia.Thickness(10),
-                Foreground = Brushes.White,
-                FontWeight = Avalonia.Media.FontWeight.SemiBold,
-                FontSize = 14,
-                CornerRadius = new Avalonia.CornerRadius(8),
                 HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
             };
             var key = item.Key;
             button.Click += (_, _) => OnModuleTileClick(key, item.Label);
@@ -81,6 +123,25 @@ public partial class MainWindow : Window
             return;
         }
 
+        await ShowNotImplementedAsync(label);
+    }
+
+    private void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
+        _ = ShowNotImplementedAsync(label);
+    }
+
+    private void OnTopShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
+        _ = ShowNotImplementedAsync(label);
+    }
+
+    private void OnExitClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
+
+    private async System.Threading.Tasks.Task ShowNotImplementedAsync(string label)
+    {
         var dialog = new Window
         {
             Width = 320,
@@ -88,9 +149,9 @@ public partial class MainWindow : Window
             Title = label,
             Content = new TextBlock
             {
-                Text = $"Modul \"{label}\" belum diimplementasikan di tahap scaffold ini.",
-                Margin = new Avalonia.Thickness(16),
-                TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                Text = $"\"{label}\" belum diimplementasikan di tahap scaffold ini.",
+                Margin = new Thickness(16),
+                TextWrapping = TextWrapping.Wrap,
             }
         };
         await dialog.ShowDialog(this);
