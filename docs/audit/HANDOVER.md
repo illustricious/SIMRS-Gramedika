@@ -184,15 +184,32 @@ User menunjukkan 2 screenshot aplikasi Khanza asli (layar login kosong "RS GRAME
 - Build sukses, 5 unit test tetap pass, app dicoba jalan (`dotnet run` dengan env var DB nyata) — tidak crash.
 - **TIDAK bisa diverifikasi secara visual** (screenshot/klik manual) — environment sesi ini tidak punya tool computer-use/screenshot desktop yang aktif. Verifikasi sejauh ini murni dari review kode + build sukses + smoke-run tanpa crash. **User disarankan menjalankan `dotnet run` sendiri di proyek `SimrsKhanza.UI` untuk konfirmasi visual** sebelum dianggap final.
 
+## Layar Registrasi — SELESAI (2026-11-03)
+User kirim screenshot layar "Registrasi" asli (ditandai lingkaran hijau pada tombol toggle "Input Data", area data pasien di-blok merah karena berisi data asli). Diminta: menu Registrasi minimal bisa jalan dulu, lalu di-compile jadi `.exe`.
+- **Data dummy di-seed ke DB dev** (`sik` lokal, BUKAN data pasien asli): 1 poliklinik ("Poli Umum (seed dev)"), 2 pasien ("PASIEN CONTOH SATU/DUA (seed dev)"), 2 reg_periksa tertanggal hari ini (03-11-2026), terhubung ke 2 dokter dummy yang sudah ada dari sesi sebelumnya.
+- **`RegistrasiRepository`** (Data) — join `reg_periksa`+`pasien`+`poliklinik`+`dokter`, filter hari ini, proyeksi ke `RegistrasiListItem` (bukan entity EF, murni view-model baca).
+- **`Modules/Registrasi/RegistrasiWindow`** (UI) — meniru layout screenshot: blok form "Input Data" atas (No.Reg/No.Rawat/Tgl.Reg/Dr Dituju/Unit | No.RM/Penanggung Jawab/Alamat P.J./Jenis Bayar/Asal Rujukan) yang **bisa di-collapse/expand** via `ToggleButton` (persis tombol lingkaran hijau di screenshot user) menggunakan `IsVisible` binding manual di code-behind; `DataGrid` (paket `Avalonia.Controls.DataGrid` ditambahkan) menampilkan hasil `RegistrasiRepository` (grid merah di screenshot — di versi kita isinya data dummy, bukan disensor); bar bawah: filter Dokter/Unit/Periode/Key Word + tombol Simpan/Baru/Ganti/Hapus/Cetak/Semua/Keluar (sebagian besar masih placeholder, "Semua" reload grid, "Keluar" tutup window).
+- Tombol "Registrasi" di toolbar `MainWindow` sekarang membuka window ini (sebelumnya placeholder "belum diimplementasikan").
+- Bug build sempat muncul: compiled-binding DataGrid butuh `x:DataType` eksplisit (Avalonia 12 compiled bindings default) — diperbaiki dengan `xmlns:data="using:SimrsKhanza.Data"` + `x:DataType="data:RegistrasiListItem"` di elemen `DataGrid`. Juga sempat salah path `StyleInclude` untuk tema DataGrid — ternyata FluentTheme versi ini sudah include DataGrid otomatis, baris itu dihapus.
+- Build sukses, 5 unit test tetap pass, app jalan (`dotnet run` dengan DB nyata) tanpa crash.
+
+## Compile .exe standalone — SELESAI (2026-11-03)
+`dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true` → `publish/win-x64/SimrsKhanza.UI.exe` (87.4MB, self-contained, tidak perlu install .NET di komputer target). **Dicoba dijalankan langsung (bukan lewat `dotnet run`) — berhasil, tidak crash.** File `.exe` ini sudah dikirim ke user. Folder `publish/` ditambahkan ke `.gitignore` (binary besar, regenerable via command publish di atas, tidak perlu ikut git).
+
 ## Belum dilakukan (menunggu keputusan/aksi user)
-- Commit ke-5 untuk redesign UI di atas — belum di-commit.
-- **Verifikasi visual oleh user sendiri** — ini prioritas, karena sesi ini tidak bisa screenshot desktop app.
-- **MariaDB perlu di-install sebagai service permanen oleh user sendiri** (butuh admin elevation yang sesi ini tidak punya) kalau mau tetap jalan setelah reboot.
+- Commit untuk layar Registrasi + .exe — **lihat apakah user minta lanjut besok dulu** (sesuai permintaan "lanjut besok lagi bang").
+- **Verifikasi visual oleh user sendiri** — ini prioritas tertinggi, karena sesi ini tidak bisa screenshot desktop app. User sudah dikirimi `.exe` untuk dicoba langsung.
+- **MariaDB perlu di-install sebagai service permanen oleh user sendiri** (butuh admin elevation yang sesi ini tidak punya) kalau mau tetap jalan setelah reboot — exe yang dikirim butuh MariaDB jalan di 127.0.0.1:3306 (sik/khanza_dev/DevPassword123!) + env var `SIMRS_DB_*` supaya grid Registrasi terisi; kalau tidak, grid tampil kosong (tidak crash).
 - Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — masih menunggu persetujuan, belum dieksekusi.
-- Shortcut toolbar baris 1 & 2 (selain "Menu") masih placeholder dialog "belum diimplementasikan" — belum ada halaman nyata di baliknya.
-- Tile dashboard selain "Rekam Medis" (Keuangan, Kepegawaian, Inventaris, Laporan, Bridging) masih placeholder kosong.
-- Dropdown "Tampilkan Menu" baru 1 kategori — belum meniru pengelompokan A/B/C/... seperti legacy (butuh katalog menu yang jauh lebih besar dulu).
+- Form input Registrasi (field atas) belum punya logic Simpan/Baru/Ganti/Hapus/Cetak nyata — masih placeholder.
+- Shortcut toolbar baris 1 & 2 lainnya (selain Menu & Registrasi) masih placeholder dialog "belum diimplementasikan".
+- Tile dashboard selain "Rekam Medis" masih placeholder kosong.
 - 1.189 tabel sisanya belum diimpor/didokumentasikan satu per satu — baru 10 tabel inti yang ada di database dev ini.
+
+## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
+- Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
+- Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.
+- Baca ulang bagian "Belum dilakukan" di atas sebagai starting point.
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).
 - Belum menyentuh isi detail `sik.sql` / PDF pasien / gambar tanda tangan pasien secara substantif — hanya dicatat keberadaannya demi privasi.

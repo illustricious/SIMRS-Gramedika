@@ -129,6 +129,13 @@ public partial class MainWindow : Window
     private void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
+
+        if (label == "Registrasi")
+        {
+            new Modules.Registrasi.RegistrasiWindow().Show(this);
+            return;
+        }
+
         _ = ShowNotImplementedAsync(label);
     }
 

@@ -18,3 +18,6 @@ mariadb_out.log
 mariadb_err.log
 run_err.log
 run_out.log
+
+## Published build output (large binaries, rebuildable via `dotnet publish`)
+publish/

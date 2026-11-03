@@ -1,0 +1,121 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:data="using:SimrsKhanza.Data"
+        x:Class="SimrsKhanza.UI.Modules.Registrasi.RegistrasiWindow"
+        Title="Registrasi"
+        Width="1100" Height="760"
+        Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Legacy reference screenshot (provided by the user): a "Registrasi Periksa
+        Hari Ini" form with a two-column input block, a collapsible "Input Data"
+        toggle (the green-circled icon in the user's screenshot), a data grid of
+        today's registrations below it, and a bottom filter/action bar
+        (Dokter/Unit/Periode/Key Word + Simpan/Baru/Ganti/Hapus/Cetak/Semua/Keluar).
+        Grid data here comes from clearly-labeled dev seed rows (RegistrasiRepository
+        against the local dev MariaDB) — never real patient data.
+    -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+
+        <TextBlock Grid.Row="0" Text=":: [ Registrasi Periksa Hari Ini ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <StackPanel Grid.Row="1" Spacing="0">
+            <!-- Collapsible top input block -->
+            <Border Name="InputDataPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,4">
+                <Grid ColumnDefinitions="Auto,*,24,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="No. Reg :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="001" Width="120" HorizontalAlignment="Left" Margin="4" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="No.Rekam Medik :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="0" Grid.Column="4" Margin="4" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="No. Rawat :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="4" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Penanggung Jawab :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="1" Grid.Column="4" Margin="4" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Tgl. Reg :" VerticalAlignment="Center" Margin="0,4" />
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="4" Spacing="4">
+                        <DatePicker Name="TglRegPicker" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Alamat P.J. :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="2" Grid.Column="4" Margin="4" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Dr Dituju :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="4" />
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="Jenis Bayar :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="3" Grid.Column="4" Margin="4" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Unit :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Margin="4" />
+                    <TextBlock Grid.Row="4" Grid.Column="3" Text="Asal Rujukan :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="4" Grid.Column="4" Margin="4" />
+                </Grid>
+            </Border>
+
+            <!-- Collapse/expand toggle, mirrors the green-circled icon in the user's screenshot -->
+            <ToggleButton Name="InputDataToggle" IsChecked="True" Click="OnToggleInputData"
+                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Data" FontStyle="Italic"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+
+        <!-- Registration grid (legacy: the red-censored area in the reference screenshot) -->
+        <DataGrid Grid.Row="2" Name="RegistrasiGrid" Margin="0,8"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:RegistrasiListItem">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No. Reg" Binding="{Binding NoReg}" Width="70" />
+                <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="160" />
+                <DataGridTextColumn Header="No. RM" Binding="{Binding NoRekamMedis}" Width="90" />
+                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="220" />
+                <DataGridTextColumn Header="Tgl. Reg" Binding="{Binding TanggalRegistrasi}" Width="100" />
+                <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="80" />
+                <DataGridTextColumn Header="Dokter" Binding="{Binding NamaDokter}" Width="180" />
+                <DataGridTextColumn Header="Poli" Binding="{Binding NamaPoli}" Width="140" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Bottom filter + action bar -->
+        <StackPanel Grid.Row="3" Spacing="8">
+            <Grid ColumnDefinitions="Auto,*,24,Auto,*">
+                <TextBlock Grid.Column="0" Text="Dokter :" VerticalAlignment="Center" />
+                <TextBox Grid.Column="1" Margin="4,0" />
+                <TextBlock Grid.Column="3" Text="Unit :" VerticalAlignment="Center" />
+                <TextBox Grid.Column="4" Margin="4,0" />
+            </Grid>
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
+                <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <DatePicker Grid.Column="1" />
+                <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
+                <DatePicker Grid.Column="3" />
+                <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox Grid.Column="6" />
+                <TextBlock Grid.Column="7" Name="RecordCountText" Text="Record : 0"
+                           VerticalAlignment="Center" Margin="12,0,0,0"
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+            </Grid>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="💾 Simpan" Click="OnPlaceholderClick" />
+                <Button Content="🆕 Baru" Click="OnPlaceholderClick" />
+                <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
+                <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
+                <Button Content="🖨 Cetak" Click="OnPlaceholderClick" />
+                <Button Content="🔎 Semua" Click="OnReloadClick" />
+                <Button Content="❌ Keluar" Click="OnCloseClick" Classes="accentText" HorizontalAlignment="Right" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+    <Window.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </Window.Styles>
+</Window>
