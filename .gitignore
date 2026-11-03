@@ -12,3 +12,9 @@ obj/
 ## OS
 .DS_Store
 Thumbs.db
+
+## Local dev DB process logs (never commit credentials/local server output)
+mariadb_out.log
+mariadb_err.log
+run_err.log
+run_out.log

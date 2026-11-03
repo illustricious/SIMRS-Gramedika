@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SimrsKhanza.Core\SimrsKhanza.Core.csproj" />
     <ProjectReference Include="..\SimrsKhanza.Data\SimrsKhanza.Data.csproj" />
+    <ProjectReference Include="..\SimrsKhanza.Config\SimrsKhanza.Config.csproj" />
   </ItemGroup>
 
 </Project>

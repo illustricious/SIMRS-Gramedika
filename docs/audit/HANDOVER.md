@@ -157,12 +157,27 @@ Dokumen `PLANNING_APLIKASI.md` sudah dibuat: hasil survei struktur navigasi `src
 - **Build solution sukses (0 error)**, 4 unit test tetap pass, app dicoba jalan (`dotnet run`) — login window tampil tanpa crash dalam 6 detik observasi.
 - **Belum diverifikasi secara visual/interaktif** (klik tombol dashboard, buka dialog Cari Dokter sungguhan) — environment ini tidak punya tool screenshot desktop; verifikasi sejauh ini dari review kode + build + smoke-run tanpa crash, bukan klik manual.
 
+## MySQL lokal — SELESAI, koneksi nyata TERVERIFIKASI (2026-11-03)
+- **MariaDB 13.0.2** diinstall via winget (`MariaDB.Server`), terpasang di `C:\Program Files\MariaDB 13.0`.
+- **PENTING — bukan Windows Service**: sesi ini tidak punya hak admin untuk register service (`mariadbd --install` gagal "Access is denied"). Server dijalankan sebagai **proses background manual** (`mariadbd.exe --console`), jadi **TIDAK auto-start setelah reboot/logoff**. Kalau servernya mati, jalankan ulang:
+  ```powershell
+  Start-Process "C:\Program Files\MariaDB 13.0\bin\mariadbd.exe" -ArgumentList '--defaults-file="C:\Program Files\MariaDB 13.0\data\my.ini" --console'
+  ```
+  Untuk permanen (auto-start), user perlu jalankan `mariadbd --install` sendiri dari PowerShell **as Administrator**.
+- Database `sik` dibuat, user dev `khanza_dev` (password `DevPassword123!` — **ini kredensial LOKAL/DEV di komputer ini saja, tidak pernah dikomit ke git**, hanya dicatat di sini untuk referensi tim).
+- **10 tabel inti diimpor** (struktur saja, dari `schema_sik.sql`, FK checks dimatikan sementara saat import karena tabel referensi seperti `kelurahan`/`departemen` belum ada — ini database testing kosong, bukan hasil restore `sik.sql` produksi).
+- **2 baris dokter dummy di-seed** (`D0000099`/`D0000098`, nama jelas berlabel "(seed dev)") — BUKAN data pasien/dokter asli, murni untuk tes query.
+- **Integration test baru**: `SimrsKhanza.Tests/DokterRepositoryIntegrationTests.cs` — connect ke DB nyata via `SimrsKhanzaDbContextFactory`, query via `DokterRepository`, assert hasil cocok dengan 2 baris seed. **PASS** saat env var `SIMRS_DB_*` diset ke server lokal ini. Test ini otomatis skip (tidak fail) kalau tidak ada server reachable, supaya tidak merusak CI/dev machine lain.
+- **Total 5 unit test, semua PASS** (4 lama + 1 integration test baru).
+- App (`dotnet run`) dicoba lagi dengan env var DB nyata terpasang — tidak crash.
+
 ## Belum dilakukan (menunggu keputusan/aksi user)
 - Commit ke-4 untuk semua perubahan di atas — belum di-commit.
-- **Perlu MySQL server nyata** (lokal atau Docker) untuk benar-benar memverifikasi koneksi `SimrsKhanzaDbContext` ke database — ini murni keterbatasan environment, bukan masalah kode.
+- **MariaDB perlu di-install sebagai service permanen oleh user sendiri** (butuh admin elevation yang sesi ini tidak punya) kalau mau tetap jalan setelah reboot.
+- Belum ada verifikasi visual/klik manual di UI (dashboard → Cari Dokter → lihat hasil dari DB asli) — hanya diverifikasi lewat integration test otomatis, bukan observasi GUI langsung.
 - Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — masih menunggu persetujuan, belum dieksekusi.
 - Tile dashboard selain "Rekam Medis" (Keuangan, Kepegawaian, Inventaris, Laporan, Bridging) masih placeholder kosong.
-- 1.189 tabel sisanya belum didokumentasikan satu per satu.
+- 1.189 tabel sisanya belum diimpor/didokumentasikan satu per satu — baru 10 tabel inti yang ada di database dev ini.
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).
 - Belum menyentuh isi detail `sik.sql` / PDF pasien / gambar tanda tangan pasien secara substantif — hanya dicatat keberadaannya demi privasi.
