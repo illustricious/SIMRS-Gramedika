@@ -135,13 +135,34 @@ Dokumen `PLANNING_APLIKASI.md` sudah dibuat: hasil survei struktur navigasi `src
 - **4 unit test** di `SimrsKhanza.Tests/AuthServiceTests.cs` — semua PASS (login sukses, password salah, user tidak ada, verifikasi hash).
 - App dicoba jalan (`dotnet run`) — window login tampil tanpa crash, lalu dihentikan.
 
-## Belum dilakukan (menunggu keputusan user)
-- Commit ke-3 untuk semua perubahan sesi ini (upgrade .NET 10, Entities, Auth, UI shell+login, docs skema) — belum di-commit.
-- Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — perlu persetujuan sebelum dieksekusi.
-- Koneksi DB MySQL nyata (EF Core/Pomelo) ke `SimrsKhanza.Data` — belum dimulai, masih pakai in-memory dummy.
-- `IMenuPermissionService` (dashboard jadi data-driven dari `Permission`/`UserPermission`, bukan 6 tile hardcoded) — belum dibuat.
-- `SearchPickerDialog` generik (pengganti 16 dialog `Dlg*Cari*`) — belum dibuat.
-- 1.189 tabel sisanya belum didokumentasikan satu per satu (akan digali bertahap per modul).
+## Commit ke-3 — SELESAI (2026-11-03)
+`7df3204` — upgrade .NET 10, Entities, Auth, UI shell+login, docs skema. Masuk, working tree bersih.
+
+## IMenuPermissionService (dashboard data-driven) — SELESAI (2026-11-03)
+- `Core/Auth/MenuPermission.cs`: `MenuItemDefinition` (Key, Label, Module, RequiredPermission), `IMenuCatalog`/`DefaultMenuCatalog` (6 item, cocok folder `Modules/`), `IMenuPermissionService`/`MenuPermissionService` — filter katalog menu berdasar `AuthenticatedUser.Permissions`.
+- `MainWindow.axaml` 6 tombol hardcoded DIHAPUS, diganti `WrapPanel x:Name="DashboardPanel"` kosong. `MainWindow.axaml.cs` membangun tile secara terprogram dari `IMenuPermissionService.GetVisibleMenu(user)` setelah login sukses — benar-benar data-driven, bukan XAML statis.
+- Tile "Rekam Medis" diklik → buka demo `SearchPickerDialog` (lihat bawah). Tile lain → dialog placeholder "belum diimplementasikan".
+
+## SearchPickerDialog generik — SELESAI (2026-11-03)
+- `UI/Controls/SearchPickerDialog.axaml(.cs)` — window generik (`SearchPickerDialog.ShowAsync<T>(owner, title, searchFunc, displaySelector)`), pengganti pola 16 dialog `Dlg*Cari*` di legacy jadi SATU window reusable. (Catatan teknis: Avalonia tidak mendukung code-behind XAML generik langsung, jadi window-nya non-generik internal pakai `object`, dibungkus method static generik di luar — caller tidak melihat detail ini.)
+- Demo nyata: `UI/Modules/RekamMedis/CariDokterDemo.cs` — memanggil `SearchPickerDialog.ShowAsync<Dokter>(...)` yang di-backing oleh `IDokterRepository` (lihat EF Core di bawah).
+
+## Koneksi MySQL nyata via EF Core — SETUP SELESAI, BELUM BISA DIVERIFIKASI END-TO-END
+- **Tidak ada MySQL/MariaDB maupun Docker di komputer ini** (dicek: tidak ada service, tidak ada port 3306 listening, tidak ada `docker` command) — jadi koneksi nyata ke `sik` TIDAK BISA dites langsung dalam sesi ini. Yang dikerjakan:
+  - `SimrsKhanza.Data` ditambah `Pomelo.EntityFrameworkCore.MySql` 8.0.2 + `MySqlConnector` 2.5.0 (dipin manual, versi terpatch terbaru yang tersedia — advisori NU1902 moderate tetap muncul karena memang belum ada rilis yang menghapusnya sepenuhnya; dicatat sebagai risiko yang dipantau, bukan diabaikan) + `Microsoft.Extensions.Caching.Memory` 8.0.1 (fix advisori high-severity NU1903).
+  - `SimrsKhanzaDbContext.cs` — Fluent API mapping 10 entity inti ke nama tabel/kolom snake_case ASLI dari legacy (`pasien.no_rkm_medis`, `reg_periksa.no_rawat`, dst) — didesain supaya BISA langsung diarahkan ke database `sik` yang sudah ada tanpa migrasi data, begitu server MySQL tersedia.
+  - `SimrsKhanza.Config/DatabaseSettings.cs` — baca kredensial dari **environment variable** (`SIMRS_DB_HOST/PORT/NAME/USER/PASSWORD`), TIDAK ada kredensial hardcoded di source.
+  - `IDokterRepository`/`DokterRepository` — query nyata via `DbContext` ke tabel `dokter`.
+  - `CariDokterDemo` memanggil repository ini; **kalau gagal konek (pasti gagal di environment ini karena tidak ada server), otomatis fallback ke 2 data dummy berlabel jelas "(demo — tidak konek DB)"** supaya UI picker tetap bisa didemokan tanpa crash.
+- **Build solution sukses (0 error)**, 4 unit test tetap pass, app dicoba jalan (`dotnet run`) — login window tampil tanpa crash dalam 6 detik observasi.
+- **Belum diverifikasi secara visual/interaktif** (klik tombol dashboard, buka dialog Cari Dokter sungguhan) — environment ini tidak punya tool screenshot desktop; verifikasi sejauh ini dari review kode + build + smoke-run tanpa crash, bukan klik manual.
+
+## Belum dilakukan (menunggu keputusan/aksi user)
+- Commit ke-4 untuk semua perubahan di atas — belum di-commit.
+- **Perlu MySQL server nyata** (lokal atau Docker) untuk benar-benar memverifikasi koneksi `SimrsKhanzaDbContext` ke database — ini murni keterbatasan environment, bukan masalah kode.
+- Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — masih menunggu persetujuan, belum dieksekusi.
+- Tile dashboard selain "Rekam Medis" (Keuangan, Kepegawaian, Inventaris, Laporan, Bridging) masih placeholder kosong.
+- 1.189 tabel sisanya belum didokumentasikan satu per satu.
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).
 - Belum menyentuh isi detail `sik.sql` / PDF pasien / gambar tanda tangan pasien secara substantif — hanya dicatat keberadaannya demi privasi.

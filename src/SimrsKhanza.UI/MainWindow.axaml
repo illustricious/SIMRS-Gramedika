@@ -25,19 +25,12 @@
                        Foreground="#C7D0DB" VerticalAlignment="Center" Margin="0,0,16,0" />
         </Grid>
 
-        <!-- Dashboard: icon-grid menu, mirrors the legacy role-driven grid -->
+        <!-- Dashboard: icon-grid menu, mirrors the legacy role-driven grid.
+             Tiles are populated in code-behind from IMenuPermissionService —
+             data-driven per logged-in user's permissions, not hardcoded here. -->
         <ScrollViewer Grid.Row="1" Margin="16">
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <!-- Each tile below is a placeholder for one module folder under UI/Modules/.
-                     In the legacy app these tiles are generated at runtime from the
-                     logged-in user's permission set (fungsi.koneksiDB + field `akses`). -->
-                <Button Classes="menuTile" Background="#4F6D7A" Content="Rekam Medis" />
-                <Button Classes="menuTile" Background="#5B8C5A" Content="Keuangan" />
-                <Button Classes="menuTile" Background="#C97B63" Content="Kepegawaian" />
-                <Button Classes="menuTile" Background="#6B5B95" Content="Inventaris" />
-                <Button Classes="menuTile" Background="#D4A017" Content="Laporan" />
-                <Button Classes="menuTile" Background="#3E7CB1" Content="Bridging BPJS/SatuSehat" />
-            </WrapPanel>
+            <WrapPanel Name="DashboardPanel" Orientation="Horizontal"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
         </ScrollViewer>
 
         <!-- Status bar -->
