@@ -106,9 +106,42 @@ Dokumen `PLANNING_APLIKASI.md` sudah dibuat: hasil survei struktur navigasi `src
 - **`dotnet build` solution BERHASIL (0 error, 0 warning)** — scaffold siap dipakai, belum ada business logic/UI nyata (masih default template Avalonia kosong).
 - Git repo baru sudah di-`init` di folder ini + `.gitignore` utk .NET, semua file sudah di-`git add` (28 file) tapi **BELUM di-commit** — menunggu konfirmasi user kapan mau commit pertama (dan apakah mau dihubungkan ke remote GitHub baru atau cukup lokal dulu).
 
+## Commit pertama — SELESAI
+2 commit sudah masuk ke repo `SimrsKhanza.Avalonia` (scaffold solution + docs audit). Repo masih lokal saja (belum ada remote).
+
+## Baca skema database — SELESAI (2026-11-03)
+- Diekstrak **HANYA statement `CREATE TABLE`** dari `sik.sql` + 2 file bridging — dikonfirmasi 0 baris `INSERT INTO` ikut (tidak ada data pasien yang dibaca/disalin).
+- Hasil: **1.199 tabel total**. Dominan grup: `penilaian*` (87, formulir asesmen klinis), `satu*` (57, integrasi SatuSehat), `surat*` (55), `set*` (53), `skrining*` (35), `master*` (34).
+- 10 tabel inti didokumentasikan detail (kolom + FK + relasi): `pasien`, `reg_periksa`, `dokter`, `pegawai`, `petugas`, `penjab`, `poliklinik`, `bangsal`, `kamar`, `kamar_inap`.
+- **Keputusan arsitektur penting yang diusulkan** (BELUM dieksekusi, perlu persetujuan): grup `penilaian*`/`skrining*`/`surat*` (177 tabel) jangan di-port 1:1 jadi 177 entity/dialog — usul digeneralisasi jadi satu pola "formulir dinamis" (`FormKlinis` + `FormKlinisJawaban` + skema formulir sebagai data). Ini mengubah pendekatan data model secara fundamental dari versi lama.
+- Dokumen lengkap: `DB_SCHEMA.md` + file referensi `schema_sik.sql` (1.3MB, schema-only), keduanya sudah disalin ke `docs/audit/` di repo baru.
+
+## Entity Core + UI shell tahap 1 — SELESAI (2026-11-03)
+- 10 entity C# dibuat di `SimrsKhanza.Core/Entities/` (Pasien, RegPeriksa, Dokter, Pegawai, Petugas, Penjab, Poliklinik, Bangsal, Kamar, KamarInap) — mapping 1:1 konsep dari 10 tabel inti di atas, enum MySQL → C# enum.
+- `MainWindow.axaml` diisi placeholder: dashboard grid ikon menu (6 tile: Rekam Medis, Keuangan, Kepegawaian, Inventaris, Laporan, Bridging) + top bar + status bar — meniru pola navigasi grid-ikon-per-role dari `frmUtama.java` lama. **Belum ada logic apa pun** (tidak konek DB, tidak ada login nyata, tombol belum berfungsi) — murni tampilan shell.
+- `dotnet build` sukses 0 error. App dicoba jalan sebentar (`dotnet run`) — window terbuka tanpa error, lalu dihentikan.
+- File placeholder `Class1.cs` di 4 class library dihapus (sudah digantikan Entities asli / akan diisi menyusul).
+
+## Upgrade ke .NET 10 — SELESAI (2026-11-03)
+- Atas permintaan user, semua project di-upgrade dari `net8.0` → **`net10.0`**. `.NET 10 SDK` (10.0.403, rilis stabil) diinstall via winget (SDK 8 tetap ada, tidak dihapus — keduanya coexist).
+- Avalonia dikembalikan ke versi terbaru **12.1.5** (sebelumnya sempat di-downgrade ke 11.2.3 karena SDK 8 belum cukup baru), `WithDeveloperTools()` di `Program.cs` dikembalikan juga.
+- `dotnet build` sukses, 0 error, 0 warning.
+
+## IAuthService + Login nyata — SELESAI (2026-11-03)
+- **Temuan penting dari skema DB** yang memicu desain ini: tabel legacy `user` punya **~1.225 kolom boolean, satu kolom per fitur** (PK `id_user`, MyISAM, tanpa FK) — persis pola "satu baris permission raksasa" yang sudah diduga sebelumnya, sekarang terkonfirmasi langsung dari skema. Tabel `admin` (`usere`/`passworde` bertipe `text`) juga mengindikasikan **password tersimpan plaintext** di versi lama.
+- Dibuat di `SimrsKhanza.Core/Auth/`: `UserAccount`, `Permission` (katalog), `UserPermission` (grant per-permission — pengganti 1.225 kolom boolean jadi baris-baris key-value), `AuthenticatedUser`, `LoginResult`, `IAuthService`, `IUserRepository`, `PasswordHasher` (PBKDF2 bawaan .NET, tanpa dependency tambahan — pengganti plaintext lama), `AuthService` (implementasi).
+- Dibuat di `SimrsKhanza.Data/Auth/`: `InMemoryUserRepository` — **dummy dev-only**, seed 1 akun (`admin`/`admin123`), BUKAN koneksi ke `sik` asli.
+- UI: `LoginWindow.axaml(.cs)` (window terpisah, panggil `IAuthService`) + `MainWindow` diupdate menerima `AuthenticatedUser` dan menampilkan nama login. `App.axaml.cs` di-wire: login dulu → sukses → MainWindow; gagal/ditutup → app exit.
+- **4 unit test** di `SimrsKhanza.Tests/AuthServiceTests.cs` — semua PASS (login sukses, password salah, user tidak ada, verifikasi hash).
+- App dicoba jalan (`dotnet run`) — window login tampil tanpa crash, lalu dihentikan.
+
 ## Belum dilakukan (menunggu keputusan user)
-- Commit pertama di repo baru `SimrsKhanza.Avalonia` (sudah di-stage, belum di-commit).
-- Isi nyata MainWindow/dashboard/login/dll — scaffold saat ini masih kosong (template default), belum ada port logic dari legacy sama sekali (sesuai instruksi awal: belum mulai rewrite/implementasi).
+- Commit ke-3 untuk semua perubahan sesi ini (upgrade .NET 10, Entities, Auth, UI shell+login, docs skema) — belum di-commit.
+- Keputusan arsitektur "formulir dinamis" (gantikan 177 tabel penilaian/skrining/surat) — perlu persetujuan sebelum dieksekusi.
+- Koneksi DB MySQL nyata (EF Core/Pomelo) ke `SimrsKhanza.Data` — belum dimulai, masih pakai in-memory dummy.
+- `IMenuPermissionService` (dashboard jadi data-driven dari `Permission`/`UserPermission`, bukan 6 tile hardcoded) — belum dibuat.
+- `SearchPickerDialog` generik (pengganti 16 dialog `Dlg*Cari*`) — belum dibuat.
+- 1.189 tabel sisanya belum didokumentasikan satu per satu (akan digali bertahap per modul).
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).
 - Belum menyentuh isi detail `sik.sql` / PDF pasien / gambar tanda tangan pasien secara substantif — hanya dicatat keberadaannya demi privasi.

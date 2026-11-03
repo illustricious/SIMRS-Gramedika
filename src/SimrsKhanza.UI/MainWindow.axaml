@@ -2,8 +2,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
         x:Class="SimrsKhanza.UI.MainWindow"
-        Title="SimrsKhanza.UI">
-    Welcome to Avalonia!
+        Title="SIMRS Khanza"
+        Width="1100" Height="700"
+        Background="#2E4057">
+
+    <!--
+        Shell placeholder: layout only, no business logic yet.
+        Legacy reference: src/simrskhanza/frmUtama.java — single JFrame with a
+        role-driven icon-grid dashboard (no classic MDI/menu-tree navigation).
+        See docs/audit/PLANNING_APLIKASI.md for the full rationale.
+    -->
+    <Grid RowDefinitions="60,*,28">
+
+        <!-- Top bar: app title + logged-in user placeholder -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Background="#1B2A41">
+            <TextBlock Grid.Column="0" Text="SIMRS KHANZA"
+                       FontSize="20" FontWeight="Bold" Foreground="White"
+                       VerticalAlignment="Center" Margin="16,0" />
+            <TextBlock Grid.Column="1" Name="LoggedInUserText" Text="Login sebagai: (belum terhubung)"
+                       Foreground="#C7D0DB" VerticalAlignment="Center" Margin="0,0,16,0" />
+        </Grid>
+
+        <!-- Dashboard: icon-grid menu, mirrors the legacy role-driven grid -->
+        <ScrollViewer Grid.Row="1" Margin="16">
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- Each tile below is a placeholder for one module folder under UI/Modules/.
+                     In the legacy app these tiles are generated at runtime from the
+                     logged-in user's permission set (fungsi.koneksiDB + field `akses`). -->
+                <Button Classes="menuTile" Background="#4F6D7A" Content="Rekam Medis" />
+                <Button Classes="menuTile" Background="#5B8C5A" Content="Keuangan" />
+                <Button Classes="menuTile" Background="#C97B63" Content="Kepegawaian" />
+                <Button Classes="menuTile" Background="#6B5B95" Content="Inventaris" />
+                <Button Classes="menuTile" Background="#D4A017" Content="Laporan" />
+                <Button Classes="menuTile" Background="#3E7CB1" Content="Bridging BPJS/SatuSehat" />
+            </WrapPanel>
+        </ScrollViewer>
+
+        <!-- Status bar -->
+        <Border Grid.Row="2" Background="#1B2A41">
+            <TextBlock Text="Scaffold tahap 1 — belum terhubung ke database"
+                       Foreground="#8EA3B0" FontSize="11" VerticalAlignment="Center" Margin="12,0" />
+        </Border>
+    </Grid>
+
+    <Window.Styles>
+        <Style Selector="Button.menuTile">
+            <Setter Property="Width" Value="160" />
+            <Setter Property="Height" Value="120" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+    </Window.Styles>
 </Window>
