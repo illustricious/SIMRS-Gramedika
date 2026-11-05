@@ -129,16 +129,32 @@ public partial class MainWindow : Window
 
     private async void OnModuleTileClick(string moduleKey, string label)
     {
-        // Rekam Medis is wired to a working demo of the generic SearchPickerDialog
-        // (see Modules/RekamMedis and docs/audit/PLANNING_APLIKASI.md §2).
-        // Other modules are not implemented yet in this scaffold stage.
+        // Rekam Medis opens the Pasien (patient master data) screen — the real
+        // starting point of the module, replacing the earlier SearchPickerDialog
+        // demo now that a proper screen exists (see Modules/Pasien). Other
+        // modules are not implemented yet in this scaffold stage.
         if (moduleKey == "rekammedis")
         {
-            await Modules.RekamMedis.CariDokterDemo.ShowAsync(this);
+            await OpenPasienAsync();
             return;
         }
 
         await ShowNotImplementedAsync(label);
+    }
+
+    private async System.Threading.Tasks.Task OpenPasienAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Pasien.PasienView view)
+        {
+            view = new Modules.Pasien.PasienView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
     }
 
     private async void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

@@ -243,6 +243,19 @@ User pilih "Rawat Jalan" sebagai fitur berikutnya (dari 4 opsi: Rawat Jalan/IGD-
 - **Total sekarang 7 unit test, semua pass** (5 lama + `DokterRepositoryIntegrationTests` + `RawatJalanRepositoryIntegrationTests`).
 - Build sukses, app smoke-run tanpa crash, `.exe` di-republish dan dikirim ulang ke user.
 
+## Fitur Pasien (Identitas Pasien) — SELESAI, dicocokkan ke source asli (2026-11-05)
+User minta "cicil tampilan-tampilan" + dicocokkan ke source code. Sebelum membangun, saya baca langsung `src/simrskhanza/DlgPasien.form` (NetBeans form XML, ~4.900 baris) dari repo legacy via sub-agent, supaya field & urutannya cocok dengan aplikasi asli, bukan tebakan.
+
+- **Field "Identitas Pasien" inti** dibangun persis sesuai form asli: No.RM (auto), Nama, J.K. (radio), Gol.Darah, Tempat/Tgl Lahir, Agama, Stts.Nikah, Alamat, No.Telp, Pekerjaan, No.KTP, Email, Cara Bayar (Penjab), Nama Ibu, plus blok Penanggung Jawab (Hub.PJ/Nama PJ/Pekerjaan PJ/Alamat PJ).
+- **Sengaja TIDAK diport dulu (v1, didokumentasikan jelas di source code)**: panel BPJS VClaim/PCare/Dukcapil/SatuSehat, ~15 shortcut cetak surat rekam medis, sub-panel TNI/POLRI, dan 4 picker cascading kelurahan/kecamatan/kabupaten/propinsi (karena butuh data wilayah lengkap, bukan cuma 1 baris placeholder). Kolom-kolom DB untuk field yang dideferred ini tetap ada di entity dengan nilai placeholder (`"-"`/`0`) supaya insert tetap sukses sesuai constraint asli.
+- **Tabel lookup tambahan diimpor**: `kelurahan`, `kecamatan`, `kabupaten`, `propinsi`, `suku_bangsa`, `bahasa_pasien`, `cacat_fisik`, `perusahaan_pasien` — masing-masing diseed 1 baris placeholder `id=0`/`"-"`. **Sempat salah**: insert literal `0` ke kolom `AUTO_INCREMENT` otomatis di-override MySQL jadi nilai sequence berikutnya (bukan 0 beneran) — diperbaiki pakai `SET sql_mode=...,NO_AUTO_VALUE_ON_ZERO`.
+- **Bug kedua yang ditemukan**: EF Core bikin shadow FK sendiri (`PenjabKodePenjab`) karena relasi `Pasien.Penjab` belum dideklarasikan eksplisit di `OnModelCreating` — insert gagal "Unknown column". Diperbaiki dengan `HasOne(p => p.Penjab).WithMany().HasForeignKey(p => p.KodePenjab)`.
+- **`PasienRepository`**: `SearchAsync` (nama/No.RM), `NextNoRekamMedisAsync` (auto-generate pola `D00001` dst, sama seperti seed), `SaveNewAsync` — **real INSERT**.
+- **`Modules/Pasien/PasienView`** — wired ke tile dashboard "Rekam Medis" (sebelumnya demo "Cari Dokter", sekarang jadi fitur Pasien yang sesungguhnya — lebih make sense karena "Rekam Medis" ya memang soal data pasien). Form kiri + grid cari kanan, tombol Simpan (nyata)/Baru (clear+generate No.RM baru).
+- **Integration test baru** (`PasienRepositoryIntegrationTests`) — insert pasien baru sungguhan, lalu cari lagi, assert data + enum (JenisKelamin) benar tersimpan. **PASS**, dikonfirmasi juga via query SQL langsung.
+- **Total sekarang 8 unit test, semua pass.** Build sukses, app smoke-run tanpa crash, `.exe` di-republish & dikirim ulang.
+- **Catatan operasional**: MariaDB sempat mati lagi di tengah sesi ini (kedua kalinya, karena bukan service) — dihidupkan ulang dengan command yang sama seperti biasa. **Rekomendasi kuat**: kalau mau kerja lanjut tanpa gangguan ini terus berulang, install MariaDB sebagai Windows Service permanen (butuh PowerShell as Administrator, caranya ada di bagian atas handover ini).
+
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
 - Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.

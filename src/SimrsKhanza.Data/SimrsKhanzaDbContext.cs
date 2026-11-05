@@ -42,9 +42,46 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
             e.Property(p => p.TanggalDaftar).HasColumnName("tgl_daftar");
             e.Property(p => p.NoTelepon).HasColumnName("no_tlp").HasMaxLength(40);
             e.Property(p => p.KodePenjab).HasColumnName("kd_pj").HasMaxLength(3);
-            e.Ignore(p => p.JenisKelamin); // enum mapping deferred — legacy column `jk` is MySQL ENUM('L','P')
-            e.Ignore(p => p.GolonganDarah);
-            e.Ignore(p => p.StatusPernikahan);
+            e.Property(p => p.Email).HasColumnName("email").HasMaxLength(50);
+            e.Property(p => p.NamaKeluarga).HasColumnName("namakeluarga").HasMaxLength(50);
+            e.Property(p => p.PekerjaanPj).HasColumnName("pekerjaanpj").HasMaxLength(35);
+            e.Property(p => p.AlamatPj).HasColumnName("alamatpj").HasMaxLength(100);
+            e.Property(p => p.Umur).HasColumnName("umur").HasMaxLength(30);
+            e.Property(p => p.Pendidikan).HasColumnName("pnd").HasMaxLength(20);
+            e.Property(p => p.KodeKelurahan).HasColumnName("kd_kel");
+            e.Property(p => p.KodeKecamatan).HasColumnName("kd_kec");
+            e.Property(p => p.KodeKabupaten).HasColumnName("kd_kab");
+            e.Property(p => p.KodePropinsi).HasColumnName("kd_prop");
+            e.Property(p => p.KelurahanPj).HasColumnName("kelurahanpj").HasMaxLength(60);
+            e.Property(p => p.KecamatanPj).HasColumnName("kecamatanpj").HasMaxLength(60);
+            e.Property(p => p.KabupatenPj).HasColumnName("kabupatenpj").HasMaxLength(60);
+            e.Property(p => p.PropinsiPj).HasColumnName("propinsipj").HasMaxLength(30);
+            e.Property(p => p.PerusahaanPasien).HasColumnName("perusahaan_pasien").HasMaxLength(8);
+            e.Property(p => p.SukuBangsa).HasColumnName("suku_bangsa");
+            e.Property(p => p.BahasaPasien).HasColumnName("bahasa_pasien");
+            e.Property(p => p.CacatFisik).HasColumnName("cacat_fisik");
+            e.Property(p => p.Nip).HasColumnName("nip").HasMaxLength(30);
+            e.Property(p => p.NoPeserta).HasColumnName("no_peserta").HasMaxLength(25);
+
+            e.Property(p => p.JenisKelamin).HasColumnName("jk")
+                .HasConversion(v => v == JenisKelamin.LakiLaki ? "L" : "P",
+                               v => v == "L" ? JenisKelamin.LakiLaki : JenisKelamin.Perempuan)
+                .HasMaxLength(1);
+            e.Property(p => p.GolonganDarah).HasColumnName("gol_darah")
+                .HasConversion(v => v == null ? null : GolDarahToDb(v.Value),
+                               v => v == null ? (GolonganDarah?)null : GolDarahFromDb(v))
+                .HasMaxLength(2);
+            e.Property(p => p.StatusPernikahan).HasColumnName("stts_nikah")
+                .HasConversion(v => v == null ? null : StatusNikahToDb(v.Value),
+                               v => v == null ? (StatusPernikahan?)null : StatusNikahFromDb(v))
+                .HasMaxLength(20);
+            e.Property(p => p.Keluarga).HasColumnName("keluarga")
+                .HasConversion(v => KeluargaToDb(v), v => KeluargaFromDb(v))
+                .HasMaxLength(20);
+            // Without this, EF infers its own shadow FK ("PenjabKodePenjab")
+            // for the Penjab navigation instead of reusing KodePenjab, and
+            // INSERTs fail with "Unknown column 'PenjabKodePenjab'".
+            e.HasOne(p => p.Penjab).WithMany().HasForeignKey(p => p.KodePenjab);
         });
 
         modelBuilder.Entity<RegPeriksa>(e =>
@@ -212,4 +249,36 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
 
     private static TingkatKesadaran KesadaranFromLegacyString(string value)
         => KesadaranMap.FirstOrDefault(kv => kv.Value == value, KesadaranMap.First()).Key;
+
+    private static readonly Dictionary<GolonganDarah, string> GolDarahMap = new()
+    {
+        [GolonganDarah.A] = "A", [GolonganDarah.B] = "B", [GolonganDarah.O] = "O",
+        [GolonganDarah.AB] = "AB", [GolonganDarah.TidakDiketahui] = "-",
+    };
+
+    private static string GolDarahToDb(GolonganDarah v) => GolDarahMap[v];
+    private static GolonganDarah GolDarahFromDb(string v)
+        => GolDarahMap.FirstOrDefault(kv => kv.Value == v, GolDarahMap.First()).Key;
+
+    private static readonly Dictionary<StatusPernikahan, string> StatusNikahMap = new()
+    {
+        [StatusPernikahan.BelumMenikah] = "BELUM MENIKAH", [StatusPernikahan.Menikah] = "MENIKAH",
+        [StatusPernikahan.Janda] = "JANDA", [StatusPernikahan.Duda] = "DUDHA",
+    };
+
+    private static string StatusNikahToDb(StatusPernikahan v) => StatusNikahMap[v];
+    private static StatusPernikahan StatusNikahFromDb(string v)
+        => StatusNikahMap.FirstOrDefault(kv => kv.Value == v, StatusNikahMap.First()).Key;
+
+    private static readonly Dictionary<HubunganPenanggungJawab, string> KeluargaMap = new()
+    {
+        [HubunganPenanggungJawab.Ayah] = "AYAH", [HubunganPenanggungJawab.Ibu] = "IBU",
+        [HubunganPenanggungJawab.Istri] = "ISTRI", [HubunganPenanggungJawab.Suami] = "SUAMI",
+        [HubunganPenanggungJawab.Saudara] = "SAUDARA", [HubunganPenanggungJawab.Anak] = "ANAK",
+        [HubunganPenanggungJawab.DiriSendiri] = "DIRI SENDIRI", [HubunganPenanggungJawab.LainLain] = "LAIN-LAIN",
+    };
+
+    private static string KeluargaToDb(HubunganPenanggungJawab v) => KeluargaMap[v];
+    private static HubunganPenanggungJawab KeluargaFromDb(string v)
+        => KeluargaMap.FirstOrDefault(kv => kv.Value == v, KeluargaMap.First()).Key;
 }
