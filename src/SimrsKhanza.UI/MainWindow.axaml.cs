@@ -145,10 +145,14 @@ public partial class MainWindow : Window
     {
         var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
 
-        if (label == "Registrasi")
+        switch (label)
         {
-            await OpenRegistrasiAsync();
-            return;
+            case "Registrasi":
+                await OpenRegistrasiAsync();
+                return;
+            case "Rawat Jalan":
+                await OpenRawatJalanAsync();
+                return;
         }
 
         _ = ShowNotImplementedAsync(label);
@@ -161,6 +165,21 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Registrasi.RegistrasiView view)
         {
             view = new Modules.Registrasi.RegistrasiView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenRawatJalanAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.RawatJalan.RawatJalanView view)
+        {
+            view = new Modules.RawatJalan.RawatJalanView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
             pageHost.Content = view;
         }

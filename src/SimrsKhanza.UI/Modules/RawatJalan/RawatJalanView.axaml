@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.RawatJalan.RawatJalanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Rawat Jalan: left pane is the examination queue (reg_periksa rows that
+        don't have a pemeriksaan_ralan row yet), right pane is the doctor's
+        examination form for whichever patient is selected. Unlike Registrasi,
+        "Simpan" here is a REAL write (RawatJalanRepository.SaveExaminationAsync
+        -> pemeriksaan_ralan), the first non-read-only screen in the scaffold.
+        Embedded into MainWindow's PageHost, same single-window pattern as
+        Registrasi.
+    -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+
+        <TextBlock Grid.Row="0" Text=":: [ Rawat Jalan — Pemeriksaan Dokter ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="2*,16,3*">
+
+            <!-- Left: queue of patients waiting to be examined -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" Text="Antrian Pemeriksaan" FontWeight="Medium" Margin="0,0,0,4"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          x:DataType="data:RawatJalanQueueItem"
+                          SelectionChanged="OnQueueSelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="150" />
+                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
+                        <DataGridTextColumn Header="Poli" Binding="{Binding NamaPoli}" Width="110" />
+                        <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <!-- Right: examination form for the selected patient -->
+            <ScrollViewer Grid.Column="2">
+                <StackPanel Spacing="6">
+                    <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="10">
+                        <StackPanel>
+                            <TextBlock Name="SelectedPatientText" Text="(belum ada pasien dipilih dari antrian)"
+                                       FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="Tanda Vital" FontWeight="Medium" Margin="0,8,0,0"
+                               Foreground="{DynamicResource ThemeTextBrush}" />
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Tensi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="TensiBox" PlaceholderText="120/80" Margin="4" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Nadi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="4" Name="NadiBox" PlaceholderText="x/mnt" Margin="4" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Suhu :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Name="SuhuBox" PlaceholderText="°C" Margin="4" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="Respirasi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="4" Name="RespirasiBox" PlaceholderText="x/mnt" Margin="4" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Tinggi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Name="TinggiBox" PlaceholderText="cm" Margin="4" />
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="Berat :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="4" Name="BeratBox" PlaceholderText="kg" Margin="4" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="SpO2 :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Name="Spo2Box" PlaceholderText="%" Margin="4" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Kesadaran :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="3" Grid.Column="4" Name="KesadaranCombo" Margin="4" HorizontalAlignment="Stretch" />
+                    </Grid>
+
+                    <TextBlock Text="Keluhan" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,8,0,2" />
+                    <TextBox Name="KeluhanBox" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Pemeriksaan" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
+                    <TextBox Name="PemeriksaanBox" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Penilaian / Diagnosa" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
+                    <TextBox Name="PenilaianBox" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+
+                    <TextBlock Text="RTL (Rencana Tindak Lanjut)" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
+                    <TextBox Name="RtlBox" AcceptsReturn="True" Height="50" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Instruksi" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
+                    <TextBox Name="InstruksiBox" AcceptsReturn="True" Height="40" TextWrapping="Wrap" />
+
+                    <TextBlock Text="Evaluasi" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
+                    <TextBox Name="EvaluasiBox" AcceptsReturn="True" Height="40" TextWrapping="Wrap" />
+
+                    <TextBlock Name="SaveStatusText" Margin="0,8,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+
+                    <Button Name="SimpanButton" Content="💾 Simpan Pemeriksaan" Click="OnSimpanClick"
+                            HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

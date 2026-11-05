@@ -231,6 +231,18 @@ User minta: klik "Registrasi" jangan buka window baru, lanjut di window yang sam
 
 Total sekarang: **6 unit test, semua pass**.
 
+## Fitur Rawat Jalan — SELESAI, termasuk WRITE NYATA PERTAMA (2026-11-05)
+User pilih "Rawat Jalan" sebagai fitur berikutnya (dari 4 opsi: Rawat Jalan/IGD-UGD/Farmasi/selesaikan Login — alasan direkomendasikan: nyambung langsung ke alur Registrasi yang baru jadi).
+
+- **Tabel legacy `pemeriksaan_ralan` diimpor** ke DB dev (vital sign + catatan klinis: tensi, nadi, suhu, respirasi, tinggi, berat, spo2, gcs, kesadaran, keluhan, pemeriksaan, alergi, rtl, penilaian, instruksi, evaluasi, nip). PK: `no_rawat+tgl_perawatan+jam_rawat`.
+- **Entity `PemeriksaanRalan`** (Core) + mapping EF Core, termasuk `HasConversion` custom untuk enum `Kesadaran` (C# enum ↔ string legacy `'Compos Mentis'` dkk — field ini NOT NULL di skema asli jadi tidak bisa di-`Ignore()` seperti enum lain yang hanya dibaca).
+- **`RawatJalanRepository`** (Data): `GetQueueAsync(fromDate,toDate)` — daftar antrian pasien Ralan yang BELUM punya baris `pemeriksaan_ralan` (pakai `!examinedNoRawat.Contains(...)`); `SaveExaminationAsync(...)` — **tulis beneran ke DB**, bukan placeholder lagi seperti tombol-tombol di Registrasi.
+- **`Modules/RawatJalan/RawatJalanView`** (UserControl, pola sama seperti Registrasi — masuk ke `PageHost` di window yang sama): panel kiri = antrian (klik pasien → form kanan terisi), panel kanan = form pemeriksaan (vital sign + keluhan/pemeriksaan/penilaian/rtl/instruksi/evaluasi), tombol "💾 Simpan Pemeriksaan" nyata — setelah simpan sukses, pasien otomatis hilang dari antrian (reload).
+- Perlu seed tambahan: 1 baris `pegawai` (`D0000099`, dipakai sebagai target FK `dokter.kd_dokter` DAN `pemeriksaan_ralan.nip`) — sebelumnya FK ini "bolong" karena diseed pakai `FOREIGN_KEY_CHECKS=0`. NIP dokter pemeriksa saat ini **di-hardcode placeholder** `"D0000099"` di kode (karena `AuthenticatedUser` dev belum terhubung ke record pegawai — lihat bagian `LegacyUserRepository` di atas untuk rencana sambungnya nanti).
+- **Integration test baru** (`RawatJalanRepositoryIntegrationTests`) — nulis baris pemeriksaan sungguhan ke DB dev, lalu assert pasien itu hilang dari antrian. **PASS**, dan dikonfirmasi manual lewat query SQL langsung (baris benar-benar ada di tabel, kolom `kesadaran` ter-konversi jadi `"Compos Mentis"` dengan benar).
+- **Total sekarang 7 unit test, semua pass** (5 lama + `DokterRepositoryIntegrationTests` + `RawatJalanRepositoryIntegrationTests`).
+- Build sukses, app smoke-run tanpa crash, `.exe` di-republish dan dikirim ulang ke user.
+
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
 - Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.

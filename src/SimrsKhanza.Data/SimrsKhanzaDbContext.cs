@@ -22,6 +22,7 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
     public DbSet<Bangsal> BangsalSet => Set<Bangsal>();
     public DbSet<Kamar> KamarSet => Set<Kamar>();
     public DbSet<KamarInap> KamarInapSet => Set<KamarInap>();
+    public DbSet<PemeriksaanRalan> PemeriksaanRalanSet => Set<PemeriksaanRalan>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -156,5 +157,59 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
             e.HasOne(k => k.Kamar).WithMany().HasForeignKey(k => k.KodeKamar);
             e.HasOne(k => k.RegPeriksa).WithMany().HasForeignKey(k => k.NoRawat);
         });
+
+        modelBuilder.Entity<PemeriksaanRalan>(e =>
+        {
+            e.ToTable("pemeriksaan_ralan");
+            e.HasKey(p => new { p.NoRawat, p.TanggalPerawatan, p.JamRawat });
+            e.Property(p => p.NoRawat).HasColumnName("no_rawat").HasMaxLength(17);
+            e.Property(p => p.TanggalPerawatan).HasColumnName("tgl_perawatan");
+            e.Property(p => p.JamRawat).HasColumnName("jam_rawat");
+            e.Property(p => p.SuhuTubuh).HasColumnName("suhu_tubuh").HasMaxLength(5);
+            e.Property(p => p.Tensi).HasColumnName("tensi").HasMaxLength(8);
+            e.Property(p => p.Nadi).HasColumnName("nadi").HasMaxLength(3);
+            e.Property(p => p.Respirasi).HasColumnName("respirasi").HasMaxLength(3);
+            e.Property(p => p.Tinggi).HasColumnName("tinggi").HasMaxLength(5);
+            e.Property(p => p.Berat).HasColumnName("berat").HasMaxLength(5);
+            e.Property(p => p.Spo2).HasColumnName("spo2").HasMaxLength(3);
+            e.Property(p => p.Gcs).HasColumnName("gcs").HasMaxLength(10);
+            e.Property(p => p.Keluhan).HasColumnName("keluhan").HasMaxLength(2000);
+            e.Property(p => p.Pemeriksaan).HasColumnName("pemeriksaan").HasMaxLength(2000);
+            e.Property(p => p.Alergi).HasColumnName("alergi").HasMaxLength(80);
+            e.Property(p => p.Rtl).HasColumnName("rtl").HasMaxLength(2000);
+            e.Property(p => p.Penilaian).HasColumnName("penilaian").HasMaxLength(2000);
+            e.Property(p => p.Instruksi).HasColumnName("instruksi").HasMaxLength(2000);
+            e.Property(p => p.Evaluasi).HasColumnName("evaluasi").HasMaxLength(2000);
+            e.Property(p => p.Nip).HasColumnName("nip").HasMaxLength(20);
+            // The legacy `kesadaran` column is NOT NULL (no default), so unlike
+            // the ignored enum columns elsewhere, this one must actually be
+            // written on insert — mapped via a converter to the exact legacy
+            // enum('Compos Mentis','Somnolence',...) string values.
+            e.Property(p => p.Kesadaran).HasColumnName("kesadaran")
+                .HasConversion(v => KesadaranToLegacyString(v), v => KesadaranFromLegacyString(v))
+                .HasMaxLength(20);
+            e.HasOne<RegPeriksa>().WithMany().HasForeignKey(p => p.NoRawat);
+        });
     }
+
+    private static readonly Dictionary<TingkatKesadaran, string> KesadaranMap = new()
+    {
+        [TingkatKesadaran.ComposMentis] = "Compos Mentis",
+        [TingkatKesadaran.Somnolence] = "Somnolence",
+        [TingkatKesadaran.Sopor] = "Sopor",
+        [TingkatKesadaran.Coma] = "Coma",
+        [TingkatKesadaran.Alert] = "Alert",
+        [TingkatKesadaran.Confusion] = "Confusion",
+        [TingkatKesadaran.Voice] = "Voice",
+        [TingkatKesadaran.Pain] = "Pain",
+        [TingkatKesadaran.Unresponsive] = "Unresponsive",
+        [TingkatKesadaran.Apatis] = "Apatis",
+        [TingkatKesadaran.Delirium] = "Delirium",
+        [TingkatKesadaran.Meninggal] = "Meninggal",
+    };
+
+    private static string KesadaranToLegacyString(TingkatKesadaran value) => KesadaranMap[value];
+
+    private static TingkatKesadaran KesadaranFromLegacyString(string value)
+        => KesadaranMap.FirstOrDefault(kv => kv.Value == value, KesadaranMap.First()).Key;
 }
