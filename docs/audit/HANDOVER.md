@@ -206,6 +206,31 @@ User kirim screenshot layar "Registrasi" asli (ditandai lingkaran hijau pada tom
 - Tile dashboard selain "Rekam Medis" masih placeholder kosong.
 - 1.189 tabel sisanya belum diimpor/didokumentasikan satu per satu — baru 10 tabel inti yang ada di database dev ini.
 
+## Sesi lanjutan 2026-11-05: navigasi single-window + reuse login legacy
+
+### Bug "data tetap kosong" — SUDAH DITEMUKAN PENYEBABNYA & DIPERBAIKI
+Dua penyebab sekaligus:
+1. **MariaDB mati** — karena dijalankan sebagai proses manual (bukan service), begitu komputer idle/restart prosesnya hilang. Sudah dihidupkan lagi dengan command yang sama (lihat bagian "MySQL lokal" di atas).
+2. **Bug di `RegistrasiRepository`**: filter `WHERE tgl_registrasi = HARI INI` hardcoded — padahal data seed ditanggal 2026-11-03, sedangkan hari ini sudah 2026-11-05. Jadi walau DB nyala, query selalu kosong karena tanggalnya nggak pernah cocok.
+   - **Diperbaiki**: `GetTodayAsync` sekarang cuma wrapper tipis, repository utama `GetByPeriodeAsync(fromDate, toDate)` menerima rentang tanggal. `RegistrasiView` sekarang default-load 7 hari terakhir (bukan cuma hari ini persis) supaya data seed/demo yang tanggalnya bukan "hari ini pas" tetap muncul.
+   - Sempat ada bug kompilasi: parameter `from`/`to` bentrok dengan keyword LINQ query syntax (`from x in ...`) — diganti jadi `fromDate`/`toDate`.
+
+### Navigasi single-window — SELESAI
+User minta: klik "Registrasi" jangan buka window baru, lanjut di window yang sama (sesuai perilaku legacy).
+- `Modules/Registrasi/RegistrasiWindow` (Window terpisah) **dihapus**, diganti `Modules/Registrasi/RegistrasiView` (**UserControl**).
+- `MainWindow` sekarang punya `ContentControl Name="PageHost"` di `ContentHost`, jadi ada 3 "halaman" yang saling eksklusif: Hero (awal) / Menu (grid ikon) / PageHost (fitur aktif, mis. Registrasi). Method `ShowPage(Page.Hero/Menu/Feature)` yang atur switching.
+- `RegistrasiView` punya event `BackRequested` — tombol "⬅ Kembali ke Menu" (dulu "Keluar", diganti supaya tidak ambigu dengan keluar aplikasi) memicu event ini, `MainWindow` subscribe dan balik ke Hero.
+- Pola ini jadi **template untuk fitur-fitur berikutnya**: tiap fitur baru = 1 UserControl baru + wiring serupa di `MainWindow`, bukan bikin Window baru lagi.
+
+### Jawaban: bisa nggak tabel `petugas`/`user` dipakai login di app baru?
+**Bisa, dan sudah diimplementasikan** (`LegacyUserRepository` di `SimrsKhanza.Data/Auth/`) — ini langsung connect ke tabel `user`/`petugas` di database `sik` yang ASLI, jadi tidak perlu migrasi data dulu kalau mau pakai. Tapi ada 2 catatan penting:
+1. **Password di tabel `user`/`admin` tersimpan PLAINTEXT** (kolom `text`, tidak ada kolom hash/salt) — dikonfirmasi dari skema. `UserAccount.IsLegacyPlaintext` + percabangan di `AuthService.LoginAsync` menangani ini (banding string langsung, bukan PBKDF2). **Rekomendasi migrasi** (belum diimplementasikan): begitu login lama berhasil, langsung hash passwordnya dengan `PasswordHasher` dan simpan ke tabel BARU milik app baru (jangan tulis balik ke tabel `user` lama) — supaya pelan-pelan semua akun pindah ke hash yang aman tanpa memaksa reset password massal.
+2. **Tabel `user` legacy punya ~1.225 kolom, satu kolom per fitur** (bukan desain ternormalisasi) — `LegacyUserRepository` baca ini pakai ADO.NET mentah (`MySqlConnector` langsung, bukan EF Core, karena 1.225 kolom tidak praktis dipetakan jadi entity), lalu ubah tiap kolom bernilai `'true'` jadi satu permission key = nama kolomnya. **Belum dioptimalkan** — scan 1.225 kolom tiap login; desain final disarankan: migrasi satu kali baca tabel lebar ini → tulis ke `UserPermission` (tabel ternormalisasi yang sudah ada), baru pakai itu seterusnya.
+3. **Asumsi BELUM diverifikasi**: `LegacyUserRepository` mengasumsikan `user.id_user` = `petugas.nip` (pola umum Khanza, tapi belum dicek langsung ke database produksi asli). Perlu dikonfirmasi ke instalasi `sik` yang sebenarnya.
+4. **Belum ditest terhadap DB nyata** — `user` table tidak ada di 10-tabel dev DB kita (dan tidak diseed, karena ~1.225 kolom NOT NULL terlalu berat untuk seed manual). Ada 1 unit test (`Login_WithLegacyPlaintextAccount_ComparesRawStringNotHash`) yang mengetes logic percabangan plaintext di `AuthService` pakai fake repository — bukan test terhadap `LegacyUserRepository` yang sesungguhnya.
+
+Total sekarang: **6 unit test, semua pass**.
+
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
 - Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.

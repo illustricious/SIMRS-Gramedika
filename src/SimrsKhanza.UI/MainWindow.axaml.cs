@@ -65,15 +65,30 @@ public partial class MainWindow : Window
 
     private void OnMenuShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var hero = this.FindControl<StackPanel>("HeroPanel")!;
         var menu = this.FindControl<Grid>("MenuPanel")!;
-
         // "Menu" toggles between the hero/welcome panel and the icon-grid
         // dashboard, mirroring the legacy app's behavior where clicking
         // "Menu" opens the module grid over the home screen.
-        var showingMenu = menu.IsVisible;
-        hero.IsVisible = showingMenu;
-        menu.IsVisible = !showingMenu;
+        ShowPage(menu.IsVisible ? Page.Hero : Page.Menu);
+    }
+
+    /// <summary>
+    /// Single-window navigation: exactly one of Hero / Menu / PageHost (feature
+    /// views like Registrasi) is visible at a time. Avoids popping separate
+    /// Windows per feature, per the user's feedback that the legacy app stays
+    /// in one window and swaps the view in place.
+    /// </summary>
+    private enum Page { Hero, Menu, Feature }
+
+    private void ShowPage(Page page)
+    {
+        var hero = this.FindControl<StackPanel>("HeroPanel")!;
+        var menu = this.FindControl<Grid>("MenuPanel")!;
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        hero.IsVisible = page == Page.Hero;
+        menu.IsVisible = page == Page.Menu;
+        pageHost.IsVisible = page == Page.Feature;
     }
 
     private void SetupMenuCategoryCombo(AuthenticatedUser user)
@@ -126,17 +141,32 @@ public partial class MainWindow : Window
         await ShowNotImplementedAsync(label);
     }
 
-    private void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private async void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
 
         if (label == "Registrasi")
         {
-            new Modules.Registrasi.RegistrasiWindow().Show(this);
+            await OpenRegistrasiAsync();
             return;
         }
 
         _ = ShowNotImplementedAsync(label);
+    }
+
+    private async System.Threading.Tasks.Task OpenRegistrasiAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Registrasi.RegistrasiView view)
+        {
+            view = new Modules.Registrasi.RegistrasiView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
     }
 
     private void OnTopShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

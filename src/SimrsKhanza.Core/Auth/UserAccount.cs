@@ -14,6 +14,15 @@ public class UserAccount
     public string PasswordSalt { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
 
+    /// <summary>
+    /// True for accounts sourced from the legacy `user`/`admin` tables, where
+    /// <see cref="PasswordHash"/> holds the raw plaintext password instead of a
+    /// PBKDF2 hash — AuthService compares it directly rather than calling
+    /// PasswordHasher.Verify. See LegacyUserRepository for the full rationale
+    /// and the recommended rehash-on-login migration path.
+    /// </summary>
+    public bool IsLegacyPlaintext { get; set; }
+
     /// <summary>Links back to Pegawai.Nik when this account belongs to an employee.</summary>
     public string? PegawaiNik { get; set; }
 }

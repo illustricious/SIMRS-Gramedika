@@ -21,15 +21,29 @@ public record RegistrasiListItem(
 
 public interface IRegistrasiRepository
 {
+    /// <summary>Convenience wrapper — kept for callers that only care about "today".</summary>
     Task<IReadOnlyList<RegistrasiListItem>> GetTodayAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Lists registrations in [from, to] inclusive. Backs the "Periode" date
+    /// range filter in RegistrasiView — the legacy screen defaults to today
+    /// but lets the user widen the range, which is exactly what tripped up
+    /// the first cut of this screen (seed data dated 2026-11-03, queried on
+    /// 2026-11-05 with a hardcoded "today" filter returned nothing).
+    /// </summary>
+    Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default);
 }
 
 public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiRepository
 {
-    public async Task<IReadOnlyList<RegistrasiListItem>> GetTodayAsync(CancellationToken ct = default)
+    public Task<IReadOnlyList<RegistrasiListItem>> GetTodayAsync(CancellationToken ct = default)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);
+        return GetByPeriodeAsync(today, today, ct);
+    }
 
+    public async Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default)
+    {
         var query =
             from r in db.RegPeriksaSet
             join p in db.PasienSet on r.NoRekamMedis equals p.NoRekamMedis
@@ -37,7 +51,7 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             from poli in poliJoin.DefaultIfEmpty()
             join dok in db.DokterSet on r.KodeDokter equals dok.KodeDokter into dokJoin
             from dok in dokJoin.DefaultIfEmpty()
-            where r.TanggalRegistrasi == today
+            where r.TanggalRegistrasi >= fromDate && r.TanggalRegistrasi <= toDate
             orderby r.NoRawat
             select new
             {

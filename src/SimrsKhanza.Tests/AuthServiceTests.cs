@@ -50,4 +50,33 @@ public class AuthServiceTests
         Assert.True(PasswordHasher.Verify("secret123", hash, salt));
         Assert.False(PasswordHasher.Verify("not-secret123", hash, salt));
     }
+
+    /// <summary>
+    /// Covers the branch LegacyUserRepository relies on: an account flagged
+    /// IsLegacyPlaintext is compared by raw string equality, not PasswordHasher.
+    /// </summary>
+    private sealed class FakeLegacyUserRepository : IUserRepository
+    {
+        public Task<UserAccount?> FindByIdAsync(string userId, CancellationToken ct = default)
+            => Task.FromResult<UserAccount?>(userId == "nip001"
+                ? new UserAccount { UserId = "nip001", DisplayName = "Petugas Lama", PasswordHash = "rahasia123", IsLegacyPlaintext = true }
+                : null);
+
+        public Task<IReadOnlySet<string>> GetPermissionKeysAsync(string userId, CancellationToken ct = default)
+            => Task.FromResult<IReadOnlySet<string>>(new HashSet<string> { "registrasi" });
+    }
+
+    [Fact]
+    public async Task Login_WithLegacyPlaintextAccount_ComparesRawStringNotHash()
+    {
+        var sut = new AuthService(new FakeLegacyUserRepository());
+
+        var ok = await sut.LoginAsync("nip001", "rahasia123");
+        var wrong = await sut.LoginAsync("nip001", "salah");
+
+        Assert.True(ok.Success);
+        Assert.True(ok.User!.HasPermission("registrasi"));
+        Assert.False(wrong.Success);
+        Assert.Equal(LoginFailureReason.WrongPassword, wrong.FailureReason);
+    }
 }

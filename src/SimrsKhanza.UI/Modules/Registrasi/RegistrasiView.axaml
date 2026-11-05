@@ -1,10 +1,8 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:data="using:SimrsKhanza.Data"
-        x:Class="SimrsKhanza.UI.Modules.Registrasi.RegistrasiWindow"
-        Title="Registrasi"
-        Width="1100" Height="760"
-        Background="{DynamicResource ThemeBackgroundBrush}">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.Registrasi.RegistrasiView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
 
     <!--
         Legacy reference screenshot (provided by the user): a "Registrasi Periksa
@@ -12,7 +10,13 @@
         toggle (the green-circled icon in the user's screenshot), a data grid of
         today's registrations below it, and a bottom filter/action bar
         (Dokter/Unit/Periode/Key Word + Simpan/Baru/Ganti/Hapus/Cetak/Semua/Keluar).
-        Grid data here comes from clearly-labeled dev seed rows (RegistrasiRepository
+
+        This is embedded directly into MainWindow's content area (not a separate
+        Window) per the user's feedback: the legacy app navigates within one
+        window, so "Registrasi" swaps the page in place instead of popping a
+        new window. "Keluar" here means "back to the dashboard", not app exit.
+
+        Grid data comes from clearly-labeled dev seed rows (RegistrasiRepository
         against the local dev MariaDB) — never real patient data.
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
@@ -92,11 +96,11 @@
             </Grid>
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
                 <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <DatePicker Grid.Column="1" />
+                <DatePicker Grid.Column="1" Name="PeriodeFromPicker" />
                 <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
-                <DatePicker Grid.Column="3" />
+                <DatePicker Grid.Column="3" Name="PeriodeToPicker" />
                 <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <TextBox Grid.Column="6" />
+                <TextBox Grid.Column="6" Name="KeyWordBox" />
                 <TextBlock Grid.Column="7" Name="RecordCountText" Text="Record : 0"
                            VerticalAlignment="Center" Margin="12,0,0,0"
                            Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
@@ -107,15 +111,15 @@
                 <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
                 <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
                 <Button Content="🖨 Cetak" Click="OnPlaceholderClick" />
-                <Button Content="🔎 Semua" Click="OnReloadClick" />
-                <Button Content="❌ Keluar" Click="OnCloseClick" Classes="accentText" HorizontalAlignment="Right" />
+                <Button Content="🔎 Cari / Semua" Click="OnSearchClick" />
+                <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" HorizontalAlignment="Right" />
             </StackPanel>
         </StackPanel>
     </Grid>
 
-    <Window.Styles>
+    <UserControl.Styles>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
-    </Window.Styles>
-</Window>
+    </UserControl.Styles>
+</UserControl>

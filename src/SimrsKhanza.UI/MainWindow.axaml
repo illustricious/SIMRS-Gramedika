@@ -75,6 +75,11 @@
                     <WrapPanel Name="DashboardPanel" Orientation="Horizontal" />
                 </ScrollViewer>
             </Grid>
+
+            <!-- Feature page host — single-window navigation: clicking a feature
+                 shortcut (e.g. "Registrasi") swaps content in here instead of
+                 opening a new Window, per the user's feedback. -->
+            <ContentControl Name="PageHost" IsVisible="False" />
         </Grid>
 
         <!-- Row 3: status bar, mirrors legacy "Status Admin / date / IP / credit" footer -->

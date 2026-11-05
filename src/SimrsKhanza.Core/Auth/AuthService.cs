@@ -11,7 +11,14 @@ public class AuthService(IUserRepository users) : IAuthService
         if (!account.IsActive)
             return LoginResult.Fail(LoginFailureReason.AccountInactive);
 
-        if (!PasswordHasher.Verify(password, account.PasswordHash, account.PasswordSalt))
+        // Legacy `user`/`admin` rows store a plaintext password (no hash/salt
+        // columns exist) — compared directly. Everything else goes through
+        // PBKDF2. See UserAccount.IsLegacyPlaintext and LegacyUserRepository.
+        var passwordOk = account.IsLegacyPlaintext
+            ? string.Equals(password, account.PasswordHash, StringComparison.Ordinal)
+            : PasswordHasher.Verify(password, account.PasswordHash, account.PasswordSalt);
+
+        if (!passwordOk)
             return LoginResult.Fail(LoginFailureReason.WrongPassword);
 
         var permissions = await users.GetPermissionKeysAsync(userId, ct);
