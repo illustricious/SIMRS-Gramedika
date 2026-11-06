@@ -1,6 +1,91 @@
 # Handover — Audit Repo SIMRS Khanza (menuju rewrite C# Avalonia)
 
-Dokumen ini diupdate setiap ada progres. Jangan dihapus — ini adalah log kerja agar sesi berikutnya bisa lanjut tanpa mengulang dari awal.
+Dokumen ini diupdate setiap ada progres. Jangan dihapus — ini adalah log kerja agar sesi berikutnya (termasuk AI/sesi chat lain) bisa lanjut tanpa mengulang dari awal.
+
+---
+
+# 🚀 MULAI DARI SINI — Ringkasan Cepat (TL;DR)
+
+> Bagian ini ditulis supaya AI/orang baru yang baca dokumen ini bisa langsung paham & lanjut kerja dalam &lt;5 menit. Detail lengkap + kronologi alasan tiap keputusan ada di bagian bawah dokumen ini (urut dari paling lama ke paling baru).
+
+## Apa proyek ini?
+Rewrite **SIMRS Khanza** (software hospital management system Indonesia, awalnya Java Swing + PHP, 1.199 tabel database, sangat legacy) menjadi **C# + .NET 10 + Avalonia UI** (desktop app lintas-platform), dengan tampilan yang meniru look & feel aplikasi asli (warna, layout, navigasi) tapi backend/arsitektur dirancang ulang dari nol.
+
+## Dua repo terpisah — JANGAN TERTUKAR
+| Repo | Isi | Status |
+|---|---|---|
+| `B:\Documents\Script\simrs-khanza` | **Repo LEGACY/AUDIT** — source code asli Java/PHP SIMRS Khanza + data produksi asli (ada PHI/data pasien nyata!). Hanya dibaca untuk referensi, **TIDAK PERNAH diubah**. | Read-only, audit selesai |
+| `B:\Documents\Script\SimrsKhanza.Avalonia` | **Repo BARU (rewrite)** — di sinilah semua kode C#/Avalonia ditulis & commit. Repo git terpisah, lokal, belum ada remote. | **Aktif dikerjakan** |
+
+## Cara menjalankan SEKARANG (di Windows, PowerShell)
+```powershell
+# 1. Hidupkan MariaDB (SELALU cek dulu, sering mati karena bukan service — lihat bagian "Gotcha" di bawah)
+Get-Process -Name "mariadbd" -ErrorAction SilentlyContinue
+# kalau kosong/mati, jalankan:
+Start-Process "C:\Program Files\MariaDB 13.0\bin\mariadbd.exe" -ArgumentList '--defaults-file="C:\Program Files\MariaDB 13.0\data\my.ini" --console'
+
+# 2. Set koneksi DB (dev, data dummy — BUKAN data pasien asli)
+$env:SIMRS_DB_HOST = "127.0.0.1"
+$env:SIMRS_DB_PORT = "3306"
+$env:SIMRS_DB_NAME = "sik"
+$env:SIMRS_DB_USER = "khanza_dev"
+$env:SIMRS_DB_PASSWORD = "DevPassword123!"
+
+# 3. SEBELUM build ulang: matikan dulu instance app yang mungkin masih jalan (kalau tidak, build gagal karena file dll terkunci)
+Get-Process -Name "SimrsKhanza.UI" -ErrorAction SilentlyContinue | Stop-Process -Force
+
+# 4. Jalankan
+& "C:\Program Files\dotnet\dotnet.exe" run --project "B:\Documents\Script\SimrsKhanza.Avalonia\src\SimrsKhanza.UI\SimrsKhanza.UI.csproj"
+```
+Login dev: `admin` / `admin123` (full akses termasuk Pengaturan) atau `petugas` / `petugas123` (tanpa akses Pengaturan — buat tes gate admin-only).
+
+**Build & test:**
+```powershell
+& "C:\Program Files\dotnet\dotnet.exe" build "B:\Documents\Script\SimrsKhanza.Avalonia\SimrsKhanza.sln"
+& "C:\Program Files\dotnet\dotnet.exe" test "B:\Documents\Script\SimrsKhanza.Avalonia\src\SimrsKhanza.Tests\SimrsKhanza.Tests.csproj"
+```
+**Publish .exe standalone:**
+```powershell
+& "C:\Program Files\dotnet\dotnet.exe" publish "B:\Documents\Script\SimrsKhanza.Avalonia\src\SimrsKhanza.UI\SimrsKhanza.UI.csproj" -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o "B:\Documents\Script\SimrsKhanza.Avalonia\publish\win-x64"
+```
+
+## Yang SUDAH jalan (fitur nyata, bukan placeholder kecuali disebutkan)
+- **Login** — `IAuthService`, password hash PBKDF2 (dev in-memory), + `LegacyUserRepository` yang bisa baca langsung dari tabel `user`/`petugas` legacy (plaintext password di-handle khusus) — **belum ditest ke DB asli**.
+- **Dashboard** — grid ikon menu, data-driven dari permission user (`IMenuPermissionService`), bukan hardcoded.
+- **Registrasi / Daftar Pasien Rawat Jalan** (`Modules/Registrasi`) — SATU layar yang diakses dari tombol toolbar "Registrasi" MAUPUN "Rawat Jalan" (keduanya sama, ini dikonfirmasi user). Form collapsible + grid 17 kolom lengkap + search + **cetak PDF nyata** (QuestPDF) + tombol "🩺 Periksa" yang lempar ke layar pemeriksaan.
+- **Rawat Jalan — Pemeriksaan** (`Modules/RawatJalan`) — form vital sign + catatan klinis, **Simpan beneran nulis ke DB** (`pemeriksaan_ralan`). Diakses lewat tombol "🩺 Periksa" di Registrasi.
+- **Pasien** (`Modules/Pasien`, dibuka dari tile dashboard "Rekam Medis") — form identitas pasien (field dicocokkan ke `DlgPasien.form` legacy), Simpan beneran nulis pasien baru.
+- **Pengaturan** (`Modules/Pengaturan`, **admin-only** via permission `pengaturan.admin`) — edit/tes/simpan koneksi database (host/port/db/user/password), tersimpan di `%APPDATA%\SimrsKhanza\database.settings.json` di komputer user — **BISA connect ke database manapun (IP/host apa saja), sudah dikonfirmasi user berhasil connect ke database asli mereka sendiri**.
+- **SearchPickerDialog<T>** generik — pengganti pola 16 dialog `Dlg*Cari*` legacy.
+- **Cetak laporan (PDF)** — baru ada 1 contoh (daftar Registrasi/Rawat Jalan), pakai QuestPDF. **Lisensi QuestPDF Community gratis cuma untuk perusahaan di bawah threshold revenue tertentu** — cek questpdf.com/license sebelum dipakai produksi di RS yang lebih besar.
+- **12 unit test, semua pass** (termasuk beberapa integration test ke MariaDB dev asli, auto-skip kalau DB tidak reachable).
+
+## Pola/arsitektur yang harus diikuti untuk fitur baru
+1. **Satu fitur = satu folder di `SimrsKhanza.UI/Modules/<NamaFitur>/`** berisi `<Nama>View.axaml` (UserControl, BUKAN Window — semua navigasi dalam SATU window via `MainWindow.PageHost`) + `.axaml.cs`.
+2. View punya event `BackRequested` (wajib) dan event lain sesuai kebutuhan (contoh: `PeriksaRequested` di RegistrasiView).
+3. Data access lewat `SimrsKhanza.Data` — repository per fitur (`XxxRepository` + `IXxxRepository`), pakai `SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load())` (bukan `FromEnvironment()` langsung — `Load()` prioritaskan setting tersimpan user).
+4. Entity baru → tambahkan ke `SimrsKhanza.Core/Entities/`, lalu petakan di `SimrsKhanzaDbContext.OnModelCreating` — **WAJIB** deklarasikan semua relasi `HasOne()` eksplisit (EF bikin shadow FK aneh kalau tidak) dan **WAJIB** mapping enum pakai `HasConversion` dengan string PERSIS sama seperti nilai enum MySQL legacy (jangan andalkan `.ToString()` C#, beda formatnya — baca § "Bug kumpulan" di bawah).
+5. Wire ke `MainWindow.axaml.cs`: tambah case di `OnFeatureShortcutClick`/`OnModuleTileClick`, method `OpenXxxAsync()` yang buat/reuse View lewat `PageHost`.
+6. **Tulis integration test** tiap kali bikin repository baru yang nulis/baca DB (pola: coba connect, kalau gagal `return;` alih-alih fail — supaya tidak merusak CI/dev tanpa DB). Ini sudah beberapa kali menangkap bug nyata sebelum sempat dikirim ke user — JANGAN skip langkah ini.
+
+## ⚠️ Gotcha / hal yang sering bikin bingung
+1. **MariaDB BUKAN Windows Service** — `mariadbd --install` butuh admin elevation yang sesi-sesi sebelumnya tidak punya. Server mati tiap komputer idle/restart. **SELALU cek proses sebelum kerja** (lihat langkah 1 di atas). Kalau user mau permanen, mereka perlu jalankan `mariadbd --install` sendiri sebagai Administrator.
+2. **Kalau mau `dotnet build` tapi app masih kebuka** → build gagal karena file DLL terkunci proses yang jalan. Selalu `Stop-Process -Name "SimrsKhanza.UI" -Force` dulu.
+3. **Database dev (`sik` di MariaDB lokal) HANYA punya 11 tabel** (10 inti + `pemeriksaan_ralan`) + 8 tabel lookup kosong (placeholder `id=0`/`"-"`) — BUKAN restore dari `sik.sql` legacy yang 12.8MB (sengaja tidak disentuh, demi privasi data pasien asli). Kalau butuh tabel baru, extract schema-nya dari `docs/audit/schema_sik.sql` (hasil ekstraksi CREATE TABLE saja, tanpa data, dari repo legacy).
+4. **Insert ke kolom `AUTO_INCREMENT` dengan nilai literal `0`** otomatis diganti MySQL/MariaDB jadi nomor urut berikutnya, KECUALI `sql_mode` include `NO_AUTO_VALUE_ON_ZERO`. Sudah kejadian sekali (tabel lookup kelurahan/kecamatan/dst), sudah diperbaiki — ingat ini kalau nambah tabel lookup baru.
+5. **Enum C# `.ToString()` ≠ string MySQL legacy** (contoh: `StatusBayar.SudahBayar.ToString()` = `"SudahBayar"`, bukan `"Sudah Bayar"` yang dipakai legacy). Selalu mapping eksplisit, jangan andalkan `.ToString()`, untuk apapun yang ditampilkan ke user atau dibandingkan ke nilai DB.
+6. **Dua screenshot "Registrasi Periksa Hari Ini" vs "Daftar Pasien Rawat Jalan"** yang user kasih ternyata LAYAR YANG SAMA (dikonfirmasi user), diakses dari dua tombol toolbar berbeda ("Registrasi" dan "Rawat Jalan") — makanya `MainWindow` wire keduanya ke `OpenRegistrasiAsync()`.
+
+## Urutan prioritas kerja selanjutnya (rekomendasi, belum dikerjakan)
+1. **Rawat Inap** & **Kasir/Billing** — pelengkap alami alur yang sudah ada.
+2. **Laboratorium** & **Radiologi** — hasil pemeriksaan penunjang (user sempat typo "Labgrat" dikoreksi jadi "Laboratorium", tapi fiturnya sendiri belum dibangun — masih placeholder).
+3. Perluas fitur cetak PDF ke layar lain (Pasien, Rawat Jalan) — pola sudah ada di `Modules/Registrasi/RegistrasiReport.cs`, tinggal direplikasi.
+4. Keputusan arsitektur "formulir dinamis" untuk 177 tabel `penilaian*`/`skrining*`/`surat*` legacy (lihat `PLANNING_APLIKASI.md`) — BELUM diputuskan, butuh persetujuan user karena mengubah pendekatan data model secara fundamental.
+5. Selesaikan `LegacyUserRepository` — test ke DB `sik` ASLI (bukan dev), rencana migrasi "rehash on first login" dari plaintext ke PBKDF2 (lihat bagian detail di bawah).
+6. MariaDB jadi Windows Service permanen (butuh admin elevation dari user sendiri).
+7. Isi IGD/UGD, Farmasi, Rawat Inap, Keuangan, Kepegawaian, Inventaris, Laporan, Bridging — semua masih placeholder "belum diimplementasikan".
+
+---
 
 ## Status: SEDANG BERJALAN (audit read-only, belum ada file yang diubah/dihapus)
 
@@ -287,6 +372,25 @@ User kirim screenshot kedua (`:: [ Daftar Pasien Rawat Jalan ] ::`) dengan kolom
 
 ### Catatan teknis: proses yang masih jalan mengunci build
 Sempat gagal build karena app yang saya `Start-Process` di akhir sesi sebelumnya (dibiarkan terbuka sesuai permintaan user) mengunci file DLL. **Pelajaran untuk sesi berikutnya**: sebelum `dotnet build`, selalu cek & matikan proses `SimrsKhanza.UI` yang mungkin masih jalan dari sesi sebelumnya (`Get-Process -Name "SimrsKhanza.UI" | Stop-Process -Force`), baru build, baru jalankan lagi di akhir.
+
+## Sesi 2026-11-06 (lanjutan ke-2): fix mapping menu, konfirmasi dukungan IP/host berbeda, cetak PDF nyata
+
+### Koreksi mapping menu — DIPERBAIKI
+User koreksi: screenshot "Daftar Pasien Rawat Jalan" itu diakses dari tombol **"Rawat Jalan"**, bukan "Registrasi" seperti asumsi saya sebelumnya. Diperbaiki: kedua tombol toolbar ("Registrasi" & "Rawat Jalan") sekarang sama-sama membuka `RegistrasiView` (layar yang sama). Form pemeriksaan vital sign (`RawatJalanView`, yang sebelumnya dibuka langsung dari tombol "Rawat Jalan") sekarang diakses via tombol baru **"🩺 Periksa"** di dalam `RegistrasiView` — alurnya jadi lebih natural: buka daftar pasien → pilih → periksa. `RawatJalanView.BackRequested` sekarang balik ke `RegistrasiView` (bukan ke Hero), supaya alur baliknya masuk akal.
+
+### Konfirmasi: bisa connect ke IP/host database berbeda — YA, SUDAH BISA
+Dijawab langsung (tanpa perlu kode baru, karena memang sudah didesain begitu): field "Host" di layar Pengaturan menerima teks bebas (IP address, hostname, FQDN apa saja), tidak di-hardcode. Ini sudah dibuktikan user sendiri sesi sebelumnya (connect ke DB asli mereka). Catatan praktis yang disampaikan ke user: kalau DB target ada di komputer/jaringan lain, pastikan MySQL/MariaDB di sana mengizinkan remote connection (bind-address bukan cuma 127.0.0.1, user MySQL punya akses dari host `%` atau IP klien, firewall port 3306 terbuka) — ini aspek konfigurasi server DB-nya, bukan sesuatu yang perlu diubah di kode aplikasi.
+
+### Cetak Laporan (PDF) — fitur nyata pertama, SELESAI
+- Package **QuestPDF** ditambahkan ke `SimrsKhanza.UI`. **Catatan lisensi**: QuestPDF Community gratis hanya untuk organisasi di bawah threshold revenue tertentu — PERLU DICEK ke questpdf.com/license sebelum dipakai di deployment produksi RS yang lebih besar, atau beli lisensi komersial.
+- `Modules/Registrasi/RegistrasiReport.cs` — generate PDF beneran (A4 landscape, tabel 10 kolom) dari data grid Registrasi yang sedang tampil, disimpan ke temp file, langsung dibuka dengan PDF viewer default OS (`Process.Start` + `UseShellExecute=true`).
+- Tombol "🖨 Cetak" di `RegistrasiView` sekarang nyata (sebelumnya placeholder) — kalau grid kosong, tetap kasih pesan "belum ada data" alih-alih generate PDF kosong.
+- **Test baru** (`RegistrasiReportTests`) — generate PDF beneran, assert file ada, ukurannya wajar (>500 byte), dan punya PDF magic header `%PDF`. **PASS**.
+- Ini jadi **pola/contoh untuk port fitur cetak lainnya** (masih ada ratusan `.jrxml` legacy yang belum di-port — lihat `report/` di repo legacy).
+- **Total sekarang 12 unit test, semua pass.**
+
+### Restrukturisasi HANDOVER.md — SELESAI
+Ditambahkan bagian **"🚀 MULAI DARI SINI"** di paling atas dokumen (sebelum kronologi) — ringkasan cepat, cara jalanin app, daftar fitur yang sudah jalan, pola arsitektur wajib diikuti, daftar gotcha, dan prioritas kerja selanjutnya. Tujuannya supaya AI/sesi lain (user bilang akan pindah chat) bisa langsung paham tanpa baca kronologi panjang di bawah dari awal. Kronologi detail tetap dipertahankan di bawah TL;DR untuk konteks/alasan keputusan.
 
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.

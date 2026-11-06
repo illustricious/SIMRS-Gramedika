@@ -137,7 +137,8 @@
                 <Button Content="🆕 Baru" Click="OnPlaceholderClick" />
                 <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
                 <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
-                <Button Content="🖨 Cetak" Click="OnPlaceholderClick" />
+                <Button Content="🩺 Periksa" Click="OnPeriksaClick" />
+                <Button Content="🖨 Cetak" Click="OnCetakClick" />
                 <Button Content="🔎 Cari / Semua" Click="OnSearchClick" />
                 <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" HorizontalAlignment="Right" />
             </StackPanel>

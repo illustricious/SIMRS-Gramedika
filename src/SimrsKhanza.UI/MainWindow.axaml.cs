@@ -194,10 +194,16 @@ public partial class MainWindow : Window
         switch (label)
         {
             case "Registrasi":
-                await OpenRegistrasiAsync();
-                return;
             case "Rawat Jalan":
-                await OpenRawatJalanAsync();
+                // Both shortcuts open the same "Daftar Pasien Rawat Jalan" /
+                // Registrasi screen — the user corrected an earlier mix-up
+                // where we'd assumed the rich list (Kode Dokter/Dokter
+                // Dituju/Biaya Reg/... columns) belonged to "Registrasi";
+                // it's actually reached from the legacy app's "Rawat Jalan"
+                // menu. RegistrasiView's "🩺 Periksa" button is the path to
+                // the vitals/examination form (RawatJalanView) for a
+                // selected patient — see OpenPemeriksaanAsync below.
+                await OpenRegistrasiAsync();
                 return;
         }
 
@@ -212,6 +218,7 @@ public partial class MainWindow : Window
         {
             view = new Modules.Registrasi.RegistrasiView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.PeriksaRequested += async (_, _) => await OpenRawatJalanAsync();
             pageHost.Content = view;
         }
 
@@ -226,7 +233,9 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.RawatJalan.RawatJalanView view)
         {
             view = new Modules.RawatJalan.RawatJalanView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            // "Kembali" from the exam form returns to the patient list it was
+            // opened from, not all the way home — matches how "🩺 Periksa" got here.
+            view.BackRequested += async (_, _) => await OpenRegistrasiAsync();
             pageHost.Content = view;
         }
 

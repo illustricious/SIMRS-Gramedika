@@ -11,6 +11,9 @@ public partial class RegistrasiView : UserControl
     /// <summary>Raised when "Kembali ke Menu" is clicked — MainWindow swaps back to the dashboard.</summary>
     public event EventHandler? BackRequested;
 
+    /// <summary>Raised when "🩺 Periksa" is clicked — MainWindow opens RawatJalanView (the vitals/exam form).</summary>
+    public event EventHandler? PeriksaRequested;
+
     public RegistrasiView()
     {
         InitializeComponent();
@@ -97,6 +100,44 @@ public partial class RegistrasiView : UserControl
     }
 
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
+
+    private void OnPeriksaClick(object? sender, RoutedEventArgs e) => PeriksaRequested?.Invoke(this, EventArgs.Empty);
+
+    private void OnCetakClick(object? sender, RoutedEventArgs e)
+    {
+        var grid = this.FindControl<DataGrid>("RegistrasiGrid")!;
+        var items = (grid.ItemsSource as IEnumerable<RegistrasiListItem>)?.ToList() ?? new List<RegistrasiListItem>();
+
+        if (items.Count == 0)
+        {
+            OnPlaceholderClick(new Button { Content = "🖨 Cetak (tidak ada data)" }, e);
+            return;
+        }
+
+        try
+        {
+            var path = RegistrasiReport.GeneratePdf(items, "Daftar Pasien Rawat Jalan");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            var dialog = new Window
+            {
+                Width = 360,
+                Height = 140,
+                Title = "Gagal Cetak",
+                Content = new TextBlock
+                {
+                    Text = $"Gagal membuat/membuka PDF: {ex.Message}",
+                    Margin = new Avalonia.Thickness(16),
+                    TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                }
+            };
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner is not null) _ = dialog.ShowDialog(owner);
+            else dialog.Show();
+        }
+    }
 
     private static string? EmptyToNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 }
