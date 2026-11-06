@@ -95,8 +95,29 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
             e.Property(r => r.KodePoli).HasColumnName("kd_poli").HasMaxLength(5);
             e.Property(r => r.KodeDokter).HasColumnName("kd_dokter").HasMaxLength(20);
             e.Property(r => r.KodePenjab).HasColumnName("kd_pj").HasMaxLength(3);
-            e.Ignore(r => r.Status);
-            e.Ignore(r => r.StatusLanjut);
+            e.Property(r => r.NoReg).HasColumnName("no_reg").HasMaxLength(8);
+            e.Property(r => r.PenanggungJawab).HasColumnName("p_jawab").HasMaxLength(100);
+            e.Property(r => r.AlamatPj).HasColumnName("almt_pj").HasMaxLength(200);
+            e.Property(r => r.HubunganPj).HasColumnName("hubunganpj").HasMaxLength(20);
+            e.Property(r => r.BiayaReg).HasColumnName("biaya_reg");
+
+            e.Property(r => r.Status).HasColumnName("stts")
+                .HasConversion(v => v == null ? null : StatusRegToDb(v.Value),
+                               v => v == null ? (StatusRegistrasi?)null : StatusRegFromDb(v))
+                .HasMaxLength(20);
+            e.Property(r => r.StatusLanjut).HasColumnName("status_lanjut")
+                .HasConversion(v => v == StatusLanjut.RawatJalan ? "Ralan" : "Ranap",
+                               v => v == "Ralan" ? StatusLanjut.RawatJalan : StatusLanjut.RawatInap)
+                .HasMaxLength(10);
+            e.Property(r => r.StatusPoli).HasColumnName("status_poli")
+                .HasConversion(v => v == null ? null : (v == StatusPendaftaran.Baru ? "Baru" : "Lama"),
+                               v => v == null ? (StatusPendaftaran?)null : (v == "Baru" ? StatusPendaftaran.Baru : StatusPendaftaran.Lama))
+                .HasMaxLength(10);
+            e.Property(r => r.StatusBayar).HasColumnName("status_bayar")
+                .HasConversion(v => v == null ? null : (v == StatusBayar.SudahBayar ? "Sudah Bayar" : "Belum Bayar"),
+                               v => v == null ? (StatusBayar?)null : (v == "Sudah Bayar" ? StatusBayar.SudahBayar : StatusBayar.BelumBayar))
+                .HasMaxLength(20);
+
             e.HasOne(r => r.Pasien).WithMany().HasForeignKey(r => r.NoRekamMedis);
             e.HasOne(r => r.Poliklinik).WithMany().HasForeignKey(r => r.KodePoli);
             e.HasOne(r => r.Dokter).WithMany().HasForeignKey(r => r.KodeDokter);
@@ -281,4 +302,16 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
     private static string KeluargaToDb(HubunganPenanggungJawab v) => KeluargaMap[v];
     private static HubunganPenanggungJawab KeluargaFromDb(string v)
         => KeluargaMap.FirstOrDefault(kv => kv.Value == v, KeluargaMap.First()).Key;
+
+    private static readonly Dictionary<StatusRegistrasi, string> StatusRegMap = new()
+    {
+        [StatusRegistrasi.Belum] = "Belum", [StatusRegistrasi.Sudah] = "Sudah",
+        [StatusRegistrasi.Batal] = "Batal", [StatusRegistrasi.BerkasDiterima] = "Berkas Diterima",
+        [StatusRegistrasi.Dirujuk] = "Dirujuk", [StatusRegistrasi.Meninggal] = "Meninggal",
+        [StatusRegistrasi.Dirawat] = "Dirawat", [StatusRegistrasi.PulangPaksa] = "Pulang Paksa",
+    };
+
+    private static string StatusRegToDb(StatusRegistrasi v) => StatusRegMap[v];
+    private static StatusRegistrasi StatusRegFromDb(string v)
+        => StatusRegMap.FirstOrDefault(kv => kv.Value == v, StatusRegMap.First()).Key;
 }

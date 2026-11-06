@@ -5,23 +5,26 @@
              Background="{DynamicResource ThemeBackgroundBrush}">
 
     <!--
-        Legacy reference screenshot (provided by the user): a "Registrasi Periksa
-        Hari Ini" form with a two-column input block, a collapsible "Input Data"
-        toggle (the green-circled icon in the user's screenshot), a data grid of
-        today's registrations below it, and a bottom filter/action bar
-        (Dokter/Unit/Periode/Key Word + Simpan/Baru/Ganti/Hapus/Cetak/Semua/Keluar).
+        Layout cross-checked against TWO screenshots the user shared:
+        1. "Registrasi Periksa Hari Ini" — collapsible "Input Data" input
+           block (toggle = the green-circled icon), Simpan/Baru/Ganti/Hapus/
+           Cetak/Semua/Keluar action bar.
+        2. "Daftar Pasien Rawat Jalan" — a search row (No.Rawat/No.Reg/
+           No.R.M./Nama Pasien), two tabs ("Registrasi Awal" / "Rujukan
+           Internal Poli"), and a wide grid (Kode Dokter, Dokter Dituju,
+           No.RM, Pasien, Poliklinik, Penanggung Jawab, Alamat P.J.,
+           Hubungan P.J., Biaya Reg, Jenis Bayar, Status, No.Rawat, Tanggal,
+           Jam, No.Reg, Status Bayar, Stts Poli, No.Telp Pasien).
+        Both turned out to be the same screen (this one) at different zoom/
+        scroll — merged here instead of building two near-duplicate pages.
 
-        This is embedded directly into MainWindow's content area (not a separate
-        Window) per the user's feedback: the legacy app navigates within one
-        window, so "Registrasi" swaps the page in place instead of popping a
-        new window. "Keluar" here means "back to the dashboard", not app exit.
-
-        Grid data comes from clearly-labeled dev seed rows (RegistrasiRepository
-        against the local dev MariaDB) — never real patient data.
+        Embedded into MainWindow's content area (not a separate Window), per
+        earlier feedback: "Registrasi" swaps the page in place. "Kembali ke
+        Menu" means back to the dashboard, not app exit.
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="12">
 
-        <TextBlock Grid.Row="0" Text=":: [ Registrasi Periksa Hari Ini ] ::"
+        <TextBlock Grid.Row="0" Text=":: [ Registrasi / Daftar Pasien Rawat Jalan ] ::"
                    Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
 
         <StackPanel Grid.Row="1" Spacing="0">
@@ -69,31 +72,55 @@
             </ToggleButton>
         </StackPanel>
 
-        <!-- Registration grid (legacy: the red-censored area in the reference screenshot) -->
-        <DataGrid Grid.Row="2" Name="RegistrasiGrid" Margin="0,8"
-                  AutoGenerateColumns="False" IsReadOnly="True"
-                  GridLinesVisibility="All" HeadersVisibility="Column"
-                  x:DataType="data:RegistrasiListItem">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="No. Reg" Binding="{Binding NoReg}" Width="70" />
-                <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="160" />
-                <DataGridTextColumn Header="No. RM" Binding="{Binding NoRekamMedis}" Width="90" />
-                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="220" />
-                <DataGridTextColumn Header="Tgl. Reg" Binding="{Binding TanggalRegistrasi}" Width="100" />
-                <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="80" />
-                <DataGridTextColumn Header="Dokter" Binding="{Binding NamaDokter}" Width="180" />
-                <DataGridTextColumn Header="Poli" Binding="{Binding NamaPoli}" Width="140" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Search row: No.Rawat / No.Reg / No.R.M. / Nama Pasien -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,24,Auto,*,24,Auto,*,24,Auto,*" Margin="0,4,0,8">
+            <TextBlock Grid.Column="0" Text="No. Rawat :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Name="SearchNoRawatBox" Margin="4,0" />
+            <TextBlock Grid.Column="3" Text="No. Reg. :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="4" Name="SearchNoRegBox" Margin="4,0" />
+            <TextBlock Grid.Column="6" Text="No.R.M. :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="7" Name="SearchNoRmBox" Margin="4,0" />
+            <TextBlock Grid.Column="9" Text="Nama Pasien :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="10" Name="SearchNamaBox" Margin="4,0" />
+        </Grid>
+
+        <!-- Tabs: "Registrasi Awal" (implemented) / "Rujukan Internal Poli" (deferred) -->
+        <TabControl Grid.Row="3">
+            <TabItem Header="Registrasi Awal">
+                <DataGrid Name="RegistrasiGrid" Margin="0,8"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          x:DataType="data:RegistrasiListItem">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Kode Dokter" Binding="{Binding KodeDokter}" Width="90" />
+                        <DataGridTextColumn Header="Dokter Dituju" Binding="{Binding NamaDokter}" Width="150" />
+                        <DataGridTextColumn Header="No.RM" Binding="{Binding NoRekamMedis}" Width="80" />
+                        <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" Width="160" />
+                        <DataGridTextColumn Header="Poliklinik" Binding="{Binding NamaPoli}" Width="110" />
+                        <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding PenanggungJawab}" Width="150" />
+                        <DataGridTextColumn Header="Alamat P.J." Binding="{Binding AlamatPj}" Width="150" />
+                        <DataGridTextColumn Header="Hubungan P.J." Binding="{Binding HubunganPj}" Width="110" />
+                        <DataGridTextColumn Header="Biaya Reg" Binding="{Binding BiayaReg}" Width="90" />
+                        <DataGridTextColumn Header="Jenis Bayar" Binding="{Binding JenisBayar}" Width="110" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                        <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="150" />
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding TanggalRegistrasi}" Width="90" />
+                        <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="70" />
+                        <DataGridTextColumn Header="No.Reg" Binding="{Binding NoReg}" Width="70" />
+                        <DataGridTextColumn Header="Status Bayar" Binding="{Binding StatusBayar}" Width="100" />
+                        <DataGridTextColumn Header="Stts Poli" Binding="{Binding StatusPoli}" Width="80" />
+                        <DataGridTextColumn Header="No.Telp Pasien" Binding="{Binding NoTelpPasien}" Width="110" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Rujukan Internal Poli">
+                <TextBlock Text="Belum diimplementasikan di tahap scaffold ini." Margin="16"
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+            </TabItem>
+        </TabControl>
 
         <!-- Bottom filter + action bar -->
-        <StackPanel Grid.Row="3" Spacing="8">
-            <Grid ColumnDefinitions="Auto,*,24,Auto,*">
-                <TextBlock Grid.Column="0" Text="Dokter :" VerticalAlignment="Center" />
-                <TextBox Grid.Column="1" Margin="4,0" />
-                <TextBlock Grid.Column="3" Text="Unit :" VerticalAlignment="Center" />
-                <TextBox Grid.Column="4" Margin="4,0" />
-            </Grid>
+        <StackPanel Grid.Row="4" Spacing="8">
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
                 <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <DatePicker Grid.Column="1" Name="PeriodeFromPicker" />

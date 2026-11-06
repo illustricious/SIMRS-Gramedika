@@ -45,12 +45,18 @@ public partial class RegistrasiView : UserControl
         var from = fromPicker.SelectedDate is { } f ? DateOnly.FromDateTime(f.Date) : DateOnly.MinValue;
         var to = toPicker.SelectedDate is { } t ? DateOnly.FromDateTime(t.Date) : DateOnly.FromDateTime(DateTime.Today);
 
+        var filter = new RegistrasiSearchFilter(
+            NoRawat: EmptyToNull(this.FindControl<TextBox>("SearchNoRawatBox")!.Text),
+            NoReg: EmptyToNull(this.FindControl<TextBox>("SearchNoRegBox")!.Text),
+            NoRekamMedis: EmptyToNull(this.FindControl<TextBox>("SearchNoRmBox")!.Text),
+            NamaPasien: EmptyToNull(this.FindControl<TextBox>("SearchNamaBox")!.Text));
+
         try
         {
             var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
-            var items = await repo.GetByPeriodeAsync(from, to);
+            var items = await repo.GetByPeriodeAsync(from, to, filter);
 
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
@@ -91,4 +97,6 @@ public partial class RegistrasiView : UserControl
     }
 
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
+
+    private static string? EmptyToNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 }

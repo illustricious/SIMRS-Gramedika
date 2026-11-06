@@ -272,6 +272,22 @@ Typo di toolbar `MainWindow` sudah diperbaiki.
 - **2 unit test baru** (`MenuPermissionServiceTests`) — admin lihat tile Pengaturan, petugas tidak. **Total sekarang 10 unit test, semua pass.**
 - Build sukses, app smoke-run tanpa crash.
 
+## Sesi 2026-11-06 (lanjutan): verifikasi koneksi DB asli + grid "Daftar Pasien Rawat Jalan" lengkap
+
+### Verifikasi koneksi ke database ASLI (bukan dev seed) — DIKONFIRMASI BERHASIL
+User set sendiri koneksi ke database produksi/asli lewat layar Pengaturan (tanpa kasih tahu detailnya ke saya — sengaja, demi privasi). Screenshot yang dikirim menunjukkan grid Registrasi/Rawat Jalan terisi data dengan pola yang JELAS BUKAN seed dev saya (kode dokter `DUNDY01`/`erdananda...`, No.RM `20262613`, tanggal aktif `2026/11/06`). **Ini bukti kuat `DatabaseSettings.Load()` + `DatabaseSettingsStore` (dibangun sesi sebelumnya) bekerja general** — bukan hardcode ke DB dev manapun. Konfirmasi: arsitektur koneksi DB di rewrite ini SUDAH BISA dipakai ke database SIMRS Khanza yang sesungguhnya, asal strukturnya cocok dengan skema yang sudah dipetakan (10 tabel inti + `pemeriksaan_ralan` + 8 tabel lookup).
+
+### Grid "Daftar Pasien Rawat Jalan" — DISELARASKAN ke screenshot kedua user
+User kirim screenshot kedua (`:: [ Daftar Pasien Rawat Jalan ] ::`) dengan kolom jauh lebih lengkap dari yang saya buat sebelumnya: Kode Dokter, Dokter Dituju, No.RM, Pasien, Poliklinik, Penanggung Jawab, Alamat P.J., Hubungan P.J., Biaya Reg, Jenis Bayar, Status, No.Rawat, Tanggal, Jam, No.Reg, Status Bayar, Stts Poli, No.Telp Pasien — plus search row (No.Rawat/No.Reg/No.R.M./Nama Pasien) dan 2 tab ("Registrasi Awal"/"Rujukan Internal Poli"). Ternyata ini layar YANG SAMA dengan Registrasi yang sudah dibuat (cuma scroll/kolom beda) — jadi **di-upgrade di tempat**, bukan dibuat screen duplikat:
+- `RegPeriksa` entity diperluas: `NoReg`, `StatusPoli`, `StatusBayar`, `PenanggungJawab`, `AlamatPj`, `HubunganPj`, `BiayaReg` + enum `Status`/`StatusLanjut` yang sebelumnya `Ignore()` sekarang benar-benar dipetakan (conversion ke string legacy persis, misal `'Sudah Bayar'`).
+- `RegistrasiRepository` diperluas: join tambahan ke `Penjab` (buat kolom "Jenis Bayar"), proyeksi 17 kolom sesuai screenshot, plus `RegistrasiSearchFilter` (No.Rawat/No.Reg/No.RM/Nama) buat search row baru.
+- **Bug ketemu & diperbaiki lewat test baru**: `enum.ToString()` menghasilkan nama C# (`"SudahBayar"`), BUKAN string legacy (`"Sudah Bayar"`) — integration test baru (`RegistrasiRepositoryIntegrationTests`) langsung menangkap ini sebelum saya kirim ke user. Diperbaiki dengan mapping eksplisit `ToDisplay(...)`.
+- UI: tambah search row + `TabControl` ("Registrasi Awal" = grid lengkap yang berfungsi; "Rujukan Internal Poli" = placeholder, didokumentasikan belum diimplementasikan).
+- **Total sekarang 11 unit test, semua pass.**
+
+### Catatan teknis: proses yang masih jalan mengunci build
+Sempat gagal build karena app yang saya `Start-Process` di akhir sesi sebelumnya (dibiarkan terbuka sesuai permintaan user) mengunci file DLL. **Pelajaran untuk sesi berikutnya**: sebelum `dotnet build`, selalu cek & matikan proses `SimrsKhanza.UI` yang mungkin masih jalan dari sesi sebelumnya (`Get-Process -Name "SimrsKhanza.UI" | Stop-Process -Force`), baru build, baru jalankan lagi di akhir.
+
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
 - Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.
