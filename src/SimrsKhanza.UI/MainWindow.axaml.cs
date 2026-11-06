@@ -139,6 +139,12 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (moduleKey == "pengaturan")
+        {
+            await OpenPengaturanAsync();
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
     }
 
@@ -149,6 +155,30 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Pasien.PasienView view)
         {
             view = new Modules.Pasien.PasienView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenPengaturanAsync()
+    {
+        // Defense in depth: the "Pengaturan" dashboard tile is already hidden
+        // for non-admin users (DefaultMenuCatalog requires "pengaturan.admin"),
+        // but re-check here too in case this is ever reachable another way.
+        if (_user is null || !_user.HasPermission("pengaturan.admin"))
+        {
+            await ShowNotImplementedAsync("Pengaturan (akses ditolak — khusus admin)");
+            return;
+        }
+
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Pengaturan.PengaturanView view)
+        {
+            view = new Modules.Pengaturan.PengaturanView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
             pageHost.Content = view;
         }

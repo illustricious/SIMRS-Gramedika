@@ -38,7 +38,7 @@ public partial class RawatJalanView : UserControl
 
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RawatJalanRepository(db);
             var from = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
@@ -103,7 +103,7 @@ public partial class RawatJalanView : UserControl
 
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RawatJalanRepository(db);
             await repo.SaveExaminationAsync(examination);

@@ -41,7 +41,7 @@
                 <Button Name="MenuShortcut" Classes="shortcut2" Content="☰  Menu" Click="OnMenuShortcutClick" />
                 <Button Classes="shortcut2" Content="Registrasi" Click="OnFeatureShortcutClick" />
                 <Button Classes="shortcut2" Content="IGD/UGD" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Labgrat" Click="OnFeatureShortcutClick" />
+                <Button Classes="shortcut2" Content="Laboratorium" Click="OnFeatureShortcutClick" />
                 <Button Classes="shortcut2" Content="Radiologi" Click="OnFeatureShortcutClick" />
                 <Button Classes="shortcut2" Content="Farmasi" Click="OnFeatureShortcutClick" />
                 <Button Classes="shortcut2" Content="Rawat Inap" Click="OnFeatureShortcutClick" />

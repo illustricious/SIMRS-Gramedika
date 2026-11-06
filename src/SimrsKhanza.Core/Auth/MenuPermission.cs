@@ -26,6 +26,12 @@ public class DefaultMenuCatalog : IMenuCatalog
         new("inventaris", "Inventaris", "Inventaris", "inventaris.view"),
         new("laporan", "Laporan", "Laporan", "laporan.view"),
         new("bridging", "Bridging BPJS/SatuSehat", "Bridging", "bridging.view"),
+        // Admin-only: gated behind "pengaturan.admin" rather than a generic
+        // ".view" permission, so a non-admin user's permission set (whatever
+        // its source — InMemoryUserRepository or LegacyUserRepository) simply
+        // never grants this tile. See Modules/Pengaturan and
+        // docs/audit/HANDOVER.md for the rationale.
+        new("pengaturan", "Pengaturan", "Pengaturan", "pengaturan.admin"),
     };
 }
 

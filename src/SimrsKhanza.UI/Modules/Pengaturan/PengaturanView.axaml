@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsKhanza.UI.Modules.Pengaturan.PengaturanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Admin-only settings screen. Legacy equivalent: setting/database.ini
+        (host/database/port/user/pass for the presensi app) and
+        setting/database.xml (AES-encrypted flat properties file for the main
+        Java app — see docs/audit/PLANNING_APLIKASI.md §2 for why that design
+        needs replacing). This screen is the rewrite's single place to edit
+        the DB connection; it persists via SimrsKhanza.Config.DatabaseSettingsStore
+        (a JSON file under %APPDATA%, never inside the repo).
+
+        Access control: MainWindow only opens this via the "pengaturan.admin"
+        permission gate (see Core.Auth.DefaultMenuCatalog) — the dashboard
+        tile is hidden entirely for non-admin users, and MainWindow re-checks
+        the permission before opening regardless of how it's triggered.
+    -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+
+        <TextBlock Grid.Row="0" Text=":: [ Pengaturan — Admin Only ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="8" MaxWidth="560" HorizontalAlignment="Left">
+
+                <TextBlock Text="Koneksi Database" FontWeight="Medium"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock Text="Pengganti setting/database.ini dan database.xml legacy. Disimpan lokal di komputer ini (%APPDATA%), tidak pernah ikut ke repository/git."
+                           FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
+
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="0,8,0,0">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Host :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="HostBox" Margin="4" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Port :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="PortBox" Margin="4" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Nama Database :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="DatabaseBox" Margin="4" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="User :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="UserBox" Margin="4" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Password :" VerticalAlignment="Center" Margin="0,4" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="PasswordBox" PasswordChar="*" Margin="4" />
+                </Grid>
+
+                <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap" IsVisible="False" />
+
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    <Button Content="🔌 Tes Koneksi" Click="OnTestConnectionClick" />
+                    <Button Content="💾 Simpan" Click="OnSaveClick" />
+                </StackPanel>
+
+                <TextBlock Text="Identitas &amp; Aset (belum diimplementasikan)" FontWeight="Medium" Margin="0,20,0,0"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                    Legacy <Run FontFamily="Consolas">setting/</Run> juga menyimpan
+                    <Run FontFamily="Consolas">logo.jpg</Run>,
+                    <Run FontFamily="Consolas">wallpaper.jpg</Run> (aset tampilan),
+                    <Run FontFamily="Consolas">modem.xml</Run> (gateway SMS), dan konfigurasi
+                    perangkat fingerprint presensi. Belum ada UI untuk mengganti aset/konfigurasi ini di tahap scaffold —
+                    dicatat di docs/audit/HANDOVER.md sebagai pekerjaan lanjutan.
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

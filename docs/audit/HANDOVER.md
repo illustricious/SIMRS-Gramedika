@@ -256,6 +256,22 @@ User minta "cicil tampilan-tampilan" + dicocokkan ke source code. Sebelum memban
 - **Total sekarang 8 unit test, semua pass.** Build sukses, app smoke-run tanpa crash, `.exe` di-republish & dikirim ulang.
 - **Catatan operasional**: MariaDB sempat mati lagi di tengah sesi ini (kedua kalinya, karena bukan service) — dihidupkan ulang dengan command yang sama seperti biasa. **Rekomendasi kuat**: kalau mau kerja lanjut tanpa gangguan ini terus berulang, install MariaDB sebagai Windows Service permanen (butuh PowerShell as Administrator, caranya ada di bagian atas handover ini).
 
+## Sesi 2026-11-06: fix Registrasi, rename Labgrat, menu Pengaturan admin-only
+
+### Bug grid Registrasi "tidak tampil" — DIPERBAIKI
+User klarifikasi: bagian bawah layar Registrasi seharusnya tampil **semua** registrasi (bukan dibatasi tanggal). Sebelumnya default filter "7 hari terakhir" bisa menyembunyikan data. **Diperbaiki**: `RegistrasiView` sekarang default TANPA filter tanggal — tampil semua registrasi begitu dibuka; Periode cuma jadi filter opsional yang dipakai lewat tombol "Cari / Semua". (Penyebab lain yang berulang: MariaDB mati lagi karena bukan service — dihidupkan ulang, ketiga kalinya dalam proyek ini. Lihat rekomendasi install sebagai service permanen di bagian atas.)
+
+### Label "Labgrat" → "Laboratorium" — DIPERBAIKI
+Typo di toolbar `MainWindow` sudah diperbaiki.
+
+### Menu Pengaturan (admin-only) — SELESAI
+- **`DatabaseSettingsStore`** (Config) — baru: menyimpan `DatabaseSettings` ke file JSON lokal di `%APPDATA%\SimrsKhanza\database.settings.json` (BUKAN di repo, tidak pernah ikut git). `DatabaseSettings.Load()` — method baru, prioritas: file tersimpan → environment variable → default. **Semua pemanggilan di UI** (Registrasi/RawatJalan/Pasien/CariDokterDemo) diganti dari `FromEnvironment()` ke `Load()` supaya pengaturan yang disimpan user beneran dipakai. File test tetap pakai `FromEnvironment()` (supaya env var test tidak ketimpa file lokal yang mungkin ada).
+- **`Modules/Pengaturan/PengaturanView`** — form Host/Port/Database/User/Password + tombol "Tes Koneksi" (cek `CanConnectAsync()` beneran) dan "Simpan" (tulis ke file). Bagian "Identitas & Aset" didokumentasikan sebagai belum diimplementasikan (merujuk isi `setting/` legacy: `logo.jpg`, `wallpaper.jpg`, `modem.xml` utk gateway SMS, config fingerprint presensi).
+- **Akses admin-only**: tile "Pengaturan" ditambah ke `DefaultMenuCatalog` dengan `RequiredPermission = "pengaturan.admin"` — otomatis TIDAK muncul di dashboard untuk user yang tidak punya permission ini. `MainWindow.OpenPengaturanAsync` juga cek ulang permission secara eksplisit (defense in depth) sebelum membuka layar, bukan cuma mengandalkan tile disembunyikan.
+- **2 akun dev-seed sekarang**: `admin`/`admin123` (device PUNYA `pengaturan.admin`) dan `petugas`/`petugas123` (TIDAK punya — buat tes gate ini beneran jalan).
+- **2 unit test baru** (`MenuPermissionServiceTests`) — admin lihat tile Pengaturan, petugas tidak. **Total sekarang 10 unit test, semua pass.**
+- Build sukses, app smoke-run tanpa crash.
+
 ## Catatan untuk sesi besok (sesuai permintaan user "lanjut besok lagi")
 - Lanjutkan dari sini: layar Registrasi sudah ada tapi baru "list + toggle", belum ada Simpan/Baru/Ganti/Hapus nyata.
 - Cek dulu apakah MariaDB masih jalan (`Get-Process -Name mariadbd`) sebelum lanjut kerja — kalau sudah mati (misal komputer di-restart), jalankan ulang dengan perintah yang ada di bagian "MySQL lokal" di atas.

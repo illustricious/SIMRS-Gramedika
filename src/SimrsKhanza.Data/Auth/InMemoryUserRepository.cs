@@ -27,7 +27,25 @@ public class InMemoryUserRepository : IUserRepository
         _permissions["admin"] = new HashSet<string>
         {
             "rekammedis.view", "keuangan.view", "kepegawaian.view",
-            "inventaris.view", "laporan.view", "bridging.view"
+            "inventaris.view", "laporan.view", "bridging.view",
+            "pengaturan.admin", // only this account has it — demonstrates the admin-only gate
+        };
+
+        // Second dev account WITHOUT pengaturan.admin, so the admin-only gate
+        // on the Pengaturan tile/screen is actually exercisable during dev
+        // (login as "petugas" and confirm the tile + screen are both hidden).
+        var (hash2, salt2) = PasswordHasher.Hash("petugas123");
+        _accounts["petugas"] = new UserAccount
+        {
+            UserId = "petugas",
+            DisplayName = "Petugas (dev seed, bukan admin)",
+            PasswordHash = hash2,
+            PasswordSalt = salt2,
+            IsActive = true
+        };
+        _permissions["petugas"] = new HashSet<string>
+        {
+            "rekammedis.view", "laporan.view",
         };
     }
 

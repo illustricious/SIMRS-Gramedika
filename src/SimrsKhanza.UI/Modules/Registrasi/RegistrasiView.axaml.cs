@@ -15,15 +15,11 @@ public partial class RegistrasiView : UserControl
     {
         InitializeComponent();
 
-        var from = this.FindControl<DatePicker>("PeriodeFromPicker")!;
-        var to = this.FindControl<DatePicker>("PeriodeToPicker")!;
-        // Default range covers the last 7 days so freshly-seeded dev data (or
-        // any registration from earlier this week) shows up without the user
-        // having to touch the date pickers first — the legacy screen defaults
-        // to "today only", but that proved confusing in dev/demo use where
-        // seed data isn't always dated exactly "today".
-        to.SelectedDate = DateTimeOffset.Now;
-        from.SelectedDate = DateTimeOffset.Now.AddDays(-7);
+        // Periode pickers start empty (no default range) so the grid shows
+        // ALL registrations on first load — per user feedback, the bottom
+        // list should show every patient/registration, not be hidden behind
+        // a date filter the user hasn't touched yet. "Periode" is purely an
+        // optional narrowing filter the user applies with "Cari / Semua".
     }
 
     /// <summary>Called by MainWindow each time this page becomes visible.</summary>
@@ -51,7 +47,7 @@ public partial class RegistrasiView : UserControl
 
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
             var items = await repo.GetByPeriodeAsync(from, to);

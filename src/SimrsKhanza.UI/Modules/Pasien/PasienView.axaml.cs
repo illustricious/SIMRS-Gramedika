@@ -32,7 +32,7 @@ public partial class PasienView : UserControl
         var grid = this.FindControl<DataGrid>("PasienGrid")!;
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new PasienRepository(db);
             grid.ItemsSource = await repo.SearchAsync(keyword);
@@ -82,7 +82,7 @@ public partial class PasienView : UserControl
 
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new PasienRepository(db);
             this.FindControl<TextBox>("NoRmBox")!.Text = await repo.NextNoRekamMedisAsync();
@@ -142,7 +142,7 @@ public partial class PasienView : UserControl
 
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new PasienRepository(db);
             await repo.SaveNewAsync(pasien);

@@ -42,7 +42,7 @@ public static class CariDokterDemo
     {
         try
         {
-            var settings = DatabaseSettings.FromEnvironment();
+            var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new DokterRepository(db);
             return await repo.SearchAsync(query);

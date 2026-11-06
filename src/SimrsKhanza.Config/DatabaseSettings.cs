@@ -33,4 +33,13 @@ public class DatabaseSettings
             Password = Environment.GetEnvironmentVariable("SIMRS_DB_PASSWORD") ?? "",
         };
     }
+
+    /// <summary>
+    /// Canonical way the app should read its DB connection: prefers whatever
+    /// was saved from the Pengaturan screen (DatabaseSettingsStore), falls
+    /// back to environment variables when nothing has been saved yet. Call
+    /// sites that previously called FromEnvironment() directly should use
+    /// this instead so a change saved in Pengaturan actually takes effect.
+    /// </summary>
+    public static DatabaseSettings Load() => DatabaseSettingsStore.TryLoad() ?? FromEnvironment();
 }
