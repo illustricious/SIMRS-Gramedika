@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsKhanza.UI.Modules.About.AboutView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Embedded in MainWindow's PageHost like every other module — same
+         single-window navigation, same design language (not a separate
+         Window; an earlier revision made it one, reverted per feedback). -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+        <TextBlock Grid.Row="0" Text=":: [ Tentang Program ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="4" MaxWidth="520" HorizontalAlignment="Left">
+                <Image Source="avares://SimrsKhanza.UI/Assets/logo.png" Width="64" Height="64"
+                       Stretch="Uniform" HorizontalAlignment="Left" Margin="0,0,0,8" />
+                <TextBlock Text="SIMRS GRAMEDIKA" FontSize="20" FontWeight="Bold"
+                           Foreground="{DynamicResource ThemePrimaryBrush}" />
+                <TextBlock Text="Rewrite dari SIMRS Khanza — C# / Avalonia UI" FontSize="12"
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" Margin="0,0,0,16" />
+
+                <TextBlock Text="Dibuat oleh" FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,8,0,2" />
+                <TextBlock Text="Yusnur Rofiq" FontSize="14" Foreground="{DynamicResource ThemeTextBrush}" />
+
+                <TextBlock Text="Spesifikasi Teknis" FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,16,0,4" />
+                <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="12">
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="• Fat client (aplikasi desktop native, bukan web) — terinstal/berjalan langsung di komputer pengguna, koneksi database langsung dari client ke server MySQL/MariaDB." TextWrapping="Wrap" />
+                        <TextBlock Text="• UI framework: Avalonia UI 12 (cross-platform .NET UI — Windows, Linux, macOS)" TextWrapping="Wrap" />
+                        <TextBlock Text="• Bahasa &amp; runtime: C# pada .NET 10" TextWrapping="Wrap" />
+                        <TextBlock Text="• Data access: Entity Framework Core + Pomelo.EntityFrameworkCore.MySql (ke database MySQL/MariaDB — skema sama persis dengan SIMRS Khanza asli, tanpa migrasi data)" TextWrapping="Wrap" />
+                        <TextBlock Text="• Cetak laporan: QuestPDF" TextWrapping="Wrap" />
+                        <TextBlock Text="• Arsitektur: Core (domain) / Data (repository) / Config (pengaturan) / Integrations (bridging eksternal) / UI (Avalonia), dipisah per project" TextWrapping="Wrap" />
+                        <TextBlock Text="• Deployment: self-contained single-file .exe (tidak perlu install .NET terpisah di komputer target)" TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

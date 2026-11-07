@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsKhanza.UI.Modules.Radiologi.RadiologiMenuView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Same submenu pattern as Laboratorium/LabMenuView — user shared a
+         screenshot of the legacy Radiologi icon row (Permintaan Radiologi /
+         Periksa Radiologi), so this splits what used to be one combined
+         screen into 2 tiles matching it. -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Radiologi ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+
+        <WrapPanel Grid.Row="1" Name="TilePanel" Orientation="Horizontal" VerticalAlignment="Top" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.labTile">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="110" />
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

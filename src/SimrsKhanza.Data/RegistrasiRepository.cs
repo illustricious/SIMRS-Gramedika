@@ -50,6 +50,20 @@ public interface IRegistrasiRepository
     /// </summary>
     Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(
         DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default);
+
+    Task<IReadOnlyList<Core.Entities.Poliklinik>> GetPoliklinikAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<Core.Entities.Dokter>> GetDokterAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<Core.Entities.Penjab>> GetPenjabAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Real INSERT into reg_periksa — registers a patient (must already exist
+    /// in `pasien`, see PasienRepository) for a visit. Generates NoRawat/NoReg
+    /// following the legacy pattern (yyyy/MM/dd/NNNNNN, sequential per day —
+    /// see GenerateNomorAsync). Returns the generated NoRawat.
+    /// </summary>
+    Task<string> CreateAsync(
+        string noRekamMedis, string? kodeDokter, string kodePoli, string kodePenjab,
+        string? penanggungJawab, string? alamatPj, CancellationToken ct = default);
 }
 
 public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiRepository
@@ -128,6 +142,65 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             StatusBayar: row.StatusBayar is { } sb ? ToDisplay(sb) : null,
             StatusPoli: row.StatusPoli is { } sp ? ToDisplay(sp) : null,
             NoTelpPasien: row.NoTelepon)).ToList();
+    }
+
+    public async Task<IReadOnlyList<Core.Entities.Poliklinik>> GetPoliklinikAsync(CancellationToken ct = default)
+        => await db.PoliklinikSet.OrderBy(p => p.NamaPoli).ToListAsync(ct);
+
+    public async Task<IReadOnlyList<Core.Entities.Dokter>> GetDokterAsync(CancellationToken ct = default)
+        => await db.DokterSet.OrderBy(d => d.NamaDokter).ToListAsync(ct);
+
+    public async Task<IReadOnlyList<Core.Entities.Penjab>> GetPenjabAsync(CancellationToken ct = default)
+        => await db.PenjabSet.OrderBy(p => p.NamaPenanggungJawab).ToListAsync(ct);
+
+    public async Task<string> CreateAsync(
+        string noRekamMedis, string? kodeDokter, string kodePoli, string kodePenjab,
+        string? penanggungJawab, string? alamatPj, CancellationToken ct = default)
+    {
+        var poli = await db.PoliklinikSet.FirstOrDefaultAsync(p => p.KodePoli == kodePoli, ct)
+            ?? throw new InvalidOperationException($"Poliklinik '{kodePoli}' tidak ditemukan.");
+
+        var (noRawat, noReg) = await GenerateNomorAsync(ct);
+
+        db.RegPeriksaSet.Add(new Core.Entities.RegPeriksa
+        {
+            NoRawat = noRawat,
+            NoReg = noReg,
+            TanggalRegistrasi = DateOnly.FromDateTime(DateTime.Now),
+            JamRegistrasi = TimeOnly.FromDateTime(DateTime.Now),
+            NoRekamMedis = noRekamMedis,
+            KodePoli = kodePoli,
+            KodeDokter = kodeDokter,
+            KodePenjab = kodePenjab,
+            PenanggungJawab = penanggungJawab,
+            AlamatPj = alamatPj,
+            BiayaReg = poli.BiayaRegistrasi,
+            Status = Core.Entities.StatusRegistrasi.Belum,
+            StatusLanjut = Core.Entities.StatusLanjut.RawatJalan,
+            // v1 simplification: always "Lama" — telling "pasien baru di poli
+            // ini" apart from "sudah pernah" needs checking this pasien's
+            // registration history, not done here. Documented in HANDOVER.md.
+            StatusPoli = Core.Entities.StatusPendaftaran.Lama,
+            StatusBayar = Core.Entities.StatusBayar.BelumBayar,
+        });
+
+        await db.SaveChangesAsync(ct);
+        return noRawat;
+    }
+
+    /// <summary>
+    /// Legacy no_rawat/no_reg pattern verified against the real DB:
+    /// no_rawat = "yyyy/MM/dd/NNNNNN", no_reg = "NNN" — both the same
+    /// sequence number (just padded differently), restarting at 1 each day.
+    /// </summary>
+    private async Task<(string NoRawat, string NoReg)> GenerateNomorAsync(CancellationToken ct)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        var countToday = await db.RegPeriksaSet.CountAsync(r => r.TanggalRegistrasi == today, ct);
+        var urut = countToday + 1;
+        var noRawat = $"{today:yyyy/MM/dd}/{urut:000000}";
+        var noReg = $"{urut:000}";
+        return (noRawat, noReg);
     }
 
     // .ToString() on these enums gives the C# member name (e.g. "SudahBayar"),

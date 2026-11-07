@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.Farmasi.DaftarResepView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Read-only: lists resep_obat (prescription headers) + items on select.
+         No dispense/write action here — the app doesn't have a doctor-side
+         prescription-writing screen yet either, so this is purely a viewer. -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Daftar Resep Dokter ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="2*,16,1*">
+            <DataGrid Grid.Column="0" Name="ResepGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
+                      x:DataType="data:ResepListItem" SelectionChanged="OnResepSelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No. Resep" Binding="{Binding NoResep}" Width="110" />
+                    <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="140" />
+                    <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" Width="*" />
+                    <DataGridTextColumn Header="Dokter" Binding="{Binding NamaDokter}" Width="130" />
+                    <DataGridTextColumn Header="Tgl Peresepan" Binding="{Binding TanggalPeresepan}" Width="100" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Grid Grid.Column="2" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" Text="Item Resep (pilih baris)" FontWeight="Medium" Margin="0,0,0,4"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <DataGrid Grid.Row="1" Name="ItemGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          x:DataType="data:ResepItemLine">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Obat" Binding="{Binding NamaBarang}" Width="*" />
+                        <DataGridTextColumn Header="Jml" Binding="{Binding Jumlah}" Width="50" />
+                        <DataGridTextColumn Header="Aturan Pakai" Binding="{Binding AturanPakai}" Width="140" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

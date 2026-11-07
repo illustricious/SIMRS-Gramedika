@@ -27,6 +27,8 @@
                     <SolidColorBrush x:Key="ThemeTextBrush">#1E293B</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#64748B</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
+                    <!-- Subtle zebra striping for DataGrid rows (odd = white/background, even = this) -->
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#EFF5FC</SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="ThemePrimaryBrush">#2E4F9E</SolidColorBrush>
@@ -39,6 +41,7 @@
                     <SolidColorBrush x:Key="ThemeTextBrush">#E2E8F0</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#94A3B8</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#30384A</SolidColorBrush>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -46,5 +49,23 @@
 
     <Application.Styles>
         <FluentTheme />
+        <!--
+            DataGrid has its own control template that FluentTheme does NOT pull
+            in automatically (Registrasi/RawatInap/etc. all use DataGrid). Without
+            this, DataGrid renders with no template at all — headers, rows, grid
+            lines, everything invisible — even though data is bound correctly
+            (which is exactly what caused the "Record : 2 but blank area below"
+            report). An earlier session removed this include on the assumption
+            FluentTheme already covered it; that assumption was wrong.
+        -->
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <!-- App-wide subtle zebra striping — Avalonia's DataGrid has no
+             AlternatingRowBackground property (unlike WPF's), so this uses
+             the :nth-child(2n) structural pseudo-class on DataGridRow
+             instead. Applies to every DataGrid (Registrasi, IGD, Lab,
+             Farmasi, …) without having to set it per-screen. -->
+        <Style Selector="DataGridRow:nth-child(2n)">
+            <Setter Property="Background" Value="{DynamicResource ThemeRowAltBrush}" />
+        </Style>
     </Application.Styles>
 </Application>

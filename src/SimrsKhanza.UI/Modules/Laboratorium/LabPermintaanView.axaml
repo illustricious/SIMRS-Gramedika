@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsKhanza.UI.Modules.Laboratorium.LabPermintaanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Single-purpose: just "Buat Permintaan Baru" for one kategori (PK/PA/MB),
+         reached from a LabMenuView tile. Kategori + title are set by the
+         constructor (SetKategori), not duplicated per-category XAML. -->
+    <Grid RowDefinitions="Auto,Auto,*" Margin="16">
+        <TextBlock Grid.Row="0" Name="TitleText" Foreground="{DynamicResource ThemePrimaryBrush}"
+                   FontWeight="Bold" Margin="0,0,0,12" />
+
+        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="16"
+                MaxWidth="420" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="No. Rawat :" />
+                <TextBox Name="NoRawatBox" PlaceholderText="contoh: 2026/11/07/000001" />
+                <TextBlock Text="Dokter Perujuk (kode) :" Margin="0,4,0,0" />
+                <TextBox Name="DokterBox" />
+                <TextBlock Text="Status Kunjungan :" Margin="0,4,0,0" />
+                <ComboBox Name="StatusCombo" HorizontalAlignment="Stretch" />
+                <TextBlock Text="Diagnosa Klinis :" Margin="0,4,0,0" />
+                <TextBox Name="DiagnosaBox" />
+                <TextBlock Name="StatusText" Margin="0,4,0,0" TextWrapping="Wrap"
+                           Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                <Button Name="KirimButton" Content="🧪 Kirim Permintaan" Click="OnKirimClick"
+                        HorizontalAlignment="Left" Margin="0,4,0,0" />
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

@@ -4,12 +4,16 @@ using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.RawatJalan;
 
 public partial class RawatJalanView : UserControl
 {
     public event EventHandler? BackRequested;
+
+    /// <summary>Raised from the grid's right-click patient menu — see Modules/Shared/PatientContextMenu.</summary>
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
     /// <summary>
     /// Placeholder for "the logged-in user's linked employee record" — the
@@ -24,6 +28,11 @@ public partial class RawatJalanView : UserControl
     public RawatJalanView()
     {
         InitializeComponent();
+
+        this.FindControl<DataGrid>("QueueGrid")!.ContextMenu = PatientContextMenu.Build(
+            () => this.FindControl<DataGrid>("QueueGrid")!.SelectedItem is RawatJalanQueueItem i
+                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
+            request => PatientMenuRequested?.Invoke(this, request));
 
         var kesadaran = this.FindControl<ComboBox>("KesadaranCombo")!;
         kesadaran.ItemsSource = Enum.GetValues<TingkatKesadaran>();

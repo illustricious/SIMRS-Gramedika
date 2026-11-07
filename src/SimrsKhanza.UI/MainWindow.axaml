@@ -4,7 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
         x:Class="SimrsKhanza.UI.MainWindow"
-        Title="SIMRS Khanza"
+        Title="SIMRS Gramedika"
+        Icon="avares://SimrsKhanza.UI/Assets/logo.png"
         Width="1200" Height="760"
         Background="{DynamicResource ThemeBackgroundBrush}">
 
@@ -17,6 +18,14 @@
         Color palette sampled from rsugramedika10.com (the user's reference):
         deep blue primary, red accent, white/gray via App.axaml ThemeDictionaries.
         See docs/audit/PLANNING_APLIKASI.md for the full rationale.
+
+        NOTE: an earlier revision wrapped this whole shell in a
+        LayoutTransformControl at 85% scale to shrink everything app-wide —
+        REVERTED per user feedback ("jangan jadi kecil banget semua
+        tampilannya"), they only meant the Registrasi grid's font felt too
+        large, not a global zoom-out. Font-size tuning now stays scoped to the
+        specific screen that needs it (see RegistrasiView.axaml) instead of a
+        blanket transform on the whole app.
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -55,7 +64,9 @@
 
             <!-- Hero / welcome panel (default view, mirrors the legacy splash-like home screen) -->
             <StackPanel Name="HeroPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8">
-                <TextBlock Text="SIMRS KHANZA" FontSize="40" FontWeight="Bold"
+                <Image Source="avares://SimrsKhanza.UI/Assets/logo.png" Width="96" Height="96"
+                       Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                <TextBlock Text="SIMRS GRAMEDIKA" FontSize="40" FontWeight="Bold"
                            Foreground="{DynamicResource ThemePrimaryBrush}" HorizontalAlignment="Center" />
                 <TextBlock Text="Rewrite scaffold — C# + Avalonia UI" FontSize="14"
                            Foreground="{DynamicResource ThemeTextSecondaryBrush}" HorizontalAlignment="Center" />
@@ -89,7 +100,7 @@
                            Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Name="ClockText" Text=""
                            Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" Margin="24,0,0,0" />
-                <TextBlock Grid.Column="3" Text="SimrsKhanza.Avalonia — scaffold stage"
+                <TextBlock Grid.Column="3" Text="SIMRS Gramedika — rewrite C#/Avalonia"
                            Foreground="#B9C6E8" FontSize="11" VerticalAlignment="Center" />
             </Grid>
         </Border>

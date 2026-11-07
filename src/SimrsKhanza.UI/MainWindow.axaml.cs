@@ -145,7 +145,69 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (moduleKey == "keuangan")
+        {
+            await OpenKasirAsync();
+            return;
+        }
+
+        if (moduleKey == "laporan")
+        {
+            await OpenLaporanMenuAsync();
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
+    }
+
+    private async System.Threading.Tasks.Task OpenLaporanMenuAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Laporan.LaporanMenuView view)
+        {
+            view = new Modules.Laporan.LaporanMenuView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.TileClicked += async (_, action) => await OpenLaporanTileAsync(action);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenLaporanTileAsync(Modules.Laporan.LaporanAction action)
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        switch (action)
+        {
+            case Modules.Laporan.LaporanAction.Kunjungan:
+            {
+                var view = new Modules.Laporan.LaporanKunjunganView();
+                view.BackRequested += async (_, _) => await OpenLaporanMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
+            case Modules.Laporan.LaporanAction.Pendapatan:
+            {
+                var view = new Modules.Laporan.LaporanPendapatanView();
+                view.BackRequested += async (_, _) => await OpenLaporanMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
+            default:
+            {
+                var view = new Modules.Laporan.LaporanPenjualanFarmasiView();
+                view.BackRequested += async (_, _) => await OpenLaporanMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
+        }
+
+        ShowPage(Page.Feature);
     }
 
     private async System.Threading.Tasks.Task OpenPasienAsync()
@@ -155,6 +217,21 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Pasien.PasienView view)
         {
             view = new Modules.Pasien.PasienView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenKasirAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Kasir.KasirView view)
+        {
+            view = new Modules.Kasir.KasirView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
             pageHost.Content = view;
         }
@@ -205,9 +282,191 @@ public partial class MainWindow : Window
                 // selected patient — see OpenPemeriksaanAsync below.
                 await OpenRegistrasiAsync();
                 return;
+
+            case "Rawat Inap":
+                await OpenRawatInapAsync();
+                return;
+
+            case "IGD/UGD":
+                await OpenIgdAsync();
+                return;
+
+            case "Laboratorium":
+                await OpenLabMenuAsync();
+                return;
+
+            case "Radiologi":
+                await OpenRadiologiMenuAsync();
+                return;
+
+            case "Farmasi":
+                await OpenFarmasiMenuAsync();
+                return;
         }
 
         _ = ShowNotImplementedAsync(label);
+    }
+
+    private async System.Threading.Tasks.Task OpenFarmasiMenuAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Farmasi.FarmasiMenuView view)
+        {
+            view = new Modules.Farmasi.FarmasiMenuView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.TileClicked += async (_, action) => await OpenFarmasiTileAsync(action);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction action)
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        switch (action)
+        {
+            case Modules.Farmasi.FarmasiAction.InputPenjualan:
+            {
+                var view = new Modules.Farmasi.InputPenjualanView();
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                break;
+            }
+            case Modules.Farmasi.FarmasiAction.DataPenjualan:
+            {
+                var view = new Modules.Farmasi.DataPenjualanView();
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
+            case Modules.Farmasi.FarmasiAction.DaftarResepDokter:
+            {
+                var view = new Modules.Farmasi.DaftarResepView();
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
+            default:
+                // "Data Penyerahan Darah" / "No. Resep" — deliberately deferred, see
+                // FarmasiMenuView.axaml's doc comment and docs/audit/HANDOVER.md.
+                await ShowNotImplementedAsync(action == Modules.Farmasi.FarmasiAction.DataPenyerahanDarah
+                    ? "Data Penyerahan Darah" : "No. Resep");
+                return;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenLabMenuAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Laboratorium.LabMenuView view)
+        {
+            view = new Modules.Laboratorium.LabMenuView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.TileClicked += async (_, action) => await OpenLabTileAsync(action);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenLabTileAsync(Modules.Laboratorium.LabAction action)
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+        var kategori = Modules.Laboratorium.LabMenuView.KategoriFor(action);
+
+        if (Modules.Laboratorium.LabMenuView.IsPermintaan(action))
+        {
+            var view = new Modules.Laboratorium.LabPermintaanView();
+            view.SetKategori(kategori);
+            view.BackRequested += async (_, _) => await OpenLabMenuAsync();
+            pageHost.Content = view;
+        }
+        else
+        {
+            var view = new Modules.Laboratorium.LabPeriksaView();
+            view.SetKategori(kategori);
+            view.BackRequested += async (_, _) => await OpenLabMenuAsync();
+            pageHost.Content = view;
+            await view.ReloadAsync();
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenRadiologiMenuAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Radiologi.RadiologiMenuView view)
+        {
+            view = new Modules.Radiologi.RadiologiMenuView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.TileClicked += async (_, action) => await OpenRadiologiTileAsync(action);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenRadiologiTileAsync(Modules.Radiologi.RadiologiAction action)
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (action == Modules.Radiologi.RadiologiAction.Permintaan)
+        {
+            var view = new Modules.Radiologi.PermintaanRadiologiView();
+            view.BackRequested += async (_, _) => await OpenRadiologiMenuAsync();
+            pageHost.Content = view;
+        }
+        else
+        {
+            var view = new Modules.Radiologi.PeriksaRadiologiView();
+            view.BackRequested += async (_, _) => await OpenRadiologiMenuAsync();
+            pageHost.Content = view;
+            await view.ReloadAsync();
+        }
+
+        ShowPage(Page.Feature);
+    }
+
+    private async System.Threading.Tasks.Task OpenIgdAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Igd.IgdView view)
+        {
+            view = new Modules.Igd.IgdView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenRawatInapAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.RawatInap.RawatInapView view)
+        {
+            view = new Modules.RawatInap.RawatInapView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
     }
 
     private async System.Threading.Tasks.Task OpenRegistrasiAsync()
@@ -219,6 +478,7 @@ public partial class MainWindow : Window
             view = new Modules.Registrasi.RegistrasiView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
             view.PeriksaRequested += async (_, _) => await OpenRawatJalanAsync();
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
 
@@ -236,6 +496,7 @@ public partial class MainWindow : Window
             // "Kembali" from the exam form returns to the patient list it was
             // opened from, not all the way home — matches how "🩺 Periksa" got here.
             view.BackRequested += async (_, _) => await OpenRegistrasiAsync();
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
 
@@ -246,10 +507,89 @@ public partial class MainWindow : Window
     private void OnTopShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
+
+        switch (label)
+        {
+            case "Informasi":
+                _ = OpenInformasiAsync();
+                return;
+
+            case "Tentang Program":
+                OpenAbout();
+                return;
+        }
+
         _ = ShowNotImplementedAsync(label);
     }
 
+    private async System.Threading.Tasks.Task OpenInformasiAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.Informasi.InformasiView view)
+        {
+            view = new Modules.Informasi.InformasiView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private void OpenAbout()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.About.AboutView view)
+        {
+            view = new Modules.About.AboutView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+    }
+
     private void OnExitClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
+
+    /// <summary>
+    /// Handles the right-click patient menu shared by Registrasi/IGD/Rawat
+    /// Inap/Rawat Jalan (Modules/Shared/PatientContextMenu) — a handful of
+    /// items route to a real screen (prefilled with that patient's
+    /// No.Rawat/No.RM), the rest are still "belum diimplementasikan" like
+    /// every other unbuilt menu item in this app. Add real cases here as
+    /// more screens are built — see docs/audit/HANDOVER.md.
+    /// </summary>
+    private async System.Threading.Tasks.Task HandlePatientMenuAsync(Modules.Shared.PatientMenuRequest request)
+    {
+        switch (request.Action)
+        {
+            case Modules.Shared.PatientMenuAction.DataRekamMedis:
+                await OpenPasienAsync();
+                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.Pasien.PasienView pasienView)
+                    await pasienView.SearchForAsync(request.NoRekamMedis);
+                return;
+
+            case Modules.Shared.PatientMenuAction.KamarInap:
+                await OpenRawatInapAsync();
+                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.RawatInap.RawatInapView rawatInapView)
+                    rawatInapView.PrefillAdmit(request.NoRawat);
+                return;
+
+            case Modules.Shared.PatientMenuAction.TindakanDanPemeriksaan:
+                await OpenRawatJalanAsync();
+                return;
+
+            case Modules.Shared.PatientMenuAction.BillingPembayaran:
+                await OpenKasirAsync();
+                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.Kasir.KasirView kasirView)
+                    await kasirView.SearchForAsync(request.NoRawat);
+                return;
+        }
+
+        await ShowNotImplementedAsync($"\"{request.Action}\" untuk {request.NamaPasien}");
+    }
 
     private async System.Threading.Tasks.Task ShowNotImplementedAsync(string label)
     {

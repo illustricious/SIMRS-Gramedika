@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.RawatInap.RawatInapView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Redesigned to the shared "input form on top (collapsible, closed by
+         default) + data grid below" language (RegistrasiView/IgdView), per
+         user feedback — previously used the antrian-left/form-right split. -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="12">
+        <TextBlock Grid.Row="0" Text=":: [ Rawat Inap ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <StackPanel Grid.Row="1" Spacing="0">
+            <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,4"
+                    IsVisible="False">
+                <Grid ColumnDefinitions="*,16,*">
+                    <StackPanel Grid.Column="0" Spacing="4">
+                        <TextBlock Text="Admit Pasien Baru" FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+                        <TextBlock Text="No. Rawat (pasien harus sudah registrasi) :" />
+                        <TextBox Name="AdmitNoRawatBox" PlaceholderText="contoh: 2026/11/07/000001" />
+                        <TextBlock Text="Kamar Kosong :" Margin="0,4,0,0" />
+                        <ComboBox Name="KamarCombo" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="Diagnosa Awal :" Margin="0,4,0,0" />
+                        <TextBox Name="DiagnosaAwalBox" />
+                        <TextBlock Name="AdmitStatusText" Margin="0,4,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                        <Button Name="AdmitButton" Content="🛏 Admit" Click="OnAdmitClick"
+                                HorizontalAlignment="Left" Margin="0,4,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Spacing="4">
+                        <TextBlock Text="Pulangkan Pasien Terpilih" FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+                        <TextBlock Name="SelectedPatientText" Text="(belum ada pasien dipilih dari daftar)"
+                                   FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+                        <TextBlock Text="Status Pulang :" Margin="0,4,0,0" />
+                        <ComboBox Name="StatusPulangCombo" HorizontalAlignment="Stretch" />
+                        <TextBlock Text="Diagnosa Akhir :" Margin="0,4,0,0" />
+                        <TextBox Name="DiagnosaAkhirBox" />
+                        <TextBlock Name="PulangkanStatusText" Margin="0,4,0,0" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                        <Button Name="PulangkanButton" Content="🚪 Pulangkan &amp; Hitung Biaya Kamar" Click="OnPulangkanClick"
+                                HorizontalAlignment="Left" Margin="0,4,0,0" IsEnabled="False" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ToggleButton Name="InputToggle" IsChecked="False" Click="OnToggleInput"
+                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Data" FontStyle="Italic"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="Sedang Dirawat" FontWeight="Medium" Margin="0,8,0,4"
+                   Foreground="{DynamicResource ThemeTextBrush}" />
+
+        <DataGrid Grid.Row="3" Name="AktifGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:RawatInapAktifItem" SelectionChanged="OnAktifSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="150" />
+                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
+                <DataGridTextColumn Header="Kamar" Binding="{Binding KodeKamar}" Width="80" />
+                <DataGridTextColumn Header="Bangsal" Binding="{Binding NamaBangsal}" Width="110" />
+                <DataGridTextColumn Header="Tgl Masuk" Binding="{Binding TanggalMasuk}" Width="90" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

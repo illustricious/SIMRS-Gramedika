@@ -27,6 +27,13 @@ public partial class PasienView : UserControl
         await SearchAsync(string.Empty);
     }
 
+    /// <summary>Called from the right-click "Data Rekam Medis" patient menu (Modules/Shared/PatientContextMenu) — searches straight to that patient instead of clearing/listing everything.</summary>
+    public async System.Threading.Tasks.Task SearchForAsync(string keyword)
+    {
+        this.FindControl<TextBox>("KeyWordBox")!.Text = keyword;
+        await SearchAsync(keyword);
+    }
+
     private async System.Threading.Tasks.Task SearchAsync(string keyword)
     {
         var grid = this.FindControl<DataGrid>("PasienGrid")!;

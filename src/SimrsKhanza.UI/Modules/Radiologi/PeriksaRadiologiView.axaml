@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.Radiologi.PeriksaRadiologiView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- "Input Hasil" on top (collapsible, closed by default) + antrian grid
+         below — same design language as RegistrasiView/IgdView. -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Periksa Radiologi ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <StackPanel Grid.Row="1" Spacing="0">
+            <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,4"
+                    IsVisible="False">
+                <StackPanel Spacing="4">
+                    <TextBlock Name="SelectedText" Text="(belum ada pasien dipilih dari antrian)"
+                               FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+                    <TextBlock Text="Hasil :" Margin="0,4,0,0" />
+                    <TextBox Name="HasilBox" AcceptsReturn="True" Height="90" TextWrapping="Wrap" />
+                    <TextBlock Name="HasilStatusText" Margin="0,4,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    <Button Name="SimpanHasilButton" Content="💾 Simpan Hasil" Click="OnSimpanHasilClick"
+                            HorizontalAlignment="Left" Margin="0,4,0,0" IsEnabled="False" />
+                </StackPanel>
+            </Border>
+
+            <ToggleButton Name="InputToggle" IsChecked="False" Click="OnToggleInput"
+                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Hasil" FontStyle="Italic"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="Menunggu Hasil" FontWeight="Medium" Margin="0,8,0,4"
+                   Foreground="{DynamicResource ThemeTextBrush}" />
+
+        <DataGrid Grid.Row="3" Name="AntrianGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:PenunjangAntrianItem" SelectionChanged="OnAntrianSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="150" />
+                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
+                <DataGridTextColumn Header="Dokter Perujuk" Binding="{Binding DokterPerujuk}" Width="130" />
+                <DataGridTextColumn Header="Tgl Permintaan" Binding="{Binding TanggalPermintaan}" Width="110" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

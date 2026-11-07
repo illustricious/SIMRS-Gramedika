@@ -55,6 +55,8 @@ Login dev: `admin` / `admin123` (full akses termasuk Pengaturan) atau `petugas` 
 - **Registrasi / Daftar Pasien Rawat Jalan** (`Modules/Registrasi`) — SATU layar yang diakses dari tombol toolbar "Registrasi" MAUPUN "Rawat Jalan" (keduanya sama, ini dikonfirmasi user). Form collapsible + grid 17 kolom lengkap + search + **cetak PDF nyata** (QuestPDF) + tombol "🩺 Periksa" yang lempar ke layar pemeriksaan.
 - **Rawat Jalan — Pemeriksaan** (`Modules/RawatJalan`) — form vital sign + catatan klinis, **Simpan beneran nulis ke DB** (`pemeriksaan_ralan`). Diakses lewat tombol "🩺 Periksa" di Registrasi.
 - **Pasien** (`Modules/Pasien`, dibuka dari tile dashboard "Rekam Medis") — form identitas pasien (field dicocokkan ke `DlgPasien.form` legacy), Simpan beneran nulis pasien baru.
+- **Rawat Inap** (`Modules/RawatInap`, dibuka dari toolbar shortcut "Rawat Inap") — admit pasien ke kamar kosong + pulangkan (hitung Lama & Biaya Kamar otomatis), **real write** ke `kamar_inap`/`kamar`/`reg_periksa` — **v1 belum ditest interaktif, lihat catatan sesi 2026-11-07**.
+- **Kasir** (`Modules/Kasir`, dibuka dari tile dashboard "Keuangan") — cari tagihan by No.Rawat (biaya reg + biaya kamar), tandai lunas — **real write** ke `reg_periksa.status_bayar`.
 - **Pengaturan** (`Modules/Pengaturan`, **admin-only** via permission `pengaturan.admin`) — edit/tes/simpan koneksi database (host/port/db/user/password), tersimpan di `%APPDATA%\SimrsKhanza\database.settings.json` di komputer user — **BISA connect ke database manapun (IP/host apa saja), sudah dikonfirmasi user berhasil connect ke database asli mereka sendiri**.
 - **SearchPickerDialog<T>** generik — pengganti pola 16 dialog `Dlg*Cari*` legacy.
 - **Cetak laporan (PDF)** — baru ada 1 contoh (daftar Registrasi/Rawat Jalan), pakai QuestPDF. **Lisensi QuestPDF Community gratis cuma untuk perusahaan di bawah threshold revenue tertentu** — cek questpdf.com/license sebelum dipakai produksi di RS yang lebih besar.
@@ -399,6 +401,253 @@ Ditambahkan bagian **"🚀 MULAI DARI SINI"** di paling atas dokumen (sebelum kr
 - Belum ada commit/push ke git.
 - Belum mulai rewrite/implementasi apa pun (sesuai instruksi).
 - Belum menyentuh isi detail `sik.sql` / PDF pasien / gambar tanda tangan pasien secara substantif — hanya dicatat keberadaannya demi privasi.
+
+## Sesi lanjutan 2026-11-07: diagnosis "data pasien tidak tampil" + fitur Rawat Inap & Kasir
+
+### Diagnosis: grid Registrasi "data pasien tidak tampil" — SEBAB DITEMUKAN
+
+### Fitur Rawat Inap + Kasir/Billing — SELESAI (v1, real write, belum ditest ke DB asli)
+User pilih ini sebagai prioritas lanjutan (dari 3 opsi yang ditawarkan: Rawat Inap+Kasir / Lab-Radiologi / perluas cetak PDF).
+
+- **Core entities diperluas** (`SimrsKhanza.Core/Entities/MasterData.cs`): `Kamar.Status`/`Kelas` sekarang benar2 dipetakan (sebelumnya `Ignore()`) via `HasConversion` string legacy persis (`"ISI"/"KOSONG"/...`, `"Kelas 1"/"Kelas VIP"/...`). `KamarInap` ditambah `TarifKamar`, `Lama`, `TotalBiaya`, `StatusPulang` (enum baru) — field yang sebelumnya tidak ada sama sekali di entity meski kolomnya ada di skema legacy (`trf_kamar`, `lama`, `ttl_biaya`, `stts_pulang`).
+  - **Catatan skema penting**: `kamar_inap.stts_pulang` adalah `NOT NULL` tanpa default di skema asli — direpresentasikan sebagai `StatusPulang.BelumPulang` yang di-convert ke string `"-"` (salah satu nilai enum legacy sendiri), dipakai di `AdmitAsync` supaya insert tidak gagal constraint sebelum pasien benar-benar dipulangkan.
+- **`RawatInapRepository`** (`SimrsKhanza.Data/RawatInapRepository.cs`) — baru:
+  - `GetAvailableKamarAsync()` — kamar dengan `Status == Kosong`.
+  - `GetActiveInpatientsAsync()` — join `kamar_inap` (`tgl_keluar IS NULL`) + `reg_periksa` + `pasien` + `bangsal`.
+  - `AdmitAsync(noRawat, kodeKamar, diagnosaAwal)` — **real INSERT** `kamar_inap` + set `kamar.Status = Isi` + set `reg_periksa.StatusLanjut = RawatInap`. Mensyaratkan `reg_periksa` untuk `noRawat` itu sudah ada (pasien harus registrasi dulu lewat Registrasi/Rawat Jalan).
+  - `DischargeAsync(noRawat, statusPulang, diagnosaAkhir)` — stamp `tgl_keluar`/`jam_keluar`, hitung `Lama` (hari, minimal 1) dan `TotalBiaya` (`Lama * TarifKamar`), bebaskan kamar (`Status = Kosong`). **Real UPDATE**, return nilai biaya kamar yang dihitung.
+- **`KasirRepository`** (`SimrsKhanza.Data/KasirRepository.cs`) — baru:
+  - `GetBillAsync(noRawat)` — gabung `reg_periksa.biaya_reg` + `SUM(kamar_inap.ttl_biaya)` untuk `noRawat` itu (biasanya 1 baris, tapi dijaga untuk kasus "Pindah Kamar" yang bisa punya >1 baris kamar_inap per no_rawat) → total tagihan + status bayar saat ini.
+  - `MarkPaidAsync(noRawat)` — **real UPDATE** `reg_periksa.status_bayar = 'Sudah Bayar'`.
+- **UI baru**:
+  - `Modules/RawatInap/RawatInapView` — panel kiri: daftar pasien sedang dirawat; panel kanan: form "Admit Pasien Baru" (No.Rawat + pilih kamar kosong + diagnosa awal) dan form "Pulangkan Pasien Terpilih" (pilih dari grid kiri, pilih status pulang + diagnosa akhir, hitung & tampilkan biaya kamar). Dibuka dari toolbar shortcut **"Rawat Inap"** (sebelumnya placeholder).
+  - `Modules/Kasir/KasirView` — cari tagihan by No.Rawat, tampilkan breakdown (biaya reg + biaya kamar + total) + status bayar, tombol "Tandai Lunas" (real write). Dibuka dari tile dashboard **"Keuangan"** (`moduleKey == "keuangan"`, sebelumnya placeholder "belum diimplementasikan").
+- **Build sukses (0 error), 12 unit test lama tetap PASS.** `.exe` di-publish ulang.
+- **BELUM dilakukan** (butuh keputusan/aksi user sebelum dipakai produksi):
+  - **Belum ada integration test baru** untuk `RawatInapRepository`/`KasirRepository` (pola test lama butuh DB dev lokal yang kosong aman untuk ditulisi — MariaDB lokal sedang tidak jalan saat sesi ini; menulis integration test yang nge-hit DB **asli** tidak dilakukan, sesuai instruksi user "jangan sampai mengubah data pasien yang asli"). Rekomendasi sesi depan: nyalakan MariaDB dev lokal dulu, baru tulis test di sana.
+  - **Belum diverifikasi visual/interaktif** (klik tombol admit/pulangkan/bayar beneran) — sesi ini tidak punya tool screenshot/klik desktop app. User disarankan coba `.exe` yang baru dipublish dan admit/pulangkan **1 pasien dummy/test** dulu (bukan pasien asli) untuk verifikasi sebelum dipakai ke data sungguhan.
+  - Form "Admit" masih manual ketik No.Rawat (belum ada picker pencarian pasien dari daftar Registrasi) — cukup untuk v1, bisa diperbaiki nanti.
+  - Lama inap dihitung dari `DateTime.Now` saat tombol "Pulangkan" diklik (bukan field tanggal keluar yang bisa diedit manual) — kalau RS butuh catat tanggal keluar yang beda dari waktu input data, ini perlu ditambah field date picker terpisah.
+  - Kolom `kamar.status`/`kamar.kelas` di skema asli **nullable**, tapi property C# `Kamar.Status`/`Kelas` non-nullable — kalau ada baris kamar asli dengan nilai NULL di salah satu kolom ini, baris itu akan gagal dibaca EF Core (exception, bukan crash — tertangkap di try/catch UI jadi list kosong/parsial). Belum diverifikasi apakah data kamar asli punya baris NULL seperti ini.
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-2): akar masalah lag + "data tidak tampil" — DITEMUKAN & DIPERBAIKI
+
+User kirim screenshot Khanza asli ("Registrasi Periksa Hari Ini", Periode 05-11 s.d. 06-11-2026, Record: 167) dan laporkan: grid rewrite masih belum nampilin data + aplikasi jadi lag tiap pindah fitur, SETELAH publish ulang di sesi sebelumnya.
+
+
+
+
+**Catatan untuk sesi berikutnya**: kalau mau menambah filter/list baru yang query langsung dari tabel besar (`reg_periksa` 169k+, `pasien` 59k+), JANGAN biarkan default query tanpa batas (tanggal/keyword/`.Take()`) — selalu beri default yang wajar atau cap jumlah baris, baru biarkan user melebarkan secara eksplisit.
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-3): tabel DataGrid tidak kelihatan sama sekali — DITEMUKAN & DIPERBAIKI
+
+Setelah fix "lag" di atas, user lapor: performa sudah bagus ("Record : 2" muncul benar), tapi **area tabel di bawah tab "Registrasi Awal" kosong blank** — tidak ada header kolom, tidak ada baris, padahal data sudah ke-load (tombol Cetak berhasil generate PDF dari data yang sama, jadi datanya memang ada di memori).
+
+**Akar masalah**: `App.axaml` TIDAK meng-include tema/style `DataGrid` (`Avalonia.Controls.DataGrid` adalah package terpisah dari `FluentTheme` — control-nya pakai template sendiri yang harus di-`StyleInclude` manual). Sesi 2026-11-03 sempat menambahkan include ini lalu MENGHAPUSNYA dengan asumsi salah "FluentTheme versi ini sudah include DataGrid otomatis" (lihat catatan "Layar Registrasi — SELESAI" di atas) — asumsi itu ternyata salah, dan karena waktu itu testingnya cuma smoke-run tanpa klik manual, masalah tidak ketahuan sampai sekarang.
+
+**Diperbaiki**: `App.axaml` → `<Application.Styles>` ditambah `<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />` (path yang benar — percobaan pertama pakai akhiran `.axaml` gagal dengan `AVLN2000: Unable to resolve XAML resource`, yang benar adalah `.xaml`). Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+**Catatan untuk sesi berikutnya**: ini kedua kalinya DataGrid bermasalah gara-gara asumsi soal styling tanpa verifikasi visual. **Build sukses + test pass TIDAK membuktikan UI benar-benar tampil** — begitu ada tool screenshot/klik desktop tersedia di sesi manapun, jadikan prioritas untuk verifikasi visual tiap kali menyentuh `App.axaml`/tema/DataGrid.
+
+## Rebranding tampilan ke "SIMRS Gramedika" — SELESAI (2026-11-07)
+User minta ganti nama tampilan dari "SIMRS Khanza" jadi **"SIMRS Gramedika"** (konsisten dengan referensi warna RS Gramedika 10 yang sudah dipakai sejak awal untuk palet warna). Diganti di: `MainWindow.axaml` (Title window + teks hero/welcome panel "SIMRS GRAMEDIKA" + teks status bar kanan bawah), `LoginWindow.axaml` (Title window). Nama internal project/namespace (`SimrsKhanza.*`, nama file .sln/.csproj) **TIDAK diubah** — itu identitas teknis proyek, bukan branding yang user lihat; ganti nama project itu sendiri kalau diminta eksplisit, scopenya lebih besar (rename semua namespace, file, referensi).
+
+## Fitur Laboratorium + Radiologi — SELESAI (v1, real write, belum ditest ke DB asli) — 2026-11-07
+
+User pilih ini sebagai prioritas lanjutan berikutnya.
+
+- **Core entities baru** (`SimrsKhanza.Core/Entities/Penunjang.cs`): `PermintaanLab`, `PermintaanRadiologi` (sama persis strukturnya, map ke `permintaan_lab`/`permintaan_radiologi`), `HasilLab` (map ke `saran_kesan_lab` — field `saran`/`kesan`, dipakai sebagai hasil naratif v1), `HasilRadiologi` (map ke `hasil_radiologi` — satu field `hasil` text, sudah sesederhana itu di skema asli).
+  - **Keputusan scope penting**: skema lab asli jauh lebih kompleks dari ini (`detail_periksa_lab` = 1 baris per parameter pemeriksaan dengan nilai + nilai rujukan + tarif per kategori PA/PK/MB/kelas/penjab, `periksa_lab` = record billing terpisah). v1 ini **SENGAJA tidak port itu** — pakai `saran_kesan_lab` (kesan/saran naratif, 2 kolom teks) sebagai hasil lab v1, supaya ada fitur nyata yang jalan dulu, bukan separuh-jadi. Radiologi kebetulan sudah sesederhana itu di skema aslinya (`hasil_radiologi` cuma 1 kolom teks).
+  - `permintaan_lab`/`permintaan_radiologi.status` tersimpan **lowercase** (`'ralan'/'ranap'`) — beda dari `reg_periksa.status_lanjut` (`'Ralan'/'Ranap'`) dan `kamar_inap`/`periksa_radiologi` (`'Ralan'/'Ranap'` juga tapi kapital) — tiga casing berbeda untuk konsep yang sama di skema legacy, jadi dibuatkan enum + konversi sendiri (`StatusKunjunganPenunjang`), tidak reuse `StatusLanjut`.
+  - `noorder` (PK `permintaan_lab`/`permintaan_radiologi`) BUKAN kolom auto-increment — digenerate manual (timestamp + 2 digit random, lihat `PenunjangRepository.GenerateNoOrder`). Skema penomoran asli Khanza belum di-reverse-engineer; cukup unik untuk throughput aplikasi ini, revisit kalau ada kebutuhan proteksi collision lintas-proses.
+- **`PenunjangRepository`** (`SimrsKhanza.Data/PenunjangRepository.cs`) — baru: `GetAntrianLabAsync`/`GetAntrianRadiologiAsync` (permintaan yang BELUM punya baris hasil, **disederhanakan dikunci by `no_rawat` saja, bukan `noorder`** — lihat catatan di kode, kalau 1 kunjungan punya 2 permintaan jenis sama, keduanya hilang bareng dari antrian begitu salah satu dapat hasil — cukup untuk v1, 1 kunjungan 1 permintaan adalah kasus umum), `CreatePermintaanLabAsync`/`CreatePermintaanRadiologiAsync` (**real INSERT**), `SaveHasilLabAsync`/`SaveHasilRadiologiAsync` (**real INSERT**).
+- **UI baru**: `Modules/Penunjang/PenunjangView` — satu layar, 2 tab (Laboratorium/Radiologi), tiap tab: antrian menunggu hasil (kiri) + form "Buat Permintaan Baru" & "Input Hasil" (kanan). Dibuka dari toolbar shortcut **"Laboratorium"** (buka tab Lab) dan **"Radiologi"** (buka tab Radiologi) — sebelumnya keduanya placeholder.
+- **Build sukses (0 error), 12 test lama tetap PASS.** `.exe` di-publish ulang.
+- **BELUM dilakukan**:
+  - Belum ada integration test baru (alasan sama seperti Rawat Inap/Kasir — MariaDB dev lokal tidak jalan saat sesi ini, dan sengaja tidak menulis test yang nge-hit DB produksi asli).
+  - **Belum diverifikasi visual/interaktif** — coba dulu kirim permintaan + input hasil untuk **1 pasien test**, bukan pasien asli, sebelum dipakai ke data sungguhan.
+  - Form "Dokter Perujuk" masih ketik manual kode dokter (belum ada picker `SearchPickerDialog` ke tabel `dokter`).
+  - Struktur hasil lab per-parameter (`detail_periksa_lab`) dan alur pengambilan sampel (`tgl_sampel`/`jam_sampel` sebagai langkah terpisah) belum diimplementasikan — v1 ini murni "permintaan → hasil naratif", bukan replikasi penuh workflow lab RS.
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-4): polish UI + bugfix setelah feedback user
+
+User kirim screenshot menu Laboratorium Khanza ASLI yang ternyata punya 6 sub-shortcut (Permintaan Lab PK/PA/PA/MB, Periksa Lab PK/PA/MB — kategori PK/PA/MB = Patologi Klinik/Anatomi/Mikrobiologi) — jauh lebih granular dari `PenunjangView` v1 yang dibuat sesi sebelumnya (1 layar gabungan Lab+Radiologi, tanpa breakdown kategori). **BELUM diputuskan/dikerjakan** — dicatat di sini sebagai perbedaan yang diketahui, menunggu keputusan user apakah mau dipecah jadi per-kategori PK/PA/MB atau cukup yang sekarang. Request lain dari sesi ini (semua sudah dikerjakan):
+
+1. **Login page direstyle + rebranding** — `LoginWindow.axaml` sebelumnya hardcoded warna gelap (`#2E4057`) lepas dari palet tema aplikasi (`App.axaml`), teks masih "SIMRS KHANZA". Diganti: card putih rounded di tengah gradient biru (`#1E3A8A`→`#172B66`, sama dengan `ThemePrimaryBrush`/`ThemePrimaryDarkBrush`), ikon 🏥, teks "SIMRS GRAMEDIKA" + subjudul, tombol biru. Nama control (`UserIdBox`/`PasswordBox`/`ErrorText`/`LoginButton`) TIDAK diubah supaya `LoginWindow.axaml.cs` tetap kompatibel.
+2. **Grid Registrasi "kebesaran"** — lebar kolom fixed sebelumnya (90-160px, total ~1850px) terlalu lebar, bikin scroll horizontal terus-terusan. Dipersempit semua kolom (55-130px, proporsional ke isi), ditambah `CanUserResizeColumns="True"` (user masih bisa lebarkan manual kalau perlu) + `HorizontalScrollBarVisibility="Auto"`.
+3. **Bug "Input Data harus diklik dulu" — DIPERBAIKI**: panel "Input Data" di Registrasi seharusnya terbuka otomatis saat layar dibuka (toggle default `IsChecked="True"`), tapi visibility Border-nya cuma pernah di-set di handler `OnToggleInputData` (hanya jalan saat diklik) — tidak pernah disinkronkan ke state awal toggle saat konstruksi. Diperbaiki: constructor `RegistrasiView` sekarang eksplisit set `InputDataPanel.IsVisible` dari `InputDataToggle.IsChecked` saat start.
+
+Build sukses, 12 test tetap pass. `.exe` di-publish ulang (sempat gagal sekali percobaan pertama — kemungkinan file masih dikunci instance app lama yang masih terbuka; percobaan kedua langsung sukses tanpa perlu intervensi lain. **Catatan**: selalu tutup dulu `.exe` yang sedang jalan sebelum minta publish ulang, supaya tidak perlu retry).
+
+## Lab dipecah jadi PK/PA/MB — SELESAI (2026-11-07)
+
+User konfirmasi mau menu Laboratorium dipecah per kategori (PK/PA/MB), bukan 1 tab gabungan. Diimplementasikan:
+- **`KategoriLab` enum baru** (`Core/Entities/Penunjang.cs`): `PatologiKlinik`/`PatologiAnatomi`/`Mikrobiologi`. **Catatan penting**: tabel `permintaan_lab` di skema asli TIDAK punya kolom kategori sama sekali (kategori sebenarnya ada di `jns_perawatan_lab.kategori`/`periksa_lab.kategori`, tabel katalog/billing yang belum diimplementasikan). Jadi kategori di-tag via **prefix teks `"[PK]"`/`"[PA]"`/`"[MB]"`** di awal kolom `informasi_tambahan` (varchar(60), sudah ada di skema, dipakai ulang) — bukan perubahan skema. Ini workaround yang didokumentasikan jelas, bukan port 1:1 dari sistem kategori asli.
+- `PenunjangRepository.GetAntrianLabAsync` sekarang terima parameter `kategori`, filter `InformasiTambahan.StartsWith(tag)`. `CreatePermintaanLabAsync` terima `kategori`, otomatis prepend tag saat insert.
+- **UI**: tab "Laboratorium" tunggal dipecah jadi 3 tab — **"Lab PK"**, **"Lab PA"**, **"Lab MB"** — masing-masing isinya sama persis (antrian + buat permintaan + input hasil), cuma data-nya terpisah per kategori. Tab "Radiologi" tetap 1 (sudah sesederhana aslinya, tidak ada sub-kategori di skema `permintaan_radiologi`). Jadi total 4 tab di `PenunjangView`: index 0=Lab PK, 1=Lab PA, 2=Lab MB, 3=Radiologi — `MainWindow.OpenPenunjangAsync` diupdate (tombol toolbar "Laboratorium" buka tab 0, "Radiologi" buka tab 3).
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **Catatan untuk sesi berikutnya**: kalau nanti mau port kategori secara "benar" (pakai `jns_perawatan_lab`/`periksa_lab.kategori` asli, bukan text-tag workaround ini), itu berarti harus bangun juga katalog jenis pemeriksaan + tarif per kategori — pekerjaan jauh lebih besar, belum ada rencana kapan dikerjakan.
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-5): UI scale down + Lab jadi submenu 6-tile nyata — 2026-11-07
+
+User klarifikasi maksud "kebesaran" sebelumnya: bukan cuma lebar kolom grid, tapi seluruh UI (font, padding, dll) dirasa besar — maunya seperti efek "Ctrl+scroll zoom-out" di Chrome. Juga klarifikasi struktur Lab: bukan 3 tab gabungan (Permintaan+Periksa jadi satu per kategori), tapi persis seperti screenshot legacy — 1 grid 6-ikon (Permintaan Lab PK/PA/MB + Periksa Lab PK/PA/MB), tiap ikon buka layar sendiri-sendiri.
+
+### Scale UI ~15% lewat `LayoutTransformControl` — SELESAI
+`MainWindow.axaml` root `Grid` sekarang dibungkus `<LayoutTransformControl><LayoutTransformControl.LayoutTransform><ScaleTransform ScaleX="0.85" ScaleY="0.85"/></...></LayoutTransformControl>`. Ini BUKAN ubah tiap `FontSize`/`Padding` satu-satu — `LayoutTransformControl` mengukur child di ukuran natural lalu me-render-nya mengecil, persis seperti browser zoom-out (lebih banyak konten muat di area yang sama, bukan cuma font kecil tapi semuanya termasuk DataGrid row height, ikon, dll). Window `Width`/`Height` disesuaikan jadi 1040x680 (dari 1200x760) supaya pas dengan footprint hasil scale. **Kalau user merasa masih kurang/kebihan kecil, tinggal ubah angka `ScaleX`/`ScaleY` di `MainWindow.axaml`** (0.85 = 85%, makin kecil makin padat).
+
+### Menu Laboratorium jadi submenu 6-tile nyata — SELESAI
+Modul `Modules/Penunjang` (tab gabungan PK/PA/MB + Radiologi sesi sebelumnya) **DIHAPUS TOTAL**, diganti struktur baru yang match 1:1 ke screenshot legacy:
+- **`Modules/Laboratorium/LabMenuView`** — grid 6 tile (🧪 Permintaan Lab PK/PA/MB, 🔬 Periksa Lab PK/PA/MB), persis pola `WrapPanel`+`Button.menuTile` yang sudah dipakai di dashboard utama `MainWindow`. Klik tile → raise event `TileClicked(LabAction)`.
+- **`Modules/Laboratorium/LabPermintaanView`** — layar SATU TUJUAN, cuma form "Buat Permintaan Baru" (tidak ada grid/antrian). Reusable lintas PK/PA/MB via `SetKategori(KategoriLab)` (bukan 3x copy-paste XAML seperti percobaan sebelumnya) — judul & tag kategori berubah sesuai parameter.
+- **`Modules/Laboratorium/LabPeriksaView`** — layar SATU TUJUAN, antrian menunggu hasil + input hasil. Sama, reusable via `SetKategori`.
+- **`Modules/Laboratorium/KategoriLabel`** — helper kecil `KategoriLab → "PK"/"PA"/"MB"` dipakai di judul kedua view di atas.
+- **`Modules/Radiologi/RadiologiView`** — diekstrak jadi modul BERDIRI SENDIRI (sebelumnya nebeng 1 tab di `PenunjangView` dengan judul gabungan ":: [ Laboratorium / Radiologi ] ::" yang bikin bingung user — sekarang judulnya cuma ":: [ Radiologi ] ::"). Isinya sama persis (antrian + permintaan + hasil dalam 1 layar, tidak dipecah PK/PA/MB karena skema `permintaan_radiologi` memang tidak punya kategori).
+- **`MainWindow.axaml.cs`**: `OnFeatureShortcutClick` → "Laboratorium" buka `LabMenuView` (bukan langsung form), tiap tile klik → `OpenLabTileAsync` yang routing ke `LabPermintaanView`/`LabPeriksaView` sesuai `LabAction`, tombol "⬅ Kembali" dari situ balik ke `LabMenuView` (bukan ke Hero — pola sama seperti RawatJalan→Registrasi). "Radiologi" toolbar langsung buka `RadiologiView` seperti sebelumnya, tidak lewat submenu (sesuai struktur legacy, radiologi tidak dipecah-pecah).
+- `PenunjangRepository`/`PenunjangAntrianItem` (Data layer) **TIDAK berubah** — sudah cukup general (terima parameter `KategoriLab` per panggilan), cuma caller-nya di UI yang dirombak total.
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **Belum diverifikasi visual** — cek tampilan scale 85% nyaman dipakai atau tidak, dan konfirmasi 6 tile Lab + judul per-layar sudah sesuai yang dimaksud.
+
+## Revert global zoom, scope font-fix ke Registrasi saja — 2026-11-07
+
+User koreksi: maksud "kebesaran" itu CUMA soal font di layar Registrasi, BUKAN minta seluruh aplikasi di-zoom-out. `LayoutTransformControl` scale 85% di `MainWindow.axaml` (sesi sebelumnya) **DIREVERT SEPENUHNYA** — Window kembali ke `Width="1200" Height="760"` tanpa wrapper transform.
+
+Sebagai gantinya, font-size dipersempit **HANYA di `RegistrasiView.axaml`** lewat `UserControl.Styles` lokal (`Selector="TextBlock"`/`"TextBox, DatePicker, ComboBox"` → `FontSize="12"`, scoped ke view ini saja, TIDAK bocor ke layar lain) + `RegistrasiGrid` dapat `FontSize="12"` `RowHeight="26"` eksplisit. Judul layar (":: [ Registrasi / Daftar Pasien Rawat Jalan ] ::") di-override manual `FontSize="15"` supaya tetap lebih besar dari body text (local attribute override style generik di atas).
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+**Pelajaran untuk sesi berikutnya**: kalau user bilang satu layar spesifik "kebesaran", JANGAN lompat ke solusi app-wide (global transform/zoom) tanpa konfirmasi dulu — scope fix ke layar yang dikeluhkan saja.
+
+## Fitur Farmasi — SELESAI (v1, real write, belum ditest ke DB asli) — 2026-11-07
+
+User kirim screenshot toolbar Farmasi legacy (5 ikon: Input/Data Penjualan Obat & BHP, Data Penyerahan Darah, Daftar Resep Dokter, No. Resep), minta dibuatkan dengan isi serupa.
+
+- **Entities baru** (`Core/Entities/Farmasi.cs`): `DataBarang` (→ `databarang`, katalog obat/BHP — v1 cuma pakai kolom `Dasar`/`JualBebas`, bukan semua 8 kolom tarif per-kelas/penjab), `ResepObat` (→ tabel `resep_obat` — **nama tabel legacy TERBALIK dari dugaan**: `resep_obat` ternyata HEADER resep per no_rawat/dokter/tanggal, bukan `resep_dokter`), `ResepDokterItem` (→ tabel `resep_dokter` — ini yang isinya baris obat per resep, no_resep+kode_brng+jml+aturan_pakai), `PengeluaranObatBhp`+`DetailPengeluaranObatBhp` (→ `pengeluaran_obat_bhp`/`detail_pengeluaran_obat_bhp`, dipakai sebagai backing table "Penjualan Obat & BHP" — **catatan penting**: ini sebenarnya tabel pengeluaran/issuance stok gudang farmasi di skema asli, bukan tabel POS/penjualan-ke-pasien dengan pembayaran; dipakai karena paling dekat secara struktur tanpa harus bangun alur billing farmasi penuh yang belum ada).
+- **`resep_dokter`/`detail_pengeluaran_obat_bhp` TIDAK punya PK terdeklarasi** di skema asli — dipetakan pakai composite key buatan (`NoResep+KodeBarang`, `NoKeluar+KodeBarang`) khusus untuk kebutuhan EF; baca-nya pakai `.AsNoTracking()` supaya kalau ada baris "duplikat key" (jarang tapi mungkin, misal racikan) tidak bikin EF Core identity-map error.
+- **`FarmasiRepository`** (`Data/FarmasiRepository.cs`): `SearchBarangAsync` (cari obat aktif, `.Take(50)`), `GetResepDokterAsync` (list resep_obat 7 hari terakhir, join pasien/dokter, `.Take(200)` safety net — tabel asli 94.973 baris, belajar dari insiden Registrasi sebelumnya supaya tidak nge-lag lagi), `GetResepItemsAsync` (detail item 1 resep), `InputPenjualanAsync` (**real INSERT** header+1 detail line — **v1 sengaja cuma 1 item per transaksi**, bukan multi-baris seperti form asli), `GetPenjualanAsync` (list transaksi 7 hari terakhir).
+- **UI**: `Modules/Farmasi/FarmasiMenuView` — submenu 5-tile sama persis pola `LabMenuView`, 3 tile terhubung ke layar nyata (`InputPenjualanView`, `DataPenjualanView`, `DaftarResepView`), 2 tile ("Data Penyerahan Darah", "No. Resep") **sengaja placeholder** "belum diimplementasikan" — blood bank (UTD) adalah subsistem besar tersendiri (8 tabel `utd_*`), dan fungsi "No. Resep" belum jelas maksudnya tanpa referensi layar aslinya lebih lanjut.
+  - `InputPenjualanView` — cari barang (Enter di kotak cari) → pilih dari dropdown → isi jumlah/keterangan/no.faktur opsional → Simpan (real write).
+  - `DataPenjualanView` — list transaksi 7 hari terakhir, read-only.
+  - `DaftarResepView` — list resep 7 hari terakhir (read-only, TIDAK ADA aksi tandai-sudah-diserahkan — lihat alasan di bawah), klik baris → tampil item obat resep itu di panel kanan.
+- Tombol toolbar **"Farmasi"** sekarang buka `FarmasiMenuView` (sebelumnya placeholder).
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **Kenapa "Daftar Resep Dokter" read-only (tidak ada tombol "Serahkan"/dispense)**: kolom `resep_obat.tgl_penyerahan`/`jam_penyerahan` NOT NULL tanpa default — tidak jelas dari skema bagaimana legacy membedakan "resep belum diserahkan" vs "sudah" (beda dengan `kamar_inap.stts_pulang` yang punya nilai `'-'` eksplisit untuk "belum"). Daripada menebak dan berpotensi menulis data yang salah makna ke DB asli, diputuskan v1 cukup jadi viewer. Perlu klarifikasi lebih lanjut (ke user yang paham alur asli, atau baca kode Java `resep_dokter`/`penjualanobat` di `simrs-khanza` legacy) sebelum menambah aksi tulis di sini.
+- **BELUM dilakukan**: integration test baru (sama alasan modul lain — MariaDB dev lokal mati saat sesi ini, sengaja tidak menulis test yang nge-hit DB produksi asli), verifikasi visual/klik manual (coba dulu 1 transaksi test sebelum dipakai ke data sungguhan), racikan resep (`resep_dokter_racikan`) belum disentuh sama sekali, harga per kelas/penjab (`databarang` kolom `ralan`/`kelas1-3`/dst) belum dipakai — `InputPenjualanView` cuma pakai `Dasar`.
+
+## Fitur IGD/UGD — SELESAI (v1, real write, belum ditest ke DB asli) — 2026-11-07
+
+- **Temuan skema penting**: Khanza TIDAK memodelkan IGD sebagai tipe pasien terpisah — IGD cuma `poliklinik` biasa (`kd_poli` = `IGD`/`U0020`/`IGD2`/`IGD3`/`IGDK`, dicek langsung ke `poliklinik.nm_poli` di DB asli). Jadi pasien IGD tetap lewat `reg_periksa` normal (via layar Registrasi yang sudah ada), yang beda cuma ADA LANGKAH TRIASE tambahan sebelum diperiksa dokter.
+- **Entities baru** (`Core/Entities/Igd.cs`): `MasterTriaseKasus` (→ `master_triase_macam_kasus`, lookup kecil "macam kasus" buat ComboBox), `TriaseIgd` (→ `data_triase_igd`, PK `no_rawat` — cara masuk/alat transport/alasan datang/macam kasus + 6 tanda vital).
+  - **Sengaja TIDAK diimplementasikan**: 5 tabel `data_triase_igddetail_skala1-5` (skoring triase terstruktur ala ATS/Australasian Triage Scale) — jauh lebih kompleks, v1 cukup catat data kedatangan + vital sign mentah.
+- **`IgdRepository`**: `GetAntrianBelumTriaseAsync` (reg_periksa di poli IGD yang belum ada baris `data_triase_igd`, window 7 hari, pola sama seperti RawatJalan), `GetMacamKasusAsync` (lookup kasus), `SaveTriaseAsync` (**real INSERT**).
+- **UI**: `Modules/Igd/IgdView` — pola dua panel sama seperti RawatJalanView (antrian kiri, form triase kanan: cara masuk/alat transport/alasan datang/macam kasus + 6 tanda vital wajib diisi karena NOT NULL di skema). Dibuka dari toolbar **"IGD/UGD"** (sebelumnya placeholder).
+- **Setelah triase**: TIDAK ada langkah "periksa" terpisah di modul ini — pasien yang sudah ditriase otomatis tetap muncul di antrian layar **Rawat Jalan** yang sudah ada (query-nya memang tidak difilter per-poliklinik), jadi dokter lanjut periksa dari situ. Tidak perlu modul/kode baru buat exam IGD, cukup reuse yang sudah ada — dicatat eksplisit di komentar kode supaya sesi depan tidak bingung kenapa `IgdView` tidak punya form pemeriksaan.
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **BELUM dilakukan**: integration test baru (alasan sama — DB dev lokal mati), verifikasi visual/klik manual (coba 1 pasien test dulu), skoring triase terstruktur (5 tabel skala), dan `id_observation_*`/`id_composition` (field integrasi SatuSehat di `data_triase_igd`, nullable, belum dipakai).
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-6): logo, zebra stripe, konsistensi desain, Radiologi jadi submenu — 2026-11-07
+
+User kirim screenshot submenu Radiologi legacy (2 tile: Permintaan Radiologi / Periksa Radiologi — pola sama seperti Lab, cuma 2 bukan 6), minta: (1) bahasa desain IGD & modul lain dibuat seperti Registrasi (form input DI ATAS, collapsible, **default TERTUTUP** — kebalikan dari fix sesi sebelumnya yang bikin selalu terbuka; data/grid DI BAWAH), (2) logo aplikasi pakai file `logo.png` yang dikirim user, (3) baris tabel diberi warna selang-seling (zebra stripe) tapi subtle.
+
+### Logo aplikasi — SELESAI
+`logo.png` user disalin ke `src/SimrsKhanza.UI/Assets/logo.png`, `.csproj` ditambah `<AvaloniaResource Include="Assets\**" />` (sebelumnya TIDAK ADA — folder `Assets/` cuma placeholder kosong dari scaffold awal, belum pernah benar-benar dipakai). Dipasang di 3 tempat: toolbar atas `MainWindow` (kiri, 28x28), hero/welcome panel `MainWindow` (96x96, ganti teks judul polos), dan `LoginWindow` (56x56, ganti emoji 🏥 sebelumnya).
+
+### Zebra stripe tabel — SELESAI
+**Catatan teknis penting**: Avalonia `DataGrid` (beda dari WPF) **TIDAK PUNYA** properti `AlternatingRowBackground` — percobaan pertama pakai itu gagal build (`AVLN2000`). Solusi yang jalan: style global di `App.axaml` pakai **structural pseudo-class** `Selector="DataGridRow:nth-child(2n)"` → `Setter Property="Background"`. Warna baru `ThemeRowAltBrush` ditambah ke kedua tema (Light `#EFF5FC` biru sangat muda, Dark `#30384A`) — sengaja subtle sesuai permintaan user "jangan terlalu mencolok". Berlaku OTOMATIS ke SEMUA DataGrid di aplikasi (Registrasi, IGD, Lab, Farmasi, dst) tanpa perlu diset per-layar.
+
+### Konsistensi desain: form-atas-collapsible + grid-bawah — SEBAGIAN DITERAPKAN
+User minta pola Registrasi (toggle "Input Data" collapsible, default **TERTUTUP**) jadi bahasa desain standar. Diterapkan ke:
+- **`RegistrasiView`**: `InputDataToggle` dikembalikan ke `IsChecked="False"` (sesi sebelumnya sempat diubah jadi default terbuka atas permintaan lain — user sekarang eksplisit minta sebaliknya, "kebalikan dari behaviour sekarang").
+- **`IgdView`**: DIROMBAK TOTAL dari pola dua-panel (antrian kiri/form kanan) jadi form-atas-collapsible (default tertutup) + grid "Belum Triase" di bawah — pola persis Registrasi. Memilih baris di grid otomatis membuka panel input (toggle `IsChecked=true`) supaya tetap 1 klik, bukan 2.
+- **`PeriksaRadiologiView`** (baru, lihat bawah): sama, form "Input Hasil" collapsible di atas + grid "Menunggu Hasil" di bawah.
+- **BELUM diterapkan** ke: `RawatInapView`, `KasirView`, `DaftarResepView`/`InputPenjualanView`/`DataPenjualanView` (Farmasi), `LabPermintaanView`/`LabPeriksaView`, `RawatJalanView` — masih pakai pola dua-panel lama. **Ini scope besar kalau mau dirapikan semua sekaligus** — belum dikerjakan sesi ini, tunggu konfirmasi user apakah mau disamakan semua atau cukup modul yang baru/sering dipakai.
+
+### Radiologi dipecah jadi submenu 2-tile — SELESAI
+Sama persis pola `LabMenuView`: `Modules/Radiologi/RadiologiMenuView` (2 tile: 📋 Permintaan Radiologi, 🩻 Periksa Radiologi) menggantikan `RadiologiView` lama (1 layar gabungan form+antrian+hasil, DIHAPUS). `PermintaanRadiologiView` (form saja, pola sama `LabPermintaanView`) dan `PeriksaRadiologiView` (antrian+hasil, pola form-atas-collapsible+grid-bawah yang baru) keduanya reuse `PenunjangRepository` yang sudah ada (tidak ada perubahan Data layer). Tombol toolbar "Radiologi" sekarang buka `RadiologiMenuView`.
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-7): logo jadi ikon .exe, RawatInap ikut pola baru, Registrasi Simpan/Baru nyata — 2026-11-07
+
+### Logo — dipindah dari topbar jadi ikon aplikasi
+User koreksi: logo TIDAK perlu di toolbar, tapi di-compile jadi ikon `.exe`. Logo dihapus dari `MainWindow` row 0 toolbar (tetap ada di hero panel + LoginWindow). `logo.png` (1254x1254) di-convert ke `Assets/app.ico` (256x256, PNG-compressed single-frame ICO — Avalonia DataGrid-style tooling tidak tersedia untuk convert, jadi dibuat manual via `System.Drawing` + ICO container ditulis byte-per-byte). `.csproj` ditambah `<ApplicationIcon>Assets\app.ico</ApplicationIcon>`. `MainWindow` juga dapat `Icon="avares://SimrsKhanza.UI/Assets/logo.png"` (ikon window/taskbar saat app jalan, beda dari ikon file `.exe` di File Explorer). **Diverifikasi**: ikon berhasil ter-embed, dicek pakai `System.Drawing.Icon.ExtractAssociatedIcon` terhadap exe hasil publish — berhasil extract 32x32.
+
+### RawatInapView — direstyle ikut pola Registrasi/IGD
+Sama seperti IGD sebelumnya: dari dua-panel (daftar kiri/form kanan) jadi form-atas-collapsible (default tertutup, isi 2 kolom: "Admit Pasien Baru" + "Pulangkan Pasien Terpilih") + grid "Sedang Dirawat" di bawah. Pilih baris di grid otomatis buka panel (konsisten dengan IGD).
+
+### Registrasi: tombol "Simpan"/"Baru" SEKARANG NYATA (sebelumnya placeholder total!) — temuan penting
+User minta audit fitur yang "belum terkonek database". Temuan PALING PENTING: form "Input Data" di Registrasi **sudah ada sejak awal** (No.Reg/No.Rawat/Dr Dituju/dst) tapi tombol **Simpan/Baru/Ganti/Hapus semuanya cuma dialog "belum diimplementasikan"** — artinya sebelum sesi ini, **tidak mungkin registrasi pasien baru dari aplikasi rewrite sama sekali**, padahal tampilannya kelihatan lengkap. Ini gap paling signifikan yang ditemukan, sekarang diperbaiki:
+- Form "Input Data" dirombak: field `No.Reg`/`No.Rawat`/`Tgl.Reg`/`Asal Rujukan` (auto-generate atau belum relevan di v1) dihapus dari input manual; `Dr Dituju`/`Unit`/`Jenis Bayar` yang tadinya TextBox kosong diganti **ComboBox nyata** terisi dari DB (`dokter`, `poliklinik`, `penjab`).
+- **`RegistrasiRepository.CreateAsync`** (baru) — **real INSERT** ke `reg_periksa`. Generate `no_rawat`/`no_reg` otomatis mengikuti pola asli yang dikonfirmasi dari DB produksi: `no_rawat = "yyyy/MM/dd/NNNNNN"`, `no_reg = "NNN"`, sama-sama sequence harian mulai dari 1 (dihitung dari `COUNT(*)` baris `reg_periksa` hari itu + 1).
+  - **Simplifikasi v1 yang didokumentasikan**: `StatusPoli` selalu di-set `Lama` (membedakan pasien "baru di poli ini" vs "lama" butuh cek riwayat registrasi pasien itu — belum dikerjakan), `BiayaReg` diambil dari `poliklinik.registrasi` (tarif default poli tsb, bukan tarif per-kelas/penjab).
+- Tombol "💾 Simpan" (di panel Input Data) sekarang panggil `CreateAsync` beneran, "🆕 Baru (kosongkan)" bersihkan form. Tombol "Ganti"/"Hapus" di action bar bawah **TETAP placeholder** — edit/hapus registrasi yang SUDAH ADA (apalagi di data produksi asli) butuh spek lebih jelas & lebih berisiko, sengaja tidak digarap sesi ini.
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **BELUM dilakukan**: verifikasi klik manual (coba registrasi **1 pasien test**, BUKAN pasien asli dulu). Integration test baru untuk `CreateAsync` juga belum ditulis (alasan sama — DB dev lokal mati saat sesi ini).
+
+### Audit lengkap — fitur lain yang masih "belum diimplementasikan" (placeholder dialog)
+Hasil `grep` semua `ShowNotImplementedAsync`/`OnPlaceholderClick` di codebase, untuk referensi prioritas sesi berikutnya:
+- **Toolbar atas** (baris pertama): "Program", "Presensi Pegawai", "Informasi", "Anjungan & Antrian", "Tentang Program" — semua placeholder. User kirim screenshot menu "Informasi" legacy (submenu: Pasien Kamar Inap, Telusur Kunjungan Pasien, Penggunaan Kamar Inap, Ketersediaan Stok Darah UTD, Tarif per modul, Dashboard, dll) sebagai referensi — **belum dikerjakan**, disebut user sendiri sebagai "buat menu antrian" (konteksnya belum sepenuhnya jelas, perlu klarifikasi next session fitur apa persis yang dimaksud).
+- **Dashboard tile**: "Kepegawaian", "Inventaris", "Laporan", "Bridging" — placeholder (modul besar, belum disentuh sama sekali).
+- **Registrasi**: tombol "Ganti"/"Hapus" (lihat di atas).
+- **Farmasi**: "Data Penyerahan Darah", "No. Resep" (sudah didokumentasikan sejak awal dibuat, lihat bagian Farmasi di atas).
+- **Pengaturan**: "Identitas & Aset" (logo RS, wallpaper, dsb — kosmetik, prioritas rendah).
+
+## Sesi lanjutan 2026-11-07 (lanjutan ke-8): "Informasi" jadi window terpisah + "Tentang Program" — 2026-11-07
+
+### "Tentang Program" — SELESAI
+`AboutWindow` baru (modal, `ShowDialog`): logo, judul, **"Dibuat oleh: Yusnur Rofiq"**, dan blok "Spesifikasi Teknis" — fat client (bukan web, koneksi DB langsung dari client), Avalonia UI 12, C#/.NET 10, EF Core + Pomelo MySQL, QuestPDF, arsitektur Core/Data/Config/Integrations/UI, self-contained single-file .exe. Dibuka dari toolbar atas "Tentang Program" (sebelumnya placeholder).
+
+### "Informasi" — jadi WINDOW TERPISAH BENERAN (bukan swap PageHost) — SELESAI
+User klarifikasi: di legacy, "Informasi" sengaja dibuka sebagai window OS terpisah supaya bisa di-drag ke monitor kedua sementara app utama tetap di monitor pertama — beda dari semua modul lain yang sengaja dibikin single-window (PageHost swap). Jadi `InformasiWindow` BENERAN `new Window().Show()` (non-modal, bukan `ShowDialog`, supaya tidak terkunci ke window utama) — satu-satunya modul di app ini yang sengaja melanggar pola single-window, dengan alasan eksplisit didokumentasikan di komentar kode.
+
+**Scope v1**: dari submenu legacy (Pasien Kamar Inap, Telusur Kunjungan Pasien, Penggunaan Kamar Inap, Ketersediaan Stok Darah UTD, Tarif per-modul, Dashboard, Koleksi Penelitian, Cari Koleksi Ebook, Cari Inventaris Perpustakaan) — HANYA 4 yang diimplementasi (yang datanya sudah ada di model kita), sisanya (Tarif, Koleksi Penelitian, Ebook, Inventaris Perpustakaan) **sengaja ditunda**, butuh modul data baru yang belum dibangun sama sekali (perpustakaan/penelitian khususnya di luar scope RS, kemungkinan modul tambahan Khanza yang jarang dipakai):
+- **Pasien Kamar Inap** — reuse query sama seperti `RawatInapRepository.GetActiveInpatientsAsync` (query ulang langsung, tidak reuse class-nya biar `InformasiRepository` berdiri sendiri).
+- **Telusur Kunjungan Pasien** — cari by No.RM/No.Rawat/Nama, **wajib isi keyword dulu** (tidak ada default-load tanpa filter — pelajaran dari insiden Registrasi awal, `reg_periksa` 169rb+ baris), `.Take(100)`.
+- **Penggunaan Kamar Inap** — daftar SEMUA kamar + status (ISI/KOSONG/DIBERSIHKAN/dst) + kelas, dari tabel `kamar` yang sudah dipetakan (sesi Rawat Inap).
+- **Ketersediaan Stok Darah UTD** — entity baru `UtdStokDarah` (→ `utd_stok_darah`), grouped by golongan darah + resus, cuma hitung kantong `status='Ada'`.
+- Semua READ-ONLY, tidak ada tombol simpan/tulis di window ini.
+- Dibuka dari toolbar atas "Informasi" (sebelumnya placeholder).
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+## Revert: Informasi & Tentang Program kembali ke pola single-window — 2026-11-07
+
+User koreksi lagi: TIDAK jadi mau "Informasi" dibuka sebagai Window OS terpisah (sesi sebelumnya sempat dibuat begitu untuk alasan "bisa di-drag ke monitor 2") — ternyata maunya tetap konsisten dengan modul lain, 1 window saja, bahasa desain sama. `InformasiWindow`/`AboutWindow` (Window) **DIHAPUS**, diganti `Modules/Informasi/InformasiView` dan `Modules/About/AboutView` (UserControl, pola PageHost standar sama seperti modul lain — judul `:: [ ... ] ::`, tombol "⬅ Kembali ke Menu" `Classes="accentText"`). Isi/fitur TIDAK berubah (4 tab Informasi read-only, konten About sama persis). `MainWindow.OnTopShortcutClick` untuk "Informasi"/"Tentang Program" sekarang buka lewat `PageHost` seperti modul lainnya, bukan `new Window().Show()`/`ShowDialog()`.
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+## Fitur Laporan — SELESAI (v1, read-only) — 2026-11-07
+
+User pilih Laporan sebagai fitur lanjutan. Dashboard tile "Laporan" (sebelumnya placeholder) sekarang buka submenu 3-tile (pola sama `LabMenuView`/`FarmasiMenuView`):
+- **Laporan Kunjungan** — reuse `RegistrasiRepository.GetByPeriodeAsync` yang sudah ada (periode picker default hari ini, tombol "Tampilkan") + ringkasan jumlah kunjungan.
+- **Laporan Pendapatan** — **method baru** `KasirRepository.GetLaporanPendapatanAsync(fromDate,toDate)` (list tagihan per kunjungan dalam periode, capped `.Take(300)`, reuse logika `GetBillAsync` per baris) + ringkasan total tagihan & total sudah dibayar.
+- **Laporan Penjualan Farmasi** — reuse `FarmasiRepository.GetPenjualanAsync` yang sudah ada (sebelumnya cuma dipanggil hardcode 7 hari di `DataPenjualanView`, sekarang dengan periode picker bebas) + ringkasan total.
+- Semua READ-ONLY, semua default periode = hari ini (pelajaran dari insiden Registrasi: jangan default ke range lebar tanpa filter terhadap tabel besar).
+- **BELUM dilakukan**: cetak PDF (pola QuestPDF sudah ada di `RegistrasiReport.cs`, tinggal direplikasi — belum sempat di sesi ini), laporan lain yang legacy py punya (kepegawaian, inventaris, dll — modul sumbernya sendiri belum dibangun jadi laporannya juga belum).
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+
+## Right-click patient context menu — SELESAI (v1, 4 dari 17 item nyata) — 2026-11-07
+
+User kirim screenshot menu klik-kanan legacy pada daftar pasien (Data Rekam Medis, Permintaan, Kamar Inap, Tindakan & Pemeriksaan, Obat, Billing/Pembayaran Pasien, Laporan, Grafik Analisa, Surat-Surat, Check List Kelengkapan Pendaftaran, Lembar Periksa Pasien, Label & Barcode, Rujukan, Bridging, Input Data, Urutkan Data Berdasar, Hapus & Ubah Data). Minta: bangun dulu **behaviour**-nya (mekanisme klik-kanan di semua grid pasien), isi menunya dilengkapi pelan-pelan menyusul.
+
+- **`Modules/Shared/PatientContextMenu.cs`** (baru) — definisi SATU menu klik-kanan dipakai bareng oleh 4 grid pasien (Registrasi/IGD/Rawat Inap/Rawat Jalan), bukan 4 salinan terpisah. `PatientMenuAction` enum berisi ke-17 item persis urutan screenshot (dengan separator grup yang sama). `PatientContextMenu.Build(getSelected, onSelect)` — reusable, dipasang ke `DataGrid.ContextMenu` tiap view lewat constructor.
+  - **Catatan simplifikasi**: context menu pakai baris yang SEDANG TERPILIH (`SelectedItem`) di grid saat item menu diklik — BUKAN literal "baris di bawah kursor klik-kanan" (klik-kanan di Avalonia `DataGrid` tidak otomatis re-select baris itu). Asumsinya user klik-kiri dulu buat pilih baris, baru klik-kanan buat buka menu — behaviour umum, tapi beda dari beberapa app native Windows. Didokumentasikan di komentar kode.
+- **4 dari 17 item SUDAH nyata** (navigasi ke layar yang sudah ada + prefill No.Rawat/No.RM):
+  - **Data Rekam Medis** → buka `Modules/Pasien/PasienView`, auto-search by No.RM (`PasienView.SearchForAsync` — method baru).
+  - **Kamar Inap** → buka `Modules/RawatInap/RawatInapView`, prefill No.Rawat di form Admit + buka panel (`RawatInapView.PrefillAdmit` — method baru).
+  - **Tindakan & Pemeriksaan** → buka `Modules/RawatJalan/RawatJalanView` (belum prefill pasien spesifik — antrian-nya sudah termasuk semua pasien lintas poli termasuk yang dipilih, tinggal diklik manual dari situ).
+  - **Billing/Pembayaran Pasien** → buka `Modules/Kasir/KasirView`, prefill No.Rawat + auto-cari tagihan (`KasirView.SearchForAsync` — method baru).
+- **13 item sisanya** (Permintaan, Obat, Laporan, Grafik Analisa, Surat-Surat, Check List Kelengkapan Pendaftaran, Lembar Periksa Pasien, Label & Barcode, Rujukan, Bridging, Input Data, Urutkan Data Berdasar, Hapus & Ubah Data) — klik masih munculin dialog "belum diimplementasikan" (format pesan include nama pasien, misal `"Permintaan" untuk BUDI SANTOSO`). **Sengaja progresif** sesuai instruksi user "pelan-pelan" — pindahkan satu-per-satu dari `MainWindow.HandlePatientMenuAsync`'s default case ke `case` nyata begitu layar terkaitnya dibangun.
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
+- **Belum diverifikasi visual** — coba klik-kanan di grid Registrasi/IGD/Rawat Inap/Rawat Jalan, pastikan menu muncul dengan urutan+separator yang benar dan ke-4 item nyata beneran pindah layar dengan data terisi.
+
+## Polish terakhir sesi ini: tile dinamis, grid auto-fit, tab header kecil — 2026-11-07
+
+- **`Modules/Shared/MenuTileBuilder.cs`** (baru) — satu helper dipakai `LabMenuView`/`RadiologiMenuView`/`FarmasiMenuView`/`LaporanMenuView` (sebelumnya 4 salinan kode identik). Ukuran tile sekarang **menyesuaikan jumlah item**: ≤2 tile → 260x190 font 16, ≤4 tile → 190x150 font 14, lebih → 150x110 font 13 (default lama). Jadi submenu Radiologi (2 tile) sekarang tile-nya besar & proporsional, bukan kecil nyempil di area kosong.
+- **Grid Registrasi** — 18 kolom dikonversi dari pixel tetap ke **star-sizing proporsional** (`Width="0.7*"` dst, + `MinWidth` per kolom) — otomatis mengisi penuh lebar layar tanpa perlu resize manual, tetap bisa di-resize manual kalau mau (`CanUserResizeColumns` tetap `True`). **Catatan untuk sesi berikutnya**: grid lain (IGD/RawatInap/Lab/Farmasi/dll) MASIH pakai kolom pixel tetap — belum dikonversi semua karena scope besar (banyak file), tapi pola star-sizing ini sudah established, tinggal direplikasi kalau user minta grid lain ikut auto-fit juga.
+- **Tab "Registrasi Awal"/"Rujukan Internal Poli"** — header diganti `TextBlock` custom (bukan `Header="..."` string biasa) dengan `FontSize="12"` + `FontWeight="Medium"` + `ThemeTextBrush`, lebih kecil & konsisten dengan body text layar ini (sebelumnya pakai default styling `TabItem` dari FluentTheme yang terasa lebih besar dari teks lain).
+
+Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
 
 ## Belum dilakukan / dengan sengaja ditunda
 - TIDAK ada file yang dihapus atau diubah.

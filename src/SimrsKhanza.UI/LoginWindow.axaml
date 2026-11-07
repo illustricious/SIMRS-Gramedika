@@ -1,33 +1,58 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="SimrsKhanza.UI.LoginWindow"
-        Title="Login — SIMRS Khanza"
-        Width="380" Height="300"
+        Title="Login — SIMRS Gramedika"
+        Width="420" Height="440"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        Background="#2E4057">
+        Background="#1E3A8A">
 
     <!--
         Legacy reference: login is embedded inside src/simrskhanza/frmUtama.java
         (fields edAdmin/edPwd + DlgLogin overlay). Here it is split out into its
         own window calling Core.Auth.IAuthService, per PLANNING_APLIKASI.md §2.
+        Restyled to match the app's own palette (App.axaml, sampled from
+        rsugramedika10.com) instead of a one-off hardcoded dark-blue — previously
+        looked visually disconnected from the rest of the app.
     -->
-    <StackPanel Margin="24" Spacing="12" VerticalAlignment="Center">
-        <TextBlock Text="SIMRS KHANZA" FontSize="22" FontWeight="Bold"
-                   Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,12" />
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#1E3A8A" Offset="0" />
+                <GradientStop Color="#172B66" Offset="1" />
+            </LinearGradientBrush>
+        </Grid.Background>
 
-        <TextBlock Text="User ID" Foreground="#C7D0DB" />
-        <TextBox Name="UserIdBox" Text="admin" PlaceholderText="user id" />
+        <Border Background="White" CornerRadius="10" Width="340" Padding="28"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                BoxShadow="0 8 24 0 #40000000">
+            <StackPanel Spacing="4">
+                <Image Source="avares://SimrsKhanza.UI/Assets/logo.png" Width="56" Height="56"
+                       Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                <TextBlock Text="SIMRS GRAMEDIKA" FontSize="20" FontWeight="Bold"
+                           Foreground="#1E3A8A" HorizontalAlignment="Center" />
+                <TextBlock Text="Sistem Informasi Manajemen Rumah Sakit" FontSize="11"
+                           Foreground="#64748B" HorizontalAlignment="Center" Margin="0,0,0,18"
+                           TextWrapping="Wrap" TextAlignment="Center" />
 
-        <TextBlock Text="Password" Foreground="#C7D0DB" />
-        <TextBox Name="PasswordBox" PasswordChar="*" PlaceholderText="password" Text="admin123" />
+                <TextBlock Text="User ID" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
+                <TextBox Name="UserIdBox" Text="admin" PlaceholderText="user id" Margin="0,0,0,10" />
 
-        <TextBlock Name="ErrorText" Foreground="#E07A5F" IsVisible="False" TextWrapping="Wrap" />
+                <TextBlock Text="Password" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
+                <TextBox Name="PasswordBox" PasswordChar="*" PlaceholderText="password" Text="admin123" />
 
-        <Button Name="LoginButton" Content="Masuk" HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" Margin="0,8,0,0" Click="OnLoginClick" />
+                <TextBlock Name="ErrorText" Foreground="#DC2626" FontSize="12" IsVisible="False"
+                           TextWrapping="Wrap" Margin="0,8,0,0" />
 
-        <TextBlock Text="Dev seed: admin / admin123 (belum terhubung ke DB sik asli)"
-                   FontSize="10" Foreground="#8EA3B0" HorizontalAlignment="Center" Margin="0,8,0,0" />
-    </StackPanel>
+                <Button Name="LoginButton" Content="Masuk" HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" Margin="0,16,0,0" Padding="0,10"
+                        Background="#1E3A8A" Foreground="White" CornerRadius="6"
+                        FontWeight="Medium" Click="OnLoginClick" />
+
+                <TextBlock Text="Dev seed: admin / admin123 (belum terhubung ke DB sik asli)"
+                           FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"
+                           TextWrapping="Wrap" TextAlignment="Center" Margin="0,14,0,0" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

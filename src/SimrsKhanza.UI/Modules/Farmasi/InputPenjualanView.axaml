@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:core="using:SimrsKhanza.Core.Entities"
+             x:Class="SimrsKhanza.UI.Modules.Farmasi.InputPenjualanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        v1 simplification: ONE item per transaction (not the legacy multi-line
+        form) — real INSERT into pengeluaran_obat_bhp + detail_pengeluaran_obat_bhp.
+        See FarmasiRepository.InputPenjualanAsync's doc comment.
+    -->
+    <Grid RowDefinitions="Auto,Auto,*" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Input Penjualan Obat &amp; BHP ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+
+        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="16"
+                MaxWidth="460" HorizontalAlignment="Left">
+            <StackPanel Spacing="4">
+                <TextBlock Text="Cari Barang (nama/kode) :" />
+                <TextBox Name="CariBarangBox" KeyUp="OnCariBarangKeyUp" PlaceholderText="ketik lalu Enter untuk cari" />
+                <ComboBox Name="BarangCombo" HorizontalAlignment="Stretch" Margin="0,4,0,0"
+                          SelectionChanged="OnBarangSelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="core:DataBarang">
+                            <TextBlock Text="{Binding NamaBarang}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Name="HargaText" Margin="0,4,0,0" Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+
+                <TextBlock Text="Jumlah :" Margin="0,8,0,0" />
+                <TextBox Name="JumlahBox" Text="1" />
+
+                <TextBlock Text="Keterangan / Tujuan :" Margin="0,4,0,0" />
+                <TextBox Name="KeteranganBox" PlaceholderText="contoh: dijual langsung, atau ke Bangsal X" />
+
+                <TextBlock Text="No. Faktur (opsional) :" Margin="0,4,0,0" />
+                <TextBox Name="NoFakturBox" />
+
+                <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap"
+                           Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                <Button Name="SimpanButton" Content="💾 Simpan Transaksi" Click="OnSimpanClick"
+                        HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>
