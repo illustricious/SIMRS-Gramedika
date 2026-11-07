@@ -28,6 +28,8 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
     public DbSet<HasilLab> HasilLabSet => Set<HasilLab>();
     public DbSet<HasilRadiologi> HasilRadiologiSet => Set<HasilRadiologi>();
     public DbSet<DataBarang> DataBarangSet => Set<DataBarang>();
+    public DbSet<JenisBarang> JenisBarangSet => Set<JenisBarang>();
+    public DbSet<GudangBarang> GudangBarangSet => Set<GudangBarang>();
     public DbSet<ResepObat> ResepObatSet => Set<ResepObat>();
     public DbSet<ResepDokterItem> ResepDokterItemSet => Set<ResepDokterItem>();
     public DbSet<PengeluaranObatBhp> PengeluaranObatBhpSet => Set<PengeluaranObatBhp>();
@@ -349,6 +351,26 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
             e.Property(d => d.Aktif).HasColumnName("status")
                 .HasConversion(v => v ? "1" : "0", v => v == "1")
                 .HasMaxLength(1);
+            e.Property(d => d.KodeJenis).HasColumnName("kdjns").HasMaxLength(4);
+        });
+
+        modelBuilder.Entity<JenisBarang>(e =>
+        {
+            e.ToTable("jenis");
+            e.HasKey(j => j.KodeJenis);
+            e.Property(j => j.KodeJenis).HasColumnName("kdjns").HasMaxLength(4);
+            e.Property(j => j.Nama).HasColumnName("nama").HasMaxLength(30);
+        });
+
+        modelBuilder.Entity<GudangBarang>(e =>
+        {
+            e.ToTable("gudangbarang");
+            e.HasKey(g => new { g.KodeBarang, g.KodeBangsal, g.NoBatch, g.NoFaktur });
+            e.Property(g => g.KodeBarang).HasColumnName("kode_brng").HasMaxLength(15);
+            e.Property(g => g.KodeBangsal).HasColumnName("kd_bangsal").HasMaxLength(5);
+            e.Property(g => g.Stok).HasColumnName("stok");
+            e.Property(g => g.NoBatch).HasColumnName("no_batch").HasMaxLength(20);
+            e.Property(g => g.NoFaktur).HasColumnName("no_faktur").HasMaxLength(20);
         });
 
         modelBuilder.Entity<ResepObat>(e =>

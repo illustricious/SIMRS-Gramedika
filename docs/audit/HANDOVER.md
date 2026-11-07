@@ -666,6 +666,25 @@ User kirim screenshot legacy "Data Pemeriksaan Radiologi": filter bar atas (No.R
 - Build sukses, `.exe` di-publish ulang. **Belum diverifikasi visual** — belum ada tooling screenshot/computer-use sesi ini untuk cek tampilan beneran mirip screenshot legacy.
 - **Catatan untuk sesi berikutnya**: layout yang sama ini (filter bar + grid + Key Word/Hapus/Semua/Cetak/Keluar) kemungkinan juga cocok dipakai ulang untuk "Permintaan Lab" (`Modules/Laboratorium/LabPermintaanView`) yang sekarang masih bentuk form polos sama kayak Radiologi dulu — belum disentuh sesi ini, tapi pola & helper bisa ditiru langsung begitu diminta.
 
+## MainWindow fullscreen on login + Input Penjualan Farmasi dirombak jadi katalog multi-item — 2026-11-07
+
+User kirim screenshot legacy "Transaksi Penjualan Obat, Alkes & BHP Medis" dan minta MainWindow buka maximized (bukan window kecil 1200x760) begitu login.
+
+- **`MainWindow.axaml`** — tambah `WindowState="Maximized"` di root `Window`. Tidak mengubah `Width`/`Height` default (tetap dipakai kalau user restore-down window-nya).
+- **Skema real yang baru diverifikasi read-only lewat `DESCRIBE`/`SELECT` ke DB live** (bukan tebakan):
+  - `databarang.kdjns` → tabel `jenis` (kdjns/nama) = kolom "Kategori" di screenshot (TABLET/ALKES/INJEKSI/…). **Bukan** `kategori_barang` (FORNAS/GENERIK/…) meski namanya mirip — sempat salah duga, dicek dulu ke live DB sebelum ngoding.
+  - `gudangbarang` (kode_brng+kd_bangsal+no_batch+no_faktur → stok) = sumber kolom "Stok". Kolom "Lokasi: F.A" di screenshot cocok persis dengan `bangsal.kd_bangsal='F.A'` → "INSTALASI FARMASI". v1 cuma dukung satu lokasi ini (yang dipakai Farmasi), stok dijumlah lintas batch/faktur per kode_barang.
+- **`Modules/Shared/Entities/Farmasi.cs`** (sebenarnya `Core/Entities/Farmasi.cs`) — tambah `DataBarang.KodeJenis`, entity baru `JenisBarang` dan `GudangBarang`. `DbContext` di-extend sesuai.
+- **`FarmasiRepository`** — `InputPenjualanAsync` (1 item/transaksi) **diganti total** jadi `SimpanPenjualanAsync` (N item/transaksi, 1 row `detail_pengeluaran_obat_bhp` per item) + method baru `GetKatalogPenjualanAsync` (seluruh katalog barang aktif, ~1377 item, di-join ke `jenis` utk Kategori + stok `gudangbarang` lokasi F.A).
+- **`Modules/Farmasi/InputPenjualanView.axaml(.cs)`** — dirombak total meniru layout legacy:
+  - Header: No.Nota (readonly, bilang "dibuat otomatis saat Simpan" — **sengaja tidak meniru format "PJ..." legacy** karena algoritma penomoran aslinya belum di-reverse-engineer; no_keluar v1 tetap skema timestamp yang sudah ada), Pasien (opsional, teks bebas — tidak ada kolom pasien di `pengeluaran_obat_bhp` jadi digabung ke Keterangan saat Simpan), Catatan (wajib, jadi Keterangan), Petugas (placeholder NIP, sama seperti sebelumnya), Tanggal, Jenis Jual (Jual Bebas berfungsi; "Resep Dokter" cuma munculin pesan arahkan ke menu Daftar Resep Dokter, belum terhubung otomatis), Lokasi (readonly F.A).
+  - Tab **Umum**: grid SELURUH katalog barang aktif (bukan satu-per-satu pilih dari dropdown seperti versi lama) — kolom Jml/Ptg(%)/Tmb(Rp)/Emb(Rp)/Tsl(Rp)/Aturan Pakai/No.Batch/No.Faktur bisa diedit langsung di baris (persis behaviour legacy: ketik jumlah di barang yang mau dijual, baris lain dibiarkan Jml=0). Subtotal/Ptg(Rp)/Total/Grand Total terhitung otomatis (`PenjualanLine.cs`, class baru dgn `INotifyPropertyChanged` manual).
+  - Tab **Racikan**: stub teks "belum didukung" — racikan (obat formula/campuran) butuh pemodelan resep racikan terstruktur yang belum ada.
+  - Baris bawah: Grand Total, PPN Obat(%), Akun Bayar (kosmetik, belum ada tabel akun), Ongkos Kirim, Tagihan+PPN, Jumlah Bayar, Kembali — **semua cuma hitungan UI**, TIDAK ada kolom buat PPN/ongkos-kirim/pembayaran di `pengeluaran_obat_bhp` legacy, jadi tidak ada yang disimpan dari situ (hanya per-baris Total barang yang tersimpan ke `detail_pengeluaran_obat_bhp.total`). Key Word (filter client-side nama/kode), Cari (reload dari DB), Nota (stub, belum ada cetak), Simpan (real, multi-item), Keluar.
+  - **Sengaja TIDAK dibangun**: kolom "Kadaluarsa" (expire per-batch, butuh tabel batch master yang belum dimodelkan — `databarang.expire` ada tapi itu level katalog bukan per-batch terjual), cetak Nota, racikan.
+- Build sukses, 12 test tetap pass, `.exe` di-publish ulang. **Belum diverifikasi visual** (tidak ada tooling screenshot/computer-use di sesi ini) — terutama perlu dicek: grid 1377 baris tidak lag, kolom bisa diedit inline dengan benar, dan kalkulasi Total/Grand Total akurat.
+- **Catatan untuk sesi berikutnya**: `DataPenjualanView` (layar "Data Penjualan") masih query lama yang nge-join satu detail per header lewat `GetPenjualanAsync` — sekarang dengan transaksi multi-item, satu `no_keluar` bisa punya banyak baris, jadi layar itu akan menampilkan baris terpisah per item (bukan grup per transaksi) — belum masalah fungsional tapi tampilannya belum disesuaikan, catat kalau user minta dirapikan nanti.
+
 ## Belum dilakukan / dengan sengaja ditunda
 - TIDAK ada file yang dihapus atau diubah.
 - TIDAK ada rewrite/implementasi baru dimulai (sesuai instruksi user).

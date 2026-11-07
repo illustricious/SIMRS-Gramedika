@@ -333,6 +333,7 @@ public partial class MainWindow : Window
                 var view = new Modules.Farmasi.InputPenjualanView();
                 view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
                 pageHost.Content = view;
+                await view.ReloadAsync();
                 break;
             }
             case Modules.Farmasi.FarmasiAction.DataPenjualan:

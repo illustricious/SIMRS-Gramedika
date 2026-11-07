@@ -1,52 +1,116 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:core="using:SimrsKhanza.Core.Entities"
+             xmlns:local="using:SimrsKhanza.UI.Modules.Farmasi"
              x:Class="SimrsKhanza.UI.Modules.Farmasi.InputPenjualanView"
              Background="{DynamicResource ThemeBackgroundBrush}">
 
     <!--
-        v1 simplification: ONE item per transaction (not the legacy multi-line
-        form) — real INSERT into pengeluaran_obat_bhp + detail_pengeluaran_obat_bhp.
-        See FarmasiRepository.InputPenjualanAsync's doc comment.
+        Matches the legacy "Transaksi Penjualan Obat, Alkes & BHP Medis"
+        screen: instead of picking one item at a time, the WHOLE active
+        catalog is listed and you type a quantity straight into the row
+        (v1 limits this to kd_bangsal "F.A" / INSTALASI FARMASI — the only
+        lokasi modeled). "Racikan" (compounded/recipe items) is a stub — v1
+        doesn't model drug formulas. No.Nota and the generated transaction
+        number are only known after Simpan (see InputPenjualanView.axaml.cs);
+        the field here just says so rather than faking a preview number.
     -->
-    <Grid RowDefinitions="Auto,Auto,*" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Input Penjualan Obat &amp; BHP ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="10">
+        <TextBlock Grid.Row="0" Text=":: [ Transaksi Penjualan Obat, Alkes &amp; BHP Medis ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
 
-        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="16"
-                MaxWidth="460" HorizontalAlignment="Left">
-            <StackPanel Spacing="4">
-                <TextBlock Text="Cari Barang (nama/kode) :" />
-                <TextBox Name="CariBarangBox" KeyUp="OnCariBarangKeyUp" PlaceholderText="ketik lalu Enter untuk cari" />
-                <ComboBox Name="BarangCombo" HorizontalAlignment="Stretch" Margin="0,4,0,0"
-                          SelectionChanged="OnBarangSelectionChanged">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="core:DataBarang">
-                            <TextBlock Text="{Binding NamaBarang}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <TextBlock Name="HargaText" Margin="0,4,0,0" Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+        <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                Background="{DynamicResource ThemeSurfaceBrush}" Padding="10" CornerRadius="4" Margin="0,0,0,6">
+            <Grid ColumnDefinitions="Auto,*,20,Auto,*" RowDefinitions="Auto,Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Nota :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="1" Text="(dibuat otomatis saat Simpan)" IsReadOnly="True" Margin="4,2" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Pasien :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="4" Name="PasienBox" Margin="4,2" PlaceholderText="opsional — kosongkan jika jual bebas umum" />
 
-                <TextBlock Text="Jumlah :" Margin="0,8,0,0" />
-                <TextBox Name="JumlahBox" Text="1" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Catatan :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="1" Name="CatatanBox" Margin="4,2" Text="Jual bebas" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Petugas :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="4" Name="PetugasBox" IsReadOnly="True" Margin="4,2" />
 
-                <TextBlock Text="Keterangan / Tujuan :" Margin="0,4,0,0" />
-                <TextBox Name="KeteranganBox" PlaceholderText="contoh: dijual langsung, atau ke Bangsal X" />
-
-                <TextBlock Text="No. Faktur (opsional) :" Margin="0,4,0,0" />
-                <TextBox Name="NoFakturBox" />
-
-                <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap"
-                           Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
-                <Button Name="SimpanButton" Content="💾 Simpan Transaksi" Click="OnSimpanClick"
-                        HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
-            </StackPanel>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Tanggal :" VerticalAlignment="Center" />
+                <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,16,Auto,Auto" Margin="4,2" HorizontalAlignment="Left">
+                    <DatePicker Grid.Column="0" Name="TanggalPicker" />
+                    <TextBlock Grid.Column="2" Text="Jenis Jual :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                    <ComboBox Grid.Column="3" Name="JenisJualCombo" MinWidth="140" />
+                </Grid>
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Lokasi :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="2" Grid.Column="4" Text="F.A — INSTALASI FARMASI" IsReadOnly="True" Margin="4,2" />
+            </Grid>
         </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <TabControl Grid.Row="2" Margin="0,0,0,4">
+            <TabItem Header="Umum">
+                <DataGrid Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="False"
+                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          x:DataType="local:PenjualanLine" CellEditEnded="OnCellEditEnded">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Jml" Binding="{Binding Jml}" Width="55" MinWidth="50" />
+                        <DataGridTextColumn Header="Kode Barang" Binding="{Binding KodeBarang}" Width="90" MinWidth="80" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Nama Barang" Binding="{Binding NamaBarang}" Width="2*" MinWidth="160" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Kategori" Binding="{Binding Kategori}" Width="*" MinWidth="80" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Satuan" Binding="{Binding Satuan}" Width="70" MinWidth="60" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Harga(Rp)" Binding="{Binding Harga, StringFormat={}{0:N0}}" Width="90" MinWidth="80" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Subtotal(Rp)" Binding="{Binding Subtotal, StringFormat={}{0:N0}}" Width="100" MinWidth="90" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Ptg(%)" Binding="{Binding PtgPercent}" Width="55" MinWidth="50" />
+                        <DataGridTextColumn Header="Ptg(Rp)" Binding="{Binding PtgRp, StringFormat={}{0:N0}}" Width="80" MinWidth="70" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Tmb(Rp)" Binding="{Binding TmbRp}" Width="75" MinWidth="65" />
+                        <DataGridTextColumn Header="Emb(Rp)" Binding="{Binding EmbRp}" Width="75" MinWidth="65" />
+                        <DataGridTextColumn Header="Tsl(Rp)" Binding="{Binding TslRp}" Width="75" MinWidth="65" />
+                        <DataGridTextColumn Header="Aturan Pakai" Binding="{Binding AturanPakai}" Width="*" MinWidth="100" />
+                        <DataGridTextColumn Header="Total(Rp)" Binding="{Binding Total, StringFormat={}{0:N0}}" Width="100" MinWidth="90" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Stok" Binding="{Binding Stok, StringFormat={}{0:N0}}" Width="55" MinWidth="50" IsReadOnly="True" />
+                        <DataGridTextColumn Header="No.Batch" Binding="{Binding NoBatch}" Width="80" MinWidth="70" />
+                        <DataGridTextColumn Header="No.Faktur" Binding="{Binding NoFaktur}" Width="80" MinWidth="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Racikan">
+                <TextBlock Text="Racikan (obat formula/campuran) belum didukung di v1 — belum ada pemodelan resep racikan terstruktur."
+                           Margin="16" TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+            </TabItem>
+        </TabControl>
+
+        <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto,24,Auto,Auto,24,Auto,Auto,Auto,24,Auto,Auto" Margin="0,2,0,6">
+            <TextBlock Grid.Column="0" Text="Grand Total :" FontWeight="Bold" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Name="GrandTotalText" Text="0" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" />
+
+            <TextBlock Grid.Column="3" Text="PPN Obat(%) :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="4" Name="PpnPercentBox" Text="0" Width="50" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
+
+            <TextBlock Grid.Column="6" Text="Akun Bayar :" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="7" Name="AkunBayarCombo" MinWidth="150" Margin="4,0" />
+
+            <TextBlock Grid.Column="8" Text="Ongkos Kirim :" VerticalAlignment="Center" Margin="8,0,0,0" />
+            <TextBox Grid.Column="10" Name="OngkosKirimBox" Text="0" Width="80" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
+        </Grid>
+
+        <Grid Grid.Row="4" ColumnDefinitions="Auto,Auto,16,Auto,*,Auto,8,Auto" Margin="0,0,0,4">
+            <TextBlock Grid.Column="0" Text="Tagihan + PPN :" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Name="TagihanPpnText" Text="0" VerticalAlignment="Center" Margin="4,0,0,0" />
+            <TextBlock Grid.Column="3" Text="Jumlah Bayar :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="4" Name="JumlahBayarBox" Text="0" MaxWidth="160" HorizontalAlignment="Left" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
+            <TextBlock Grid.Column="5" Text="Kembali :" VerticalAlignment="Center" Margin="8,0,0,0" />
+            <TextBlock Grid.Column="7" Name="KembaliText" Text="0" VerticalAlignment="Center" />
+        </Grid>
+
+        <Grid Grid.Row="5" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="8">
+                <Button Name="NotaButton" Content="🧾 Nota" IsEnabled="False" />
+                <Button Name="SimpanButton" Content="💾 Simpan" Click="OnSimpanClick" />
+            </StackPanel>
+            <StackPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Key Word :" VerticalAlignment="Center" />
+                <TextBox Name="KeywordBox" Width="220" TextChanged="OnKeywordChanged" />
+                <Button Content="🔍 Cari" Click="OnCariClick" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+            </StackPanel>
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap"
+                       Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+        </Grid>
     </Grid>
 
     <UserControl.Styles>
