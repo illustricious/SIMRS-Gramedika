@@ -425,6 +425,7 @@ public partial class MainWindow : Window
             var view = new Modules.Radiologi.PermintaanRadiologiView();
             view.BackRequested += async (_, _) => await OpenRadiologiMenuAsync();
             pageHost.Content = view;
+            await view.ReloadAsync();
         }
         else
         {

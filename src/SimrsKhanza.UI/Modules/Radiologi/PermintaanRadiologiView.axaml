@@ -1,33 +1,90 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Radiologi.PermintaanRadiologiView"
              Background="{DynamicResource ThemeBackgroundBrush}">
 
-    <Grid RowDefinitions="Auto,Auto,*" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Permintaan Radiologi ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+    <!--
+        Matches the legacy "Data Pemeriksaan Radiologi" screen: a filter bar
+        (No.Rawat / Tanggal s.d. / keyword) over a grid of permintaan_radiologi
+        orders, with a Key Word search + Hapus/Semua/Cetak/Keluar bar at the
+        bottom. The legacy screen also nests a per-order exam/cost breakdown
+        (Proyeksi & Dosis Radiasi, Kode Periksa, Biaya, Cara Bayar) sourced from
+        jns_perawatan_radiologi/periksa_radiologi tariff tables, which v1 does
+        not model yet (see HANDOVER.md) — so that breakdown is left out here;
+        "Hapus"/"Cetak" are stubbed pending that work. Creating a NEW order
+        still uses the simple collapsible form on top, same language as
+        Igd/RawatInap.
+    -->
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="12">
+        <TextBlock Grid.Row="0" Text=":: [ Data Pemeriksaan Radiologi ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
 
-        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="16"
-                MaxWidth="420" HorizontalAlignment="Left">
-            <StackPanel Spacing="4">
-                <TextBlock Text="No. Rawat :" />
-                <TextBox Name="NoRawatBox" PlaceholderText="contoh: 2026/11/07/000001" />
-                <TextBlock Text="Dokter Perujuk (kode) :" Margin="0,4,0,0" />
-                <TextBox Name="DokterBox" />
-                <TextBlock Text="Status Kunjungan :" Margin="0,4,0,0" />
-                <ComboBox Name="StatusCombo" HorizontalAlignment="Stretch" />
-                <TextBlock Text="Diagnosa Klinis :" Margin="0,4,0,0" />
-                <TextBox Name="DiagnosaBox" />
-                <TextBlock Name="StatusText" Margin="0,4,0,0" TextWrapping="Wrap"
-                           Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
-                <Button Name="KirimButton" Content="🩻 Kirim Permintaan" Click="OnKirimClick"
-                        HorizontalAlignment="Left" Margin="0,4,0,0" />
-            </StackPanel>
-        </Border>
+        <StackPanel Grid.Row="1" Spacing="0">
+            <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,4"
+                    IsVisible="False">
+                <StackPanel Spacing="4" MaxWidth="420" HorizontalAlignment="Left">
+                    <TextBlock Text="No. Rawat :" />
+                    <TextBox Name="NoRawatBox" PlaceholderText="contoh: 2026/11/07/000001" />
+                    <TextBlock Text="Dokter Perujuk (kode) :" Margin="0,4,0,0" />
+                    <TextBox Name="DokterBox" />
+                    <TextBlock Text="Status Kunjungan :" Margin="0,4,0,0" />
+                    <ComboBox Name="StatusCombo" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="Diagnosa Klinis :" Margin="0,4,0,0" />
+                    <TextBox Name="DiagnosaBox" />
+                    <TextBlock Name="StatusText" Margin="0,4,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    <Button Name="KirimButton" Content="🩻 Kirim Permintaan Baru" Click="OnKirimClick"
+                            HorizontalAlignment="Left" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+            <ToggleButton Name="InputToggle" IsChecked="False" Click="OnToggleInput"
+                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Permintaan Baru" FontStyle="Italic"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
         </StackPanel>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,16,Auto,Auto,8,Auto,Auto,16,Auto,*" Margin="0,8,0,8">
+            <TextBlock Grid.Column="0" Text="No.Rawat :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Name="FilterNoRawatBox" Margin="4,0" MaxWidth="220" HorizontalAlignment="Left" />
+            <TextBlock Grid.Column="3" Text="Tanggal :" VerticalAlignment="Center" />
+            <DatePicker Grid.Column="4" Name="FilterFromDate" Margin="4,0" />
+            <TextBlock Grid.Column="6" Text="s.d." VerticalAlignment="Center" />
+            <DatePicker Grid.Column="7" Name="FilterToDate" Margin="4,0" />
+            <Button Grid.Column="9" Content="🔍 Cari" Click="OnCariClick" Margin="8,0,0,0" />
+        </Grid>
+
+        <TextBlock Grid.Row="3" Name="RecordCountText" Text="Record: 0" Margin="0,0,0,4"
+                   Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+
+        <DataGrid Grid.Row="4" Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:PenunjangAntrianItem" SelectionChanged="OnSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="150" MinWidth="130" />
+                <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" Width="*" MinWidth="140" />
+                <DataGridTextColumn Header="Tgl.Periksa" Binding="{Binding TanggalPermintaan}" Width="110" MinWidth="95" />
+                <DataGridTextColumn Header="Jam Periksa" Binding="{Binding JamPermintaan}" Width="100" MinWidth="85" />
+                <DataGridTextColumn Header="Dokter Perujuk" Binding="{Binding DokterPerujuk}" Width="*" MinWidth="120" />
+                <DataGridTextColumn Header="Diagnosa Klinis" Binding="{Binding DiagnosaKlinis}" Width="*" MinWidth="140" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="5" ColumnDefinitions="Auto,*,Auto,8,Auto,8,Auto,8,Auto,8,Auto" Margin="0,8,0,0">
+            <TextBlock Grid.Column="0" Text="Key Word :" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Name="KeywordBox" Margin="4,0" MaxWidth="260" HorizontalAlignment="Left"
+                      TextChanged="OnKeywordChanged" />
+            <Button Grid.Column="4" Content="🗑 Hapus" Click="OnHapusClick" />
+            <Button Grid.Column="6" Content="📋 Semua" Click="OnSemuaClick" />
+            <Button Grid.Column="8" Content="🖨 Cetak" Click="OnCetakClick" />
+            <Button Grid.Column="10" Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+        </Grid>
     </Grid>
 
     <UserControl.Styles>

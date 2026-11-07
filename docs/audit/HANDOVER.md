@@ -649,6 +649,23 @@ User kirim screenshot menu klik-kanan legacy pada daftar pasien (Data Rekam Medi
 
 Build sukses, 12 test tetap pass, `.exe` di-publish ulang.
 
+## Permintaan Radiologi dirombak jadi layar daftar+filter (sesuai screenshot legacy) — 2026-11-07
+
+User kirim screenshot legacy "Data Pemeriksaan Radiologi": filter bar atas (No.Rawat/Pasien/Tanggal s.d./Petugas), grid daftar permintaan dengan rincian per-baris biaya/proyeksi pemeriksaan, lalu bar bawah Key Word + Hapus/Semua/Cetak/Keluar. Sebelumnya `PermintaanRadiologiView` cuma form kirim-permintaan-baru polos, tanpa daftar sama sekali.
+
+- **`Modules/Radiologi/PermintaanRadiologiView.axaml(.cs)`** — dirombak total ikut pola layout "form input collapsible di atas (default tertutup) + grid di bawah" yang sudah established (IGD/RawatInap/Registrasi):
+  - Form kirim permintaan baru (No.Rawat/Dokter Perujuk/Status/Diagnosa) **tetap ada**, dipindah ke panel collapsible (toggle "Input Permintaan Baru"), bukan dihapus.
+  - **Filter bar baru**: No.Rawat (contains-match) + rentang Tanggal dari-s.d. (pakai `PenunjangRepository.GetAntrianRadiologiAsync` yang sudah ada, default 7 hari terakhir biar tidak lag — pelajaran dari insiden Registrasi). Tombol "Cari" reload dari DB sesuai rentang baru.
+  - **Grid baru** (`DataGrid` nama `DataGrid`) menampilkan No.Rawat/Pasien/Tgl.Periksa/Jam Periksa/Dokter Perujuk/Diagnosa Klinis — kolom star-sizing + MinWidth (ikut pola auto-fit terbaru).
+  - **Bar bawah**: "Key Word" (filter client-side tambahan di atas hasil filter tanggal — cocok ke Nama Pasien/No.Rawat/Dokter, live saat ketik), "Semua" (reset semua filter + load 1 tahun terakhir), "Hapus"/"Cetak" (placeholder, lihat di bawah), "Keluar" (kembali ke submenu Radiologi, sama kayak `BackRequested` lama).
+  - **Record count label** ("Record: N") di atas grid, meniru status bar legacy.
+- **Sengaja TIDAK dibangun** (didokumentasikan biar jelas, bukan lupa):
+  - Rincian per-baris "Proyeksi & Dosis Radiasi / Kode Periksa / Nama Pemeriksaan / Biaya / Cara Bayar" dari screenshot — ini datang dari tabel tarif `jns_perawatan_radiologi` + billing `periksa_radiologi`, yang **belum dimodelkan sama sekali** di v1 (`PermintaanRadiologi` entity cuma order header, tidak ada tarif/biaya). Butuh modul tarif+billing radiologi baru dulu sebelum ini bisa jadi nyata — bukan tugas kecil, sengaja ditunda.
+  - **Hapus** — klik cuma munculin status "belum didukung". Sengaja: hapus order radiologi nyata butuh konfirmasi + mikirin efek ke data terkait (hasil, billing), dan instruksi user eksplisit jangan ubah/hapus data pasien asli tanpa hati-hati.
+  - **Cetak** — klik cuma munculin status "belum didukung" (gantung di rincian biaya yang belum ada, sama kayak di atas).
+- Build sukses, `.exe` di-publish ulang. **Belum diverifikasi visual** — belum ada tooling screenshot/computer-use sesi ini untuk cek tampilan beneran mirip screenshot legacy.
+- **Catatan untuk sesi berikutnya**: layout yang sama ini (filter bar + grid + Key Word/Hapus/Semua/Cetak/Keluar) kemungkinan juga cocok dipakai ulang untuk "Permintaan Lab" (`Modules/Laboratorium/LabPermintaanView`) yang sekarang masih bentuk form polos sama kayak Radiologi dulu — belum disentuh sesi ini, tapi pola & helper bisa ditiru langsung begitu diminta.
+
 ## Belum dilakukan / dengan sengaja ditunda
 - TIDAK ada file yang dihapus atau diubah.
 - TIDAK ada rewrite/implementasi baru dimulai (sesuai instruksi user).
