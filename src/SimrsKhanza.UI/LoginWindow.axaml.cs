@@ -22,6 +22,15 @@ public partial class LoginWindow : Window
         InitializeComponent();
     }
 
+    private void OnDragPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) BeginMoveDrag(e);
+    }
+
+    private void OnMinimizeClick(object? sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+
+    private void OnCloseClick(object? sender, RoutedEventArgs e) => Close();
+
     private async void OnLoginClick(object? sender, RoutedEventArgs e)
     {
         var userId = this.FindControl<TextBox>("UserIdBox")!.Text ?? string.Empty;

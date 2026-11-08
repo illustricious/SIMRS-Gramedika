@@ -15,7 +15,7 @@ public class DatabaseSettings
     public string Password { get; init; } = "";
 
     public string ToConnectionString()
-        => $"Server={Host};Port={Port};Database={Database};User={User};Password={Password};";
+        => $"Server={Host};Port={Port};Database={Database};User={User};Password={Password};ConvertZeroDateTime=True;";
 
     /// <summary>
     /// Reads from environment variables (SIMRS_DB_HOST, SIMRS_DB_PORT, SIMRS_DB_NAME,

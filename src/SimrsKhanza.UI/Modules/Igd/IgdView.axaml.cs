@@ -1,96 +1,118 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Registrasi;
 using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Igd;
 
 public partial class IgdView : UserControl
 {
+    /// <summary>Legacy DlgIGD hardcodes poliklinik 'IGDK' ("Unit IGD") in both its list query and its registration.</summary>
+    private const string KodePoliIgd = "IGDK";
+
     public event EventHandler? BackRequested;
+    public event EventHandler? TriaseRequested;
 
     /// <summary>Raised from the grid's right-click patient menu — see Modules/Shared/PatientContextMenu.</summary>
     public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
-
-    private IgdAntrianItem? _selected;
 
     public IgdView()
     {
         InitializeComponent();
 
-        this.FindControl<DataGrid>("AntrianGrid")!.ContextMenu = PatientContextMenu.Build(
-            () => this.FindControl<DataGrid>("AntrianGrid")!.SelectedItem is IgdAntrianItem i
-                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
+        var grid = this.FindControl<DataGrid>("IgdGrid")!;
+        grid.ContextMenu = PatientContextMenu.Build(
+            () => grid.SelectedItem is RegistrasiListItem i ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
             request => PatientMenuRequested?.Invoke(this, request));
 
-        this.FindControl<ComboBox>("CaraMasukCombo")!.ItemsSource = Enum.GetValues<CaraMasukIgd>();
-        this.FindControl<ComboBox>("CaraMasukCombo")!.SelectedItem = CaraMasukIgd.Jalan;
-
-        this.FindControl<ComboBox>("AlatTransportasiCombo")!.ItemsSource = Enum.GetValues<AlatTransportasiIgd>();
-        this.FindControl<ComboBox>("AlatTransportasiCombo")!.SelectedItem = AlatTransportasiIgd.Sendiri;
-
-        this.FindControl<ComboBox>("AlasanKedatanganCombo")!.ItemsSource = Enum.GetValues<AlasanKedatanganIgd>();
-        this.FindControl<ComboBox>("AlasanKedatanganCombo")!.SelectedItem = AlasanKedatanganIgd.DatangSendiri;
+        // Default period = today ("Registrasi IGD Hari Ini").
+        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
     {
-        await LoadAntrianAsync();
-        await LoadKasusAsync();
+        await LoadComboAsync();
+        await LoadAsync();
     }
 
-    private async System.Threading.Tasks.Task LoadAntrianAsync()
+    private async System.Threading.Tasks.Task LoadComboAsync()
     {
-        var grid = this.FindControl<DataGrid>("AntrianGrid")!;
+        var dokterCombo = this.FindControl<ComboBox>("InputDokterCombo")!;
+        var penjabCombo = this.FindControl<ComboBox>("InputPenjabCombo")!;
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var from = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
-            var to = DateOnly.FromDateTime(DateTime.Today);
-            grid.ItemsSource = await new IgdRepository(db).GetAntrianBelumTriaseAsync(from, to);
+            var repo = new RegistrasiRepository(db);
+
+            var dokter = await repo.GetDokterAsync();
+            dokterCombo.ItemsSource = dokter;
+            dokterCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Dokter.NamaDokter));
+            if (dokter.Count > 0 && dokterCombo.SelectedIndex < 0) dokterCombo.SelectedIndex = 0;
+
+            var penjab = await repo.GetPenjabAsync();
+            penjabCombo.ItemsSource = penjab;
+            penjabCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Penjab.NamaPenanggungJawab));
+            if (penjab.Count > 0 && penjabCombo.SelectedIndex < 0) penjabCombo.SelectedIndex = 0;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            grid.ItemsSource = new List<IgdAntrianItem>();
+            ShowStatus($"Gagal memuat data dokter/jenis bayar: {ex.Message}", isError: true);
         }
     }
 
-    private async System.Threading.Tasks.Task LoadKasusAsync()
+    private async System.Threading.Tasks.Task LoadAsync()
     {
-        var combo = this.FindControl<ComboBox>("KasusCombo")!;
+        var grid = this.FindControl<DataGrid>("IgdGrid")!;
+        var from = DateOnly.FromDateTime(this.FindControl<DatePicker>("FromPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var to = DateOnly.FromDateTime(this.FindControl<DatePicker>("ToPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var keyword = this.FindControl<TextBox>("KeywordBox")!.Text?.Trim();
+
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var kasus = await new IgdRepository(db).GetMacamKasusAsync();
-            combo.ItemsSource = kasus;
-            combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(MasterTriaseKasus.MacamKasus));
-            if (kasus.Count > 0) combo.SelectedIndex = 0;
+            IReadOnlyList<RegistrasiListItem> items =
+                await new RegistrasiRepository(db).GetByPeriodeAsync(from, to, null, default, KodePoliIgd);
+
+            // Same fields the legacy Key Word box matches (DlgIGD.tampil).
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                bool Has(string? s) => s?.Contains(keyword, StringComparison.OrdinalIgnoreCase) == true;
+                items = items.Where(i => Has(i.NoReg) || Has(i.NoRawat) || Has(i.KodeDokter) || Has(i.NamaDokter)
+                    || Has(i.NoRekamMedis) || Has(i.NamaPasien) || Has(i.NamaPoli) || Has(i.PenanggungJawab)
+                    || Has(i.AlamatPj) || Has(i.HubunganPj) || Has(i.JenisBayar)
+                    || i.TanggalRegistrasi?.ToString("yyyy-MM-dd").Contains(keyword) == true).ToList();
+            }
+
+            grid.ItemsSource = items;
+            this.FindControl<TextBlock>("RecordText")!.Text = $"Record : {items.Count}";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            combo.ItemsSource = new List<MasterTriaseKasus>();
+            grid.ItemsSource = new List<RegistrasiListItem>();
+            this.FindControl<TextBlock>("RecordText")!.Text = "Record : 0";
+            ShowStatus($"Gagal memuat registrasi IGD: {ex.Message}", isError: true);
         }
     }
 
-    private void OnAntrianSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        _selected = this.FindControl<DataGrid>("AntrianGrid")!.SelectedItem as IgdAntrianItem;
-        this.FindControl<TextBlock>("SelectedPatientText")!.Text = _selected is null
-            ? "(belum ada pasien dipilih dari antrian)"
-            : $"{_selected.NamaPasien}  —  No.Rawat {_selected.NoRawat}  —  {_selected.NamaPoli}";
-        this.FindControl<Button>("SimpanButton")!.IsEnabled = _selected is not null;
+    private async void OnCariClick(object? sender, RoutedEventArgs e) => await LoadAsync();
 
-        // Picking a patient clearly means "I want to triage them" — auto-open
-        // the input panel instead of making the user click the toggle too.
-        if (_selected is not null)
-        {
-            var toggle = this.FindControl<ToggleButton>("InputToggle")!;
-            toggle.IsChecked = true;
-            this.FindControl<Border>("InputPanel")!.IsVisible = true;
-        }
+    private async void OnKeywordKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter) await LoadAsync();
+    }
+
+    private async void OnSemuaClick(object? sender, RoutedEventArgs e)
+    {
+        this.FindControl<TextBox>("KeywordBox")!.Text = string.Empty;
+        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        await LoadAsync();
     }
 
     private void OnToggleInput(object? sender, RoutedEventArgs e)
@@ -101,77 +123,86 @@ public partial class IgdView : UserControl
 
     private async void OnSimpanClick(object? sender, RoutedEventArgs e)
     {
-        if (_selected is null) return;
+        var noRm = this.FindControl<TextBox>("InputNoRmBox")!.Text?.Trim();
+        var dokter = this.FindControl<ComboBox>("InputDokterCombo")!.SelectedItem as Dokter;
+        var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedItem as Penjab;
 
-        var status = this.FindControl<TextBlock>("StatusText")!;
-        var tensi = this.FindControl<TextBox>("TensiBox")!.Text ?? string.Empty;
-        var nadi = this.FindControl<TextBox>("NadiBox")!.Text ?? string.Empty;
-        var napas = this.FindControl<TextBox>("NapasBox")!.Text ?? string.Empty;
-        var suhu = this.FindControl<TextBox>("SuhuBox")!.Text ?? string.Empty;
-        var spo2 = this.FindControl<TextBox>("Spo2Box")!.Text ?? string.Empty;
-        var nyeri = this.FindControl<TextBox>("NyeriBox")!.Text ?? string.Empty;
-
-        if (string.IsNullOrWhiteSpace(tensi) || string.IsNullOrWhiteSpace(nadi) || string.IsNullOrWhiteSpace(napas)
-            || string.IsNullOrWhiteSpace(suhu) || string.IsNullOrWhiteSpace(spo2) || string.IsNullOrWhiteSpace(nyeri))
+        if (string.IsNullOrWhiteSpace(noRm) || penjab is null)
         {
-            ShowError(status, "Semua tanda vital wajib diisi (kolom NOT NULL di skema legacy data_triase_igd).");
+            ShowInputStatus("No.Rekam Medik dan Jenis Bayar wajib diisi.", isError: true);
             return;
         }
-
-        var kasus = this.FindControl<ComboBox>("KasusCombo")!.SelectedItem as MasterTriaseKasus;
-        if (kasus is null)
-        {
-            ShowError(status, "Macam Kasus wajib dipilih.");
-            return;
-        }
-
-        var triase = new TriaseIgd
-        {
-            NoRawat = _selected.NoRawat,
-            TanggalKunjungan = DateTime.Now,
-            CaraMasuk = (CaraMasukIgd)this.FindControl<ComboBox>("CaraMasukCombo")!.SelectedItem!,
-            AlatTransportasi = (AlatTransportasiIgd)this.FindControl<ComboBox>("AlatTransportasiCombo")!.SelectedItem!,
-            AlasanKedatangan = (AlasanKedatanganIgd)this.FindControl<ComboBox>("AlasanKedatanganCombo")!.SelectedItem!,
-            KeteranganKedatangan = this.FindControl<TextBox>("KeteranganBox")!.Text ?? string.Empty,
-            KodeKasus = kasus.KodeKasus,
-            TekananDarah = tensi,
-            Nadi = nadi,
-            Pernapasan = napas,
-            Suhu = suhu,
-            SaturasiO2 = spo2,
-            Nyeri = nyeri,
-        };
 
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            await new IgdRepository(db).SaveTriaseAsync(triase);
+            var noRawat = await new RegistrasiRepository(db).CreateAsync(
+                noRm, dokter?.KodeDokter, KodePoliIgd, penjab.KodePenjab,
+                EmptyToNull(this.FindControl<TextBox>("InputPjBox")!.Text),
+                EmptyToNull(this.FindControl<TextBox>("InputAlamatPjBox")!.Text));
 
-            status.Foreground = Avalonia.Media.Brushes.Green;
-            status.Text = $"Triase {_selected.NamaPasien} tersimpan. Lanjutkan pemeriksaan dokter lewat layar Rawat Jalan.";
-            status.IsVisible = true;
-
-            await LoadAntrianAsync(); // triaged patient drops out of this queue
-            _selected = null;
-            this.FindControl<TextBlock>("SelectedPatientText")!.Text = "(belum ada pasien dipilih dari antrian)";
-            this.FindControl<Button>("SimpanButton")!.IsEnabled = false;
-            this.FindControl<ToggleButton>("InputToggle")!.IsChecked = false;
-            this.FindControl<Border>("InputPanel")!.IsVisible = false;
-            foreach (var name in new[] { "TensiBox", "NadiBox", "NapasBox", "SuhuBox", "Spo2Box", "NyeriBox", "KeteranganBox" })
-                this.FindControl<TextBox>(name)!.Text = string.Empty;
+            ShowInputStatus($"Registrasi IGD tersimpan — No.Rawat {noRawat}.", isError: false);
+            ClearInput();
+            await LoadAsync();
         }
         catch (Exception ex)
         {
-            ShowError(status, $"Gagal simpan triase: {ex.Message}");
+            ShowInputStatus($"Gagal simpan registrasi IGD: {ex.Message}", isError: true);
         }
     }
 
-    private static void ShowError(TextBlock block, string message)
+    private void OnBaruClick(object? sender, RoutedEventArgs e) => ClearInput();
+
+    private void ClearInput()
     {
-        block.Foreground = Avalonia.Media.Brush.Parse("#DC2626");
-        block.Text = message;
-        block.IsVisible = true;
+        this.FindControl<TextBox>("InputNoRmBox")!.Text = string.Empty;
+        this.FindControl<TextBox>("InputPjBox")!.Text = string.Empty;
+        this.FindControl<TextBox>("InputAlamatPjBox")!.Text = string.Empty;
     }
+
+    private void OnCetakClick(object? sender, RoutedEventArgs e)
+    {
+        var items = (this.FindControl<DataGrid>("IgdGrid")!.ItemsSource as IEnumerable<RegistrasiListItem>)?.ToList()
+                    ?? new List<RegistrasiListItem>();
+        if (items.Count == 0)
+        {
+            ShowStatus("Tidak ada data yang bisa dicetak.", isError: true);
+            return;
+        }
+
+        try
+        {
+            var path = RegistrasiReport.GeneratePdf(items, "Registrasi IGD");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Gagal membuat/membuka PDF: {ex.Message}", isError: true);
+        }
+    }
+
+    private void OnPlaceholderClick(object? sender, RoutedEventArgs e)
+        => ShowStatus($"\"{(sender as Button)?.Content}\" belum diimplementasikan — mengubah/menghapus registrasi yang sudah ada sengaja ditunda (menyentuh data pasien asli).", isError: true);
+
+    private void OnTriaseClick(object? sender, RoutedEventArgs e) => TriaseRequested?.Invoke(this, EventArgs.Empty);
+
+    private void ShowInputStatus(string message, bool isError)
+    {
+        var s = this.FindControl<TextBlock>("InputStatusText")!;
+        s.Foreground = isError ? Avalonia.Media.Brush.Parse("#DC2626") : Avalonia.Media.Brushes.Green;
+        s.Text = message;
+        s.IsVisible = true;
+    }
+
+    private void ShowStatus(string message, bool isError)
+    {
+        var s = this.FindControl<TextBlock>("StatusText")!;
+        s.Foreground = isError ? Avalonia.Media.Brush.Parse("#DC2626") : Avalonia.Media.Brushes.Green;
+        s.Text = message;
+        s.IsVisible = true;
+    }
+
+    private static string? EmptyToNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
 
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
 }

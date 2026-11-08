@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsKhanza.Data"
+             x:Class="SimrsKhanza.UI.Modules.RawatJalan.TindakanRalanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Legacy "Rawat Jalan" toolbar button = DlgRawatJalan, "::[ Perawatan/Tindakan
+        Rawat Jalan ]::" — a SEPARATE screen from "Registrasi" (DlgReg). This is
+        its read-only list part: treatments given (Tindakan Dokter / Paramedis /
+        Dokter+Paramedis), same columns as legacy minus the "P" checkbox.
+        Entering NEW tindakan (jns_perawatan picker + billing fields) is not built
+        yet; "Pemeriksaan" opens the existing vitals/exam form instead.
+    -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="10">
+        <TextBlock Grid.Row="0" Text=":: [ Perawatan/Tindakan Rawat Jalan ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,6" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
+            <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
+            <DatePicker Name="FromPicker" />
+            <TextBlock Text="s.d." VerticalAlignment="Center" />
+            <DatePicker Name="ToPicker" />
+            <TextBlock Text="No.R.M. :" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <TextBox Name="NoRmBox" Width="110" KeyUp="OnFilterKeyUp" />
+            <TextBlock Text="Key Word :" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <TextBox Name="KeywordBox" Width="240" KeyUp="OnFilterKeyUp" />
+            <Button Content="🔍 Cari" Click="OnCariClick" />
+            <Button Content="📋 Semua" Click="OnSemuaClick" />
+        </StackPanel>
+
+        <TabControl Grid.Row="2" Name="Tabs" SelectionChanged="OnTabChanged">
+            <TabItem Header="Tindakan Dokter">
+                <DataGrid Name="DokterGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                          HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
+                        <DataGridTextColumn Header="No.R.M." Binding="{Binding NoRm}" Width="0.7*" MinWidth="65" />
+                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="1.5*" MinWidth="120" />
+                        <DataGridTextColumn Header="Perawatan/Tindakan" Binding="{Binding Tindakan}" Width="2*" MinWidth="160" />
+                        <DataGridTextColumn Header="Kode Dokter" Binding="{Binding KodeDokter}" Width="0.8*" MinWidth="75" />
+                        <DataGridTextColumn Header="Dokter Yg Menangani" Binding="{Binding NamaDokter}" Width="1.5*" MinWidth="130" />
+                        <DataGridTextColumn Header="Tgl.Rawat" Binding="{Binding TglRawat}" Width="0.8*" MinWidth="80" />
+                        <DataGridTextColumn Header="Jam Rawat" Binding="{Binding JamRawat}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Biaya" Binding="{Binding Biaya}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Kode" Binding="{Binding Kode}" Width="0.6*" MinWidth="60" />
+                        <DataGridTextColumn Header="Tarif Dokter" Binding="{Binding TarifDokter}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="KSO" Binding="{Binding Kso}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Jasa Sarana" Binding="{Binding JasaSarana}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="BHP" Binding="{Binding Bhp}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Menejemen" Binding="{Binding Menejemen}" Width="0.7*" MinWidth="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Tindakan Paramedis">
+                <DataGrid Name="ParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                          HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
+                        <DataGridTextColumn Header="No.R.M." Binding="{Binding NoRm}" Width="0.7*" MinWidth="65" />
+                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="1.5*" MinWidth="120" />
+                        <DataGridTextColumn Header="Perawatan/Tindakan" Binding="{Binding Tindakan}" Width="2*" MinWidth="160" />
+                        <DataGridTextColumn Header="NIP" Binding="{Binding Nip}" Width="0.8*" MinWidth="75" />
+                        <DataGridTextColumn Header="Petugas Yg Menangani" Binding="{Binding NamaPetugas}" Width="1.5*" MinWidth="130" />
+                        <DataGridTextColumn Header="Tgl.Rawat" Binding="{Binding TglRawat}" Width="0.8*" MinWidth="80" />
+                        <DataGridTextColumn Header="Jam Rawat" Binding="{Binding JamRawat}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Biaya" Binding="{Binding Biaya}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Kode" Binding="{Binding Kode}" Width="0.6*" MinWidth="60" />
+                        <DataGridTextColumn Header="Tarif Perawat" Binding="{Binding TarifPetugas}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="KSO" Binding="{Binding Kso}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Jasa Sarana" Binding="{Binding JasaSarana}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="BHP" Binding="{Binding Bhp}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Menejemen" Binding="{Binding Menejemen}" Width="0.7*" MinWidth="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Tindakan Dokter + Paramedis">
+                <DataGrid Name="DokterParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                          HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
+                        <DataGridTextColumn Header="No.R.M." Binding="{Binding NoRm}" Width="0.7*" MinWidth="65" />
+                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="1.5*" MinWidth="120" />
+                        <DataGridTextColumn Header="Perawatan/Tindakan" Binding="{Binding Tindakan}" Width="2*" MinWidth="160" />
+                        <DataGridTextColumn Header="Kode Dokter" Binding="{Binding KodeDokter}" Width="0.8*" MinWidth="75" />
+                        <DataGridTextColumn Header="Dokter Yg Menangani" Binding="{Binding NamaDokter}" Width="1.4*" MinWidth="120" />
+                        <DataGridTextColumn Header="NIP" Binding="{Binding Nip}" Width="0.7*" MinWidth="65" />
+                        <DataGridTextColumn Header="Petugas Yg Menangani" Binding="{Binding NamaPetugas}" Width="1.4*" MinWidth="120" />
+                        <DataGridTextColumn Header="Tgl.Rawat" Binding="{Binding TglRawat}" Width="0.8*" MinWidth="80" />
+                        <DataGridTextColumn Header="Jam Rawat" Binding="{Binding JamRawat}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Biaya" Binding="{Binding Biaya}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Kode" Binding="{Binding Kode}" Width="0.6*" MinWidth="60" />
+                        <DataGridTextColumn Header="Tarif Dokter" Binding="{Binding TarifDokter}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="Tarif Petugas" Binding="{Binding TarifPetugas}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="KSO" Binding="{Binding Kso}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Jasa Sarana" Binding="{Binding JasaSarana}" Width="0.7*" MinWidth="70" />
+                        <DataGridTextColumn Header="BHP" Binding="{Binding Bhp}" Width="0.5*" MinWidth="50" />
+                        <DataGridTextColumn Header="Menejemen" Binding="{Binding Menejemen}" Width="0.7*" MinWidth="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+            <Button Content="🩺 Pemeriksaan" Click="OnPemeriksaanClick" />
+            <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="16,0,0,0" />
+            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" Margin="16,0,0,0" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

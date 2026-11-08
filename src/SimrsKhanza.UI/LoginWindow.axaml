@@ -4,6 +4,7 @@
         Title="Login — SIMRS Gramedika"
         Width="420" Height="440"
         CanResize="False"
+        WindowDecorations="None"
         WindowStartupLocation="CenterScreen"
         Background="#1E3A8A">
 
@@ -22,6 +23,13 @@
                 <GradientStop Color="#172B66" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
+
+        <!-- Borderless window: this strip is the title bar (drag handle) with its own close button. -->
+        <Border Height="32" VerticalAlignment="Top" Background="Transparent" PointerPressed="OnDragPressed" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
+            <Button Classes="caption close" Content="✕" Click="OnCloseClick" />
+        </StackPanel>
 
         <Border Background="White" CornerRadius="10" Width="340" Padding="28"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -55,4 +63,24 @@
             </StackPanel>
         </Border>
     </Grid>
+
+    <Window.Styles>
+        <Style Selector="Button.caption">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2A4FA8" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E81123" />
+        </Style>
+    </Window.Styles>
 </Window>

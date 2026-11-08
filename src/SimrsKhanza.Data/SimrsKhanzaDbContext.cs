@@ -602,13 +602,7 @@ public class SimrsKhanzaDbContext(DbContextOptions<SimrsKhanzaDbContext> options
     // kamar_inap.stts_pulang is NOT NULL in the legacy schema (no default), so
     // the "not discharged yet" state is represented by "-" (one of the legacy
     // enum's own values) rather than a NULL column.
-    private static readonly Dictionary<StatusPulang, string> StatusPulangMap = new()
-    {
-        [StatusPulang.BelumPulang] = "-", [StatusPulang.Sembuh] = "Sembuh",
-        [StatusPulang.Membaik] = "Membaik", [StatusPulang.Rujuk] = "Rujuk",
-        [StatusPulang.PulangPaksa] = "Pulang Paksa", [StatusPulang.Meninggal] = "Meninggal",
-        [StatusPulang.Lainnya] = "Lain-lain",
-    };
+    private static readonly Dictionary<StatusPulang, string> StatusPulangMap = new(StatusPulangLabels.Map);
 
     private static string StatusPulangToDb(StatusPulang? v) => StatusPulangMap[v ?? StatusPulang.BelumPulang];
     private static StatusPulang? StatusPulangFromDb(string v)

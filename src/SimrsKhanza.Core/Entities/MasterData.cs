@@ -68,8 +68,8 @@ public class Kamar
 /// Legacy `kamar_inap.stts_pulang` is NOT NULL with no default, so a row must
 /// carry a value from the moment the patient is admitted — "-" (BelumPulang)
 /// is one of the legacy enum's own values, used here as "not discharged yet".
-/// Only the outcomes actually exposed in the discharge form are modeled;
-/// anything else from the legacy 14-value enum maps to Lainnya.
+/// All 15 values of the legacy enum are modeled (see StatusPulangLabels) so
+/// the Rawat Inap list can show real historical rows faithfully.
 /// </summary>
 public enum StatusPulang
 {
@@ -80,6 +80,31 @@ public enum StatusPulang
     PulangPaksa,
     Meninggal,
     Lainnya,
+    Sehat,
+    Aps,
+    Plus,
+    PindahKamar,
+    StatusBelumLengkap,
+    AtasPersetujuanDokter,
+    AtasPermintaanSendiri,
+    Isoman,
+}
+
+public static class StatusPulangLabels
+{
+    public static readonly IReadOnlyDictionary<StatusPulang, string> Map = new Dictionary<StatusPulang, string>
+    {
+        [StatusPulang.BelumPulang] = "-", [StatusPulang.Sembuh] = "Sembuh",
+        [StatusPulang.Membaik] = "Membaik", [StatusPulang.Rujuk] = "Rujuk",
+        [StatusPulang.PulangPaksa] = "Pulang Paksa", [StatusPulang.Meninggal] = "Meninggal",
+        [StatusPulang.Lainnya] = "Lain-lain", [StatusPulang.Sehat] = "Sehat",
+        [StatusPulang.Aps] = "APS", [StatusPulang.Plus] = "+",
+        [StatusPulang.PindahKamar] = "Pindah Kamar", [StatusPulang.StatusBelumLengkap] = "Status Belum Lengkap",
+        [StatusPulang.AtasPersetujuanDokter] = "Atas Persetujuan Dokter",
+        [StatusPulang.AtasPermintaanSendiri] = "Atas Permintaan Sendiri", [StatusPulang.Isoman] = "Isoman",
+    };
+
+    public static string ToLabel(this StatusPulang s) => Map[s];
 }
 
 /// <summary>

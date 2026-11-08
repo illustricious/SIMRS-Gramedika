@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Core.Entities;
@@ -15,161 +15,350 @@ public partial class RawatInapView : UserControl
     /// <summary>Raised from the grid's right-click patient menu — see Modules/Shared/PatientContextMenu.</summary>
     public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
-    private static readonly StatusPulang[] DischargeOptions =
-        [StatusPulang.Sembuh, StatusPulang.Membaik, StatusPulang.Rujuk, StatusPulang.PulangPaksa, StatusPulang.Meninggal, StatusPulang.Lainnya];
+    private enum ActionMode { None, Masuk, Pulang, Pindah, Ganti }
 
-    private RawatInapAktifItem? _selected;
+    private static readonly StatusPulang[] DischargeOptions =
+    [
+        StatusPulang.AtasPersetujuanDokter, StatusPulang.Sembuh, StatusPulang.Membaik, StatusPulang.Sehat,
+        StatusPulang.Rujuk, StatusPulang.Aps, StatusPulang.AtasPermintaanSendiri, StatusPulang.PulangPaksa,
+        StatusPulang.Meninggal, StatusPulang.Isoman, StatusPulang.Lainnya,
+    ];
+
+    private static readonly string[] StatusBayarOptions = ["Semua", "Sudah Bayar", "Belum Bayar"];
+
+    private ActionMode _mode = ActionMode.None;
+    private bool _ready;
+    private IReadOnlyList<Penjab> _penjab = Array.Empty<Penjab>();
 
     public RawatInapView()
     {
         InitializeComponent();
 
-        this.FindControl<DataGrid>("AktifGrid")!.ContextMenu = PatientContextMenu.Build(
-            () => this.FindControl<DataGrid>("AktifGrid")!.SelectedItem is RawatInapAktifItem i
-                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
+        var grid = Grid();
+        grid.ContextMenu = PatientContextMenu.Build(
+            () => grid.SelectedItem is RawatInapListItem i ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
             request => PatientMenuRequested?.Invoke(this, request));
 
-        var statusCombo = this.FindControl<ComboBox>("StatusPulangCombo")!;
-        statusCombo.ItemsSource = DischargeOptions;
-        statusCombo.SelectedItem = StatusPulang.Sembuh;
+        var statusBayar = this.FindControl<ComboBox>("StatusBayarCombo")!;
+        statusBayar.ItemsSource = StatusBayarOptions;
+        statusBayar.SelectedIndex = 0;
+
+        var statusPulang = this.FindControl<ComboBox>("StatusPulangCombo")!;
+        statusPulang.ItemsSource = DischargeOptions.Select(s => s.ToLabel()).ToList();
+        statusPulang.SelectedIndex = 0;
+
+        foreach (var name in new[] { "MasukFromPicker", "MasukToPicker", "PulangFromPicker", "PulangToPicker" })
+            this.FindControl<DatePicker>(name)!.SelectedDate = DateTime.Today;
+
+        _ready = true;
     }
 
-    /// <summary>Called from the right-click "Kamar Inap" patient menu (Modules/Shared/PatientContextMenu) — prefills the Admit form's No.Rawat and opens the input panel.</summary>
+    private DataGrid Grid() => this.FindControl<DataGrid>("RawatInapGrid")!;
+
+    private RawatInapListItem? Selected => Grid().SelectedItem as RawatInapListItem;
+
+    /// <summary>Called from the right-click "Kamar Inap" patient menu — opens the Masuk panel with No.Rawat prefilled.</summary>
     public void PrefillAdmit(string noRawat)
     {
+        ShowAction(ActionMode.Masuk);
         this.FindControl<TextBox>("AdmitNoRawatBox")!.Text = noRawat;
-        this.FindControl<ToggleButton>("InputToggle")!.IsChecked = true;
-        this.FindControl<Border>("InputPanel")!.IsVisible = true;
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
     {
-        await LoadAktifAsync();
-        await LoadKamarKosongAsync();
-    }
-
-    private async System.Threading.Tasks.Task LoadAktifAsync()
-    {
-        var grid = this.FindControl<DataGrid>("AktifGrid")!;
+        var grid = Grid();
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            grid.ItemsSource = await new RawatInapRepository(db).GetActiveInpatientsAsync();
+            var items = await new RawatInapRepository(db).GetDaftarAsync(BuildFilter());
+            grid.ItemsSource = items;
+            this.FindControl<TextBlock>("RecordText")!.Text = $"Record : {items.Count}";
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            grid.ItemsSource = new List<RawatInapAktifItem>();
+            grid.ItemsSource = new List<RawatInapListItem>();
+            this.FindControl<TextBlock>("RecordText")!.Text = "Record : 0";
+            ShowStatus($"Gagal memuat daftar rawat inap: {ex.Message}", isError: true);
         }
     }
 
-    private async System.Threading.Tasks.Task LoadKamarKosongAsync()
+    private RawatInapFilter BuildFilter()
     {
-        var combo = this.FindControl<ComboBox>("KamarCombo")!;
+        var mode = this.FindControl<RadioButton>("ModeMasuk")!.IsChecked == true ? RawatInapMode.TanggalMasuk
+                 : this.FindControl<RadioButton>("ModePulang")!.IsChecked == true ? RawatInapMode.Pulang
+                 : RawatInapMode.BelumPulang;
+
+        var (from, to) = mode == RawatInapMode.Pulang
+            ? (PickDate("PulangFromPicker"), PickDate("PulangToPicker"))
+            : (PickDate("MasukFromPicker"), PickDate("MasukToPicker"));
+
+        StatusBayar? statusBayar = this.FindControl<ComboBox>("StatusBayarCombo")!.SelectedIndex switch
+        {
+            1 => StatusBayar.SudahBayar,
+            2 => StatusBayar.BelumBayar,
+            _ => null,
+        };
+
+        return new RawatInapFilter(
+            mode, from, to, statusBayar,
+            Text("NoRawatFilterBox"), Text("NoRmFilterBox"), Text("NamaFilterBox"), Text("KamarFilterBox"), Text("KeywordBox"));
+    }
+
+    private DateOnly PickDate(string name)
+        => DateOnly.FromDateTime(this.FindControl<DatePicker>(name)!.SelectedDate?.DateTime ?? DateTime.Today);
+
+    private string? Text(string name)
+    {
+        var t = this.FindControl<TextBox>(name)!.Text?.Trim();
+        return string.IsNullOrEmpty(t) ? null : t;
+    }
+
+    private async void OnFilterChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_ready) await ReloadAsync();
+    }
+
+    private async void OnFilterKeyUp(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter) await ReloadAsync();
+    }
+
+    private async void OnCariClick(object? sender, RoutedEventArgs e) => await ReloadAsync();
+
+    private async void OnSemuaClick(object? sender, RoutedEventArgs e)
+    {
+        foreach (var name in new[] { "NoRawatFilterBox", "NoRmFilterBox", "NamaFilterBox", "KamarFilterBox", "KeywordBox" })
+            this.FindControl<TextBox>(name)!.Text = string.Empty;
+        _ready = false;
+        this.FindControl<ComboBox>("StatusBayarCombo")!.SelectedIndex = 0;
+        this.FindControl<RadioButton>("ModeBelumPulang")!.IsChecked = true;
+        _ready = true;
+        await ReloadAsync();
+    }
+
+    // ---- action panel (Masuk / Pulang / Pindah / Ganti) ----
+
+    private void ShowAction(ActionMode mode)
+    {
+        _mode = mode;
+        HideStatus();
+        this.FindControl<Border>("ActionPanel")!.IsVisible = mode != ActionMode.None;
+        this.FindControl<StackPanel>("MasukFields")!.IsVisible = mode == ActionMode.Masuk;
+        this.FindControl<StackPanel>("PulangFields")!.IsVisible = mode == ActionMode.Pulang;
+        this.FindControl<StackPanel>("PindahFields")!.IsVisible = mode == ActionMode.Pindah;
+        this.FindControl<StackPanel>("GantiFields")!.IsVisible = mode == ActionMode.Ganti;
+
+        var title = this.FindControl<TextBlock>("ActionTitle")!;
+        var subtitle = this.FindControl<TextBlock>("ActionSubtitle")!;
+        var ok = this.FindControl<Button>("ActionOkButton")!;
+        var s = Selected;
+        var who = s is null ? "" : $"{s.NamaPasien} — No. Rawat {s.NoRawat} — Kamar {s.Kamar}";
+
+        switch (mode)
+        {
+            case ActionMode.Masuk:
+                title.Text = "Masuk — Admit Pasien ke Kamar Inap";
+                subtitle.Text = "";
+                ok.Content = "🛏 Admit";
+                break;
+            case ActionMode.Pulang:
+                title.Text = "Pulang — Pulangkan Pasien & Hitung Biaya Kamar";
+                subtitle.Text = who;
+                ok.Content = "🚪 Pulangkan";
+                break;
+            case ActionMode.Pindah:
+                title.Text = "Pindah — Pindah Kamar";
+                subtitle.Text = who;
+                ok.Content = "🔀 Pindahkan";
+                break;
+            case ActionMode.Ganti:
+                title.Text = "Ganti — Jenis Bayar / Diagnosa";
+                subtitle.Text = who;
+                ok.Content = "💾 Simpan Perubahan";
+                break;
+        }
+    }
+
+    private async void OnMasukClick(object? sender, RoutedEventArgs e)
+    {
+        ShowAction(ActionMode.Masuk);
+        await LoadKamarKosongAsync("KamarCombo");
+    }
+
+    private void OnPulangClick(object? sender, RoutedEventArgs e)
+    {
+        if (!RequireSelected(mustBeActive: true)) return;
+        ShowAction(ActionMode.Pulang);
+        this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = Selected!.DiagnosaAkhir;
+    }
+
+    private async void OnPindahClick(object? sender, RoutedEventArgs e)
+    {
+        if (!RequireSelected(mustBeActive: true)) return;
+        ShowAction(ActionMode.Pindah);
+        await LoadKamarKosongAsync("PindahKamarCombo");
+    }
+
+    private async void OnGantiClick(object? sender, RoutedEventArgs e)
+    {
+        if (!RequireSelected(mustBeActive: false)) return;
+        ShowAction(ActionMode.Ganti);
+        var s = Selected!;
+        this.FindControl<TextBox>("GantiDiagnosaAwalBox")!.Text = s.DiagnosaAwal;
+        this.FindControl<TextBox>("GantiDiagnosaAkhirBox")!.Text = s.DiagnosaAkhir;
+
+        var combo = this.FindControl<ComboBox>("GantiPenjabCombo")!;
+        try
+        {
+            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            _penjab = await new RegistrasiRepository(db).GetPenjabAsync();
+            combo.ItemsSource = _penjab.Select(p => p.NamaPenanggungJawab).ToList();
+            combo.SelectedItem = _penjab.FirstOrDefault(p => p.KodePenjab == s.KodePenjab)?.NamaPenanggungJawab;
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Gagal memuat jenis bayar: {ex.Message}", isError: true);
+        }
+    }
+
+    private bool RequireSelected(bool mustBeActive)
+    {
+        var s = Selected;
+        if (s is null)
+        {
+            ShowStatus("Pilih dulu satu baris pasien di tabel.", isError: true);
+            return false;
+        }
+        if (mustBeActive && !s.BelumPulang)
+        {
+            ShowStatus("Baris ini sudah pulang/pindah — pilih pasien yang masih dirawat (Stts.Pulang \"-\").", isError: true);
+            return false;
+        }
+        return true;
+    }
+
+    private async System.Threading.Tasks.Task LoadKamarKosongAsync(string comboName)
+    {
+        var combo = this.FindControl<ComboBox>(comboName)!;
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var kamar = await new RawatInapRepository(db).GetAvailableKamarAsync();
             combo.ItemsSource = kamar;
-            combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(KamarTersediaItem.KodeKamar));
+            combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(KamarTersediaItem.Label));
             if (kamar.Count > 0) combo.SelectedIndex = 0;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             combo.ItemsSource = new List<KamarTersediaItem>();
+            ShowStatus($"Gagal memuat kamar kosong: {ex.Message}", isError: true);
         }
     }
 
-    private void OnAktifSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void OnActionCancelClick(object? sender, RoutedEventArgs e) => ShowAction(ActionMode.None);
+
+    private async void OnActionOkClick(object? sender, RoutedEventArgs e)
     {
-        _selected = this.FindControl<DataGrid>("AktifGrid")!.SelectedItem as RawatInapAktifItem;
-
-        var header = this.FindControl<TextBlock>("SelectedPatientText")!;
-        header.Text = _selected is null
-            ? "(belum ada pasien dipilih dari daftar)"
-            : $"{_selected.NamaPasien}  —  No. Rawat {_selected.NoRawat}  —  Kamar {_selected.KodeKamar}";
-        this.FindControl<Button>("PulangkanButton")!.IsEnabled = _selected is not null;
-
-        if (_selected is not null)
+        try
         {
-            this.FindControl<ToggleButton>("InputToggle")!.IsChecked = true;
-            this.FindControl<Border>("InputPanel")!.IsVisible = true;
+            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            var repo = new RawatInapRepository(db);
+            string message;
+
+            switch (_mode)
+            {
+                case ActionMode.Masuk:
+                {
+                    var noRawat = Text("AdmitNoRawatBox");
+                    var kamar = this.FindControl<ComboBox>("KamarCombo")!.SelectedItem as KamarTersediaItem;
+                    if (noRawat is null || kamar is null)
+                    {
+                        ShowStatus("No. Rawat dan Kamar wajib diisi.", isError: true);
+                        return;
+                    }
+                    await repo.AdmitAsync(noRawat, kamar.KodeKamar, Text("DiagnosaAwalBox"));
+                    message = $"Pasien {noRawat} berhasil di-admit ke kamar {kamar.KodeKamar}.";
+                    this.FindControl<TextBox>("AdmitNoRawatBox")!.Text = string.Empty;
+                    this.FindControl<TextBox>("DiagnosaAwalBox")!.Text = string.Empty;
+                    break;
+                }
+                case ActionMode.Pulang:
+                {
+                    var s = Selected!;
+                    var idx = this.FindControl<ComboBox>("StatusPulangCombo")!.SelectedIndex;
+                    var total = await repo.DischargeAsync(s.Key, DischargeOptions[Math.Max(0, idx)], Text("DiagnosaAkhirBox"));
+                    message = $"{s.NamaPasien} dipulangkan. Biaya kamar: Rp {total:N0} (lihat Kasir untuk total tagihan).";
+                    break;
+                }
+                case ActionMode.Pindah:
+                {
+                    var s = Selected!;
+                    var kamar = this.FindControl<ComboBox>("PindahKamarCombo")!.SelectedItem as KamarTersediaItem;
+                    if (kamar is null)
+                    {
+                        ShowStatus("Pilih kamar tujuan.", isError: true);
+                        return;
+                    }
+                    var total = await repo.PindahKamarAsync(s.Key, kamar.KodeKamar);
+                    message = $"{s.NamaPasien} dipindah ke kamar {kamar.KodeKamar}. Biaya kamar sebelumnya: Rp {total:N0}.";
+                    break;
+                }
+                case ActionMode.Ganti:
+                {
+                    var s = Selected!;
+                    var penjabName = this.FindControl<ComboBox>("GantiPenjabCombo")!.SelectedItem as string;
+                    var penjab = _penjab.FirstOrDefault(p => p.NamaPenanggungJawab == penjabName);
+                    if (penjab is not null && penjab.KodePenjab != s.KodePenjab)
+                        await repo.GantiJenisBayarAsync(s.NoRawat, penjab.KodePenjab);
+                    await repo.GantiDiagnosaAsync(s.Key, Text("GantiDiagnosaAwalBox"), Text("GantiDiagnosaAkhirBox"));
+                    message = $"Data {s.NamaPasien} diperbarui.";
+                    break;
+                }
+                default:
+                    return;
+            }
+
+            ShowAction(ActionMode.None);
+            await ReloadAsync();
+            ShowStatus(message, isError: false);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Gagal: {ex.Message}", isError: true);
         }
     }
 
-    private void OnToggleInput(object? sender, RoutedEventArgs e)
-    {
-        var toggle = this.FindControl<ToggleButton>("InputToggle")!;
-        this.FindControl<Border>("InputPanel")!.IsVisible = toggle.IsChecked == true;
-    }
+    // ---- cetak ----
 
-    private async void OnAdmitClick(object? sender, RoutedEventArgs e)
+    private void OnCetakClick(object? sender, RoutedEventArgs e)
     {
-        var status = this.FindControl<TextBlock>("AdmitStatusText")!;
-        var noRawat = this.FindControl<TextBox>("AdmitNoRawatBox")!.Text?.Trim();
-        var kamar = this.FindControl<ComboBox>("KamarCombo")!.SelectedItem as KamarTersediaItem;
-        var diagnosa = EmptyToNull(this.FindControl<TextBox>("DiagnosaAwalBox")!.Text);
-
-        if (string.IsNullOrWhiteSpace(noRawat) || kamar is null)
+        var items = (Grid().ItemsSource as IEnumerable<RawatInapListItem>)?.ToList() ?? new List<RawatInapListItem>();
+        if (items.Count == 0)
         {
-            status.Foreground = Avalonia.Media.Brush.Parse("#DC2626");
-            status.Text = "No. Rawat dan Kamar wajib diisi.";
-            status.IsVisible = true;
+            ShowStatus("Tidak ada data yang bisa dicetak.", isError: true);
             return;
         }
 
         try
         {
-            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            await new RawatInapRepository(db).AdmitAsync(noRawat, kamar.KodeKamar, diagnosa);
-
-            status.Foreground = Avalonia.Media.Brushes.Green;
-            status.Text = $"Pasien {noRawat} berhasil di-admit ke kamar {kamar.KodeKamar}.";
-            status.IsVisible = true;
-
-            this.FindControl<TextBox>("AdmitNoRawatBox")!.Text = string.Empty;
-            this.FindControl<TextBox>("DiagnosaAwalBox")!.Text = string.Empty;
-            await ReloadAsync();
+            var path = RawatInapReport.GeneratePdf(items, "Data Kamar Inap Pasien");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
         catch (Exception ex)
         {
-            status.Foreground = Avalonia.Media.Brush.Parse("#DC2626");
-            status.Text = $"Gagal admit: {ex.Message}";
-            status.IsVisible = true;
+            ShowStatus($"Gagal membuat/membuka PDF: {ex.Message}", isError: true);
         }
     }
 
-    private async void OnPulangkanClick(object? sender, RoutedEventArgs e)
+    private void ShowStatus(string message, bool isError)
     {
-        if (_selected is null) return;
-
-        var status = this.FindControl<TextBlock>("PulangkanStatusText")!;
-        var statusPulang = (StatusPulang)this.FindControl<ComboBox>("StatusPulangCombo")!.SelectedItem!;
-        var diagnosaAkhir = EmptyToNull(this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text);
-
-        try
-        {
-            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var total = await new RawatInapRepository(db).DischargeAsync(_selected.NoRawat, statusPulang, diagnosaAkhir);
-
-            status.Foreground = Avalonia.Media.Brushes.Green;
-            status.Text = $"{_selected.NamaPasien} dipulangkan. Biaya kamar: Rp {total:N0} (lihat Kasir untuk total tagihan).";
-            status.IsVisible = true;
-
-            _selected = null;
-            this.FindControl<TextBlock>("SelectedPatientText")!.Text = "(belum ada pasien dipilih dari daftar)";
-            this.FindControl<Button>("PulangkanButton")!.IsEnabled = false;
-            this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = string.Empty;
-            await ReloadAsync();
-        }
-        catch (Exception ex)
-        {
-            status.Foreground = Avalonia.Media.Brush.Parse("#DC2626");
-            status.Text = $"Gagal memulangkan: {ex.Message}";
-            status.IsVisible = true;
-        }
+        var status = this.FindControl<TextBlock>("StatusText")!;
+        status.Foreground = isError ? Avalonia.Media.Brush.Parse("#DC2626") : Avalonia.Media.Brushes.Green;
+        status.Text = message;
+        status.IsVisible = true;
     }
 
-    private static string? EmptyToNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
+    private void HideStatus() => this.FindControl<TextBlock>("StatusText")!.IsVisible = false;
 
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
 }

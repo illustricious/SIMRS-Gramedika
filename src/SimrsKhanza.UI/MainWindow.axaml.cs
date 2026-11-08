@@ -6,6 +6,7 @@ using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using SimrsKhanza.Core.Auth;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI;
 
@@ -13,6 +14,8 @@ public partial class MainWindow : Window
 {
     private readonly DispatcherTimer _clockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
     private AuthenticatedUser? _user;
+    private bool _componentReady;
+    private bool _pemeriksaanFromTindakan;
 
     public MainWindow() : this(null)
     {
@@ -21,6 +24,8 @@ public partial class MainWindow : Window
     public MainWindow(AuthenticatedUser? user)
     {
         InitializeComponent();
+        _componentReady = true;
+        this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
         _user = user;
 
         var loginLabel = this.FindControl<TextBlock>("LoggedInUserText");
@@ -39,6 +44,8 @@ public partial class MainWindow : Window
         {
             SetupMenuCategoryCombo(user);
         }
+
+        ShowPage(Page.Menu);
     }
 
     private void UpdateClock()
@@ -82,6 +89,9 @@ public partial class MainWindow : Window
 
     private void ShowPage(Page page)
     {
+        // The legacy home screen IS the Menu Utama grid, so "home" (Hero) now resolves to it.
+        if (page == Page.Hero) page = Page.Menu;
+
         var hero = this.FindControl<StackPanel>("HeroPanel")!;
         var menu = this.FindControl<Grid>("MenuPanel")!;
         var pageHost = this.FindControl<ContentControl>("PageHost")!;
@@ -93,68 +103,119 @@ public partial class MainWindow : Window
 
     private void SetupMenuCategoryCombo(AuthenticatedUser user)
     {
-        var combo = this.FindControl<ComboBox>("MenuCategoryCombo")!;
-        // Single category for now — the legacy app groups ~1200 features into
-        // lettered categories (A, B, C, ...); our catalog only has the 6
-        // top-level modules so far, so there is one category until more are added.
-        combo.ItemsSource = new List<string> { "Menu Utama — Modul Tersedia" };
-        combo.SelectedIndex = 0;
+        _ = user; // legacy per-user akses.getXxx() filtering isn't ported — every tile is listed (see LegacyMenuCatalog)
 
-        BuildDashboard(user);
+        var combo = this.FindControl<ComboBox>("MenuCategoryCombo")!;
+        combo.ItemsSource = LegacyMenuCatalog.Categories;
+        combo.SelectedIndex = 0;
+        combo.SelectionChanged += (_, _) => BuildDashboard();
+        this.FindControl<ScrollViewer>("DashboardScroll")!.SizeChanged += (_, _) => LayoutDashboardTiles();
+
+        BuildDashboard();
     }
 
-    private void BuildDashboard(AuthenticatedUser user)
-    {
-        IMenuPermissionService menuService = new MenuPermissionService(new DefaultMenuCatalog());
-        var visibleItems = menuService.GetVisibleMenu(user);
+    private const int DashboardColumns = 5;
 
-        var panel = this.FindControl<WrapPanel>("DashboardPanel");
-        if (panel is null) return;
+    /// <summary>Builds the tile grid for the selected legacy category (A–U). Icons are placeholders (initials) for now.</summary>
+    private void BuildDashboard()
+    {
+        var panel = this.FindControl<UniformGrid>("DashboardPanel");
+        var combo = this.FindControl<ComboBox>("MenuCategoryCombo");
+        if (panel is null || combo is null || combo.SelectedIndex < 0) return;
 
         panel.Children.Clear();
-        foreach (var item in visibleItems)
+        foreach (var (key, label) in LegacyMenuCatalog.Tiles[combo.SelectedIndex])
         {
+            var icon = new Border
+            {
+                Width = 48, Height = 48, CornerRadius = new CornerRadius(12),
+                Child = new TextBlock
+                {
+                    Text = Initials(label), Foreground = Brushes.White, FontWeight = FontWeight.Bold, FontSize = 16,
+                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center,
+                },
+            };
+            icon.Bind(Border.BackgroundProperty, this.GetResourceObservable("ThemePrimaryLightBrush"));
+            var caption = new TextBlock
+            {
+                Text = label, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center, FontSize = 12,
+                MaxWidth = 220,
+            };
+
             var button = new Button
             {
                 Classes = { "menuTile" },
-                Content = item.Label,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center,
+                Width = double.NaN, Height = double.NaN, MinHeight = 120,
+                HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Center, VerticalContentAlignment = VerticalAlignment.Center,
+                Content = new StackPanel { Spacing = 8, HorizontalAlignment = HorizontalAlignment.Center, Children = { icon, caption } },
             };
-            var key = item.Key;
-            button.Click += (_, _) => OnModuleTileClick(key, item.Label);
+            var k = key;
+            var l = label;
+            button.Click += (_, _) => OnLegacyTileClick(k, l);
             panel.Children.Add(button);
+        }
+
+        LayoutDashboardTiles();
+    }
+
+    // Tiles always span the full width (5 columns); rows stretch toward the viewport height
+    // (clamped 120–220px) so a small category fills the area instead of leaving a void.
+    private void LayoutDashboardTiles()
+    {
+        var panel = this.FindControl<UniformGrid>("DashboardPanel");
+        var scroll = this.FindControl<ScrollViewer>("DashboardScroll");
+        if (panel is null || scroll is null || panel.Children.Count == 0) return;
+
+        var rows = (int)Math.Ceiling(panel.Children.Count / (double)DashboardColumns);
+        var tileHeight = Math.Clamp(scroll.Bounds.Height / rows, 120, 220);
+        foreach (var child in panel.Children)
+        {
+            if (child is Button b) b.Height = tileHeight - b.Margin.Top - b.Margin.Bottom;
         }
     }
 
-    private async void OnModuleTileClick(string moduleKey, string label)
+    private static string Initials(string label)
     {
-        // Rekam Medis opens the Pasien (patient master data) screen — the real
-        // starting point of the module, replacing the earlier SearchPickerDialog
-        // demo now that a proper screen exists (see Modules/Pasien). Other
-        // modules are not implemented yet in this scaffold stage.
-        if (moduleKey == "rekammedis")
-        {
-            await OpenPasienAsync();
-            return;
-        }
+        var words = label.Split([' ', '/', '&', '-', '(', ')', '.', ','], StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length == 0) return "?";
+        return words.Length == 1
+            ? words[0][..Math.Min(2, words[0].Length)].ToUpperInvariant()
+            : (words[0][..1] + words[1][..1]).ToUpperInvariant();
+    }
 
-        if (moduleKey == "pengaturan")
+    /// <summary>
+    /// Routes a legacy Menu Utama tile (by legacy button field name) to the screen
+    /// that exists for it; everything else is a placeholder for now.
+    /// </summary>
+    private async void OnLegacyTileClick(string key, string label)
+    {
+        switch (key)
         {
-            await OpenPengaturanAsync();
-            return;
-        }
+            case "btnRegistrasi": await OpenRegistrasiAsync(); return;
+            case "btnIGD": await OpenIgdAsync(); return;
+            case "btnRalan": await OpenTindakanRalanAsync(); return;
+            case "btnKamarInap": await OpenRawatInapAsync(); return;
+            case "btnPasien": await OpenPasienAsync(); return;
+            case "btnKasir": await OpenKasirAsync(); return;
 
-        if (moduleKey == "keuangan")
-        {
-            await OpenKasirAsync();
-            return;
-        }
+            case "btnPermintaanLab": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PermintaanPk); return;
+            case "btnPermintaanLabPA": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PermintaanPa); return;
+            case "btnPermintaanLabMB": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PermintaanMb); return;
+            case "btnLaboratorium": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PeriksaPk); return;
+            case "btnLaboratoriumPA": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PeriksaPa); return;
+            case "btnLaboratoriumMB": await OpenLabTileAsync(Modules.Laboratorium.LabAction.PeriksaMb); return;
 
-        if (moduleKey == "laporan")
-        {
-            await OpenLaporanMenuAsync();
-            return;
+            case "btnPermintaanRadiologi": await OpenRadiologiTileAsync(Modules.Radiologi.RadiologiAction.Permintaan); return;
+            case "btnPeriksaRadiologi": await OpenRadiologiTileAsync(Modules.Radiologi.RadiologiAction.Periksa); return;
+
+            case "btnPenjualan": await OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction.InputPenjualan); return;
+            case "btnDaftarPermintaanResep": await OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction.DaftarResepDokter); return;
+
+            case "btnSetupAplikasi": await OpenPengaturanAsync(); return;
+
+            // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
+            case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
         }
 
         await ShowNotImplementedAsync(label);
@@ -271,16 +332,15 @@ public partial class MainWindow : Window
         switch (label)
         {
             case "Registrasi":
-            case "Rawat Jalan":
-                // Both shortcuts open the same "Daftar Pasien Rawat Jalan" /
-                // Registrasi screen — the user corrected an earlier mix-up
-                // where we'd assumed the rich list (Kode Dokter/Dokter
-                // Dituju/Biaya Reg/... columns) belonged to "Registrasi";
-                // it's actually reached from the legacy app's "Rawat Jalan"
-                // menu. RegistrasiView's "🩺 Periksa" button is the path to
-                // the vitals/examination form (RawatJalanView) for a
-                // selected patient — see OpenPemeriksaanAsync below.
+                // Legacy DlgReg — registration list/input.
                 await OpenRegistrasiAsync();
+                return;
+
+            case "Rawat Jalan":
+                // Legacy DlgRawatJalan — "Perawatan/Tindakan Rawat Jalan", a
+                // different screen from Registrasi. Its "Pemeriksaan" button
+                // leads to the vitals/exam form (RawatJalanView).
+                await OpenTindakanRalanAsync();
                 return;
 
             case "Rawat Inap":
@@ -447,9 +507,23 @@ public partial class MainWindow : Window
         {
             view = new Modules.Igd.IgdView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.TriaseRequested += async (_, _) => await OpenIgdTriaseAsync();
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenIgdTriaseAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        var view = new Modules.Igd.IgdTriaseView();
+        view.BackRequested += async (_, _) => await OpenIgdAsync();
+        view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
+        pageHost.Content = view;
 
         ShowPage(Page.Feature);
         await view.ReloadAsync();
@@ -479,8 +553,24 @@ public partial class MainWindow : Window
         {
             view = new Modules.Registrasi.RegistrasiView();
             view.BackRequested += (_, _) => ShowPage(Page.Hero);
-            view.PeriksaRequested += async (_, _) => await OpenRawatJalanAsync();
+            view.PeriksaRequested += async (_, _) => { _pemeriksaanFromTindakan = false; await OpenRawatJalanAsync(); };
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
+            pageHost.Content = view;
+        }
+
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenTindakanRalanAsync()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+
+        if (pageHost.Content is not Modules.RawatJalan.TindakanRalanView view)
+        {
+            view = new Modules.RawatJalan.TindakanRalanView();
+            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.PemeriksaanRequested += async (_, _) => { _pemeriksaanFromTindakan = true; await OpenRawatJalanAsync(); };
             pageHost.Content = view;
         }
 
@@ -497,7 +587,7 @@ public partial class MainWindow : Window
             view = new Modules.RawatJalan.RawatJalanView();
             // "Kembali" from the exam form returns to the patient list it was
             // opened from, not all the way home — matches how "🩺 Periksa" got here.
-            view.BackRequested += async (_, _) => await OpenRegistrasiAsync();
+            view.BackRequested += async (_, _) => { if (_pemeriksaanFromTindakan) await OpenTindakanRalanAsync(); else await OpenRegistrasiAsync(); };
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
@@ -554,6 +644,32 @@ public partial class MainWindow : Window
     }
 
     private void OnExitClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
+
+    private void OnMinimizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        => WindowState = WindowState.Minimized;
+
+    private void OnMaximizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => ToggleMaximize();
+
+    private void ToggleMaximize()
+        => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+
+    // Buttons inside the bar mark their own pointer press handled, so this only
+    // fires for the empty strip — drag to move, double-click to maximize/restore.
+    private void OnTitleBarPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    {
+        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
+        if (e.ClickCount == 2) ToggleMaximize();
+        else BeginMoveDrag(e);
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+        // Fires during InitializeComponent (WindowState is set in XAML) before the
+        // name scope exists, so FindControl would throw — guard on the generated field.
+        if (change.Property == WindowStateProperty && _componentReady)
+            this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
+    }
 
     /// <summary>
     /// Handles the right-click patient menu shared by Registrasi/IGD/Rawat

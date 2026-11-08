@@ -29,7 +29,12 @@ public record RegistrasiListItem(
     TimeOnly? JamRegistrasi,
     string? StatusBayar,
     string? StatusPoli,
-    string? NoTelpPasien);
+    string? NoTelpPasien,
+    string? JenisKelamin = null,
+    string? Umur = null,
+    string? StatusRawat = null,
+    string? KodePoli = null,
+    string? KodePj = null);
 
 /// <summary>Optional narrowing filters — mirrors the "No.Rawat / No.Reg / No.R.M. / Nama Pasien" search row in the screenshot.</summary>
 public record RegistrasiSearchFilter(
@@ -49,7 +54,7 @@ public interface IRegistrasiRepository
     /// row in RegistrasiView.
     /// </summary>
     Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(
-        DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default);
+        DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default, string? kodePoli = null);
 
     Task<IReadOnlyList<Core.Entities.Poliklinik>> GetPoliklinikAsync(CancellationToken ct = default);
     Task<IReadOnlyList<Core.Entities.Dokter>> GetDokterAsync(CancellationToken ct = default);
@@ -75,7 +80,7 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
     }
 
     public async Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(
-        DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default)
+        DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default, string? kodePoli = null)
     {
         var query =
             from r in db.RegPeriksaSet
@@ -87,6 +92,7 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             join pj in db.PenjabSet on r.KodePenjab equals pj.KodePenjab into pjJoin
             from pj in pjJoin.DefaultIfEmpty()
             where r.TanggalRegistrasi >= fromDate && r.TanggalRegistrasi <= toDate
+                  && (kodePoli == null || r.KodePoli == kodePoli)
             select new
             {
                 r.NoReg,
@@ -107,6 +113,11 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
                 r.StatusBayar,
                 r.StatusPoli,
                 p.NoTelepon,
+                p.JenisKelamin,
+                p.TanggalLahir,
+                r.StatusLanjut,
+                r.KodePoli,
+                r.KodePenjab,
             };
 
         if (filter is not null)
@@ -141,7 +152,12 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             JamRegistrasi: row.JamRegistrasi,
             StatusBayar: row.StatusBayar is { } sb ? ToDisplay(sb) : null,
             StatusPoli: row.StatusPoli is { } sp ? ToDisplay(sp) : null,
-            NoTelpPasien: row.NoTelepon)).ToList();
+            NoTelpPasien: row.NoTelepon,
+            JenisKelamin: row.JenisKelamin == Core.Entities.JenisKelamin.LakiLaki ? "L" : "P",
+            Umur: UmurText(row.TanggalLahir, row.TanggalRegistrasi),
+            StatusRawat: row.StatusLanjut == Core.Entities.StatusLanjut.RawatInap ? "Ranap" : "Ralan",
+            KodePoli: row.KodePoli,
+            KodePj: row.KodePenjab)).ToList();
     }
 
     public async Task<IReadOnlyList<Core.Entities.Poliklinik>> GetPoliklinikAsync(CancellationToken ct = default)
@@ -227,4 +243,14 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
 
     private static string ToDisplay(Core.Entities.StatusPendaftaran v)
         => v == Core.Entities.StatusPendaftaran.Baru ? "Baru" : "Lama";
+
+    private static string UmurText(DateOnly? lahir, DateOnly? daftar)
+    {
+        if (lahir is null || lahir.Value.Year < 1900) return "-";
+        var today = daftar ?? DateOnly.FromDateTime(DateTime.Today);
+        var years = today.Year - lahir.Value.Year - (today < lahir.Value.AddYears(today.Year - lahir.Value.Year) ? 1 : 0);
+        if (years >= 1) return $"{years} Th";
+        var months = (today.Year - lahir.Value.Year) * 12 + today.Month - lahir.Value.Month - (today.Day < lahir.Value.Day ? 1 : 0);
+        return months >= 1 ? $"{months} Bl" : $"{Math.Max(0, today.DayNumber - lahir.Value.DayNumber)} Hr";
+    }
 }

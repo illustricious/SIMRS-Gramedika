@@ -8,7 +8,8 @@
         Icon="avares://SimrsKhanza.UI/Assets/logo.png"
         Width="1200" Height="760"
         WindowState="Maximized"
-        Background="{DynamicResource ThemeBackgroundBrush}">
+        WindowDecorations="BorderOnly"
+        Background="{DynamicResource ThemePrimaryBrush}">
 
     <!--
         Shell layout mirrors the legacy src/simrskhanza/frmUtama.java screen:
@@ -30,18 +31,33 @@
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
-        <!-- Row 0: top shortcut bar — secondary/admin menus -->
-        <Border Grid.Row="0" Background="{DynamicResource ThemePrimaryBrush}">
-            <StackPanel Orientation="Horizontal">
-                <Button Classes="shortcut" Content="Program" Click="OnTopShortcutClick" />
-                <Button Classes="shortcut" Content="Presensi Pegawai" Click="OnTopShortcutClick" />
-                <Button Classes="shortcut" Content="Informasi" Click="OnTopShortcutClick" />
-                <Button Classes="shortcut" Content="Anjungan &amp; Antrian" Click="OnTopShortcutClick" />
-                <Button Classes="shortcut" Content="Tentang Program" Click="OnTopShortcutClick" />
-                <Border Width="1" Background="#2A4FA8" Margin="4,8" />
-                <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="🌙 Mode Gelap"
-                              Click="OnThemeToggleClick" HorizontalAlignment="Right" />
-            </StackPanel>
+        <!-- Row 0: top shortcut bar — secondary/admin menus. Doubles as the window
+             title bar (client area is extended, system chrome is off): the empty
+             space is the drag handle and the minimize/maximize/close buttons sit
+             on the same blue strip, per user request. -->
+        <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource ThemePrimaryBrush}"
+                PointerPressed="OnTitleBarPointerPressed">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Image Source="avares://SimrsKhanza.UI/Assets/logo.png" Width="20" Height="20" Margin="10,0,4,0"
+                           VerticalAlignment="Center" />
+                    <Button Classes="shortcut" Content="Program" Click="OnTopShortcutClick" />
+                    <Button Classes="shortcut" Content="Presensi Pegawai" Click="OnTopShortcutClick" />
+                    <Button Classes="shortcut" Content="Informasi" Click="OnTopShortcutClick" />
+                    <Button Classes="shortcut" Content="Anjungan &amp; Antrian" Click="OnTopShortcutClick" />
+                    <Button Classes="shortcut" Content="Tentang Program" Click="OnTopShortcutClick" />
+                    <Border Width="1" Background="#2A4FA8" Margin="4,8" />
+                    <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="🌙 Mode Gelap"
+                                  Click="OnThemeToggleClick" HorizontalAlignment="Right" />
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#B9C6E8" FontSize="12"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
+                    <Button Classes="caption" Name="MaximizeButton" Content="❐" Click="OnMaximizeClick" />
+                    <Button Classes="caption close" Content="✕" Click="OnExitClick" />
+                </StackPanel>
+            </Grid>
         </Border>
 
         <!-- Row 1: feature shortcuts (direct access, mirrors legacy second toolbar row) -->
@@ -81,10 +97,10 @@
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*" Margin="0,0,0,12">
                     <TextBlock Grid.Column="0" Text="Tampilkan Menu:" VerticalAlignment="Center"
                                Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,8,0" />
-                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Left" MinWidth="320" />
+                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Left" MinWidth="520" MaxDropDownHeight="520" />
                 </Grid>
-                <ScrollViewer Grid.Row="1">
-                    <WrapPanel Name="DashboardPanel" Orientation="Horizontal" />
+                <ScrollViewer Grid.Row="1" Name="DashboardScroll">
+                    <UniformGrid Name="DashboardPanel" Columns="5" />
                 </ScrollViewer>
             </Grid>
 
@@ -105,6 +121,7 @@
                            Foreground="#B9C6E8" FontSize="11" VerticalAlignment="Center" />
             </Grid>
         </Border>
+
     </Grid>
 
     <Window.Styles>
@@ -119,6 +136,24 @@
         </Style>
         <Style Selector="Button.shortcut:pointerover /template/ ContentPresenter, ToggleButton.shortcut:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="#2A4FA8" />
+        </Style>
+        <Style Selector="Button.caption">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2A4FA8" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E81123" />
         </Style>
         <Style Selector="Button.shortcut2">
             <Setter Property="Background" Value="Transparent" />
