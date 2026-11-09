@@ -1,0 +1,180 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SimrsKhanza.UI.Modules.Radiologi"
+             x:Class="SimrsKhanza.UI.Modules.Radiologi.PeriksaRadiologiFormView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Legacy DlgPeriksaRadiologi — "Input Data Hasil Periksa Radiologi". Top: pasien, dokter perujuk /
+        P.J., petugas, tanggal+jam. Middle: pemeriksaan (jns_perawatan_radiologi) to tick, with the
+        editable exposure parameters (Proyeksi, kV, mAS, FFD, BSF, Inak, Jml Penyinaran, Dosis Radiasi).
+        Bottom: BHP radiologi (ipsrsbarang) with Jml and the hasil bacaan text.
+        Not ported: Nota, Cetak lembar permintaan, bridging Fuji/RIS import, foto/URL upload, jurnal akuntansi.
+    -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="10">
+        <TextBlock Grid.Row="0" Text=":: [ Input Data Hasil Periksa Radiologi ] ::" FontWeight="Bold"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+
+        <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4">
+            <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Rawat :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="200,Auto,*">
+                    <TextBox Name="NoRawatBox" KeyUp="OnNoRawatKeyUp" PlaceholderText="2026/11/09/000001" />
+                    <Button Grid.Column="1" Content="🔍 Muat" Click="OnMuatClick" Margin="4,0,0,0" />
+                    <TextBlock Grid.Column="2" Name="PasienText" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Medium" />
+                </Grid>
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Dokter Perujuk :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <ComboBox Grid.Row="0" Grid.Column="4" Name="PerujukCombo" HorizontalAlignment="Stretch" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Info :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Name="InfoText" VerticalAlignment="Center" TextWrapping="Wrap"
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Dokter P.J. :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <ComboBox Grid.Row="1" Grid.Column="4" Name="PjCombo" HorizontalAlignment="Stretch" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Tanggal :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                    <DatePicker Name="TanggalPicker" />
+                    <TextBlock Text="Jam :" VerticalAlignment="Center" />
+                    <TextBox Name="JamBox" Width="80" MaxLength="8" />
+                    <Button Content="Sekarang" Click="OnSekarangClick" />
+                </StackPanel>
+                <TextBlock Grid.Row="2" Grid.Column="3" Text="Petugas :" VerticalAlignment="Center" Margin="0,2,6,2" />
+                <ComboBox Grid.Row="2" Grid.Column="4" Name="PetugasCombo" HorizontalAlignment="Stretch" PlaceholderText="pilih petugas" />
+
+                <TextBlock Grid.Row="3" Grid.ColumnSpan="5" Name="OrderText" Margin="0,4,0,0" IsVisible="False"
+                           Foreground="{DynamicResource ThemeAccentBrush}" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,260,Auto" Margin="0,6,0,4">
+            <TextBlock Grid.Column="0" Text="Pemeriksaan :" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox Grid.Column="1" Name="CariBox" KeyUp="OnCariKeyUp" />
+            <Button Grid.Column="2" Content="🔍 Cari" Click="OnCariClick" Margin="4,0,0,0" />
+        </Grid>
+
+        <DataGrid Grid.Row="3" Name="PemeriksaanGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
+                  FontSize="11" RowHeight="26" CanUserResizeColumns="True" x:DataType="local:RadPick">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="P" Width="36">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <CheckBox IsChecked="{Binding Dipilih, Mode=TwoWay}" HorizontalAlignment="Center" MinHeight="0" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Kode Periksa" Binding="{Binding Kode}" IsReadOnly="True" Width="0.7*" MinWidth="80" />
+                <DataGridTextColumn Header="Nama Pemeriksaan" Binding="{Binding Nama}" IsReadOnly="True" Width="2*" MinWidth="170" />
+                <DataGridTextColumn Header="Tarif" Binding="{Binding BiayaText}" IsReadOnly="True" Width="0.6*" MinWidth="70" />
+                <DataGridTemplateColumn Header="Proyeksi" Width="1.2*" MinWidth="100">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding Proyeksi, Mode=TwoWay}" MaxLength="50" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="kV" Width="0.4*" MinWidth="50">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding KV, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="mAS" Width="0.4*" MinWidth="50">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding MAs, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="FFD" Width="0.4*" MinWidth="50">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding Ffd, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="BSF" Width="0.4*" MinWidth="50">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding Bsf, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Inak" Width="0.4*" MinWidth="50">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding Inak, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Jml Penyinaran" Width="0.7*" MinWidth="80">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding JmlPenyinaran, Mode=TwoWay}" MaxLength="10" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Dosis Radiasi" Width="0.8*" MinWidth="90">
+                    <DataTemplate x:DataType="local:RadPick">
+                        <TextBox Text="{Binding Dosis, Mode=TwoWay}" MaxLength="20" MinHeight="20" Padding="4,1" />
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="4" ColumnDefinitions="*,8,*" Margin="0,6,0,0" Height="170">
+            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,4">
+                    <TextBlock Text="BHP Radiologi :" VerticalAlignment="Center" />
+                    <TextBox Name="CariBhpBox" Width="180" KeyUp="OnCariBhpKeyUp" />
+                    <Button Content="🔍 Cari" Click="OnCariBhpClick" />
+                </StackPanel>
+                <DataGrid Grid.Row="1" Name="BhpGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
+                          FontSize="11" RowHeight="26" CanUserResizeColumns="True" x:DataType="local:RadBhpPick">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Jml" Width="0.5*" MinWidth="60">
+                            <DataTemplate x:DataType="local:RadBhpPick">
+                                <TextBox Text="{Binding JumlahText, Mode=TwoWay}" MinHeight="20" Padding="4,1" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Kode" Binding="{Binding Kode}" IsReadOnly="True" Width="0.8*" MinWidth="70" />
+                        <DataGridTextColumn Header="Nama" Binding="{Binding Nama}" IsReadOnly="True" Width="2*" MinWidth="140" />
+                        <DataGridTextColumn Header="Satuan" Binding="{Binding Satuan}" IsReadOnly="True" Width="0.5*" MinWidth="55" />
+                        <DataGridTextColumn Header="Harga" Binding="{Binding HargaText}" IsReadOnly="True" Width="0.7*" MinWidth="70" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Grid Grid.Column="2" RowDefinitions="Auto,*">
+                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,4">
+                    <TextBlock Text="Hasil Pemeriksaan :" VerticalAlignment="Center" />
+                    <ComboBox Name="TemplateCombo" Width="220" PlaceholderText="template hasil..." SelectionChanged="OnTemplateChanged" />
+                </StackPanel>
+                <TextBox Grid.Row="1" Name="HasilBox" AcceptsReturn="True" TextWrapping="Wrap" />
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="16" Margin="0,6,0,0">
+            <TextBlock Name="TotalText" Text="Total Biaya : 0" FontWeight="Bold" VerticalAlignment="Center" />
+            <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" IsVisible="False" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
+            <Button Content="💾 Simpan" Click="OnSimpanClick" />
+            <Button Content="🆕 Baru" Click="OnBaruClick" />
+            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="6,2" />
+        </Style>
+        <Style Selector="DatePicker">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="8,2" />
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="6,2" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>
