@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsKhanza.UI.Modules.Radiologi.PermintaanRadiologiListView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Legacy DlgCariPermintaanRadiologi: "Data Permintaan Radiologi" — Rawat Jalan / Rawat Inap
+        tabs, each with "Data Permintaan" (a permintaan row followed by one row per ordered
+        examination) and "Item Permintaan" (one row per examination). Grids are built in code.
+        The RIS bridging buttons (FUJI, Care Stream) and barcode/lembar printing are not ported.
+    -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="10">
+        <TextBlock Grid.Row="0" Text=":: [ Data Permintaan Radiologi ] ::" FontWeight="Bold"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+
+        <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
+            <TextBlock Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,4" />
+            <DatePicker Name="FromPicker" Margin="0,0,4,4" />
+            <TextBlock Text="s.d." VerticalAlignment="Center" Margin="4,0,4,4" />
+            <DatePicker Name="ToPicker" Margin="0,0,12,4" />
+            <TextBlock Text="Dokter :" VerticalAlignment="Center" Margin="0,0,4,4" />
+            <TextBox Name="DokterBox" Width="150" Margin="0,0,12,4" KeyUp="OnFilterKeyUp" />
+            <TextBlock Name="LokasiLabel" Text="Unit/Poli :" VerticalAlignment="Center" Margin="0,0,4,4" />
+            <TextBox Name="LokasiBox" Width="150" Margin="0,0,12,4" KeyUp="OnFilterKeyUp" />
+            <TextBlock Name="StatusLabel" Text="Status :" VerticalAlignment="Center" Margin="0,0,4,4" IsVisible="False" />
+            <ComboBox Name="StatusCombo" Width="120" Margin="0,0,12,4" IsVisible="False" SelectedIndex="0">
+                <ComboBoxItem Content="Semua" />
+                <ComboBoxItem Content="Belum Pulang" />
+            </ComboBox>
+            <TextBlock Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,4" />
+            <TextBox Name="KeywordBox" Width="200" Margin="0,0,8,4" KeyUp="OnFilterKeyUp" />
+            <Button Content="🔍 Cari" Click="OnCariClick" Margin="0,0,0,4" />
+        </WrapPanel>
+
+        <Border Grid.Row="2" Name="ConfirmPanel" IsVisible="False" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                BorderThickness="1" Background="{DynamicResource ThemeSurfaceBrush}" Padding="10" CornerRadius="4" Margin="0,0,0,6">
+            <StackPanel Spacing="6">
+                <TextBlock Name="ConfirmText" TextWrapping="Wrap" FontWeight="Medium" />
+                <StackPanel Name="SampelFields" Orientation="Horizontal" Spacing="8" IsVisible="False">
+                    <TextBlock Text="Tanggal &amp; Jam :" VerticalAlignment="Center" />
+                    <DatePicker Name="SampelDatePicker" />
+                    <TextBox Name="SampelTimeBox" Width="90" PlaceholderText="HH:mm:ss" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Name="ConfirmYesButton" Content="Ya" Click="OnConfirmYesClick" />
+                    <Button Content="Batal" Click="OnConfirmCancelClick" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <TabControl Grid.Row="3" Name="LokasiTabs" SelectionChanged="OnLokasiTabChanged">
+            <TabItem Header="Rawat Jalan">
+                <TabControl Name="RalanSubTabs">
+                    <TabItem Header="Data Permintaan">
+                        <DataGrid Name="RalanDataGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                    </TabItem>
+                    <TabItem Header="Item Permintaan">
+                        <DataGrid Name="RalanItemGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+            <TabItem Header="Rawat Inap">
+                <TabControl Name="RanapSubTabs">
+                    <TabItem Header="Data Permintaan">
+                        <DataGrid Name="RanapDataGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                    </TabItem>
+                    <TabItem Header="Item Permintaan">
+                        <DataGrid Name="RanapItemGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                    </TabItem>
+                </TabControl>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+            <Button Content="🗑 Hapus" Click="OnHapusClick" />
+            <Button Content="🧪 Sampel" Click="OnSampelClick" />
+            <Button Content="📄 Hasil" Click="OnHasilClick" />
+            <Button Content="📋 Semua" Click="OnSemuaClick" />
+            <Button Content="🖨 Cetak" Click="OnCetakClick" />
+            <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" Margin="12,0,0,0" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="5" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="6,2" />
+        </Style>
+        <Style Selector="DatePicker">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="8,2" />
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="6,2" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>
