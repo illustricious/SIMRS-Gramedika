@@ -67,5 +67,56 @@
         <Style Selector="DataGridRow:nth-child(2n)">
             <Setter Property="Background" Value="{DynamicResource ThemeRowAltBrush}" />
         </Style>
+
+        <!--
+            App-wide compact/uniform look, modelled on the IGD screen (user asked for every
+            patient table/form to match it): base font 11 Segoe UI, controls MinHeight 24,
+            DataGrid rows 22px, blue column headers, soft grid lines. Local FontSize/RowHeight
+            attributes on a control still win (e.g. the big-screen antrian boards), so only
+            screens that never set their own get the compact default.
+        -->
+        <Style Selector="Window">
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial" />
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style Selector="TextBox, ComboBox, DatePicker, Button, ToggleButton, CheckBox, RadioButton, TabItem, MenuItem">
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="6,2" />
+        </Style>
+        <Style Selector="DatePicker">
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="8,2" />
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="10,2" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="DataGrid">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="RowHeight" Value="22" />
+            <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="MinHeight" Value="26" />
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="SeparatorBrush" Value="{DynamicResource ThemePrimaryLightBrush}" />
+        </Style>
+        <Style Selector="DataGridColumnHeader /template/ Grid#PART_ColumnHeaderRoot">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="DataGridColumnHeader /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+        </Style>
     </Application.Styles>
 </Application>

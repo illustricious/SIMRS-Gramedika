@@ -14,7 +14,6 @@ public partial class MainWindow : Window
 {
     private readonly DispatcherTimer _clockTimer = new() { Interval = TimeSpan.FromSeconds(1) };
     private AuthenticatedUser? _user;
-    private bool _componentReady;
     private bool _pemeriksaanFromTindakan;
 
     public MainWindow() : this(null)
@@ -438,28 +437,58 @@ public partial class MainWindow : Window
         ShowPage(Page.Feature);
     }
 
+    private static SimrsKhanza.Data.LabCategory LabCategoryFor(Modules.Laboratorium.LabAction action) => action switch
+    {
+        Modules.Laboratorium.LabAction.PermintaanPa or Modules.Laboratorium.LabAction.PeriksaPa => SimrsKhanza.Data.LabCategory.PA,
+        Modules.Laboratorium.LabAction.PermintaanMb or Modules.Laboratorium.LabAction.PeriksaMb => SimrsKhanza.Data.LabCategory.MB,
+        _ => SimrsKhanza.Data.LabCategory.PK,
+    };
+
     private async System.Threading.Tasks.Task OpenLabTileAsync(Modules.Laboratorium.LabAction action)
     {
-        var pageHost = this.FindControl<ContentControl>("PageHost")!;
-        var kategori = Modules.Laboratorium.LabMenuView.KategoriFor(action);
+        var category = LabCategoryFor(action);
+        if (Modules.Laboratorium.LabMenuView.IsPermintaan(action)) await OpenPermintaanLabAsync(category);
+        else await OpenPeriksaLabAsync(category);
+    }
 
-        if (Modules.Laboratorium.LabMenuView.IsPermintaan(action))
+    private async System.Threading.Tasks.Task OpenPermintaanLabAsync(SimrsKhanza.Data.LabCategory category)
+    {
+        var view = new Modules.Laboratorium.PermintaanLabListView(category)
         {
-            var view = new Modules.Laboratorium.LabPermintaanView();
-            view.SetKategori(kategori);
-            view.BackRequested += async (_, _) => await OpenLabMenuAsync();
-            pageHost.Content = view;
-        }
-        else
-        {
-            var view = new Modules.Laboratorium.LabPeriksaView();
-            view.SetKategori(kategori);
-            view.BackRequested += async (_, _) => await OpenLabMenuAsync();
-            pageHost.Content = view;
-            await view.ReloadAsync();
-        }
+            IsAdminUtama = string.Equals(_user?.UserId, "admin", StringComparison.OrdinalIgnoreCase),
+        };
+        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.HasilRequested += async (_, req) =>
+            await OpenPeriksaLabFormAsync(req.Category, req.NoRawat, req.NoOrder, () => OpenPermintaanLabAsync(req.Category));
 
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
         ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenPeriksaLabAsync(SimrsKhanza.Data.LabCategory category)
+    {
+        var view = new Modules.Laboratorium.PeriksaLabListView(category);
+        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.InputRequested += async (_, noRawat) =>
+            await OpenPeriksaLabFormAsync(category, noRawat, null, () => OpenPeriksaLabAsync(category));
+
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenPeriksaLabFormAsync(
+        SimrsKhanza.Data.LabCategory category, string? noRawat, string? noOrder, Func<System.Threading.Tasks.Task> back)
+    {
+        var view = new Modules.Laboratorium.PeriksaLabFormView(category);
+        view.BackRequested += async (_, _) => await back();
+        view.SavedRequested += async (_, _) => await OpenPeriksaLabAsync(category);
+
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        if (noRawat is not null) await view.PrefillAsync(noRawat, noOrder);
+        else await view.ReloadAsync();
     }
 
     private async System.Threading.Tasks.Task OpenRadiologiMenuAsync()
@@ -479,24 +508,48 @@ public partial class MainWindow : Window
 
     private async System.Threading.Tasks.Task OpenRadiologiTileAsync(Modules.Radiologi.RadiologiAction action)
     {
-        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+        if (action == Modules.Radiologi.RadiologiAction.Permintaan) await OpenPermintaanRadiologiAsync();
+        else await OpenPeriksaRadiologiAsync();
+    }
 
-        if (action == Modules.Radiologi.RadiologiAction.Permintaan)
+    private async System.Threading.Tasks.Task OpenPermintaanRadiologiAsync()
+    {
+        var view = new Modules.Radiologi.PermintaanRadiologiListView
         {
-            var view = new Modules.Radiologi.PermintaanRadiologiView();
-            view.BackRequested += async (_, _) => await OpenRadiologiMenuAsync();
-            pageHost.Content = view;
-            await view.ReloadAsync();
-        }
-        else
-        {
-            var view = new Modules.Radiologi.PeriksaRadiologiView();
-            view.BackRequested += async (_, _) => await OpenRadiologiMenuAsync();
-            pageHost.Content = view;
-            await view.ReloadAsync();
-        }
+            IsAdminUtama = string.Equals(_user?.UserId, "admin", StringComparison.OrdinalIgnoreCase),
+        };
+        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.HasilRequested += async (_, req) =>
+            await OpenPeriksaRadiologiFormAsync(req.NoRawat, req.NoOrder, OpenPermintaanRadiologiAsync);
 
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
         ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenPeriksaRadiologiAsync()
+    {
+        var view = new Modules.Radiologi.PeriksaRadiologiListView();
+        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.InputRequested += async (_, noRawat) =>
+            await OpenPeriksaRadiologiFormAsync(noRawat, null, OpenPeriksaRadiologiAsync);
+
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenPeriksaRadiologiFormAsync(
+        string? noRawat, string? noOrder, Func<System.Threading.Tasks.Task> back)
+    {
+        var view = new Modules.Radiologi.PeriksaRadiologiFormView();
+        view.BackRequested += async (_, _) => await back();
+        view.SavedRequested += async (_, _) => await OpenPeriksaRadiologiAsync();
+
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        if (noRawat is not null) await view.PrefillAsync(noRawat, noOrder);
+        else await view.ReloadAsync();
     }
 
     private async System.Threading.Tasks.Task OpenIgdAsync()
@@ -609,9 +662,54 @@ public partial class MainWindow : Window
             case "Tentang Program":
                 OpenAbout();
                 return;
+
+            case "Anjungan & Antrian":
+                if (sender is Control anchor) ShowAntrianMenu(anchor);
+                return;
         }
 
         _ = ShowNotImplementedAsync(label);
+    }
+
+    /// <summary>Mirrors the legacy "Anjungan & Antrian" dropdown; entries without a native version yet say so.</summary>
+    private void ShowAntrianMenu(Control anchor)
+    {
+        MenuItem Item(string header, Action action)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += (_, _) => action();
+            return item;
+        }
+
+        void Pending(string name) => _ = ShowNotImplementedAsync(name);
+        void Board(SimrsKhanza.Data.AntrianBoardKind kind) => Modules.Antrian.AntrianBoards.Open(kind);
+
+        var apotek = new MenuItem { Header = "Antrian Apotek" };
+        apotek.Items.Add(Item("Antrian Apotek", () => Pending("Antrian Apotek")));
+        apotek.Items.Add(Item("Antrian Apotek 2", () => Board(SimrsKhanza.Data.AntrianBoardKind.Apotek2)));
+        apotek.Items.Add(Item("Antrian Apotek 2 Racikan", () => Board(SimrsKhanza.Data.AntrianBoardKind.Apotek2Racikan)));
+        apotek.Items.Add(Item("Antrian Apotek 2 Non Racikan", () => Board(SimrsKhanza.Data.AntrianBoardKind.Apotek2NonRacikan)));
+
+        var laborat = new MenuItem { Header = "Antrian Laborat" };
+        laborat.Items.Add(Item("Laborat Patologi Klinis", () => Board(SimrsKhanza.Data.AntrianBoardKind.LabPk)));
+        laborat.Items.Add(Item("Laborat Patologi Anatomi", () => Board(SimrsKhanza.Data.AntrianBoardKind.LabPa)));
+        laborat.Items.Add(Item("Laborat Mikrobiologi & Bio Molekuler", () => Board(SimrsKhanza.Data.AntrianBoardKind.LabMb)));
+
+        var menu = new ContextMenu();
+        menu.Items.Add(Item("Anjungan Registrasi Mandiri", () => Pending("Anjungan Registrasi Mandiri")));
+        menu.Items.Add(new Separator());
+        menu.Items.Add(Item("Cetak Antrian Loket", () => Pending("Cetak Antrian Loket")));
+        menu.Items.Add(Item("Antrian Loket", Modules.Antrian.AntrianBoards.OpenLoket));
+        menu.Items.Add(Item("Antrian Loket 2", () => Pending("Antrian Loket 2")));
+        menu.Items.Add(Item("Antrian Unit/Poliklinik", () => Pending("Antrian Unit/Poliklinik")));
+        menu.Items.Add(Item("Antrian Unit/Poliklinik 2", () => Board(SimrsKhanza.Data.AntrianBoardKind.JadwalPoli)));
+        menu.Items.Add(apotek);
+        menu.Items.Add(laborat);
+        menu.Items.Add(Item("Antrian Radiologi", () => Board(SimrsKhanza.Data.AntrianBoardKind.Radiologi)));
+        menu.Items.Add(new Separator());
+        menu.Items.Add(Item("Verifikasi Digital Klaim", () => Pending("Verifikasi Digital Klaim")));
+
+        menu.Open(anchor);
     }
 
     private async System.Threading.Tasks.Task OpenInformasiAsync()
@@ -643,7 +741,9 @@ public partial class MainWindow : Window
         ShowPage(Page.Feature);
     }
 
-    private void OnExitClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
+    private bool _componentReady;
+
+    private void OnCloseClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
 
     private void OnMinimizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         => WindowState = WindowState.Minimized;
@@ -653,8 +753,8 @@ public partial class MainWindow : Window
     private void ToggleMaximize()
         => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
-    // Buttons inside the bar mark their own pointer press handled, so this only
-    // fires for the empty strip — drag to move, double-click to maximize/restore.
+    // Buttons mark their own presses handled, so this only fires on the empty strip:
+    // drag to move (the OS move loop gives edge snapping), double-click to maximize/restore.
     private void OnTitleBarPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
@@ -665,11 +765,20 @@ public partial class MainWindow : Window
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        // Fires during InitializeComponent (WindowState is set in XAML) before the
-        // name scope exists, so FindControl would throw — guard on the generated field.
+        // WindowState is set from XAML during InitializeComponent, before the name scope exists.
         if (change.Property == WindowStateProperty && _componentReady)
             this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
     }
+
+    /// <summary>Raised by the toolbar "Keluar" button — App swaps in the login window instead of quitting.</summary>
+    public event EventHandler? LogoutRequested;
+
+    private void OnExitClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (LogoutRequested is null) Close();
+        else LogoutRequested.Invoke(this, EventArgs.Empty);
+    }
+
 
     /// <summary>
     /// Handles the right-click patient menu shared by Registrasi/IGD/Rawat

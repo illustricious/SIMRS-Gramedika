@@ -21,3 +21,5 @@ run_out.log
 
 ## Published build output (large binaries, rebuildable via `dotnet publish`)
 publish/
+
+.claude/

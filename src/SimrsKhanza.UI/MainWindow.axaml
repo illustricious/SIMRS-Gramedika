@@ -52,10 +52,13 @@
                 </StackPanel>
                 <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#B9C6E8" FontSize="12"
                            HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
+                <!-- BorderOnly keeps the thin OS frame (edge resize + snap work); the caption
+                     buttons are our own so they sit on the blue header. Close here quits the
+                     app; the toolbar "Keluar" logs out. -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
-                    <Button Classes="caption" Name="MaximizeButton" Content="❐" Click="OnMaximizeClick" />
-                    <Button Classes="caption close" Content="✕" Click="OnExitClick" />
+                    <Button Classes="caption" Name="MaximizeButton" Content="☐" Click="OnMaximizeClick" />
+                    <Button Classes="caption close" Content="✕" Click="OnCloseClick" />
                 </StackPanel>
             </Grid>
         </Border>
