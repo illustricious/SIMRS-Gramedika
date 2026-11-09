@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SimrsKhanza.UI.Modules.Antrian.AntrianLoketWindow"
+        Title="Antrian Loket" Width="1000" Height="640"
+        Icon="avares://SimrsKhanza.UI/Assets/logo.png"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFFAFFFA"
+        KeyDown="OnKeyDown">
+
+    <!--
+        Native version of the legacy KhanzaAntrianLoket jar ("::[ Antrian Registrasi Pasien ]::"):
+        the operator picks a loket and a number and presses Antri, which REPLACES the single row of
+        antriloket (loket, antrian); the display half polls that row every 5 s. The legacy display
+        also speaks the number with pre-recorded MP3 words (./suara/*.mp3) — not ported here; a bell
+        rings when the called pair changes instead.
+    -->
+    <Grid ColumnDefinitions="360,*">
+        <Border Grid.Column="0" Margin="12" Padding="14" BorderBrush="#FF9CCB9C" BorderThickness="1" CornerRadius="6" Background="White">
+            <StackPanel Spacing="8">
+                <TextBlock Text="::[ Antrian Registrasi Pasien ]::" FontWeight="Bold" Foreground="#FF326432" />
+
+                <TextBlock Text="Loket :" Margin="0,8,0,0" />
+                <ComboBox Name="LoketCombo" HorizontalAlignment="Stretch" />
+
+                <TextBlock Text="No. Antrian :" Margin="0,4,0,0" />
+                <TextBox Name="NomorBox" Text="1" />
+
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    <Button Content="📣 Antri" Click="OnAntriClick" />
+                    <Button Content="↺ Reset" Click="OnResetClick" />
+                    <Button Content="⏹ Stop" Click="OnStopClick" />
+                </StackPanel>
+
+                <TextBlock Name="StatusText" TextWrapping="Wrap" Foreground="#FF6B7280" Margin="0,8,0,0" />
+                <TextBlock Text="Display memperbarui tiap 5 detik. F11 = layar penuh." FontSize="11" Foreground="#FF9CA3AF" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Margin="0,12,12,12" Padding="20" BorderBrush="#FF64C864" BorderThickness="2" CornerRadius="6" Background="#FFFAFFFA">
+            <Grid RowDefinitions="Auto,*,*">
+                <TextBlock Text="Antrian Registrasi" FontSize="42" Foreground="#FF326432" />
+                <Border Grid.Row="1" Margin="0,12" BorderBrush="#FF96FA96" BorderThickness="1" CornerRadius="4">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Text="No.Antrian :" FontSize="28" Foreground="#FF326432" Margin="12,6" />
+                        <TextBlock Grid.Row="1" Name="NomorText" Text="-" FontSize="140" FontWeight="Bold" Foreground="#FF326432"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <Border Grid.Row="2" BorderBrush="#FF96FA96" BorderThickness="1" CornerRadius="4">
+                    <Grid RowDefinitions="Auto,*">
+                        <TextBlock Text="Loket :" FontSize="28" Foreground="#FF326432" Margin="12,6" />
+                        <TextBlock Grid.Row="1" Name="LoketText" Text="-" FontSize="140" FontWeight="Bold" Foreground="#FF326432"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
