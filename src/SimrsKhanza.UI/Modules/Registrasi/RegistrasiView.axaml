@@ -22,7 +22,7 @@
         earlier feedback: "Registrasi" swaps the page in place. "Kembali ke
         Menu" means back to the dashboard, not app exit.
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="12">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
 
         <TextBlock Grid.Row="0" Text=":: [ Registrasi / Daftar Pasien Rawat Jalan ] ::" FontSize="13"
                    Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
@@ -34,7 +34,7 @@
                 <Grid ColumnDefinitions="Auto,*,24,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Rekam Medik :" VerticalAlignment="Center" Margin="0,2" />
                     <TextBox Grid.Row="0" Grid.Column="1" Name="InputNoRekamMedisBox" Width="160"
-                              HorizontalAlignment="Left" Margin="2" PlaceholderText="contoh: D00001" />
+                              HorizontalAlignment="Left" Margin="2" IsReadOnly="True" />
                     <TextBlock Grid.Row="0" Grid.Column="3" Text="Penanggung Jawab :" VerticalAlignment="Center" Margin="0,2" />
                     <TextBox Grid.Row="0" Grid.Column="4" Name="InputPenanggungJawabBox" Margin="2" />
 
@@ -48,13 +48,11 @@
                     <TextBlock Grid.Row="2" Grid.Column="3" Text="Jenis Bayar :" VerticalAlignment="Center" Margin="0,2" />
                     <ComboBox Grid.Row="2" Grid.Column="4" Name="InputPenjabCombo" Margin="2" HorizontalAlignment="Stretch" />
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Name="InputStatusText" Grid.ColumnSpan="5"
-                               TextWrapping="Wrap" Margin="4" Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Hubungan P.J. :" VerticalAlignment="Center" Margin="0,2" />
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="InputHubunganBox" Margin="2" />
 
-                    <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" Orientation="Horizontal" Margin="4,8,4,0" Spacing="8">
-                        <Button Name="InputSimpanButton" Content="💾 Simpan" Click="OnInputSimpanClick" />
-                        <Button Name="InputBaruButton" Content="🆕 Baru (kosongkan)" Click="OnInputBaruClick" />
-                    </StackPanel>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Name="InputStatusText" Grid.ColumnSpan="5"
+                               TextWrapping="Wrap" Margin="4" Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
                 </Grid>
             </Border>
 
@@ -69,20 +67,8 @@
             </ToggleButton>
         </StackPanel>
 
-        <!-- Search row: No.Rawat / No.Reg / No.R.M. / Nama Pasien -->
-        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,24,Auto,*,24,Auto,*,24,Auto,*" Margin="0,4,0,8">
-            <TextBlock Grid.Column="0" Text="No. Rawat :" VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" Name="SearchNoRawatBox" Margin="4,0" />
-            <TextBlock Grid.Column="3" Text="No. Reg. :" VerticalAlignment="Center" />
-            <TextBox Grid.Column="4" Name="SearchNoRegBox" Margin="4,0" />
-            <TextBlock Grid.Column="6" Text="No.R.M. :" VerticalAlignment="Center" />
-            <TextBox Grid.Column="7" Name="SearchNoRmBox" Margin="4,0" />
-            <TextBlock Grid.Column="9" Text="Nama Pasien :" VerticalAlignment="Center" />
-            <TextBox Grid.Column="10" Name="SearchNamaBox" Margin="4,0" />
-        </Grid>
-
         <!-- Tabs: "Registrasi Awal" (implemented) / "Rujukan Internal Poli" (deferred) -->
-        <TabControl Grid.Row="3">
+        <TabControl Grid.Row="2">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="Registrasi Awal" FontSize="12" FontWeight="Medium"
@@ -91,7 +77,7 @@
                 <DataGrid Name="RegistrasiGrid" Margin="0,8" FontSize="11" RowHeight="22"
                           AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True"
                           GridLinesVisibility="All" HeadersVisibility="Column"
-                          x:DataType="data:RegistrasiListItem">
+                          x:DataType="data:RegistrasiListItem" SelectionChanged="OnRegistrasiSelected">
                     <!-- Star-sized (proportional) instead of fixed pixel widths — columns now
                          auto-fill whatever width the grid has (no horizontal scroll / manual
                          resize needed to "see everything" on a normal window), while keeping
@@ -134,12 +120,12 @@
         </TabControl>
 
         <!-- Bottom filter + action bar -->
-        <StackPanel Grid.Row="4" Spacing="8">
+        <StackPanel Grid.Row="3" Spacing="8">
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
                 <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <DatePicker Grid.Column="1" Name="PeriodeFromPicker" />
+                <CalendarDatePicker Grid.Column="1" Name="PeriodeFromPicker" />
                 <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
-                <DatePicker Grid.Column="3" Name="PeriodeToPicker" />
+                <CalendarDatePicker Grid.Column="3" Name="PeriodeToPicker" />
                 <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <TextBox Grid.Column="6" Name="KeyWordBox" />
                 <TextBlock Grid.Column="7" Name="RecordCountText" Text="Record : 0"
@@ -152,7 +138,7 @@
                      Ganti/Hapus (edit/delete an EXISTING registration) stay
                      placeholder: riskier to get right against real patient
                      data without a clearer spec, deliberately deferred. -->
-                <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
+                <Button Name="InputSimpanButton" Content="💾 Simpan" Click="OnInputSimpanClick" />
                 <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
                 <Button Content="🩺 Periksa" Click="OnPeriksaClick" />
                 <Button Content="🖨 Cetak" Click="OnCetakClick" />
@@ -179,11 +165,7 @@
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="6,2" />
         </Style>
-        <Style Selector="DatePicker">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-        </Style>
-        <Style Selector="Button">
+<Style Selector="Button">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="8,2" />

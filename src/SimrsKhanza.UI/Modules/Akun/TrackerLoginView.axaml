@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:auth="using:SimrsKhanza.Data.Auth"
+             x:Class="SimrsKhanza.UI.Modules.Akun.TrackerLoginView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Legacy btnTracker: reads the `tracker` table both apps write on login. -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Tracker Login ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
+            <TextBlock Text="Periode :" VerticalAlignment="Center" />
+            <CalendarDatePicker Name="FromPicker" />
+            <TextBlock Text="s.d." VerticalAlignment="Center" />
+            <CalendarDatePicker Name="ToPicker" />
+            <TextBox Name="CariBox" PlaceholderText="Cari NIP / nama..." Width="200" />
+            <Button Content="🔎 Tampilkan" Click="OnTampilkanClick" />
+            <TextBlock Name="RingkasanText" VerticalAlignment="Center" Margin="12,0,0,0"
+                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" Name="Grid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column" x:DataType="auth:KhanzaTrackerRow">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="NIP / ID" Binding="{Binding Nip}" Width="150" />
+                <DataGridTextColumn Header="Nama" Binding="{Binding Nama}" Width="*" />
+                <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal}" Width="110" />
+                <DataGridTextColumn Header="Jam" Binding="{Binding Jam}" Width="90" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

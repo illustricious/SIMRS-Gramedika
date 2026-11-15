@@ -31,8 +31,8 @@ public partial class IgdView : UserControl
             request => PatientMenuRequested?.Invoke(this, request));
 
         // Default period = today ("Registrasi IGD Hari Ini").
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
@@ -69,8 +69,8 @@ public partial class IgdView : UserControl
     private async System.Threading.Tasks.Task LoadAsync()
     {
         var grid = this.FindControl<DataGrid>("IgdGrid")!;
-        var from = DateOnly.FromDateTime(this.FindControl<DatePicker>("FromPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
-        var to = DateOnly.FromDateTime(this.FindControl<DatePicker>("ToPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var from = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate ?? DateTime.Today);
+        var to = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate ?? DateTime.Today);
         var keyword = this.FindControl<TextBox>("KeywordBox")!.Text?.Trim();
 
         try
@@ -110,8 +110,8 @@ public partial class IgdView : UserControl
     private async void OnSemuaClick(object? sender, RoutedEventArgs e)
     {
         this.FindControl<TextBox>("KeywordBox")!.Text = string.Empty;
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         await LoadAsync();
     }
 

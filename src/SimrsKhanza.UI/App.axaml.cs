@@ -18,9 +18,13 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // TODO: replace with a real DI container + MySQL-backed IUserRepository
-            // once SimrsKhanza.Data wires up EF Core (see docs/audit/HANDOVER.md).
-            IAuthService authService = new AuthService(new InMemoryUserRepository());
+            // Same accounts & hak akses as original SIMRS Khanza (`admin` / `user` tables,
+            // AES 'nur'/'windi'). Settings are re-read per login so a change saved in
+            // Pengaturan takes effect without restarting. Dev seed accounts work only
+            // while the database is unreachable (see KhanzaLoginService).
+            IAuthService authService = new KhanzaLoginService(
+                Config.DatabaseSettings.Load,
+                new AuthService(new InMemoryUserRepository()));
 
             ShowLogin(desktop, authService, show: false);
         }

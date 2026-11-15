@@ -1,0 +1,96 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:auth="using:SimrsKhanza.Data.Auth"
+             xmlns:akun="using:SimrsKhanza.UI.Modules.Akun"
+             x:Class="SimrsKhanza.UI.Modules.Akun.ManajemenUserView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!-- Port of legacy setting/DlgUser.java: same `user` table (AES 'nur'/'windi'),
+         so accounts made here also log into the original Khanza and vice versa. -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
+        <TextBlock Grid.Row="0" Text=":: [ Manajemen User &amp; Hak Akses ] ::"
+                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="2*,12,3*">
+
+            <!-- Left: user list -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
+                    <TextBox Name="CariUserBox" PlaceholderText="Cari ID / nama..." Width="220" KeyDown="OnCariUserKeyDown" />
+                    <Button Content="🔎 Cari" Click="OnRefreshClick" />
+                    <TextBlock Name="JumlahUserText" VerticalAlignment="Center"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                </StackPanel>
+                <DataGrid Grid.Row="1" Name="UserGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Single" GridLinesVisibility="All" HeadersVisibility="Column"
+                          SelectionChanged="OnUserSelected" x:DataType="auth:KhanzaUserRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID User" Binding="{Binding IdUser}" Width="130" />
+                        <DataGridTextColumn Header="Nama" Binding="{Binding Nama}" Width="*" />
+                        <DataGridTextColumn Header="Jml Akses" Binding="{Binding JumlahAkses}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    <Button Content="➕ User Baru" Click="OnBaruClick" />
+                    <Button Content="🗑 Hapus User" Click="OnHapusClick" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Right: editor -->
+            <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,*" Margin="0,0,0,8">
+                    <TextBlock Grid.Column="0" Text="ID User :" VerticalAlignment="Center" Margin="0,0,6,0" />
+                    <TextBox Grid.Column="1" Name="IdUserBox" PlaceholderText="NIK pegawai / kode dokter" />
+                    <TextBlock Grid.Column="2" Text="Password :" VerticalAlignment="Center" Margin="12,0,6,0" />
+                    <TextBox Grid.Column="3" Name="PasswordUserBox" PasswordChar="*" />
+                </Grid>
+                <TextBlock Grid.Row="1" Name="ModeText" FontSize="11" Margin="0,0,0,8"
+                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
+
+                <WrapPanel Grid.Row="2" Margin="0,0,0,8">
+                    <TextBox Name="FilterAksesBox" PlaceholderText="Filter hak akses..." Width="200" Margin="0,0,8,4"
+                             TextChanged="OnFilterAksesChanged" />
+                    <CheckBox Name="HanyaDicentangBox" Content="Hanya yang dicentang" Margin="0,0,8,4"
+                              IsCheckedChanged="OnFilterAksesChanged" />
+                    <Button Content="☑ Centang yang tampil" Click="OnCentangSemuaClick" Margin="0,0,8,4" />
+                    <Button Content="☐ Kosongkan yang tampil" Click="OnKosongkanClick" Margin="0,0,8,4" />
+                    <ComboBox Name="SalinDariCombo" PlaceholderText="Salin hak akses dari..." Width="220" Margin="0,0,8,4" />
+                    <Button Content="📋 Salin" Click="OnSalinClick" Margin="0,0,8,4" />
+                </WrapPanel>
+
+                <Border Grid.Row="3" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="4">
+                    <ListBox Name="AksesList" x:DataType="akun:AksesItem">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="akun:AksesItem">
+                                <Grid ColumnDefinitions="40,*">
+                                    <TextBlock Grid.Column="0" Text="{Binding Kategori}" FontSize="11" VerticalAlignment="Center"
+                                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                                    <CheckBox Grid.Column="1" Content="{Binding Label}" IsChecked="{Binding IsChecked}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Border>
+
+                <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    <Button Content="💾 Simpan" Click="OnSimpanClick" />
+                    <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="ListBox#AksesList ListBoxItem">
+            <Setter Property="Padding" Value="6,1" />
+            <Setter Property="MinHeight" Value="0" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

@@ -14,6 +14,15 @@ public class DatabaseSettings
     public string User { get; init; } = "root";
     public string Password { get; init; } = "";
 
+    /// <summary>Legacy database.xml AKTIFKANBATCHOBAT: obat/BHP dipotong per no_batch/no_faktur.</summary>
+    public bool AktifkanBatchObat { get; init; }
+
+    /// <summary>Legacy database.xml HPPFARMASI: databarang/data_batch column used as HPP (dasar | h_beli).</summary>
+    public string HppFarmasi { get; init; } = "dasar";
+
+    /// <summary>Whitelisted HPP column (it is interpolated into SQL).</summary>
+    public string HppColumn => HppFarmasi is "h_beli" ? "h_beli" : "dasar";
+
     public string ToConnectionString()
         => $"Server={Host};Port={Port};Database={Database};User={User};Password={Password};ConvertZeroDateTime=True;";
 

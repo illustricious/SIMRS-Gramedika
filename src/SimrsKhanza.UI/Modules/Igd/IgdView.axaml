@@ -87,9 +87,9 @@
         <StackPanel Grid.Row="3" Spacing="6">
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
                 <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <DatePicker Grid.Column="1" Name="FromPicker" />
+                <CalendarDatePicker Grid.Column="1" Name="FromPicker" />
                 <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
-                <DatePicker Grid.Column="3" Name="ToPicker" />
+                <CalendarDatePicker Grid.Column="3" Name="ToPicker" />
                 <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <TextBox Grid.Column="6" Name="KeywordBox" KeyUp="OnKeywordKeyUp" />
                 <TextBlock Grid.Column="7" Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
@@ -112,26 +112,26 @@
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
         <Style Selector="TextBlock">
-            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontSize" Value="12" />
         </Style>
         <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="28" />
             <Setter Property="Padding" Value="6,2" />
         </Style>
         <Style Selector="DatePicker">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="28" />
         </Style>
         <Style Selector="Button">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="Padding" Value="8,3" />
         </Style>
         <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="Padding" Value="6,3" />
         </Style>
     </UserControl.Styles>
 </UserControl>

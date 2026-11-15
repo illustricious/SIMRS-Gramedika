@@ -47,6 +47,19 @@
                     <TextBox Grid.Row="4" Grid.Column="1" Name="PasswordBox" PasswordChar="*" Margin="4" />
                 </Grid>
 
+                <TextBlock Text="Farmasi (pengganti AKTIFKANBATCHOBAT &amp; HPPFARMASI di database.xml)" FontWeight="Medium" Margin="0,12,0,0"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <CheckBox Name="BatchBox" Content="Aktifkan batch obat (stok dipotong per No.Batch/No.Faktur)" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Kolom HPP farmasi :" VerticalAlignment="Center" />
+                    <ComboBox Name="HppBox" Width="140">
+                        <ComboBoxItem Content="dasar" />
+                        <ComboBoxItem Content="h_beli" />
+                    </ComboBox>
+                </StackPanel>
+                <TextBlock FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                           Text="Samakan dengan setting Khanza lama di komputer ini, supaya pemotongan stok &amp; HPP di menu Barcode Ralan/Ranap sama." />
+
                 <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap" IsVisible="False" />
 
                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">

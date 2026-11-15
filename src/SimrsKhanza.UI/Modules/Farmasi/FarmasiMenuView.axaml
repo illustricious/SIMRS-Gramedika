@@ -17,7 +17,7 @@
         <TextBlock Grid.Row="0" Text=":: [ Farmasi ] ::"
                    Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
 
-        <WrapPanel Grid.Row="1" Name="TilePanel" Orientation="Horizontal" VerticalAlignment="Top" />
+        <Grid Grid.Row="1" Name="TilePanel" ColumnSpacing="8" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
             <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
@@ -26,14 +26,13 @@
 
     <UserControl.Styles>
         <Style Selector="Button.labTile">
-            <Setter Property="Width" Value="150" />
-            <Setter Property="Height" Value="110" />
-            <Setter Property="Margin" Value="8" />
+            <Setter Property="Height" Value="180" />
+            <Setter Property="Margin" Value="6" />
             <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
             <Setter Property="FontWeight" Value="Medium" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="CornerRadius" Value="6" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>

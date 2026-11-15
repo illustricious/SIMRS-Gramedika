@@ -40,7 +40,7 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Tempat Lahir :" VerticalAlignment="Center" />
                         <TextBox Grid.Row="2" Grid.Column="1" Name="TempatLahirBox" Margin="4" />
                         <TextBlock Grid.Row="2" Grid.Column="3" Text="Tgl. Lahir :" VerticalAlignment="Center" />
-                        <DatePicker Grid.Row="2" Grid.Column="4" Name="TglLahirPicker" Margin="4" HorizontalAlignment="Stretch" />
+                        <CalendarDatePicker Grid.Row="2" Grid.Column="4" Name="TglLahirPicker" Margin="4" HorizontalAlignment="Stretch" />
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Agama :" VerticalAlignment="Center" />
                         <TextBox Grid.Row="3" Grid.Column="1" Name="AgamaBox" Margin="4" />

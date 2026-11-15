@@ -10,9 +10,9 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
             <TextBlock Text="Periode :" VerticalAlignment="Center" />
-            <DatePicker Name="FromPicker" />
+            <CalendarDatePicker Name="FromPicker" />
             <TextBlock Text="s.d." VerticalAlignment="Center" />
-            <DatePicker Name="ToPicker" />
+            <CalendarDatePicker Name="ToPicker" />
             <Button Content="🔎 Tampilkan" Click="OnTampilkanClick" />
             <TextBlock Name="RingkasanText" VerticalAlignment="Center" Margin="12,0,0,0"
                        Foreground="{DynamicResource ThemeTextSecondaryBrush}" />

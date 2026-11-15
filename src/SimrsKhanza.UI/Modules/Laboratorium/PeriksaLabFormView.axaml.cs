@@ -115,7 +115,7 @@ public partial class PeriksaLabFormView : UserControl
         this.FindControl<DataGrid>("PaDetailGrid")!.ItemsSource = _pa;
         this.FindControl<DataGrid>("DetailGrid")!.LoadingRow += OnDetailLoadingRow;
 
-        this.FindControl<DatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<TextBox>("JamBox")!.Text = DateTime.Now.ToString("HH:mm:ss");
         _ready = true;
     }
@@ -401,7 +401,7 @@ public partial class PeriksaLabFormView : UserControl
         if (pj is null) { ShowStatus("Dokter penanggung jawab wajib diisi.", isError: true); return; }
         if (!TimeOnly.TryParseExact(this.FindControl<TextBox>("JamBox")!.Text?.Trim(), "HH:mm:ss", out var jam))
         { ShowStatus("Jam harus berformat HH:mm:ss.", isError: true); return; }
-        var tgl = DateOnly.FromDateTime(this.FindControl<DatePicker>("TanggalPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var tgl = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate ?? DateTime.Today);
 
         var ticked = _tarif.Where(t => t.Dipilih).Select(t => t.Tarif).ToList();
         if (ticked.Count == 0) { ShowStatus("Pilih minimal satu pemeriksaan.", isError: true); return; }

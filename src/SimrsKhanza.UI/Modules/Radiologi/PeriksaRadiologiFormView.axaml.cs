@@ -71,7 +71,7 @@ public partial class PeriksaRadiologiFormView : UserControl
         InitializeComponent();
         this.FindControl<DataGrid>("PemeriksaanGrid")!.ItemsSource = _tarif;
         this.FindControl<DataGrid>("BhpGrid")!.ItemsSource = _bhp;
-        this.FindControl<DatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<TextBox>("JamBox")!.Text = DateTime.Now.ToString("HH:mm:ss");
         _ready = true;
     }
@@ -308,7 +308,7 @@ public partial class PeriksaRadiologiFormView : UserControl
         if (pj is null) { ShowStatus("Dokter penanggung jawab wajib diisi.", isError: true); return; }
         if (!TimeOnly.TryParseExact(this.FindControl<TextBox>("JamBox")!.Text?.Trim(), "HH:mm:ss", out var jam))
         { ShowStatus("Jam harus berformat HH:mm:ss.", isError: true); return; }
-        var tgl = DateOnly.FromDateTime(this.FindControl<DatePicker>("TanggalPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var tgl = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate ?? DateTime.Today);
 
         var ticked = _tarif.Where(t => t.Dipilih).ToList();
         if (ticked.Count == 0) { ShowStatus("Pilih minimal satu pemeriksaan.", isError: true); return; }

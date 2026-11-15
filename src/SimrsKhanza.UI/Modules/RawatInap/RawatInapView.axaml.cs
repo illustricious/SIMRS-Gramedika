@@ -48,7 +48,7 @@ public partial class RawatInapView : UserControl
         statusPulang.SelectedIndex = 0;
 
         foreach (var name in new[] { "MasukFromPicker", "MasukToPicker", "PulangFromPicker", "PulangToPicker" })
-            this.FindControl<DatePicker>(name)!.SelectedDate = DateTime.Today;
+            this.FindControl<CalendarDatePicker>(name)!.SelectedDate = DateTime.Today;
 
         _ready = true;
     }
@@ -105,7 +105,7 @@ public partial class RawatInapView : UserControl
     }
 
     private DateOnly PickDate(string name)
-        => DateOnly.FromDateTime(this.FindControl<DatePicker>(name)!.SelectedDate?.DateTime ?? DateTime.Today);
+        => DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>(name)!.SelectedDate ?? DateTime.Today);
 
     private string? Text(string name)
     {

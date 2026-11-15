@@ -20,7 +20,7 @@ public partial class LaporanMenuView : UserControl
     public LaporanMenuView()
     {
         InitializeComponent();
-        MenuTileBuilder.Build(this.FindControl<WrapPanel>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
+        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
     }
 
     private void OnBackClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

@@ -19,9 +19,9 @@
             <TextBlock Grid.Column="0" Text="No.Rawat :" VerticalAlignment="Center" Margin="0,0,4,0" />
             <TextBox Grid.Column="1" Name="NoRawatBox" KeyUp="OnFilterKeyUp" />
             <TextBlock Grid.Column="3" Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,0" />
-            <DatePicker Grid.Column="4" Name="FromPicker" />
+            <CalendarDatePicker Grid.Column="4" Name="FromPicker" />
             <TextBlock Grid.Column="5" Text="s.d." VerticalAlignment="Center" Margin="6,0" />
-            <DatePicker Grid.Column="6" Name="ToPicker" />
+            <CalendarDatePicker Grid.Column="6" Name="ToPicker" />
             <TextBlock Grid.Column="8" Text="Pasien :" VerticalAlignment="Center" Margin="0,0,4,0" />
             <TextBox Grid.Column="9" Name="NoRmBox" PlaceholderText="No.RM" KeyUp="OnFilterKeyUp" />
             <TextBlock Grid.Column="11" Text="Petugas :" VerticalAlignment="Center" Margin="0,0,4,0" />
@@ -152,11 +152,7 @@
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="6,2" />
         </Style>
-        <Style Selector="DatePicker">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-        </Style>
-        <Style Selector="Button">
+<Style Selector="Button">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="8,2" />

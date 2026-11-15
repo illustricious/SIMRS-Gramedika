@@ -3,7 +3,7 @@
         xmlns:data="using:SimrsKhanza.Data"
         x:Class="SimrsKhanza.UI.Modules.Antrian.AntrianBoardWindow"
         Title="Antrian" Width="1100" Height="720"
-        Icon="avares://SimrsKhanza.UI/Assets/logo.png"
+        Icon="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png"
         WindowStartupLocation="CenterScreen"
         Background="#FFFFF7E6"
         KeyDown="OnKeyDown">
@@ -18,7 +18,7 @@
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
         <Border Grid.Row="0" Background="#FF1E3A8A" Padding="16,10">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                <Image Grid.Column="0" Source="avares://SimrsKhanza.UI/Assets/logo.png" Width="72" Height="72" Margin="0,0,16,0" />
+                <Image Grid.Column="0" Source="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png" Width="72" Height="72" Margin="0,0,16,0" />
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
                     <TextBlock Name="InstansiText" FontSize="34" FontWeight="Bold" Foreground="White" />
                     <TextBlock Name="AlamatText" FontSize="16" Foreground="#FFC7D2FE" />

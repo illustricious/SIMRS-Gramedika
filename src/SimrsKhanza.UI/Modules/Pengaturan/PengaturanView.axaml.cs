@@ -23,6 +23,8 @@ public partial class PengaturanView : UserControl
         this.FindControl<TextBox>("DatabaseBox")!.Text = settings.Database;
         this.FindControl<TextBox>("UserBox")!.Text = settings.User;
         this.FindControl<TextBox>("PasswordBox")!.Text = settings.Password;
+        this.FindControl<CheckBox>("BatchBox")!.IsChecked = settings.AktifkanBatchObat;
+        this.FindControl<ComboBox>("HppBox")!.SelectedIndex = settings.HppColumn == "h_beli" ? 1 : 0;
         this.FindControl<TextBlock>("StatusText")!.IsVisible = false;
         return System.Threading.Tasks.Task.CompletedTask;
     }
@@ -34,6 +36,8 @@ public partial class PengaturanView : UserControl
         Database = this.FindControl<TextBox>("DatabaseBox")!.Text ?? "sik",
         User = this.FindControl<TextBox>("UserBox")!.Text ?? "root",
         Password = this.FindControl<TextBox>("PasswordBox")!.Text ?? "",
+        AktifkanBatchObat = this.FindControl<CheckBox>("BatchBox")!.IsChecked == true,
+        HppFarmasi = this.FindControl<ComboBox>("HppBox")!.SelectedIndex == 1 ? "h_beli" : "dasar",
     };
 
     private async void OnTestConnectionClick(object? sender, RoutedEventArgs e)

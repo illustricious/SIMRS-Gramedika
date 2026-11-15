@@ -29,7 +29,7 @@ public partial class LabMenuView : UserControl
     {
         InitializeComponent();
 
-        MenuTileBuilder.Build(this.FindControl<WrapPanel>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
+        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
     }
 
     public static KategoriLab KategoriFor(LabAction action) => action switch

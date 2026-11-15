@@ -24,7 +24,7 @@
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Text="Antrian Pemeriksaan" FontWeight="Medium" Margin="0,0,0,4"
                            Foreground="{DynamicResource ThemeTextBrush}" />
-                <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                <DataGrid FontSize="11" RowHeight="22" Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
                           GridLinesVisibility="All" HeadersVisibility="Column"
                           x:DataType="data:RawatJalanQueueItem"
                           SelectionChanged="OnQueueSelectionChanged">
@@ -104,6 +104,8 @@
     </Grid>
 
     <UserControl.Styles>
+        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
+        <Style Selector="DataGridColumnHeader"><Setter Property="FontSize" Value="11" /><Setter Property="MinHeight" Value="24" /><Setter Property="Padding" Value="6,2" /></Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

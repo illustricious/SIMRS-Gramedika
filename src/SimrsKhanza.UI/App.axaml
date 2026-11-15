@@ -87,8 +87,45 @@
             <Setter Property="Padding" Value="6,2" />
         </Style>
         <Style Selector="DatePicker">
-            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="DayFormat" Value="d" />
+            <Setter Property="MonthFormat" Value="MMMM" />
+            <Setter Property="YearFormat" Value="yyyy" />
+            <Setter Property="DayVisible" Value="True" />
+            <Setter Property="MonthVisible" Value="True" />
+            <Setter Property="YearVisible" Value="True" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="FontSize" Value="12" />
         </Style>
+        <Style Selector="CalendarDatePicker">
+            <Setter Property="FirstDayOfWeek" Value="Sunday" />
+            <Setter Property="IsTodayHighlighted" Value="True" />
+            <Setter Property="SelectedDateFormat" Value="Custom" />
+            <Setter Property="CustomDateFormatString" Value="dd/MM/yyyy" />
+            <Setter Property="MinWidth" Value="135" />
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style Selector="Calendar">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="ScrollBar:horizontal">
+            <Setter Property="Height" Value="22" />
+            <Setter Property="MinHeight" Value="22" />
+        </Style>
+        <Style Selector="ScrollBar:vertical">
+            <Setter Property="Width" Value="22" />
+            <Setter Property="MinWidth" Value="22" />
+        </Style>
+        <Style Selector="ScrollBar /template/ Thumb">
+            <Setter Property="Background" Value="{DynamicResource ThemeTextSecondaryBrush}" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="ScrollBar /template/ Thumb:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="ScrollBar:horizontal /template/ Thumb"><Setter Property="MinHeight" Value="16" /><Setter Property="MinWidth" Value="48" /></Style>
+        <Style Selector="ScrollBar:vertical /template/ Thumb"><Setter Property="MinWidth" Value="16" /><Setter Property="MinHeight" Value="48" /></Style>
         <Style Selector="Button">
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="8,2" />
@@ -99,6 +136,7 @@
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="DataGrid">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="FontSize" Value="11" />
             <Setter Property="RowHeight" Value="22" />
             <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeBorderBrush}" />

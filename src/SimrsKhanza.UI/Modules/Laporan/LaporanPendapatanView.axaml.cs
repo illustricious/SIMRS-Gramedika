@@ -13,8 +13,8 @@ public partial class LaporanPendapatanView : UserControl
     {
         InitializeComponent();
         var today = DateTime.Today;
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = today;
     }
 
     public async System.Threading.Tasks.Task ReloadAsync() => await LoadAsync();
@@ -25,8 +25,8 @@ public partial class LaporanPendapatanView : UserControl
     {
         var grid = this.FindControl<DataGrid>("Grid")!;
         var ringkasan = this.FindControl<TextBlock>("RingkasanText")!;
-        var from = this.FindControl<DatePicker>("FromPicker")!.SelectedDate is { } f ? DateOnly.FromDateTime(f.Date) : DateOnly.FromDateTime(DateTime.Today);
-        var to = this.FindControl<DatePicker>("ToPicker")!.SelectedDate is { } t ? DateOnly.FromDateTime(t.Date) : DateOnly.FromDateTime(DateTime.Today);
+        var from = this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate is { } f ? DateOnly.FromDateTime(f.Date) : DateOnly.FromDateTime(DateTime.Today);
+        var to = this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate is { } t ? DateOnly.FromDateTime(t.Date) : DateOnly.FromDateTime(DateTime.Today);
 
         try
         {

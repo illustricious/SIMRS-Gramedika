@@ -51,6 +51,7 @@ public partial class LoginWindow : Window
             LoginFailureReason.UserNotFound => "User tidak ditemukan.",
             LoginFailureReason.WrongPassword => "Password salah.",
             LoginFailureReason.AccountInactive => "Akun tidak aktif.",
+            LoginFailureReason.DatabaseUnavailable => "Tidak bisa terhubung ke database SIMRS. Periksa pengaturan koneksi.",
             _ => "Login gagal."
         };
         errorText.IsVisible = true;

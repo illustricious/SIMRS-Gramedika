@@ -16,9 +16,9 @@
 
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
             <TextBlock Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,4" />
-            <DatePicker Name="FromPicker" Margin="0,0,4,4" />
+            <CalendarDatePicker Name="FromPicker" Margin="0,0,4,4" />
             <TextBlock Text="s.d." VerticalAlignment="Center" Margin="4,0,4,4" />
-            <DatePicker Name="ToPicker" Margin="0,0,12,4" />
+            <CalendarDatePicker Name="ToPicker" Margin="0,0,12,4" />
             <TextBlock Text="Dokter Perujuk :" VerticalAlignment="Center" Margin="0,0,4,4" />
             <TextBox Name="DokterBox" Width="150" Margin="0,0,12,4" KeyUp="OnFilterKeyUp" />
             <TextBlock Name="LokasiLabel" Text="Poli :" VerticalAlignment="Center" Margin="0,0,4,4" />
@@ -39,7 +39,7 @@
                 <TextBlock Name="ConfirmText" TextWrapping="Wrap" FontWeight="Medium" />
                 <StackPanel Name="SampelFields" Orientation="Horizontal" Spacing="8" IsVisible="False">
                     <TextBlock Text="Tanggal &amp; Jam :" VerticalAlignment="Center" />
-                    <DatePicker Name="SampelDatePicker" />
+                    <CalendarDatePicker Name="SampelDatePicker" />
                     <TextBox Name="SampelTimeBox" Width="90" PlaceholderText="HH:mm:ss" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Spacing="8">
@@ -101,11 +101,7 @@
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="6,2" />
         </Style>
-        <Style Selector="DatePicker">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-        </Style>
-        <Style Selector="Button">
+<Style Selector="Button">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="8,2" />

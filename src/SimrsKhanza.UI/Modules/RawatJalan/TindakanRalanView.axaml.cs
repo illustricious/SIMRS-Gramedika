@@ -21,15 +21,15 @@ public partial class TindakanRalanView : UserControl
     {
         InitializeComponent();
         // Default = today only — same lesson as Registrasi: don't default to a wide range on big tables.
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         _ready = true;
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
     {
-        var from = DateOnly.FromDateTime(this.FindControl<DatePicker>("FromPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
-        var to = DateOnly.FromDateTime(this.FindControl<DatePicker>("ToPicker")!.SelectedDate?.DateTime ?? DateTime.Today);
+        var from = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate ?? DateTime.Today);
+        var to = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate ?? DateTime.Today);
         var noRm = this.FindControl<TextBox>("NoRmBox")!.Text;
         var keyword = this.FindControl<TextBox>("KeywordBox")!.Text;
 
@@ -78,8 +78,8 @@ public partial class TindakanRalanView : UserControl
     {
         this.FindControl<TextBox>("NoRmBox")!.Text = string.Empty;
         this.FindControl<TextBox>("KeywordBox")!.Text = string.Empty;
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         await ReloadAsync();
     }
 

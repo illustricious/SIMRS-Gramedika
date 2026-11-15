@@ -4,33 +4,26 @@ using Avalonia.Layout;
 namespace SimrsKhanza.UI.Modules.Shared;
 
 /// <summary>
-/// Builds the icon-tile grid shared by every submenu screen (LabMenuView,
-/// RadiologiMenuView, FarmasiMenuView, LaporanMenuView, …). Previously each
-/// one hardcoded the same 150x110 "labTile" size regardless of how many
-/// tiles it had — fine for 6 tiles, but left 2-tile screens (Radiologi)
-/// looking tiny and lost in a mostly-empty panel. Tile size now scales with
-/// item count instead.
+/// Builds evenly sized, full-width option cards for submenu screens.
 /// </summary>
 public static class MenuTileBuilder
 {
-    public static void Build<TAction>(WrapPanel panel, (TAction Action, string Icon, string Label)[] tiles, Action<TAction> onClick)
+    public static void Build<TAction>(Grid panel, (TAction Action, string Icon, string Label)[] tiles, Action<TAction> onClick)
     {
-        var (width, height, fontSize) = tiles.Length switch
-        {
-            <= 2 => (260d, 190d, 16d),
-            <= 4 => (190d, 150d, 14d),
-            _ => (150d, 110d, 13d),
-        };
-
+        panel.ColumnDefinitions.Clear();
+        for (var i = 0; i < Math.Max(1, tiles.Length); i++)
+            panel.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
         panel.Children.Clear();
+        panel.RowDefinitions.Clear();
+        panel.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+        panel.ColumnSpacing = 8;
         foreach (var (action, icon, label) in tiles)
         {
             var button = new Button
             {
                 Classes = { "labTile" },
-                Width = width,
-                Height = height,
-                FontSize = fontSize,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                [Grid.ColumnProperty] = panel.Children.Count,
                 Content = $"{icon}\n{label}",
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,

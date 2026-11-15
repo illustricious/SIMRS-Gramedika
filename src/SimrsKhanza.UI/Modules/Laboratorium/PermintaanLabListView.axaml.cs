@@ -82,8 +82,8 @@ public partial class PermintaanLabListView : UserControl
 
     private void FromPickerDefaults()
     {
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
     }
 
     private DataGrid Data(LabLokasi l) => this.FindControl<DataGrid>(l == LabLokasi.RawatJalan ? "RalanDataGrid" : "RanapDataGrid")!;
@@ -198,7 +198,7 @@ public partial class PermintaanLabListView : UserControl
     }
 
     private DateOnly PickDate(string name)
-        => DateOnly.FromDateTime(this.FindControl<DatePicker>(name)!.SelectedDate?.DateTime ?? DateTime.Today);
+        => DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>(name)!.SelectedDate ?? DateTime.Today);
 
     private string? Text(string name)
     {
@@ -269,7 +269,7 @@ public partial class PermintaanLabListView : UserControl
         var now = DateTime.Now;
         this.FindControl<TextBlock>("ConfirmText")!.Text =
             $"Update waktu pengambilan sampel permintaan {row.NoOrder} ({row.NoRm} {row.NamaPasien})";
-        this.FindControl<DatePicker>("SampelDatePicker")!.SelectedDate = now.Date;
+        this.FindControl<CalendarDatePicker>("SampelDatePicker")!.SelectedDate = now.Date;
         this.FindControl<TextBox>("SampelTimeBox")!.Text = now.ToString("HH:mm:ss");
         this.FindControl<StackPanel>("SampelFields")!.IsVisible = true;
         this.FindControl<Border>("ConfirmPanel")!.IsVisible = true;
@@ -304,7 +304,7 @@ public partial class PermintaanLabListView : UserControl
             }
             else
             {
-                var date = this.FindControl<DatePicker>("SampelDatePicker")!.SelectedDate?.Date ?? DateTime.Today;
+                var date = this.FindControl<CalendarDatePicker>("SampelDatePicker")!.SelectedDate?.Date ?? DateTime.Today;
                 if (!TimeSpan.TryParse(this.FindControl<TextBox>("SampelTimeBox")!.Text, out var time))
                 {
                     ShowStatus("Format jam harus HH:mm:ss.", isError: true);

@@ -68,7 +68,7 @@
             </StackPanel>
         </Border>
 
-        <DataGrid Grid.Row="3" Name="RawatInapGrid" AutoGenerateColumns="False" IsReadOnly="True"
+        <DataGrid FontSize="11" RowHeight="22" Grid.Row="3" Name="RawatInapGrid" AutoGenerateColumns="False" IsReadOnly="True"
                   GridLinesVisibility="All" HeadersVisibility="Column" CanUserResizeColumns="True"
                   x:DataType="data:RawatInapListItem">
             <DataGrid.Columns>
@@ -99,13 +99,13 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10" Margin="0,8,0,0">
             <RadioButton Name="ModeBelumPulang" GroupName="Mode" Content="Belum Pulang" IsChecked="True" Click="OnFilterChanged" />
             <RadioButton Name="ModeMasuk" GroupName="Mode" Content="Tgl.Masuk :" Click="OnFilterChanged" />
-            <DatePicker Name="MasukFromPicker" />
+            <CalendarDatePicker Name="MasukFromPicker" />
             <TextBlock Text="s.d" VerticalAlignment="Center" />
-            <DatePicker Name="MasukToPicker" />
+            <CalendarDatePicker Name="MasukToPicker" />
             <RadioButton Name="ModePulang" GroupName="Mode" Content="Pulang :" Margin="12,0,0,0" Click="OnFilterChanged" />
-            <DatePicker Name="PulangFromPicker" />
+            <CalendarDatePicker Name="PulangFromPicker" />
             <TextBlock Text="s.d" VerticalAlignment="Center" />
-            <DatePicker Name="PulangToPicker" />
+            <CalendarDatePicker Name="PulangToPicker" />
         </StackPanel>
 
         <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
@@ -131,6 +131,8 @@
     </Grid>
 
     <UserControl.Styles>
+        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
+        <Style Selector="DataGridColumnHeader"><Setter Property="FontSize" Value="11" /><Setter Property="MinHeight" Value="24" /><Setter Property="Padding" Value="6,2" /></Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

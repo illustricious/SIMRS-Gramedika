@@ -49,7 +49,20 @@ public class AuthenticatedUser
     public string DisplayName { get; set; } = string.Empty;
     public IReadOnlySet<string> Permissions { get; set; } = new HashSet<string>();
 
-    public bool HasPermission(string key) => Permissions.Contains(key);
+    /// <summary>True when logged in from the legacy `admin` table ("Admin Utama") — has every hak akses.</summary>
+    public bool IsAdminUtama { get; set; }
+
+    public bool HasPermission(string key) => IsAdminUtama || Permissions.Contains(key);
+
+    /// <summary>Legacy akses.getkode(): "Admin Utama" for admins, otherwise the user id (NIK).</summary>
+    public string KodeLegacy => IsAdminUtama ? "Admin Utama" : UserId;
+}
+
+/// <summary>The account logged into this window session (set by MainWindow).</summary>
+public static class AppSession
+{
+    public static AuthenticatedUser? CurrentUser { get; set; }
+    public static string Kode => CurrentUser?.KodeLegacy ?? "-";
 }
 
 public enum LoginFailureReason
@@ -57,7 +70,8 @@ public enum LoginFailureReason
     None,
     UserNotFound,
     WrongPassword,
-    AccountInactive
+    AccountInactive,
+    DatabaseUnavailable
 }
 
 public class LoginResult

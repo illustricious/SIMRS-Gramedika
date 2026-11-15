@@ -47,8 +47,8 @@ public partial class PeriksaRadiologiListView : UserControl
         hasil.SelectedIndex = 0;
 
         // Default period = today (perf lesson from Registrasi: never default to a wide range on big tables).
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<DataGrid>("NestedGrid")!.LoadingRow += OnLoadingRow;
         _ready = true;
     }
@@ -75,8 +75,8 @@ public partial class PeriksaRadiologiListView : UserControl
         string? T(string name) { var t = this.FindControl<TextBox>(name)!.Text?.Trim(); return string.IsNullOrEmpty(t) ? null : t; }
         var petugas = this.FindControl<ComboBox>("PetugasCombo")!.SelectedItem as LabPick;
         return new RadPeriksaFilter(
-            DateOnly.FromDateTime(this.FindControl<DatePicker>("FromPicker")!.SelectedDate?.DateTime ?? DateTime.Today),
-            DateOnly.FromDateTime(this.FindControl<DatePicker>("ToPicker")!.SelectedDate?.DateTime ?? DateTime.Today),
+            DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate ?? DateTime.Today),
+            DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate ?? DateTime.Today),
             T("NoRawatBox"), T("NoRmBox"), string.IsNullOrEmpty(petugas?.Kode) ? null : petugas.Kode, T("KeywordBox"),
             this.FindControl<ComboBox>("HasilCombo")!.SelectedIndex switch
             {
@@ -251,8 +251,8 @@ public partial class PeriksaRadiologiListView : UserControl
         foreach (var n in new[] { "NoRawatBox", "NoRmBox", "KeywordBox" }) this.FindControl<TextBox>(n)!.Text = string.Empty;
         this.FindControl<ComboBox>("PetugasCombo")!.SelectedIndex = 0;
         this.FindControl<ComboBox>("HasilCombo")!.SelectedIndex = 0;
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         await ReloadAsync();
     }
 

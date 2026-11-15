@@ -33,7 +33,7 @@
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Tanggal :" VerticalAlignment="Center" Margin="0,2,6,2" />
                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="6">
-                    <DatePicker Name="TanggalPicker" />
+                    <CalendarDatePicker Name="TanggalPicker" />
                     <TextBlock Text="Jam :" VerticalAlignment="Center" />
                     <TextBox Name="JamBox" Width="80" MaxLength="8" />
                     <Button Content="Sekarang" Click="OnSekarangClick" />
@@ -156,11 +156,7 @@
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="6,2" />
         </Style>
-        <Style Selector="DatePicker">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-        </Style>
-        <Style Selector="Button">
+<Style Selector="Button">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="MinHeight" Value="24" />
             <Setter Property="Padding" Value="8,2" />

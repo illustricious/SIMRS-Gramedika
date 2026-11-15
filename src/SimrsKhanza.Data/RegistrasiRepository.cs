@@ -73,6 +73,21 @@ public interface IRegistrasiRepository
 
 public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiRepository
 {
+    public async Task UpdateAsync(string noRawat, string noRm, string kodeDokter, string kodePoli,
+        string kodePenjab, string penanggungJawab, string alamat, string hubungan, CancellationToken ct = default)
+    {
+        var row = await db.RegPeriksaSet.SingleOrDefaultAsync(x => x.NoRawat == noRawat, ct)
+            ?? throw new InvalidOperationException("Registrasi tidak ditemukan lagi. Muat ulang daftar.");
+        if (row.NoRekamMedis != noRm)
+            throw new InvalidOperationException("Data pasien berubah. Muat ulang daftar sebelum menyimpan.");
+        row.KodeDokter = kodeDokter;
+        row.KodePoli = kodePoli;
+        row.KodePenjab = kodePenjab;
+        row.PenanggungJawab = penanggungJawab;
+        row.AlamatPj = alamat;
+        row.HubunganPj = hubungan;
+        await db.SaveChangesAsync(ct);
+    }
     public Task<IReadOnlyList<RegistrasiListItem>> GetTodayAsync(CancellationToken ct = default)
     {
         var today = DateOnly.FromDateTime(DateTime.Today);

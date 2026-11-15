@@ -10,6 +10,7 @@ namespace SimrsKhanza.UI.Modules.Registrasi;
 
 public partial class RegistrasiView : UserControl
 {
+    private RegistrasiListItem? _selected;
     /// <summary>Raised when "Kembali ke Menu" is clicked — MainWindow swaps back to the dashboard.</summary>
     public event EventHandler? BackRequested;
 
@@ -37,8 +38,8 @@ public partial class RegistrasiView : UserControl
         // data" reports (it wasn't empty, it just never finished loading).
         // "Cari / Semua" still lets the user widen the range deliberately.
         var today = DateTime.Today;
-        this.FindControl<DatePicker>("PeriodeFromPicker")!.SelectedDate = today;
-        this.FindControl<DatePicker>("PeriodeToPicker")!.SelectedDate = today;
+        this.FindControl<CalendarDatePicker>("PeriodeFromPicker")!.SelectedDate = today;
+        this.FindControl<CalendarDatePicker>("PeriodeToPicker")!.SelectedDate = today;
 
         // "Input Data" starts COLLAPSED (toggle IsChecked="False") — per user
         // feedback this is the correct default, matching the legacy app:
@@ -102,30 +103,26 @@ public partial class RegistrasiView : UserControl
     {
         var grid = this.FindControl<DataGrid>("RegistrasiGrid")!;
         var recordCount = this.FindControl<TextBlock>("RecordCountText")!;
-        var fromPicker = this.FindControl<DatePicker>("PeriodeFromPicker")!;
-        var toPicker = this.FindControl<DatePicker>("PeriodeToPicker")!;
+        var fromPicker = this.FindControl<CalendarDatePicker>("PeriodeFromPicker")!;
+        var toPicker = this.FindControl<CalendarDatePicker>("PeriodeToPicker")!;
         var keyWord = this.FindControl<TextBox>("KeyWordBox")!.Text?.Trim();
 
         var from = fromPicker.SelectedDate is { } f ? DateOnly.FromDateTime(f.Date) : DateOnly.MinValue;
         var to = toPicker.SelectedDate is { } t ? DateOnly.FromDateTime(t.Date) : DateOnly.FromDateTime(DateTime.Today);
-
-        var filter = new RegistrasiSearchFilter(
-            NoRawat: EmptyToNull(this.FindControl<TextBox>("SearchNoRawatBox")!.Text),
-            NoReg: EmptyToNull(this.FindControl<TextBox>("SearchNoRegBox")!.Text),
-            NoRekamMedis: EmptyToNull(this.FindControl<TextBox>("SearchNoRmBox")!.Text),
-            NamaPasien: EmptyToNull(this.FindControl<TextBox>("SearchNamaBox")!.Text));
 
         try
         {
             var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
-            var items = await repo.GetByPeriodeAsync(from, to, filter);
+            var items = await repo.GetByPeriodeAsync(from, to);
 
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
                 items = items.Where(i => i.NamaPasien.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
-                                       || i.NoRekamMedis.Contains(keyWord, StringComparison.OrdinalIgnoreCase))
+                                       || i.NoRekamMedis.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
+                                       || i.NoRawat.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
+                                       || (i.NoReg?.Contains(keyWord, StringComparison.OrdinalIgnoreCase) ?? false))
                               .ToList();
             }
 
@@ -140,6 +137,28 @@ public partial class RegistrasiView : UserControl
         }
     }
 
+    private void OnRegistrasiSelected(object? sender, SelectionChangedEventArgs e)
+    {
+        _selected = this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem as RegistrasiListItem;
+        if (_selected is not { } row) return;
+        this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text = row.NoRekamMedis;
+        this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text = row.PenanggungJawab ?? "";
+        this.FindControl<TextBox>("InputAlamatPjBox")!.Text = row.AlamatPj ?? "";
+        this.FindControl<TextBox>("InputHubunganBox")!.Text = row.HubunganPj ?? "";
+        var dokter = this.FindControl<ComboBox>("InputDokterCombo")!;
+        var poli = this.FindControl<ComboBox>("InputPoliCombo")!;
+        var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!;
+        dokter.SelectedItem = (dokter.ItemsSource as IEnumerable<Dokter>)?.FirstOrDefault(x => x.KodeDokter == row.KodeDokter);
+        poli.SelectedItem = (poli.ItemsSource as IEnumerable<Poliklinik>)?.FirstOrDefault(x => x.KodePoli == row.KodePoli);
+        penjab.SelectedItem = (penjab.ItemsSource as IEnumerable<Penjab>)?.FirstOrDefault(x => x.KodePenjab == row.KodePj);
+        this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
+        this.FindControl<Border>("InputDataPanel")!.IsVisible = true;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        status.Foreground = Avalonia.Media.Brushes.Green;
+        status.Text = $"Mengubah {row.NoRawat} — {row.NamaPasien}";
+        status.IsVisible = true;
+    }
+
     private async void OnInputSimpanClick(object? sender, RoutedEventArgs e)
     {
         var status = this.FindControl<TextBlock>("InputStatusText")!;
@@ -148,26 +167,30 @@ public partial class RegistrasiView : UserControl
         var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedItem as Penjab;
         var dokter = this.FindControl<ComboBox>("InputDokterCombo")!.SelectedItem as Dokter;
 
-        if (string.IsNullOrWhiteSpace(noRekamMedis) || poli is null || penjab is null)
+        if (_selected is null || string.IsNullOrWhiteSpace(noRekamMedis) || dokter is null || poli is null || penjab is null)
         {
-            ShowInputError(status, "No.Rekam Medik, Unit/Poli, dan Jenis Bayar wajib diisi.");
+            this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
+            this.FindControl<Border>("InputDataPanel")!.IsVisible = true;
+            ShowInputError(status, "Pilih pasien pada tabel dan lengkapi dokter, poli, serta jenis bayar.");
             return;
         }
 
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var noRawat = await new RegistrasiRepository(db).CreateAsync(
-                noRekamMedis, dokter?.KodeDokter, poli.KodePoli, penjab.KodePenjab,
-                EmptyToNull(this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text),
-                EmptyToNull(this.FindControl<TextBox>("InputAlamatPjBox")!.Text));
+            var noRawat = _selected.NoRawat;
+            await new RegistrasiRepository(db).UpdateAsync(noRawat, noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab,
+                this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text?.Trim() ?? "",
+                this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "",
+                this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "");
 
             status.Foreground = Avalonia.Media.Brushes.Green;
             status.Text = $"Registrasi tersimpan — No.Rawat {noRawat}.";
             status.IsVisible = true;
 
-            ClearInputForm();
-            await LoadAsync(); // new registration shows up in the grid below
+            await LoadAsync();
+            status.Text = $"Perubahan registrasi {noRawat} tersimpan.";
+            status.IsVisible = true;
         }
         catch (Exception ex)
         {

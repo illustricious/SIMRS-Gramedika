@@ -26,6 +26,7 @@ public partial class MainWindow : Window
         _componentReady = true;
         this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
         _user = user;
+        AppSession.CurrentUser = user;
 
         var loginLabel = this.FindControl<TextBlock>("LoggedInUserText");
         if (loginLabel is not null)
@@ -102,12 +103,11 @@ public partial class MainWindow : Window
 
     private void SetupMenuCategoryCombo(AuthenticatedUser user)
     {
-        _ = user; // legacy per-user akses.getXxx() filtering isn't ported — every tile is listed (see LegacyMenuCatalog)
-
         var combo = this.FindControl<ComboBox>("MenuCategoryCombo")!;
         combo.ItemsSource = LegacyMenuCatalog.Categories;
         combo.SelectedIndex = 0;
         combo.SelectionChanged += (_, _) => BuildDashboard();
+        this.FindControl<TextBox>("MenuSearchBox")!.TextChanged += (_, _) => BuildDashboard();
         this.FindControl<ScrollViewer>("DashboardScroll")!.SizeChanged += (_, _) => LayoutDashboardTiles();
 
         BuildDashboard();
@@ -123,8 +123,23 @@ public partial class MainWindow : Window
         if (panel is null || combo is null || combo.SelectedIndex < 0) return;
 
         panel.Children.Clear();
-        foreach (var (key, label) in LegacyMenuCatalog.Tiles[combo.SelectedIndex])
+
+        // Legacy frmUtama TCari: a search term looks across every category.
+        var cari = this.FindControl<TextBox>("MenuSearchBox")?.Text?.Trim() ?? "";
+        var source = cari.Length == 0
+            ? LegacyMenuCatalog.Tiles[combo.SelectedIndex]
+            : LegacyMenuCatalog.Tiles.SelectMany(t => t)
+                .Where(t => t.Label.Contains(cari, StringComparison.OrdinalIgnoreCase))
+                .DistinctBy(t => t.Key)
+                .ToArray();
+
+        var shown = 0;
+        foreach (var (key, label) in source)
         {
+            // Same per-user hak akses filter as legacy frmUtama (akses.getXxx()).
+            if (_user is not null && !LegacyTilePermissions.CanSeeTile(_user, key)) continue;
+            shown++;
+
             var icon = new Border
             {
                 Width = 48, Height = 48, CornerRadius = new CornerRadius(12),
@@ -154,6 +169,12 @@ public partial class MainWindow : Window
             button.Click += (_, _) => OnLegacyTileClick(k, l);
             panel.Children.Add(button);
         }
+
+        var count = this.FindControl<TextBlock>("MenuCountText");
+        if (count is not null)
+            count.Text = shown == 0
+                ? (cari.Length > 0 ? "Tidak ada menu yang cocok / tidak punya akses" : "Tidak ada menu yang bisa diakses di kategori ini")
+                : $"{shown} menu";
 
         LayoutDashboardTiles();
     }
@@ -191,6 +212,17 @@ public partial class MainWindow : Window
     {
         switch (key)
         {
+            case "btnAnalisaKamar": await OpenMenuAInformasiAsync(false); return;
+            case "BtnJadwal": await OpenMenuAInformasiAsync(true); return;
+            case "btnBookingPeriksa": await OpenBookingMenuAAsync("Booking Periksa"); return;
+            case "btnBookingRegistrasi": await OpenBookingMenuAAsync("Booking Registrasi"); return;
+            case "btnBookingMCUPerusahaan": await OpenBookingMenuAAsync("Booking MCU Perusahaan"); return;
+            case "BtnDpjp": await OpenRanapMenuAsync("DPJP Ranap"); return;
+            case "btnRanap": await OpenRanapMenuAsync("Tindakan Ranap"); return;
+            case "btnTagihanOperasi": await OpenRanapMenuAsync("Operasi/VK"); return;
+            case "btnRujukPasien": await OpenRanapMenuAsync("Rujukan Keluar"); return;
+            case "btnRujukMasuk": await OpenRanapMenuAsync("Rujukan Masuk"); return;
+            case "btnBeriObat": await OpenRanapMenuAsync("Beri Obat/BHP"); return;
             case "btnRegistrasi": await OpenRegistrasiAsync(); return;
             case "btnIGD": await OpenIgdAsync(); return;
             case "btnRalan": await OpenTindakanRalanAsync(); return;
@@ -210,14 +242,106 @@ public partial class MainWindow : Window
 
             case "btnPenjualan": await OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction.InputPenjualan); return;
             case "btnDaftarPermintaanResep": await OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction.DaftarResepDokter); return;
+            case "btnResepObat": await OpenFarmasiTileAsync(Modules.Farmasi.FarmasiAction.NoResep); return;
+
+            // [B] Tindakan & Obat via Barcode, Lab Kesehatan Lingkungan
+            case "btnBarcodeRalan": await OpenPageAsync(new Modules.Barcode.BarcodeView(ranap: false)); return;
+            case "btnBarcodeRanap": await OpenPageAsync(new Modules.Barcode.BarcodeView(ranap: true)); return;
+            case "btnLabKeslingPelanggan": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Pelanggan)); return;
+            case "btnLabKeslingSampelBakuMutu": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Sampel)); return;
+            case "btnLabKeslingParameterPengujian": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Parameter)); return;
+            case "btnLabKeslingNilaiNormalBakuMutu": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.NilaiNormal)); return;
+            case "btnLabKeslingPermintaanPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Permintaan); return;
+            case "btnLabKeslingPengujianSampelTidakDapatDilayani": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.TidakDilayani); return;
+            case "btnLabKeslingPengujianSampelDapatDilayani": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Dilayani); return;
+            case "btnLabKeslingPenugasanPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Penugasan); return;
+            case "btnLabKeslingHasilPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Hasil); return;
+            case "btnLabKeslingVerifikasiPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Verifikasi); return;
+            case "btnLabKeslingValidasiPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Validasi); return;
+            case "btnLabKeslingRekapPelayanan": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.RekapPelayanan); return;
+            case "btnLabKeslingPembyaranPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Pembayaran); return;
+            case "btnLabKeslingRekapPembayaran": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.RekapPembayaran); return;
 
             case "btnSetupAplikasi": await OpenPengaturanAsync(); return;
+            case "btnUser":
+            {
+                if (!await RequireAdminUtamaAsync(label)) return;
+                var v = new Modules.Akun.ManajemenUserView();
+                v.BackRequested += (_, _) => ShowPage(Page.Menu);
+                await OpenFeatureAsync(v, v.ReloadAsync);
+                return;
+            }
+            case "btnAdmin":
+            {
+                if (!await RequireAdminUtamaAsync(label)) return;
+                var v = new Modules.Akun.AdminView();
+                v.BackRequested += (_, _) => ShowPage(Page.Menu);
+                await OpenFeatureAsync(v, v.ReloadAsync);
+                return;
+            }
+            case "btnTracker":
+            {
+                var v = new Modules.Akun.TrackerLoginView();
+                v.BackRequested += (_, _) => ShowPage(Page.Menu);
+                await OpenFeatureAsync(v, v.ReloadAsync);
+                return;
+            }
 
             // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
         }
 
         await ShowNotImplementedAsync(label);
+    }
+
+    private async System.Threading.Tasks.Task OpenFeatureAsync(Control view, Func<System.Threading.Tasks.Task> reload)
+    {
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await reload();
+    }
+
+    private async System.Threading.Tasks.Task OpenPageAsync(Modules.Shared.PageView view)
+    {
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        await OpenFeatureAsync(view, view.ReloadAsync);
+    }
+
+    private System.Threading.Tasks.Task OpenStageAsync(Modules.LabKesling.LabKeslingStage stage)
+        => OpenPageAsync(new Modules.LabKesling.LabKeslingStageView(stage));
+
+    private async System.Threading.Tasks.Task<bool> RequireAdminUtamaAsync(string label)
+    {
+        if (_user?.IsAdminUtama == true) return true;
+        await Modules.Shared.Dialogs.InfoAsync(this, label, "Menu ini khusus Admin Utama (akun dari tabel admin).");
+        return false;
+    }
+
+    private async System.Threading.Tasks.Task OpenMenuAInformasiAsync(bool jadwal)
+    {
+        var view = new Modules.Informasi.MenuAInformasiView(jadwal);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenBookingMenuAAsync(string jenis)
+    {
+        var view = new Modules.Informasi.BookingMenuAView(jenis);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
+    }
+
+    private async System.Threading.Tasks.Task OpenRanapMenuAsync(string jenis)
+    {
+        var view = new Modules.Informasi.RanapMenuView(jenis);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        this.FindControl<ContentControl>("PageHost")!.Content = view;
+        ShowPage(Page.Feature);
+        await view.ReloadAsync();
     }
 
     private async System.Threading.Tasks.Task OpenLaporanMenuAsync()
@@ -411,6 +535,15 @@ public partial class MainWindow : Window
                 await view.ReloadAsync();
                 break;
             }
+            case Modules.Farmasi.FarmasiAction.NoResep:
+            {
+                var view = new Modules.Farmasi.NoResepView();
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                await view.LoadDokterAsync();
+                await view.ReloadAsync();
+                break;
+            }
             default:
                 // "Data Penyerahan Darah" / "No. Resep" — deliberately deferred, see
                 // FarmasiMenuView.axaml's doc comment and docs/audit/HANDOVER.md.
@@ -455,7 +588,7 @@ public partial class MainWindow : Window
     {
         var view = new Modules.Laboratorium.PermintaanLabListView(category)
         {
-            IsAdminUtama = string.Equals(_user?.UserId, "admin", StringComparison.OrdinalIgnoreCase),
+            IsAdminUtama = _user?.IsAdminUtama == true,
         };
         view.BackRequested += (_, _) => ShowPage(Page.Hero);
         view.HasilRequested += async (_, req) =>
@@ -516,7 +649,7 @@ public partial class MainWindow : Window
     {
         var view = new Modules.Radiologi.PermintaanRadiologiListView
         {
-            IsAdminUtama = string.Equals(_user?.UserId, "admin", StringComparison.OrdinalIgnoreCase),
+            IsAdminUtama = _user?.IsAdminUtama == true,
         };
         view.BackRequested += (_, _) => ShowPage(Page.Hero);
         view.HasilRequested += async (_, req) =>
@@ -666,9 +799,70 @@ public partial class MainWindow : Window
             case "Anjungan & Antrian":
                 if (sender is Control anchor) ShowAntrianMenu(anchor);
                 return;
+
+            case "Program":
+                if (sender is Control programAnchor) ShowProgramMenu(programAnchor);
+                return;
         }
 
         _ = ShowNotImplementedAsync(label);
+    }
+
+    /// <summary>Legacy "Program" menu: Ganti Password, Hak Akses Saya, Log Out, Keluar.</summary>
+    private void ShowProgramMenu(Control anchor)
+    {
+        MenuItem Item(string header, Action action)
+        {
+            var item = new MenuItem { Header = header };
+            item.Click += (_, _) => action();
+            return item;
+        }
+
+        var menu = new ContextMenu();
+        menu.Items.Add(Item("🔑 Ganti Password", () =>
+        {
+            if (_user is not null) _ = new Modules.Akun.GantiPasswordWindow(_user).ShowDialog(this);
+        }));
+        menu.Items.Add(Item("🛡 Hak Akses Saya", () => _ = ShowHakAksesSayaAsync()));
+        menu.Items.Add(new Separator());
+        menu.Items.Add(Item("↩ Log Out", () => OnExitClick(null, new Avalonia.Interactivity.RoutedEventArgs())));
+        menu.Items.Add(Item("✕ Keluar Aplikasi", Close));
+        menu.Open(anchor);
+    }
+
+    private async System.Threading.Tasks.Task ShowHakAksesSayaAsync()
+    {
+        if (_user is null) return;
+        var lines = new List<string>();
+        for (var c = 0; c < LegacyMenuCatalog.Tiles.Length; c++)
+        {
+            var tiles = LegacyMenuCatalog.Tiles[c].Where(t => LegacyTilePermissions.CanSeeTile(_user, t.Key)).Select(t => t.Label).ToList();
+            if (tiles.Count > 0) lines.Add($"{LegacyMenuCatalog.Categories[c]}  ({tiles.Count})\n   " + string.Join(", ", tiles));
+        }
+        var total = LegacyMenuCatalog.Tiles.Sum(t => t.Count(x => LegacyTilePermissions.CanSeeTile(_user, x.Key)));
+        var win = new Window
+        {
+            Title = "Hak Akses Saya",
+            Width = 760, Height = 560,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Content = new DockPanel
+            {
+                Margin = new Thickness(12),
+                Children =
+                {
+                    new TextBlock
+                    {
+                        [DockPanel.DockProperty] = Dock.Top, Margin = new Thickness(0, 0, 0, 8), FontWeight = FontWeight.Medium,
+                        Text = $"{_user.DisplayName} — {(_user.IsAdminUtama ? "Admin Utama (semua akses)" : "Pegawai")} — {total} menu",
+                    },
+                    new ScrollViewer
+                    {
+                        Content = new SelectableTextBlock { Text = string.Join("\n\n", lines), TextWrapping = TextWrapping.Wrap },
+                    },
+                },
+            },
+        };
+        await win.ShowDialog(this);
     }
 
     /// <summary>Mirrors the legacy "Anjungan & Antrian" dropdown; entries without a native version yet say so.</summary>

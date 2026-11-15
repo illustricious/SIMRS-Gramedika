@@ -58,8 +58,8 @@ public partial class PermintaanRadiologiListView : UserControl
         BuildColumns(Items(RadiologiLokasi.RawatJalan), ItemHeader("Poli Registrasi"));
         BuildColumns(Items(RadiologiLokasi.RawatInap), ItemHeader("Kamar Terakhir"));
 
-        this.FindControl<DatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
-        this.FindControl<DatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         _ready = true;
     }
 
@@ -149,7 +149,7 @@ public partial class PermintaanRadiologiListView : UserControl
     }
 
     private DateOnly PickDate(string name)
-        => DateOnly.FromDateTime(this.FindControl<DatePicker>(name)!.SelectedDate?.DateTime ?? DateTime.Today);
+        => DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>(name)!.SelectedDate ?? DateTime.Today);
 
     private string? Text(string name)
     {
@@ -223,7 +223,7 @@ public partial class PermintaanRadiologiListView : UserControl
         var now = DateTime.Now;
         this.FindControl<TextBlock>("ConfirmText")!.Text =
             $"Update waktu pengambilan sampel permintaan {row.NoOrder} ({row.NoRm} {row.NamaPasien})";
-        this.FindControl<DatePicker>("SampelDatePicker")!.SelectedDate = now.Date;
+        this.FindControl<CalendarDatePicker>("SampelDatePicker")!.SelectedDate = now.Date;
         this.FindControl<TextBox>("SampelTimeBox")!.Text = now.ToString("HH:mm:ss");
         this.FindControl<StackPanel>("SampelFields")!.IsVisible = true;
         this.FindControl<Border>("ConfirmPanel")!.IsVisible = true;
@@ -258,7 +258,7 @@ public partial class PermintaanRadiologiListView : UserControl
             }
             else
             {
-                var date = this.FindControl<DatePicker>("SampelDatePicker")!.SelectedDate?.Date ?? DateTime.Today;
+                var date = this.FindControl<CalendarDatePicker>("SampelDatePicker")!.SelectedDate?.Date ?? DateTime.Today;
                 if (!TimeSpan.TryParse(this.FindControl<TextBox>("SampelTimeBox")!.Text, out var time))
                 {
                     ShowStatus("Format jam harus HH:mm:ss.", isError: true);

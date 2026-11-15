@@ -81,7 +81,7 @@ public partial class PasienView : UserControl
         {
             this.FindControl<TextBox>(name)!.Text = string.Empty;
         }
-        this.FindControl<DatePicker>("TglLahirPicker")!.SelectedDate = null;
+        this.FindControl<CalendarDatePicker>("TglLahirPicker")!.SelectedDate = null;
         this.FindControl<RadioButton>("JkLakiRadio")!.IsChecked = true;
 
         var status = this.FindControl<TextBlock>("SaveStatusText")!;
@@ -128,7 +128,7 @@ public partial class PasienView : UserControl
             JenisKelamin = jk,
             GolonganDarah = this.FindControl<ComboBox>("GolDarahCombo")!.SelectedItem as GolonganDarah?,
             TempatLahir = EmptyToNull(this.FindControl<TextBox>("TempatLahirBox")!.Text),
-            TanggalLahir = this.FindControl<DatePicker>("TglLahirPicker")!.SelectedDate is { } d
+            TanggalLahir = this.FindControl<CalendarDatePicker>("TglLahirPicker")!.SelectedDate is { } d
                 ? DateOnly.FromDateTime(d.Date) : null,
             NamaIbu = namaIbu,
             Alamat = EmptyToNull(this.FindControl<TextBox>("AlamatBox")!.Text),

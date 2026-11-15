@@ -19,7 +19,7 @@ public partial class InputPenjualanView : UserControl
         InitializeComponent();
 
         this.FindControl<TextBox>("PetugasBox")!.Text = PlaceholderPetugasNip;
-        this.FindControl<DatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
+        this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
 
         var jenisCombo = this.FindControl<ComboBox>("JenisJualCombo")!;
         jenisCombo.ItemsSource = new[] { "Jual Bebas", "Resep Dokter" };
