@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Auth;
 
@@ -19,14 +20,29 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Same accounts & hak akses as original SIMRS Khanza (`admin` / `user` tables,
-            // AES 'nur'/'windi'). Settings are re-read per login so a change saved in
-            // Pengaturan takes effect without restarting. Dev seed accounts work only
-            // while the database is unreachable (see KhanzaLoginService).
-            IAuthService authService = new KhanzaLoginService(
-                Config.DatabaseSettings.Load,
-                new AuthService(new InMemoryUserRepository()));
+            // AES 'nur'/'windi'). Settings are re-read per login so the server picked on
+            // the login screen takes effect immediately.
+            IAuthService authService = new KhanzaLoginService(DatabaseSettings.Load);
 
-            ShowLogin(desktop, authService, show: false);
+            if (!DatabaseSettingsStore.HasSaved && !DatabaseSettings.HasEnvironment)
+            {
+                // First run on this computer: ask for the database connection before the login screen.
+                var setup = new KoneksiDatabaseWindow(firstRun: true);
+                desktop.MainWindow = setup;
+                setup.Closed += (_, _) =>
+                {
+                    if (!setup.Saved)
+                    {
+                        desktop.Shutdown();
+                        return;
+                    }
+                    ShowLogin(desktop, authService, show: true);
+                };
+            }
+            else
+            {
+                ShowLogin(desktop, authService, show: false);
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

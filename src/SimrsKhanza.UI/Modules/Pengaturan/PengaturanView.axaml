@@ -1,4 +1,4 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Pengaturan.PengaturanView"
              Background="{DynamicResource ThemeBackgroundBrush}">
@@ -12,10 +12,8 @@
         the DB connection; it persists via SimrsKhanza.Config.DatabaseSettingsStore
         (a JSON file under %APPDATA%, never inside the repo).
 
-        Access control: MainWindow only opens this via the "pengaturan.admin"
-        permission gate (see Core.Auth.DefaultMenuCatalog) — the dashboard
-        tile is hidden entirely for non-admin users, and MainWindow re-checks
-        the permission before opening regardless of how it's triggered.
+        Access control: Admin Utama only (Setup Aplikasi is admin-only in
+        LegacyTilePermissions, and MainWindow re-checks before opening).
     -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="12">
 
@@ -27,25 +25,13 @@
 
                 <TextBlock Text="Koneksi Database" FontWeight="Medium"
                            Foreground="{DynamicResource ThemeTextBrush}" />
-                <TextBlock Text="Pengganti setting/database.ini dan database.xml legacy. Disimpan lokal di komputer ini (%APPDATA%), tidak pernah ikut ke repository/git."
+                <TextBlock Text="Profil server (host, port, database, user, password) diatur di layar Koneksi Database — sama dengan tombol ⚙ di layar login. Disimpan lokal di komputer ini."
                            FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
-
-                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Margin="0,8,0,0">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Host :" VerticalAlignment="Center" Margin="0,4" />
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="HostBox" Margin="4" />
-
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Port :" VerticalAlignment="Center" Margin="0,4" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="PortBox" Margin="4" />
-
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Nama Database :" VerticalAlignment="Center" Margin="0,4" />
-                    <TextBox Grid.Row="2" Grid.Column="1" Name="DatabaseBox" Margin="4" />
-
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="User :" VerticalAlignment="Center" Margin="0,4" />
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="UserBox" Margin="4" />
-
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Password :" VerticalAlignment="Center" Margin="0,4" />
-                    <TextBox Grid.Row="4" Grid.Column="1" Name="PasswordBox" PasswordChar="*" Margin="4" />
-                </Grid>
+                <TextBlock Name="ActiveText" Margin="0,4,0,0" TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="🔌 Tes Koneksi Aktif" Click="OnTestConnectionClick" />
+                    <Button Content="⚙ Kelola Koneksi Database..." Click="OnKoneksiClick" />
+                </StackPanel>
 
                 <TextBlock Text="Farmasi (pengganti AKTIFKANBATCHOBAT &amp; HPPFARMASI di database.xml)" FontWeight="Medium" Margin="0,12,0,0"
                            Foreground="{DynamicResource ThemeTextBrush}" />
@@ -63,8 +49,8 @@
                 <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap" IsVisible="False" />
 
                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                    <Button Content="🔌 Tes Koneksi" Click="OnTestConnectionClick" />
-                    <Button Content="💾 Simpan" Click="OnSaveClick" />
+                    
+                    <Button Content="💾 Simpan Pengaturan Farmasi" Click="OnSaveClick" />
                 </StackPanel>
 
                 <TextBlock Text="Identitas &amp; Aset (belum diimplementasikan)" FontWeight="Medium" Margin="0,20,0,0"

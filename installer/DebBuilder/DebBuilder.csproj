@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Small build tool: packs the linux-x64 publish output into a Debian .deb
+       (ar archive: debian-binary + control.tar.gz + data.tar.gz) so the package
+       can be built on Windows without dpkg-deb/WSL. Not part of SimrsKhanza.sln. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

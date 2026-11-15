@@ -28,8 +28,6 @@ public static partial class LegacyTilePermissions
     public static bool CanSeeTile(AuthenticatedUser user, string tileKey)
     {
         if (user.IsAdminUtama) return true;
-        // Dev fallback admin (DB unreachable) must still reach Setup Aplikasi to fix the connection.
-        if (tileKey == "btnSetupAplikasi" && user.HasPermission("pengaturan.admin")) return true;
         if (AdminOnlyTiles.Contains(tileKey)) return false;
 
         if (TileColumns.TryGetValue(tileKey, out var cols) || ManualTileColumns.TryGetValue(tileKey, out cols))

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SIMRS Gramedika
+GenericName=Sistem Informasi Rumah Sakit
+Comment=Sistem Informasi Manajemen Rumah Sakit
+Exec=simrs-gramedika
+Icon=simrs-gramedika
+Terminal=false
+Categories=Office;MedicalSoftware;
+StartupWMClass=SimrsKhanza.UI

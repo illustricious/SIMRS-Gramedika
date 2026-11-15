@@ -46,18 +46,46 @@ public static class AntrianBoards
         _loket.Show();
     }
 
-    /// <summary>bell.wav (1) / bell2.wav (2) copied from webapps; Windows only, failures are swallowed.</summary>
+    /// <summary>
+    /// bell.wav (1) / bell2.wav (2) copied from webapps. Windows: SoundPlayer; Linux: paplay/aplay
+    /// on a temp copy. Failures are swallowed.
+    /// </summary>
     public static void PlayBell(int sound)
     {
-        if (!OperatingSystem.IsWindows()) return;
         try
         {
             var name = sound == 2 ? "bell2.wav" : "bell.wav";
             using var asset = Avalonia.Platform.AssetLoader.Open(new Uri($"avares://SimrsKhanza.UI/Assets/{name}"));
-            var ms = new MemoryStream();
-            asset.CopyTo(ms);
-            ms.Position = 0;
-            new System.Media.SoundPlayer(ms).Play();
+            if (OperatingSystem.IsWindows())
+            {
+                var ms = new MemoryStream();
+                asset.CopyTo(ms);
+                ms.Position = 0;
+                new System.Media.SoundPlayer(ms).Play();
+                return;
+            }
+
+            var path = Path.Combine(Path.GetTempPath(), "simrs-gramedika-" + name);
+            if (!File.Exists(path))
+            {
+                using var f = File.Create(path);
+                asset.CopyTo(f);
+            }
+            foreach (var player in new[] { "paplay", "aplay" })
+            {
+                try
+                {
+                    var psi = new System.Diagnostics.ProcessStartInfo(player) { UseShellExecute = false };
+                    if (player == "aplay") psi.ArgumentList.Add("-q");
+                    psi.ArgumentList.Add(path);
+                    System.Diagnostics.Process.Start(psi)?.Dispose();
+                    return;
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    // player not installed — try the next one
+                }
+            }
         }
         catch
         {

@@ -32,8 +32,6 @@ public class LegacyKhanzaAuthService(DatabaseSettings settings) : IAuthService
         {
             var all = await GetAllUserColumnsAsync(conn, ct);
             all.Add(LegacyTilePermissions.AdminUtamaKey);
-            all.Add("pengaturan.admin");
-            foreach (var item in new DefaultMenuCatalog().AllItems) all.Add(item.RequiredPermission);
             await TrackAsync(conn, "Admin Utama", ct); // legacy frmUtama logs admin as 'Admin Utama'
 
             return LoginResult.Ok(new AuthenticatedUser
@@ -151,11 +149,11 @@ public class LegacyKhanzaAuthService(DatabaseSettings settings) : IAuthService
 }
 
 /// <summary>
-/// Uses the legacy Khanza database; only when the database cannot be reached at all
-/// does it fall back to the dev in-memory accounts, so an admin can still open
-/// Pengaturan to fix the connection settings. Remove the fallback for production.
+/// Re-reads the connection settings on every attempt (so a change made on the
+/// "Koneksi Database" screen applies immediately) and turns connection errors
+/// into <see cref="LoginFailureReason.DatabaseUnavailable"/>.
 /// </summary>
-public class KhanzaLoginService(Func<DatabaseSettings> settings, IAuthService devFallback) : IAuthService
+public class KhanzaLoginService(Func<DatabaseSettings> settings) : IAuthService
 {
     public async Task<LoginResult> LoginAsync(string userId, string password, CancellationToken ct = default)
     {
@@ -165,8 +163,7 @@ public class KhanzaLoginService(Func<DatabaseSettings> settings, IAuthService de
         }
         catch (MySqlException)
         {
-            var dev = await devFallback.LoginAsync(userId, password, ct);
-            return dev.Success ? dev : LoginResult.Fail(LoginFailureReason.DatabaseUnavailable);
+            return LoginResult.Fail(LoginFailureReason.DatabaseUnavailable);
         }
     }
 }

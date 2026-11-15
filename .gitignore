@@ -23,3 +23,6 @@ run_out.log
 publish/
 
 .claude/
+
+## Installer output (installer\build-installers.ps1)
+dist/

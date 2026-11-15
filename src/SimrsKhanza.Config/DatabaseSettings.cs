@@ -1,13 +1,17 @@
+﻿using System.Text.Json.Serialization;
+
 namespace SimrsKhanza.Config;
 
 /// <summary>
-/// Replaces legacy setting/database.xml (AES-encrypted flat properties file,
-/// re-read from disk on every getter call — see docs/audit/PLANNING_APLIKASI.md §2).
-/// No credentials are hardcoded here: values come from environment variables
-/// or appsettings.Local.json (gitignored), never committed to source control.
+/// One database connection profile (replaces legacy setting/database.xml).
+/// Profiles are saved per Windows/Linux user by <see cref="DatabaseSettingsStore"/>
+/// and picked on the login screen; nothing is hardcoded or committed.
 /// </summary>
 public class DatabaseSettings
 {
+    /// <summary>Profile name shown in the server picker (e.g. "Server Utama", "Server Uji").</summary>
+    public string Name { get; init; } = "Default";
+
     public string Host { get; init; } = "localhost";
     public int Port { get; init; } = 3306;
     public string Database { get; init; } = "sik";
@@ -21,15 +25,36 @@ public class DatabaseSettings
     public string HppFarmasi { get; init; } = "dasar";
 
     /// <summary>Whitelisted HPP column (it is interpolated into SQL).</summary>
+    [JsonIgnore]
     public string HppColumn => HppFarmasi is "h_beli" ? "h_beli" : "dasar";
 
+    /// <summary>"host:port/database" — for status bars and pickers.</summary>
+    [JsonIgnore]
+    public string Summary => $"{Host}:{Port}/{Database}";
+
     public string ToConnectionString()
-        => $"Server={Host};Port={Port};Database={Database};User={User};Password={Password};ConvertZeroDateTime=True;";
+        => $"Server={Q(Host)};Port={Port};Database={Q(Database)};User={Q(User)};Password={Q(Password)};ConvertZeroDateTime=True;Connection Timeout=10;";
+
+    /// <summary>Server-only connection (no database selected) — used to list databases.</summary>
+    public string ToServerConnectionString()
+        => $"Server={Q(Host)};Port={Port};User={Q(User)};Password={Q(Password)};Connection Timeout=10;";
+
+    /// <summary>Quotes a connection-string value when it contains separators or quotes.</summary>
+    private static string Q(string v)
+    {
+        if (v.IndexOfAny([';', '=', '"', '\'']) < 0 && v.Trim() == v) return v;
+        return "\"" + v.Replace("\"", "\"\"") + "\"";
+    }
+
+    public DatabaseSettings With(string? name = null, bool? batch = null, string? hpp = null) => new()
+    {
+        Name = name ?? Name, Host = Host, Port = Port, Database = Database, User = User, Password = Password,
+        AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi,
+    };
 
     /// <summary>
-    /// Reads from environment variables (SIMRS_DB_HOST, SIMRS_DB_PORT, SIMRS_DB_NAME,
-    /// SIMRS_DB_USER, SIMRS_DB_PASSWORD) so no secret ever needs to live in a file
-    /// that gets committed.
+    /// Environment variables (SIMRS_DB_HOST, SIMRS_DB_PORT, SIMRS_DB_NAME, SIMRS_DB_USER,
+    /// SIMRS_DB_PASSWORD) — used when no profile has been saved yet.
     /// </summary>
     public static DatabaseSettings FromEnvironment()
     {
@@ -43,12 +68,9 @@ public class DatabaseSettings
         };
     }
 
-    /// <summary>
-    /// Canonical way the app should read its DB connection: prefers whatever
-    /// was saved from the Pengaturan screen (DatabaseSettingsStore), falls
-    /// back to environment variables when nothing has been saved yet. Call
-    /// sites that previously called FromEnvironment() directly should use
-    /// this instead so a change saved in Pengaturan actually takes effect.
-    /// </summary>
+    /// <summary>True when the connection was configured through environment variables.</summary>
+    public static bool HasEnvironment => Environment.GetEnvironmentVariable("SIMRS_DB_HOST") is { Length: > 0 };
+
+    /// <summary>The active profile, or environment variables when nothing has been saved yet.</summary>
     public static DatabaseSettings Load() => DatabaseSettingsStore.TryLoad() ?? FromEnvironment();
 }

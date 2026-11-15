@@ -1,8 +1,8 @@
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="using:SimrsKhanza.Data" x:Class="SimrsKhanza.UI.Modules.Farmasi.NoResepView" Background="{DynamicResource ThemeBackgroundBrush}">
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="using:SimrsKhanza.Data" x:Class="SimrsKhanza.UI.Modules.Farmasi.NoResepView" Background="{DynamicResource ThemeBackgroundBrush}">
   <Grid RowDefinitions="Auto,Auto,Auto,2*,Auto,*,Auto" Margin="10" RowSpacing="6">
     <TextBlock Text=":: [ No. Resep ] ::" FontWeight="Bold" Foreground="{DynamicResource ThemePrimaryBrush}" />
     <WrapPanel Grid.Row="1" Orientation="Horizontal">
-      <TextBlock Text="No. Rawat:" VerticalAlignment="Center" Margin="0,0,4,0"/><TextBox Name="RawatBox" Width="150" Margin="0,0,8,0" Watermark="No. rawat"/>
+      <TextBlock Text="No. Rawat:" VerticalAlignment="Center" Margin="0,0,4,0"/><TextBox Name="RawatBox" Width="150" Margin="0,0,8,0" PlaceholderText="No. rawat"/>
       <TextBlock Text="Dokter:" VerticalAlignment="Center" Margin="0,0,4,0"/><ComboBox Name="DokterBox" Width="190" Margin="0,0,8,0"/>
       <TextBlock Text="Tanggal:" VerticalAlignment="Center" Margin="0,0,4,0"/><CalendarDatePicker Name="TanggalBox" Margin="0,0,8,0"/>
       <TextBlock Text="Jam:" VerticalAlignment="Center" Margin="0,0,4,0"/><TextBox Name="JamBox" Width="80" Margin="0,0,8,0"/>

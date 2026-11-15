@@ -426,10 +426,9 @@ public partial class MainWindow : Window
 
     private async System.Threading.Tasks.Task OpenPengaturanAsync()
     {
-        // Defense in depth: the "Pengaturan" dashboard tile is already hidden
-        // for non-admin users (DefaultMenuCatalog requires "pengaturan.admin"),
-        // but re-check here too in case this is ever reachable another way.
-        if (_user is null || !_user.HasPermission("pengaturan.admin"))
+        // Defense in depth: Setup Aplikasi is already hidden for non-admins
+        // (LegacyTilePermissions.AdminOnlyTiles), re-check in case it is reachable another way.
+        if (_user is null || !_user.IsAdminUtama)
         {
             await ShowNotImplementedAsync("Pengaturan (akses ditolak — khusus admin)");
             return;

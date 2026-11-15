@@ -1,8 +1,8 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="SimrsKhanza.UI.LoginWindow"
         Title="Login — SIMRS Gramedika"
-        Width="420" Height="440"
+        Width="420" Height="540"
         CanResize="False"
         WindowDecorations="None"
         WindowStartupLocation="CenterScreen"
@@ -43,11 +43,18 @@
                            Foreground="#64748B" HorizontalAlignment="Center" Margin="0,0,0,18"
                            TextWrapping="Wrap" TextAlignment="Center" />
 
+                <TextBlock Text="Server / Database" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
+                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                    <ComboBox Name="ServerBox" HorizontalAlignment="Stretch" SelectionChanged="OnServerChanged" />
+                    <Button Grid.Column="1" Name="KoneksiButton" Content="⚙" Margin="6,0,0,0" Padding="10,4"
+                            ToolTip.Tip="Atur koneksi database (host, port, database)" Click="OnKoneksiClick" />
+                </Grid>
+
                 <TextBlock Text="User ID" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
-                <TextBox Name="UserIdBox" Text="admin" PlaceholderText="user id" Margin="0,0,0,10" />
+                <TextBox Name="UserIdBox" PlaceholderText="user id" Margin="0,0,0,10" />
 
                 <TextBlock Text="Password" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
-                <TextBox Name="PasswordBox" PasswordChar="*" PlaceholderText="password" Text="admin123" />
+                <TextBox Name="PasswordBox" PasswordChar="*" PlaceholderText="password" />
 
                 <TextBlock Name="ErrorText" Foreground="#DC2626" FontSize="12" IsVisible="False"
                            TextWrapping="Wrap" Margin="0,8,0,0" />
@@ -57,9 +64,8 @@
                         Background="#1E3A8A" Foreground="White" CornerRadius="6"
                         FontWeight="Medium" Click="OnLoginClick" />
 
-                <TextBlock Text="Dev seed: admin / admin123 (belum terhubung ke DB sik asli)"
-                           FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"
-                           TextWrapping="Wrap" TextAlignment="Center" Margin="0,14,0,0" />
+                <TextBlock Name="ServerInfo" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center"
+                           TextWrapping="Wrap" TextAlignment="Center" Margin="0,10,0,0" />
             </StackPanel>
         </Border>
     </Grid>

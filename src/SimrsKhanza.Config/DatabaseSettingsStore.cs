@@ -1,39 +1,91 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace SimrsKhanza.Config;
 
 /// <summary>
-/// Persists DatabaseSettings locally so the Pengaturan (Settings) screen can
-/// actually save what the admin types, instead of only reading environment
-/// variables. Replaces legacy setting/database.ini's role for this app — but
-/// stored under the user's profile (%APPDATA%), never inside the repo, so a
-/// saved connection string/password is never at risk of being committed.
+/// Saved connection profiles + which one is active. Stored under the user's profile
+/// (%APPDATA%\SimrsKhanza on Windows, ~/.config/SimrsKhanza on Linux), never in the
+/// install folder or the repo. Files written by older builds (a single settings
+/// object) are read as one profile named "Default".
 /// </summary>
 public static class DatabaseSettingsStore
 {
-    private static readonly string FilePath = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "SimrsKhanza", "database.settings.json");
+    /// <summary>Settings file; SIMRS_CONFIG_DIR overrides the folder (portable installs, testing).</summary>
+    public static string FilePath { get; set; } = Path.Combine(
+        Environment.GetEnvironmentVariable("SIMRS_CONFIG_DIR") is { Length: > 0 } dir
+            ? dir
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SimrsKhanza"),
+        "database.settings.json");
 
-    public static DatabaseSettings? TryLoad()
+    private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
+
+    public sealed class Profiles
+    {
+        public string? Active { get; set; }
+        public List<DatabaseSettings> Items { get; set; } = [];
+    }
+
+    /// <summary>True once at least one profile has been saved on this computer.</summary>
+    public static bool HasSaved => LoadAll().Items.Count > 0;
+
+    public static Profiles LoadAll()
     {
         try
         {
-            if (!File.Exists(FilePath)) return null;
-            var json = File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<DatabaseSettings>(json);
+            if (!File.Exists(FilePath)) return new Profiles();
+            var node = JsonNode.Parse(File.ReadAllText(FilePath));
+            if (node is JsonObject obj && obj.ContainsKey("Host"))
+            {
+                var single = node.Deserialize<DatabaseSettings>();
+                return single is null ? new Profiles() : new Profiles { Active = single.Name, Items = [single] };
+            }
+            var p = node.Deserialize<Profiles>() ?? new Profiles();
+            p.Items = p.Items.Where(i => !string.IsNullOrWhiteSpace(i.Name)).ToList();
+            return p;
         }
         catch
         {
-            return null; // corrupt/unreadable file — caller falls back to environment variables
+            return new Profiles(); // corrupt/unreadable file — caller falls back to environment variables
         }
     }
 
-    public static void Save(DatabaseSettings settings)
+    /// <summary>The active profile (or the first one), null when nothing is saved.</summary>
+    public static DatabaseSettings? TryLoad()
+    {
+        var all = LoadAll();
+        return all.Items.FirstOrDefault(i => i.Name == all.Active) ?? all.Items.FirstOrDefault();
+    }
+
+    public static void SaveAll(Profiles profiles)
     {
         var dir = Path.GetDirectoryName(FilePath)!;
         Directory.CreateDirectory(dir);
-        var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(FilePath, json);
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(profiles, Json));
+        // The file holds a database password: keep it readable by this user only on Linux/macOS.
+        if (!OperatingSystem.IsWindows())
+        {
+            try { File.SetUnixFileMode(FilePath, UnixFileMode.UserRead | UnixFileMode.UserWrite); }
+            catch { /* filesystem without unix permissions */ }
+        }
+    }
+
+    /// <summary>Adds or replaces the profile with the same name and makes it active.</summary>
+    public static void Save(DatabaseSettings settings)
+    {
+        var all = LoadAll();
+        var i = all.Items.FindIndex(p => p.Name == settings.Name);
+        if (i >= 0) all.Items[i] = settings;
+        else all.Items.Add(settings);
+        all.Active = settings.Name;
+        SaveAll(all);
+    }
+
+    public static void SetActive(string name)
+    {
+        var all = LoadAll();
+        if (all.Items.All(p => p.Name != name) || all.Active == name) return;
+        all.Active = name;
+        SaveAll(all);
     }
 }

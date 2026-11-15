@@ -1,48 +1,9 @@
 namespace SimrsKhanza.Core.Auth;
 
 /// <summary>
-/// Replaces legacy tables `admin` (plaintext usere/passworde) and `user`
-/// (one boolean column PER feature — ~1225 columns, confirmed in schema_sik.sql).
-/// Here, permissions are a normalized set (see Permission/UserPermission) instead
-/// of a wide flat table, so adding a feature never requires a schema change.
+/// A logged-in account from the legacy `admin` / `user` tables. Permissions are the
+/// `user` columns whose value is 'true' (see LegacyKhanzaAuthService).
 /// </summary>
-public class UserAccount
-{
-    public string UserId { get; set; } = string.Empty;
-    public string DisplayName { get; set; } = string.Empty;
-    public string PasswordHash { get; set; } = string.Empty;
-    public string PasswordSalt { get; set; } = string.Empty;
-    public bool IsActive { get; set; } = true;
-
-    /// <summary>
-    /// True for accounts sourced from the legacy `user`/`admin` tables, where
-    /// <see cref="PasswordHash"/> holds the raw plaintext password instead of a
-    /// PBKDF2 hash — AuthService compares it directly rather than calling
-    /// PasswordHasher.Verify. See LegacyUserRepository for the full rationale
-    /// and the recommended rehash-on-login migration path.
-    /// </summary>
-    public bool IsLegacyPlaintext { get; set; }
-
-    /// <summary>Links back to Pegawai.Nik when this account belongs to an employee.</summary>
-    public string? PegawaiNik { get; set; }
-}
-
-/// <summary>One entry in the permission catalog, e.g. "rekammedis.pasien.edit".</summary>
-public class Permission
-{
-    public string Key { get; set; } = string.Empty;
-    public string Label { get; set; } = string.Empty;
-    public string Module { get; set; } = string.Empty;
-}
-
-/// <summary>Grants a single permission to a user — replaces one boolean column of legacy `user`.</summary>
-public class UserPermission
-{
-    public string UserId { get; set; } = string.Empty;
-    public string PermissionKey { get; set; } = string.Empty;
-    public bool Allowed { get; set; }
-}
-
 public class AuthenticatedUser
 {
     public string UserId { get; set; } = string.Empty;
