@@ -24,6 +24,12 @@ public class DatabaseSettings
     /// <summary>Legacy database.xml HPPFARMASI: databarang/data_batch column used as HPP (dasar | h_beli).</summary>
     public string HppFarmasi { get; init; } = "dasar";
 
+    /// <summary>Legacy HOSTHYBRIDWEB/PORTWEB/HYBRIDWEB: base URL of the Khanza web apps (penggajian, berkas). Empty = http://{Host}/webapps.</summary>
+    public string WebUrl { get; init; } = "";
+
+    [JsonIgnore]
+    public string WebBase => (WebUrl is { Length: > 0 } w ? w : $"http://{Host}/webapps").TrimEnd('/');
+
     /// <summary>Whitelisted HPP column (it is interpolated into SQL).</summary>
     [JsonIgnore]
     public string HppColumn => HppFarmasi is "h_beli" ? "h_beli" : "dasar";
@@ -46,10 +52,10 @@ public class DatabaseSettings
         return "\"" + v.Replace("\"", "\"\"") + "\"";
     }
 
-    public DatabaseSettings With(string? name = null, bool? batch = null, string? hpp = null) => new()
+    public DatabaseSettings With(string? name = null, bool? batch = null, string? hpp = null, string? web = null) => new()
     {
         Name = name ?? Name, Host = Host, Port = Port, Database = Database, User = User, Password = Password,
-        AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi,
+        AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi, WebUrl = web ?? WebUrl,
     };
 
     /// <summary>

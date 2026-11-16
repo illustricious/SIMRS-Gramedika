@@ -247,10 +247,10 @@ public partial class MainWindow : Window
             // [B] Tindakan & Obat via Barcode, Lab Kesehatan Lingkungan
             case "btnBarcodeRalan": await OpenPageAsync(new Modules.Barcode.BarcodeView(ranap: false)); return;
             case "btnBarcodeRanap": await OpenPageAsync(new Modules.Barcode.BarcodeView(ranap: true)); return;
-            case "btnLabKeslingPelanggan": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Pelanggan)); return;
-            case "btnLabKeslingSampelBakuMutu": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Sampel)); return;
-            case "btnLabKeslingParameterPengujian": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Parameter)); return;
-            case "btnLabKeslingNilaiNormalBakuMutu": await OpenPageAsync(new Modules.LabKesling.LabKeslingMasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.NilaiNormal)); return;
+            case "btnLabKeslingPelanggan": await OpenPageAsync(new Modules.Shared.MasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Pelanggan)); return;
+            case "btnLabKeslingSampelBakuMutu": await OpenPageAsync(new Modules.Shared.MasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Sampel)); return;
+            case "btnLabKeslingParameterPengujian": await OpenPageAsync(new Modules.Shared.MasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.Parameter)); return;
+            case "btnLabKeslingNilaiNormalBakuMutu": await OpenPageAsync(new Modules.Shared.MasterView(SimrsKhanza.Data.LabKesling.LabKeslingMasters.NilaiNormal)); return;
             case "btnLabKeslingPermintaanPengujianSampel": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Permintaan); return;
             case "btnLabKeslingPengujianSampelTidakDapatDilayani": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.TidakDilayani); return;
             case "btnLabKeslingPengujianSampelDapatDilayani": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.Dilayani); return;
@@ -287,8 +287,24 @@ public partial class MainWindow : Window
                 return;
             }
 
+            // [C] Presensi, Manajemen & Penggajian Pegawai (most tiles are data — see MenuCSpecs below)
+            case "btnPenggajian": await OpenPageAsync(new Modules.Kepegawaian.PenggajianView()); return;
+            case "btnSKPPenilaianPegawai": await OpenPageAsync(new Modules.Kepegawaian.SkpPenilaianView()); return;
+            case "btnSKPRekapitulasiPenilaian": await OpenPageAsync(new Modules.Kepegawaian.SkpRekapView()); return;
+
             // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
+        }
+
+        if (SimrsKhanza.Data.Kepegawaian.MenuCSpecs.Masters.TryGetValue(key, out var master))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(master));
+            return;
+        }
+        if (SimrsKhanza.Data.Kepegawaian.MenuCSpecs.Reports.TryGetValue(key, out var report))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(report));
+            return;
         }
 
         await ShowNotImplementedAsync(label);

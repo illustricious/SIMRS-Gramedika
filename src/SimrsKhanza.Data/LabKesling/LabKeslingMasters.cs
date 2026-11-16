@@ -1,19 +1,7 @@
-using SimrsKhanza.Config;
-using SimrsKhanza.Data.Sql;
+﻿using SimrsKhanza.Config;
+using SimrsKhanza.Data.Master;
 
 namespace SimrsKhanza.Data.LabKesling;
-
-public enum FieldKind { Text, Number, Choice, Lookup }
-
-/// <summary>One editable column of a master table. Column is a compile-time constant (used in SQL).</summary>
-public record MasterField(string Column, string Label, FieldKind Kind = FieldKind.Text, int MaxLen = 0,
-    string[]? Choices = null, string? LookupSql = null, bool Key = false, bool AutoKey = false);
-
-public record MasterSpec(
-    string Title, string Table, MasterField[] Fields,
-    string ListSql, (string Column, string Header)[] Display,
-    string? AutoKeySql = null, int AutoKeyLen = 0,
-    string? TotalColumn = null, string[]? TotalOf = null);
 
 /// <summary>
 /// The four Lab Kesling master tables (legacy LabKeslingPelanggan, LabKeslingMasterSampelBakuMutu,
@@ -96,76 +84,4 @@ public static class LabKeslingMasters
         """,
         [("kode_sampel", "Kd Sampel"), ("nama_sampel", "Sampel"), ("kode_parameter", "Kd Param"), ("nama_parameter", "Parameter"),
          ("satuan", "Satuan"), ("nilai_normal", "Nilai Normal")]);
-}
-
-/// <summary>Generic CRUD for a <see cref="MasterSpec"/>.</summary>
-public class MasterRepository(DatabaseSettings settings)
-{
-    public async Task<List<Row>> ListAsync(MasterSpec spec, string? cari)
-    {
-        await using var db = await Db.OpenAsync(settings);
-        return await db.QueryAsync(spec.ListSql, $"%{cari?.Trim()}%");
-    }
-
-    public async Task<List<(string Kode, string Nama)>> LookupAsync(string sql)
-    {
-        await using var db = await Db.OpenAsync(settings);
-        return (await db.QueryAsync(sql)).Select(r => (r.S("kode"), r.S("nama"))).ToList();
-    }
-
-    public async Task<string> NextKeyAsync(MasterSpec spec)
-    {
-        if (spec.AutoKeySql is null) return "";
-        await using var db = await Db.OpenAsync(settings);
-        return await db.AutoNomorAsync(spec.AutoKeySql, "", spec.AutoKeyLen);
-    }
-
-    private static Dictionary<string, object?> WithTotal(MasterSpec spec, Dictionary<string, object?> values)
-    {
-        var v = new Dictionary<string, object?>(values, StringComparer.OrdinalIgnoreCase);
-        if (spec.TotalColumn is not null && spec.TotalOf is not null)
-            v[spec.TotalColumn] = spec.TotalOf.Sum(c => v.TryGetValue(c, out var x) && x is double d ? d : 0);
-        return v;
-    }
-
-    /// <summary>Insert when <paramref name="originalKeys"/> is null, otherwise update the row having those keys.</summary>
-    public async Task SaveAsync(MasterSpec spec, Dictionary<string, object?> values, Dictionary<string, object?>? originalKeys)
-    {
-        var v = WithTotal(spec, values);
-        foreach (var f in spec.Fields.Where(f => f.Key))
-            if (string.IsNullOrWhiteSpace(Convert.ToString(v.GetValueOrDefault(f.Column))))
-                throw new ArgumentException($"{f.Label} wajib diisi.");
-
-        var cols = v.Keys.Where(k => spec.Fields.Any(f => f.Column.Equals(k, StringComparison.OrdinalIgnoreCase))
-                                     || k.Equals(spec.TotalColumn, StringComparison.OrdinalIgnoreCase)).ToList();
-        var args = cols.Select(c => v[c]).ToList();
-        await using var db = await Db.OpenAsync(settings);
-
-        if (originalKeys is null)
-        {
-            var keyCols = spec.Fields.Where(f => f.Key).Select(f => f.Column).ToList();
-            var where = string.Join(" AND ", keyCols.Select((c, i) => $"`{c}`=@p{i}"));
-            if (await db.CountAsync($"SELECT COUNT(*) FROM `{spec.Table}` WHERE {where}", keyCols.Select(c => v[c]).ToArray()) > 0)
-                throw new InvalidOperationException("Data dengan kode tersebut sudah ada.");
-            var sql = $"INSERT INTO `{spec.Table}` ({string.Join(",", cols.Select(c => $"`{c}`"))}) VALUES ({string.Join(",", cols.Select((_, i) => $"@p{i}"))})";
-            await db.ExecAsync(sql, args.ToArray());
-        }
-        else
-        {
-            var set = string.Join(",", cols.Select((c, i) => $"`{c}`=@p{i}"));
-            var keys = originalKeys.Keys.ToList();
-            var where = string.Join(" AND ", keys.Select((c, i) => $"`{c}`=@p{cols.Count + i}"));
-            args.AddRange(keys.Select(k => originalKeys[k]));
-            if (await db.ExecAsync($"UPDATE `{spec.Table}` SET {set} WHERE {where}", args.ToArray()) == 0)
-                throw new InvalidOperationException("Data yang diubah tidak ditemukan.");
-        }
-    }
-
-    public async Task DeleteAsync(MasterSpec spec, Dictionary<string, object?> keys)
-    {
-        var k = keys.Keys.ToList();
-        await using var db = await Db.OpenAsync(settings);
-        await db.ExecAsync($"DELETE FROM `{spec.Table}` WHERE {string.Join(" AND ", k.Select((c, i) => $"`{c}`=@p{i}"))}",
-            k.Select(c => keys[c]).ToArray());
-    }
 }

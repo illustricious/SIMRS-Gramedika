@@ -122,7 +122,12 @@ public static class Ui
         for (var i = 0; i < rows.Length; i++)
         {
             g.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-            var l = new TextBlock { Text = rows[i].Label, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 3, 10, 3) };
+            // Long labels (audit questions) wrap instead of squeezing the input column.
+            var l = new TextBlock
+            {
+                Text = rows[i].Label, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(0, 3, 10, 3),
+                TextWrapping = TextWrapping.Wrap, MaxWidth = 230,
+            };
             Avalonia.Controls.Grid.SetRow(l, i);
             var c = rows[i].Control;
             c.Margin = new Thickness(0, 3);
@@ -210,7 +215,7 @@ public class LookupBox : AutoCompleteBox
 public class DateTimeBox : StackPanel
 {
     private readonly CalendarDatePicker _date = new() { SelectedDate = DateTime.Today };
-    private readonly TimePicker _time = new() { SelectedTime = DateTime.Now.TimeOfDay, ClockIdentifier = "24HourClock" };
+    private readonly TimePicker _time = new() { SelectedTime = DateTime.Now.TimeOfDay, ClockIdentifier = "24HourClock", MinWidth = 0, Width = 150 };
 
     public DateTimeBox(DateTime? value = null, bool withTime = true)
     {

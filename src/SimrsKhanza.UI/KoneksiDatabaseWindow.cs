@@ -28,6 +28,7 @@ public sealed class KoneksiDatabaseWindow : Window
     private readonly ComboBox _dbList = new() { MinWidth = 150, IsVisible = false, PlaceholderText = "pilih database" };
     private readonly CheckBox _batch = new() { Content = "Aktifkan batch obat (stok dipotong per No.Batch/No.Faktur)" };
     private readonly ComboBox _hpp = Ui.Choice(["dasar", "h_beli"]);
+    private readonly TextBox _web = Ui.Text("http://host/webapps");
     private readonly TextBlock _status = Ui.Status();
     private readonly Button _test, _save, _ambil;
     private int _index = -1;
@@ -125,6 +126,9 @@ public sealed class KoneksiDatabaseWindow : Window
                 _batch,
                 Ui.Form(("Kolom HPP farmasi", _hpp)),
                 Ui.Hint("Samakan dengan AKTIFKANBATCHOBAT dan HPPFARMASI di Khanza lama supaya pemotongan stok & HPP sama."),
+                new TextBlock { Text = "Aplikasi Web Khanza", FontWeight = FontWeight.SemiBold, Margin = new Thickness(0, 12, 0, 0) },
+                Ui.Form(("Alamat web", _web)),
+                Ui.Hint("Folder webapps Khanza (HOSTHYBRIDWEB + HYBRIDWEB), dipakai menu Kepegawaian & Gaji. Kosong = http://<host>/webapps."),
             },
         };
 
@@ -191,6 +195,7 @@ public sealed class KoneksiDatabaseWindow : Window
         _db.Text = s.Database;
         _batch.IsChecked = s.AktifkanBatchObat;
         _hpp.SelectedIndex = s.HppColumn == "h_beli" ? 1 : 0;
+        _web.Text = s.WebUrl;
         _dbList.IsVisible = false;
         _dbList.ItemsSource = null;
         _status.Text = "";
@@ -215,6 +220,7 @@ public sealed class KoneksiDatabaseWindow : Window
             User = (_user.Text ?? "").Trim(), Password = _pass.Text ?? "",
             AktifkanBatchObat = _batch.IsChecked == true,
             HppFarmasi = _hpp.SelectedIndex == 1 ? "h_beli" : "dasar",
+            WebUrl = (_web.Text ?? "").Trim(),
         };
     }
 
