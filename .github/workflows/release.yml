@@ -1,0 +1,203 @@
+# Builds SIMRS Gramedika installers for every platform.
+#   - Manually (Actions > Build installers > Run workflow): packages are attached to the run as artifacts.
+#   - On a tag "v*" (e.g. v1.1.0): the same packages are published as a GitHub Release.
+name: Build installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (empty = <Version> from SimrsKhanza.UI.csproj)"
+        required: false
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+jobs:
+  windows:
+    name: Windows (exe + msi, x64 + arm64)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Resolve version
+        shell: bash
+        run: |
+          v="${{ inputs.version }}"
+          if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
+          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj); fi
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Inno Setup
+        shell: pwsh
+        run: if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+      - name: Build
+        shell: pwsh
+        run: ./installer/build-installers.ps1 -Only win -Version $env:VERSION
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/*.exe
+            dist/*.msi
+
+  linux:
+    name: Linux (deb, rpm, tar.gz, AppImage, x64 + arm64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Resolve version
+        run: |
+          v="${{ inputs.version }}"
+          if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
+          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj); fi
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Publish + .deb + .tar.gz
+        shell: pwsh
+        run: ./installer/build-installers.ps1 -Only linux -Version $env:VERSION
+      - name: Install nfpm and appimagetool
+        run: |
+          echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq nfpm desktop-file-utils
+          curl -fsSL -o appimagetool https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+      - name: .rpm
+        run: |
+          printf '#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsKhanza.UI "$@"\n' > launcher.sh
+          chmod +x launcher.sh
+          for a in x64 arm64; do
+            [ "$a" = x64 ] && na=amd64 || na=arm64
+            cat > nfpm.yaml <<EOF
+          name: simrs-gramedika
+          arch: $na
+          platform: linux
+          version: $VERSION
+          release: 1
+          maintainer: RSU Gramedika <it@localhost>
+          homepage: https://github.com/${{ github.repository }}
+          description: SIMRS Gramedika, a reimplementation of the SIMRS Khanza hospital information system (Avalonia/.NET).
+          contents:
+            - src: ./publish/linux-$a/
+              dst: /opt/simrs-gramedika
+              type: tree
+            - src: ./launcher.sh
+              dst: /usr/bin/simrs-gramedika
+              file_info: { mode: 0755 }
+            - src: ./installer/linux/simrs-gramedika.desktop
+              dst: /usr/share/applications/simrs-gramedika.desktop
+            - src: ./installer/linux/simrs-gramedika.png
+              dst: /usr/share/icons/hicolor/256x256/apps/simrs-gramedika.png
+          overrides:
+            rpm:
+              recommends: [fontconfig, libicu]
+          EOF
+            nfpm package --packager rpm --config nfpm.yaml --target dist/
+          done
+      - name: AppImage
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: |
+          for a in x64 arm64; do
+            [ "$a" = x64 ] && A=x86_64 || A=aarch64
+            D="AppDir-$a"; rm -rf "$D"; mkdir -p "$D/usr/lib/simrs-gramedika"
+            cp -a "publish/linux-$a/." "$D/usr/lib/simrs-gramedika/"
+            cp installer/linux/simrs-gramedika.desktop installer/linux/simrs-gramedika.png "$D/"
+            printf '#!/bin/sh\nHERE="$(dirname "$(readlink -f "$0")")"\nexec "$HERE/usr/lib/simrs-gramedika/SimrsKhanza.UI" "$@"\n' > "$D/AppRun"
+            chmod +x "$D/AppRun"
+            curl -fsSL -o "runtime-$A" "https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$A"
+            ARCH=$A ./appimagetool --no-appstream --runtime-file "runtime-$A" "$D" "dist/SIMRS-Gramedika-$VERSION-linux-$a.AppImage"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist/*.deb
+            dist/*.rpm
+            dist/*.tar.gz
+            dist/*.AppImage
+
+  macos:
+    name: macOS (dmg, Apple Silicon + Intel, unsigned)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Resolve version
+        run: |
+          v="${{ inputs.version }}"
+          if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
+          if [ -z "$v" ]; then v=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj | head -1); fi
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Icon
+        run: |
+          mkdir -p AppIcon.iconset
+          for s in 16 32 128 256 512; do
+            sips -z $s $s installer/linux/simrs-gramedika.png --out AppIcon.iconset/icon_${s}x${s}.png >/dev/null
+            d=$((s*2)); sips -z $d $d installer/linux/simrs-gramedika.png --out AppIcon.iconset/icon_${s}x${s}@2x.png >/dev/null
+          done
+          iconutil -c icns AppIcon.iconset -o AppIcon.icns
+      - name: Build .app and .dmg
+        run: |
+          mkdir -p dist
+          for a in arm64 x64; do
+            dotnet publish src/SimrsKhanza.UI/SimrsKhanza.UI.csproj -c Release -r osx-$a --self-contained true \
+              -o "publish/osx-$a" -p:Version=$VERSION -p:DebugType=none -p:DebugSymbols=false -nologo -v q
+            ROOT="dmg-$a"; APP="$ROOT/SIMRS Gramedika.app"
+            rm -rf "$ROOT"; mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
+            cp -a "publish/osx-$a/." "$APP/Contents/MacOS/"
+            cp AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+            cat > "$APP/Contents/Info.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>CFBundleName</key><string>SIMRS Gramedika</string>
+            <key>CFBundleDisplayName</key><string>SIMRS Gramedika</string>
+            <key>CFBundleIdentifier</key><string>id.rsugramedika.simrs</string>
+            <key>CFBundleExecutable</key><string>SimrsKhanza.UI</string>
+            <key>CFBundleIconFile</key><string>AppIcon</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>$VERSION</string>
+            <key>CFBundleVersion</key><string>$VERSION</string>
+            <key>LSMinimumSystemVersion</key><string>12.0</string>
+            <key>NSHighResolutionCapable</key><true/>
+          </dict></plist>
+          EOF
+            # Ad-hoc signature only (no Apple Developer account): required for arm64 binaries to run at all.
+            codesign --force --deep --sign - "$APP"
+            ln -s /Applications "$ROOT/Applications"
+            hdiutil create -volname "SIMRS Gramedika" -srcfolder "$ROOT" -ov -format UDZO "dist/SIMRS-Gramedika-$VERSION-macos-$a.dmg"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: dist/*.dmg
+
+  release:
+    name: GitHub Release
+    if: github.ref_type == 'tag'
+    needs: [windows, linux, macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* --repo "${{ github.repository }}" \
+            --title "SIMRS Gramedika ${GITHUB_REF_NAME#v}" \
+            --notes "Installers for Windows (exe/msi), Linux (deb/rpm/AppImage/tar.gz) and macOS (dmg), x64 and ARM64. The macOS build is not notarized: right-click the app and choose Open the first time."

@@ -1,20 +1,22 @@
 <#
-  Membuat installer SIMRS Gramedika:
-    dist\SIMRS-Gramedika-Setup-<versi>-win-x64.exe   (Inno Setup)
-    dist\simrs-gramedika_<versi>_amd64.deb           (Debian/Ubuntu)
+  Builds SIMRS Gramedika packages into dist\ (self-contained: target machines need no .NET):
+    win   : SIMRS-Gramedika-Setup-<ver>-win-<arch>.exe (Inno Setup) and SIMRS-Gramedika-<ver>-win-<arch>.msi (WiX v5)
+    linux : simrs-gramedika_<ver>_<amd64|arm64>.deb and simrs-gramedika-<ver>-linux-<arch>.tar.gz
+  for each architecture in -Arch (x64, arm64).
 
-  Kebutuhan: .NET SDK 10, Inno Setup 6 (winget install JRSoftware.InnoSetup).
-  Keduanya self-contained: komputer tujuan tidak perlu memasang .NET.
+  .rpm, AppImage and macOS .dmg need Linux/macOS tools and are built by .github/workflows/release.yml.
 
-  Pemakaian:  powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 [-Version 1.0.0] [-Only win|deb]
+  Needs: .NET SDK 10; for win also Inno Setup 6 (winget install JRSoftware.InnoSetup). WiX comes from NuGet.
+  Usage: powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 [-Version 1.0.0] [-Only all|win|linux] [-Arch x64,arm64]
 #>
 param(
     [string]$Version = "",
-    [ValidateSet("", "win", "deb")][string]$Only = ""
+    [ValidateSet("all", "win", "linux")][string]$Only = "all",
+    [string[]]$Arch = @("x64", "arm64")
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
-$proj = Join-Path $root "src\SimrsKhanza.UI\SimrsKhanza.UI.csproj"
+$proj = Join-Path $root "src/SimrsKhanza.UI/SimrsKhanza.UI.csproj"
 $dist = Join-Path $root "dist"
 $dotnet = (Get-Command dotnet -ErrorAction SilentlyContinue).Source
 if (-not $dotnet) { $dotnet = "C:\Program Files\dotnet\dotnet.exe" }
@@ -24,7 +26,7 @@ if (-not $Version) { $Version = "1.0.0" }
 New-Item -ItemType Directory -Force $dist | Out-Null
 
 function Publish($rid) {
-    $out = Join-Path $root "publish\$rid"
+    $out = Join-Path $root "publish/$rid"
     if (Test-Path $out) { Remove-Item -Recurse -Force $out }
     Write-Host "== dotnet publish $rid ($Version)" -ForegroundColor Cyan
     & $dotnet publish $proj -c Release -r $rid --self-contained true -o $out `
@@ -33,24 +35,41 @@ function Publish($rid) {
     return $out
 }
 
-if ($Only -ne "deb") {
-    $win = Publish "win-x64"
-    Rename-Item (Join-Path $win "SimrsKhanza.UI.exe") "SIMRS Gramedika.exe"
+if ($Only -in "all", "win") {
     $iscc = @("$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe", "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe") |
-        Where-Object { Test-Path $_ } | Select-Object -First 1
+        Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
     if (-not $iscc) { throw "Inno Setup 6 tidak ditemukan. Pasang dengan: winget install JRSoftware.InnoSetup" }
-    Write-Host "== Inno Setup" -ForegroundColor Cyan
-    & $iscc /Q "/DAppVersion=$Version" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows\SimrsGramedika.iss")
-    if ($LASTEXITCODE -ne 0) { throw "Inno Setup gagal" }
+    foreach ($a in $Arch) {
+        $win = Publish "win-$a"
+        Rename-Item (Join-Path $win "SimrsKhanza.UI.exe") "SIMRS Gramedika.exe"
+
+        Write-Host "== Inno Setup ($a)" -ForegroundColor Cyan
+        & $iscc /Q "/DAppVersion=$Version" "/DArch=$a" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows/SimrsGramedika.iss")
+        if ($LASTEXITCODE -ne 0) { throw "Inno Setup $a gagal" }
+
+        Write-Host "== MSI ($a)" -ForegroundColor Cyan
+        & $dotnet build (Join-Path $PSScriptRoot "msi/SimrsGramedika.wixproj") -c Release -nologo -v q `
+            "-p:Platform=$a" "-p:SourceDir=$win" "-p:Version=$Version" "-p:OutputPath=$dist\" | Out-Host
+        if ($LASTEXITCODE -ne 0) { throw "MSI $a gagal" }
+    }
+    Get-ChildItem $dist -Filter *.wixpdb -ErrorAction SilentlyContinue | Remove-Item -Force
 }
 
-if ($Only -ne "win") {
-    $linux = Publish "linux-x64"
-    Write-Host "== .deb" -ForegroundColor Cyan
-    $deb = Join-Path $dist "simrs-gramedika_${Version}_amd64.deb"
-    & $dotnet run --project (Join-Path $PSScriptRoot "DebBuilder\DebBuilder.csproj") -c Release -- $linux (Join-Path $PSScriptRoot "linux") $deb $Version
-    if ($LASTEXITCODE -ne 0) { throw "pembuatan .deb gagal" }
+if ($Only -in "all", "linux") {
+    $builderProj = Join-Path $PSScriptRoot "DebBuilder/DebBuilder.csproj"
+    & $dotnet build $builderProj -c Release -nologo -v q -o (Join-Path $root "publish/debbuilder") | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "DebBuilder gagal dibuild" }
+    $builder = Join-Path $root "publish/debbuilder/DebBuilder.dll"
+    foreach ($a in $Arch) {
+        $linux = Publish "linux-$a"
+        $debArch = if ($a -eq "arm64") { "arm64" } else { "amd64" }
+        Write-Host "== .deb + .tar.gz ($a)" -ForegroundColor Cyan
+        & $dotnet $builder $linux (Join-Path $PSScriptRoot "linux") (Join-Path $dist "simrs-gramedika_${Version}_$debArch.deb") $Version $debArch
+        if ($LASTEXITCODE -ne 0) { throw ".deb $a gagal" }
+        & $dotnet $builder $linux (Join-Path $PSScriptRoot "linux") (Join-Path $dist "simrs-gramedika-$Version-linux-$a.tar.gz") $Version $debArch
+        if ($LASTEXITCODE -ne 0) { throw ".tar.gz $a gagal" }
+    }
 }
 
 Write-Host "== Selesai:" -ForegroundColor Green
-Get-ChildItem $dist | Select-Object Name, @{ n = "MB"; e = { [math]::Round($_.Length / 1MB, 1) } } | Format-Table -AutoSize
+Get-ChildItem $dist -File | Select-Object Name, @{ n = "MB"; e = { [math]::Round($_.Length / 1MB, 1) } } | Format-Table -AutoSize

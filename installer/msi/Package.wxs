@@ -1,0 +1,32 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <!-- Per-machine install into Program Files; a newer version replaces the old one (MajorUpgrade). -->
+  <Package Name="SIMRS Gramedika" Manufacturer="RSU Gramedika" Version="$(Version)"
+           UpgradeCode="{3F6A9C21-8B47-4D5E-A1C2-7E9B0D4F6A13}" Scope="perMachine" Compressed="yes">
+    <MajorUpgrade DowngradeErrorMessage="Versi SIMRS Gramedika yang lebih baru sudah terpasang." />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Icon Id="AppIcon" SourceFile="..\..\src\SimrsKhanza.UI\Assets\app.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="SIMRS Gramedika" />
+    </StandardDirectory>
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcut" />
+    </Feature>
+
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(SourceDir)\**" />
+    </ComponentGroup>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="StartMenuShortcut" Guid="{9D2C4E71-6A3B-4F8E-B0D5-1C7A9E3F2B64}">
+        <Shortcut Id="AppShortcut" Name="SIMRS Gramedika" Target="[INSTALLFOLDER]SIMRS Gramedika.exe"
+                  WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+        <RegistryValue Root="HKLM" Key="Software\SIMRS Gramedika" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+  </Package>
+</Wix>

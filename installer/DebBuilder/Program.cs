@@ -3,91 +3,118 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 
-// Usage: DebBuilder <publishDir> <linuxDir> <outputDeb> <version>
-//   publishDir : dotnet publish -r linux-x64 output
-//   linuxDir   : installer/linux (desktop file, icon, launcher)
-// Produces a .deb that installs to /opt/simrs-gramedika with a launcher in /usr/bin
-// and a menu entry, built with correct unix permissions and root ownership.
-if (args.Length != 4)
+// Usage: DebBuilder <publishDir> <linuxDir> <output> <version> [amd64|arm64]
+//   publishDir : dotnet publish -r linux-x64 / linux-arm64 output
+//   linuxDir   : installer/linux (desktop file, icon)
+//   output     : *.deb  -> Debian package installing to /opt/simrs-gramedika (+ /usr/bin launcher, menu entry)
+//                *.tar.gz -> portable archive (folder simrs-gramedika/ with the app and a launcher script)
+// Built on any OS with correct unix permissions and root ownership.
+if (args.Length is < 4 or > 5)
 {
-    Console.Error.WriteLine("Usage: DebBuilder <publishDir> <linuxDir> <outputDeb> <version>");
+    Console.Error.WriteLine("Usage: DebBuilder <publishDir> <linuxDir> <output.deb|output.tar.gz> <version> [amd64|arm64]");
     return 2;
 }
 
 var publishDir = Path.GetFullPath(args[0]);
 var linuxDir = Path.GetFullPath(args[1]);
-var outputDeb = Path.GetFullPath(args[2]);
+var output = Path.GetFullPath(args[2]);
 var version = args[3];
+var arch = args.Length == 5 ? args[4] : "amd64";
+if (arch is not ("amd64" or "arm64")) { Console.Error.WriteLine("arch must be amd64 or arm64"); return 2; }
 
 const string Package = "simrs-gramedika";
-const string InstallDir = "opt/simrs-gramedika";
 const string MainBinary = "SimrsKhanza.UI";
 
 var exec = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute |
            UnixFileMode.GroupRead | UnixFileMode.GroupExecute | UnixFileMode.OtherRead | UnixFileMode.OtherExecute;
 var normal = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.GroupRead | UnixFileMode.OtherRead;
-
-var md5 = new StringBuilder();
-long installedBytes = 0;
 var mtime = DateTimeOffset.UtcNow;
 
-// ---- data.tar.gz ----
-var dataTar = new MemoryStream();
-using (var gz = new GZipStream(dataTar, CompressionLevel.SmallestSize, leaveOpen: true))
-using (var tar = new TarWriter(gz, TarEntryFormat.Gnu, leaveOpen: true))
-{
-    var dirsWritten = new HashSet<string>();
+bool IsExecutable(string rel) =>
+    rel == MainBinary || rel == "createdump" || rel.EndsWith(".so", StringComparison.Ordinal) || rel.Contains(".so.", StringComparison.Ordinal);
 
+var appFiles = Directory.EnumerateFiles(publishDir, "*", SearchOption.AllDirectories)
+    .Select(p => (Rel: Path.GetRelativePath(publishDir, p).Replace('\\', '/'), Path: p))
+    .Where(f => !f.Rel.EndsWith(".pdb", StringComparison.OrdinalIgnoreCase))
+    .OrderBy(f => f.Rel, StringComparer.Ordinal)
+    .ToList();
+var desktop = File.ReadAllBytes(Path.Combine(linuxDir, "simrs-gramedika.desktop"));
+var icon = File.ReadAllBytes(Path.Combine(linuxDir, "simrs-gramedika.png"));
+
+/// Writes (path, bytes, executable) entries into a gzipped GNU tar, creating parent directories once.
+long WriteTar(Stream target, IEnumerable<(string Path, byte[] Data, bool Exec)> entries, StringBuilder? md5 = null)
+{
+    long bytes = 0;
+    using var gz = new GZipStream(target, CompressionLevel.SmallestSize, leaveOpen: true);
+    using var tar = new TarWriter(gz, TarEntryFormat.Gnu, leaveOpen: true);
+    var dirs = new HashSet<string>();
     void Dir(string path)
     {
-        var parts = path.Trim('/').Split('/');
+        var parts = path.Trim('/').Split('/', StringSplitOptions.RemoveEmptyEntries);
         for (var i = 1; i <= parts.Length; i++)
         {
             var d = string.Join('/', parts[..i]);
-            if (!dirsWritten.Add(d)) continue;
+            if (!dirs.Add(d)) continue;
             tar.WriteEntry(new GnuTarEntry(TarEntryType.Directory, $"./{d}/")
             {
                 Mode = exec, Uid = 0, Gid = 0, UserName = "root", GroupName = "root", ModificationTime = mtime,
             });
         }
     }
-
-    void File(string target, byte[] content, bool executable)
+    foreach (var (path, data, isExec) in entries)
     {
-        Dir(Path.GetDirectoryName(target)!.Replace('\\', '/'));
-        tar.WriteEntry(new GnuTarEntry(TarEntryType.RegularFile, "./" + target)
+        Dir(Path.GetDirectoryName(path)!.Replace('\\', '/'));
+        tar.WriteEntry(new GnuTarEntry(TarEntryType.RegularFile, "./" + path)
         {
-            Mode = executable ? exec : normal, Uid = 0, Gid = 0, UserName = "root", GroupName = "root",
-            ModificationTime = mtime, DataStream = new MemoryStream(content),
+            Mode = isExec ? exec : normal, Uid = 0, Gid = 0, UserName = "root", GroupName = "root",
+            ModificationTime = mtime, DataStream = new MemoryStream(data),
         });
-        md5.Append(Convert.ToHexStringLower(MD5.HashData(content))).Append("  ").Append(target).Append('\n');
-        installedBytes += content.Length;
+        md5?.Append(Convert.ToHexStringLower(MD5.HashData(data))).Append("  ").Append(path).Append('\n');
+        bytes += data.Length;
     }
-
-    foreach (var path in Directory.EnumerateFiles(publishDir, "*", SearchOption.AllDirectories).Order(StringComparer.Ordinal))
-    {
-        var rel = Path.GetRelativePath(publishDir, path).Replace('\\', '/');
-        if (rel.EndsWith(".pdb", StringComparison.OrdinalIgnoreCase)) continue;
-        var executable = rel == MainBinary || rel.EndsWith(".so", StringComparison.Ordinal) || rel.Contains(".so.", StringComparison.Ordinal) || rel == "createdump";
-        File($"{InstallDir}/{rel}", System.IO.File.ReadAllBytes(path), executable);
-    }
-
-    var launcher = "#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsKhanza.UI \"$@\"\n";
-    File("usr/bin/simrs-gramedika", Encoding.UTF8.GetBytes(launcher), executable: true);
-    File("usr/share/applications/simrs-gramedika.desktop",
-        System.IO.File.ReadAllBytes(Path.Combine(linuxDir, "simrs-gramedika.desktop")), executable: false);
-    var icon = System.IO.File.ReadAllBytes(Path.Combine(linuxDir, "simrs-gramedika.png"));
-    File("usr/share/icons/hicolor/256x256/apps/simrs-gramedika.png", icon, executable: false);
-    File("usr/share/pixmaps/simrs-gramedika.png", icon, executable: false);
+    return bytes;
 }
 
-// ---- control.tar.gz ----
+Directory.CreateDirectory(Path.GetDirectoryName(output)!);
+
+// ---------------------------------------------------------------- portable .tar.gz
+if (output.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase))
+{
+    const string Root = "simrs-gramedika";
+    var run = "#!/bin/sh\n# SIMRS Gramedika (portable)\nDIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nexec \"$DIR/app/SimrsKhanza.UI\" \"$@\"\n";
+    var readme = $"SIMRS Gramedika {version} (linux-{(arch == "amd64" ? "x64" : "arm64")}, portable)\n\nJalankan: ./simrs-gramedika\n" +
+                 "Koneksi database diatur saat pertama dibuka dan disimpan di ~/.config/SimrsKhanza.\n";
+    using var fs = File.Create(output);
+    WriteTar(fs,
+    [
+        .. appFiles.Select(f => ($"{Root}/app/{f.Rel}", File.ReadAllBytes(f.Path), IsExecutable(f.Rel))),
+        ($"{Root}/simrs-gramedika", Encoding.UTF8.GetBytes(run), true),
+        ($"{Root}/simrs-gramedika.png", icon, false),
+        ($"{Root}/BACA-SAYA.txt", Encoding.UTF8.GetBytes(readme), false),
+    ]);
+    Console.WriteLine($"OK {output} ({new FileInfo(output).Length / 1024 / 1024} MB)");
+    return 0;
+}
+
+// ---------------------------------------------------------------- .deb
+var md5sums = new StringBuilder();
+var dataTar = new MemoryStream();
+var launcher = "#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsKhanza.UI \"$@\"\n";
+var installedBytes = WriteTar(dataTar,
+[
+    .. appFiles.Select(f => ($"opt/simrs-gramedika/{f.Rel}", File.ReadAllBytes(f.Path), IsExecutable(f.Rel))),
+    ("usr/bin/simrs-gramedika", Encoding.UTF8.GetBytes(launcher), true),
+    ("usr/share/applications/simrs-gramedika.desktop", desktop, false),
+    ("usr/share/icons/hicolor/256x256/apps/simrs-gramedika.png", icon, false),
+    ("usr/share/pixmaps/simrs-gramedika.png", icon, false),
+], md5sums);
+
 var control = $"""
 Package: {Package}
 Version: {version}
 Section: misc
 Priority: optional
-Architecture: amd64
+Architecture: {arch}
 Maintainer: RSU Gramedika <it@localhost>
 Installed-Size: {(installedBytes + 1023) / 1024}
 Depends: libc6, libgcc-s1, libstdc++6, zlib1g, libfontconfig1, libfreetype6, libx11-6, libice6, libsm6, libxext6, libxrandr2, libxi6, libxcursor1, libicu76 | libicu74 | libicu72 | libicu71 | libicu70 | libicu67 | libicu66 | libicu63, libssl3t64 | libssl3 | libssl1.1
@@ -110,7 +137,6 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then gtk-update-icon-cache 
 exit 0
 
 """;
-var postrm = postinst;
 
 var controlTar = new MemoryStream();
 using (var gz = new GZipStream(controlTar, CompressionLevel.SmallestSize, leaveOpen: true))
@@ -123,14 +149,12 @@ using (var tar = new TarWriter(gz, TarEntryFormat.Gnu, leaveOpen: true))
         DataStream = new MemoryStream(Encoding.UTF8.GetBytes(text.Replace("\r\n", "\n"))),
     });
     Add("control", control, false);
-    Add("md5sums", md5.ToString(), false);
+    Add("md5sums", md5sums.ToString(), false);
     Add("postinst", postinst, true);
-    Add("postrm", postrm, true);
+    Add("postrm", postinst, true);
 }
 
-// ---- ar archive ----
-Directory.CreateDirectory(Path.GetDirectoryName(outputDeb)!);
-using (var deb = System.IO.File.Create(outputDeb))
+using (var deb = File.Create(output))
 {
     deb.Write("!<arch>\n"u8);
     void Member(string name, byte[] data)
@@ -145,5 +169,5 @@ using (var deb = System.IO.File.Create(outputDeb))
     Member("data.tar.gz", dataTar.ToArray());
 }
 
-Console.WriteLine($"OK {outputDeb} ({new FileInfo(outputDeb).Length / 1024 / 1024} MB, installed {installedBytes / 1024 / 1024} MB)");
+Console.WriteLine($"OK {output} ({new FileInfo(output).Length / 1024 / 1024} MB, installed {installedBytes / 1024 / 1024} MB)");
 return 0;

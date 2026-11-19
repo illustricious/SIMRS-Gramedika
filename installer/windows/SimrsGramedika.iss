@@ -11,6 +11,10 @@
 #ifndef OutputDir
   #define OutputDir "..\..\dist"
 #endif
+; x64 or arm64 (the publish folder must match).
+#ifndef Arch
+  #define Arch "x64"
+#endif
 
 #define AppName "SIMRS Gramedika"
 #define AppExe "SIMRS Gramedika.exe"
@@ -27,15 +31,20 @@ DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 OutputDir={#OutputDir}
-OutputBaseFilename=SIMRS-Gramedika-Setup-{#AppVersion}-win-x64
+OutputBaseFilename=SIMRS-Gramedika-Setup-{#AppVersion}-win-{#Arch}
 SetupIconFile=..\..\src\SimrsKhanza.UI\Assets\app.ico
 UninstallDisplayIcon={app}\{#AppExe}
 UninstallDisplayName={#AppName}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
+#if Arch == "arm64"
+ArchitecturesAllowed=arm64
+ArchitecturesInstallIn64BitMode=arm64
+#else
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
+#endif
 MinVersion=10.0
 ; Admin install into Program Files by default; the user may choose "only for me" instead.
 PrivilegesRequired=admin

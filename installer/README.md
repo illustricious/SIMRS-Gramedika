@@ -1,38 +1,45 @@
-﻿# Installer SIMRS Gramedika
+﻿# Installers
 
-Membuat dua paket self-contained (komputer tujuan tidak perlu memasang .NET):
+All packages are self-contained: target machines do not need .NET installed.
 
-| File | Untuk |
-|---|---|
-| `dist/SIMRS-Gramedika-Setup-<versi>-win-x64.exe` | Windows 10/11 64-bit (Inno Setup) |
-| `dist/simrs-gramedika_<versi>_amd64.deb` | Debian 11+/Ubuntu 20.04+ 64-bit |
+| Platform | Architectures | Formats | Built by |
+|----------|---------------|---------|----------|
+| Windows 10/11, Server 2016+ | x64, ARM64 | `.exe` (Inno Setup), `.msi` (WiX v5) | `build-installers.ps1` or CI |
+| Debian / Ubuntu / Mint | x64, ARM64 | `.deb` | `build-installers.ps1` or CI |
+| Any Linux | x64, ARM64 | `.tar.gz` (portable) | `build-installers.ps1` or CI |
+| RHEL / Rocky / Alma / Fedora / openSUSE | x64, ARM64 | `.rpm` (nfpm) | CI |
+| Any Linux | x64, ARM64 | `.AppImage` | CI |
+| macOS 12+ | Apple Silicon, Intel | `.dmg` (not notarized) | CI |
 
-## Build
+Windows 7/8.1 are not supported (.NET 10 requires Windows 10 or later).
 
-Butuh .NET SDK 10 dan Inno Setup 6 (`winget install JRSoftware.InnoSetup`).
+## Local build (Windows)
+
+Requirements: .NET SDK 10 and Inno Setup 6 (`winget install JRSoftware.InnoSetup`). WiX is restored from NuGet.
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1            # dua-duanya
-powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Only win  # hanya Windows
-powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Version 1.0.1
+powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1                 # everything, x64 + arm64
+powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Only win -Arch x64
 ```
 
-Versi default diambil dari `<Version>` di `src/SimrsKhanza.UI/SimrsKhanza.UI.csproj`.
-Paket `.deb` dibuat oleh `installer/DebBuilder` (C#), jadi tidak perlu WSL/dpkg-deb.
+Output goes to `dist\` (git-ignored).
 
-## Instal
+## CI build (all platforms)
 
-- **Windows**: jalankan Setup, ikuti wizard. Menu Start + ikon desktop (opsional) bernama "SIMRS Gramedika".
-- **Linux**: `sudo apt install ./simrs-gramedika_1.0.0_amd64.deb` (apt ikut memasang dependensi
-  seperti libicu, libssl, fontconfig). Aplikasi ada di menu sebagai "SIMRS Gramedika" atau
-  jalankan `simrs-gramedika`. Terpasang di `/opt/simrs-gramedika`.
+`.github/workflows/release.yml` builds every format on GitHub-hosted Windows, Linux and macOS runners:
 
-## Koneksi database
+- **Actions → Build installers → Run workflow**: packages are attached to the run as artifacts.
+- **Push a tag** such as `v1.1.0`: the packages are also published as a GitHub Release.
 
-Saat pertama dibuka, muncul layar **Koneksi Database** (host, port, user, password, database —
-bisa "Ambil daftar" dari server). Bisa menyimpan beberapa profil server; profil dipilih di layar
-login, dan tombol ⚙ di layar login membuka layar koneksi lagi.
+## Installing
 
-Disimpan per user di `%APPDATA%\SimrsKhanza\database.settings.json` (Windows) atau
-`~/.config/SimrsKhanza/database.settings.json` (Linux, izin 600). Uninstall tidak menghapus file
-ini. Folder bisa dipindah dengan environment variable `SIMRS_CONFIG_DIR`.
+- **Windows**: run the `.exe`, or deploy the `.msi` silently: `msiexec /i SIMRS-Gramedika-<ver>-win-x64.msi /qn`.
+- **Debian/Ubuntu**: `sudo apt install ./simrs-gramedika_<ver>_amd64.deb`
+- **Fedora/RHEL**: `sudo dnf install ./simrs-gramedika-<ver>-1.x86_64.rpm`
+- **AppImage**: `chmod +x SIMRS-Gramedika-*.AppImage && ./SIMRS-Gramedika-*.AppImage`
+- **Portable**: extract the `.tar.gz` and run `./simrs-gramedika/simrs-gramedika`
+- **macOS**: open the `.dmg`, drag the app to Applications, then right-click it and choose **Open** the first time
+  (the build is ad-hoc signed, not notarized). If macOS still refuses: `xattr -cr "/Applications/SIMRS Gramedika.app"`.
+
+The database connection is configured on first start and stored per user
+(`%APPDATA%\SimrsKhanza` on Windows, `~/.config/SimrsKhanza` on Linux and macOS). Uninstalling keeps it.

@@ -1,0 +1,14 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <!--
+    MSI installer (WiX v5) for deployment via Group Policy / Intune / msiexec /qn.
+    Called by installer\build-installers.ps1:
+      dotnet build installer\msi -c Release -p:Platform=x64|arm64 -p:SourceDir=<publish dir> -p:Version=1.0.0 -p:OutputPath=<dist>\
+  -->
+  <PropertyGroup>
+    <Version Condition="'$(Version)' == ''">1.0.0</Version>
+    <OutputName>SIMRS-Gramedika-$(Version)-win-$(Platform)</OutputName>
+    <DefineConstants>Version=$(Version);SourceDir=$(SourceDir)</DefineConstants>
+    <!-- ICE38/43/57 misread the per-machine Start menu shortcut as per-user (they ignore ALLUSERS=1). -->
+    <SuppressIces>ICE38;ICE43;ICE57;ICE61</SuppressIces>
+  </PropertyGroup>
+</Project>
