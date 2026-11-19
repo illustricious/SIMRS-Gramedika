@@ -14,7 +14,10 @@ public record MasterField(string Column, string Label, FieldKind Kind = FieldKin
     public object? Default { get; init; }
 }
 
-/// <summary>A per-row command (e.g. "Proses Pulang"); Sql gets the selected row's key values as @p0.. in key order.</summary>
+/// <summary>
+/// A per-row command (e.g. "Proses Pulang"); Sql gets the selected row's key values as @p0.. in key order,
+/// followed by the logged-in user's legacy code (akses.getkode()) as the next parameter.
+/// </summary>
 public record MasterAction(string Label, string Sql, string Confirm);
 
 /// <summary>How the list is filtered besides the search text.</summary>
@@ -44,6 +47,9 @@ public record MasterSpec(
 
     /// <summary>Choice fields that count toward a "% Ya" compliance score (audit screens).</summary>
     public string[]? ScoreOf { get; init; }
+
+    /// <summary>The list LEFT JOINs rows that may not exist yet (e.g. resep without telaah): saving a picked row inserts it when missing.</summary>
+    public bool Upsert { get; init; }
 
     public IEnumerable<MasterField> Keys => Fields.Where(f => f.Key);
 }
@@ -109,6 +115,11 @@ public class MasterRepository(DatabaseSettings settings)
                                      || k.Equals(spec.TotalColumn, StringComparison.OrdinalIgnoreCase)).ToList();
         var args = cols.Select(c => v[c]).ToList();
 
+        if (originalKeys is not null && spec.Upsert && await db.CountAsync(
+                $"SELECT COUNT(*) FROM `{spec.Table}` WHERE {string.Join(" AND ", originalKeys.Keys.Select((c, i) => $"`{c}`=@p{i}"))}",
+                originalKeys.Values.ToArray()) == 0)
+            originalKeys = null;
+
         if (originalKeys is null)
         {
             var keyCols = spec.Keys.Select(f => f.Column).ToList();
@@ -140,11 +151,11 @@ public class MasterRepository(DatabaseSettings settings)
             k.Select(c => keys[c]).ToArray());
     }
 
-    public async Task RunActionAsync(MasterAction action, Dictionary<string, object?> keys)
+    public async Task RunActionAsync(MasterAction action, Dictionary<string, object?> keys, string petugas = "")
     {
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
-        await db.ExecAsync(action.Sql, keys.Values.ToArray());
+        await db.ExecAsync(action.Sql, [.. keys.Values, petugas]);
         await db.CommitAsync();
     }
 }

@@ -39,6 +39,8 @@ public class FarmasiStokRepository(DatabaseSettings settings)
         ["permintaan_medis"] = ["no_permintaan", "kd_bangsal", "nip", "tanggal", "status", "kd_bangsaltujuan"],
         ["detail_permintaan_medis"] = ["no_permintaan", "kode_brng", "kode_sat", "jumlah", "keterangan"],
         ["data_batch"] = ["sisa"],
+        ["stok_obat_pasien"] = ["tanggal", "jam", "no_rawat", "kode_brng", "jumlah", "kd_bangsal", "no_batch", "no_faktur", "aturan_pakai", .. Enumerable.Range(0, 24).Select(h => $"jam{h:00}")],
+        ["permintaan_stok_obat_pasien"] = ["status", "tgl_validasi", "jam_validasi"],
     };
 
     public async Task<List<(string Kode, string Nama)>> LokasiAsync()
@@ -328,6 +330,88 @@ public class FarmasiStokRepository(DatabaseSettings settings)
             if (need > 0) kurang.Add($"{d.S("nama_brng")} kurang {need}");
         }
         return (lines, kurang);
+    }
+
+    // ------------------------------------------------------------------ permintaan stok obat pasien (ranap)
+
+    private static readonly string JamCols = string.Join(",", Enumerable.Range(0, 24).Select(h => $"jam{h:00}"));
+
+    public async Task<List<Row>> PermintaanStokPasienAsync(DateTime from, DateTime to, string? cari)
+    {
+        await using var db = await Db.OpenAsync(settings);
+        return await db.QueryAsync("""
+            SELECT h.no_permintaan, h.tgl_permintaan, h.jam, h.no_rawat, p.no_rkm_medis, p.nm_pasien, d.nm_dokter, h.status,
+            IF(h.status='Sudah',CONCAT(h.tgl_validasi,' ',h.jam_validasi),'') AS validasi,
+            (SELECT CONCAT(k.kd_kamar,' ',bs.nm_bangsal) FROM kamar_inap ki JOIN kamar k ON k.kd_kamar=ki.kd_kamar JOIN bangsal bs ON bs.kd_bangsal=k.kd_bangsal
+             WHERE ki.no_rawat=h.no_rawat ORDER BY ki.tgl_masuk DESC, ki.jam_masuk DESC LIMIT 1) AS kamar,
+            (SELECT COUNT(*) FROM detail_permintaan_stok_obat_pasien x WHERE x.no_permintaan=h.no_permintaan) AS item
+            FROM permintaan_stok_obat_pasien h JOIN reg_periksa g ON g.no_rawat=h.no_rawat JOIN pasien p ON p.no_rkm_medis=g.no_rkm_medis
+            LEFT JOIN dokter d ON d.kd_dokter=h.kd_dokter
+            WHERE h.tgl_permintaan BETWEEN @p0 AND @p1 AND CONCAT_WS(' ',h.no_permintaan,h.no_rawat,p.no_rkm_medis,p.nm_pasien,d.nm_dokter,h.status) LIKE @p2
+            ORDER BY h.status, h.tgl_permintaan DESC, h.jam DESC LIMIT 3000
+            """, from.Date, to.Date.AddDays(1).AddSeconds(-1), $"%{cari?.Trim()}%");
+    }
+
+    public async Task<List<Row>> DetailStokPasienAsync(string noPermintaan)
+    {
+        await using var db = await Db.OpenAsync(settings);
+        return await db.QueryAsync($"""
+            SELECT x.kode_brng, b.nama_brng, s.satuan, x.jml, x.aturan_pakai,
+            CONCAT_WS(',',{string.Join(",", Enumerable.Range(0, 24).Select(h => $"IF(x.jam{h:00}='true','{h:00}',NULL)"))}) AS jadwal
+            FROM detail_permintaan_stok_obat_pasien x JOIN databarang b ON b.kode_brng=x.kode_brng LEFT JOIN kodesatuan s ON s.kode_sat=b.kode_sat
+            WHERE x.no_permintaan=@p0
+            """, noPermintaan);
+    }
+
+    /// <summary>
+    /// Validates a doctor's request: takes stock from the depo (earliest expiry first), writes stok_obat_pasien with the
+    /// requested schedule, riwayat 'Stok Pasien Ranap', gudangbarang and data_batch — the inverse of the legacy delete.
+    /// </summary>
+    public async Task ValidasiStokPasienAsync(string noPermintaan, string depo, string petugas)
+    {
+        if (depo.Length == 0) throw new ArgumentException("Pilih depo/lokasi stok dulu.");
+        await using var db = await Db.OpenAsync(settings);
+        var h = await db.FirstAsync("SELECT no_rawat, status FROM permintaan_stok_obat_pasien WHERE no_permintaan=@p0", noPermintaan)
+            ?? throw new InvalidOperationException("Permintaan tidak ditemukan.");
+        if (h.S("status") == "Sudah") throw new InvalidOperationException("Permintaan ini sudah divalidasi.");
+        var detail = await db.QueryAsync($"SELECT kode_brng, jml, aturan_pakai, {JamCols} FROM detail_permintaan_stok_obat_pasien WHERE no_permintaan=@p0", noPermintaan);
+        if (detail.Count == 0) throw new InvalidOperationException("Permintaan tidak punya rincian obat.");
+
+        // Plan batches before writing anything so a shortage aborts cleanly.
+        var plan = new List<(Row D, StokItem Item, double Qty)>();
+        var kurang = new List<string>();
+        foreach (var d in detail)
+        {
+            var need = d.D("jml");
+            foreach (var s in (await CariStokAsync(depo, d.S("kode_brng"), false)).Where(s => s.Kode == d.S("kode_brng")).OrderBy(s => s.Kadaluarsa ?? DateTime.MaxValue))
+            {
+                if (need <= 0) break;
+                var take = Math.Min(need, s.Stok);
+                plan.Add((d, s, take));
+                need -= take;
+            }
+            if (need > 0) kurang.Add($"{d.S("kode_brng")} kurang {need}");
+        }
+        if (kurang.Count > 0) throw new InvalidOperationException("Stok depo tidak cukup: " + string.Join("; ", kurang));
+
+        await db.BeginAsync();
+        var now = Convert.ToDateTime(await db.ScalarAsync("SELECT NOW()"));
+        var noRawat = h.S("no_rawat");
+        foreach (var (d, i, qty) in plan)
+        {
+            var jam = Enumerable.Range(0, 24).Select(x => (object?)d.S($"jam{x:00}")).ToArray();
+            await db.ExecAsync($"""
+                INSERT INTO stok_obat_pasien (tanggal,jam,no_rawat,kode_brng,jumlah,kd_bangsal,no_batch,no_faktur,aturan_pakai,{JamCols})
+                VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,{string.Join(",", Enumerable.Range(9, 24).Select(x => $"@p{x}"))})
+                ON DUPLICATE KEY UPDATE jumlah=jumlah+@p4
+                """, [now.Date, now.TimeOfDay, noRawat, i.Kode, qty, depo, i.NoBatch, i.NoFaktur, d.S("aturan_pakai"), .. jam]);
+            await CatatAsync(db, i, 0, qty, "Stok Pasien Ranap", petugas, depo, $"Stok obat pasien {noRawat}, permintaan {noPermintaan}");
+            if (i.NoBatch.Length > 0)
+                await db.ExecAsync("UPDATE data_batch SET sisa=sisa-@p0 WHERE no_batch=@p1 AND kode_brng=@p2 AND no_faktur=@p3", qty, i.NoBatch, i.Kode, i.NoFaktur);
+            await TambahStokAsync(db, i, depo, -qty);
+        }
+        await db.ExecAsync("UPDATE permintaan_stok_obat_pasien SET status='Sudah', tgl_validasi=CURRENT_DATE(), jam_validasi=CURRENT_TIME() WHERE no_permintaan=@p0", noPermintaan);
+        await db.CommitAsync();
     }
 
     // ------------------------------------------------------------------ history

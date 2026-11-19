@@ -311,6 +311,21 @@ public partial class MainWindow : Window
             await OpenPageAsync(new Modules.Farmasi.StokTransaksiView(sm));
             return;
         }
+        if (key == "btnPermintaanStokObatPasien")
+        {
+            await OpenPageAsync(new Modules.Farmasi.PermintaanStokPasienView());
+            return;
+        }
+        if (SimrsKhanza.Data.Farmasi.MenuDLists.Masters.TryGetValue(key, out var listD))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(listD));
+            return;
+        }
+        if (SimrsKhanza.Data.Farmasi.MenuDLists.Reports.TryGetValue(key, out var listReportD))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(listReportD));
+            return;
+        }
         if (SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.TryGetValue(key, out var masterD))
         {
             await OpenPageAsync(new Modules.Shared.MasterView(masterD));

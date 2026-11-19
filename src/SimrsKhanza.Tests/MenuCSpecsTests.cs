@@ -40,6 +40,18 @@ public class MenuCSpecsTests
     }
 
     [Fact]
+    public void EveryMenuDTile_HasAScreen()
+    {
+        string[] custom = ["btnMutasiBarang", "btnOpname", "btnStokKeluarMedis", "btnPermintaanMedis", "btnPemesanan", "btnPermintaanStokObatPasien",
+                           "btnPenjualan", "btnDaftarPermintaanResep"];
+        var tiles = SimrsKhanza.UI.Modules.Shared.LegacyMenuCatalog.Tiles[3].Select(t => t.Key);
+        var missing = tiles.Where(k => !custom.Contains(k)
+            && !SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.ContainsKey(k) && !SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports.ContainsKey(k)
+            && !SimrsKhanza.Data.Farmasi.MenuDLists.Masters.ContainsKey(k) && !SimrsKhanza.Data.Farmasi.MenuDLists.Reports.ContainsKey(k)).ToList();
+        Assert.True(missing.Count == 0, string.Join(", ", missing));
+    }
+
+    [Fact]
     public void AuditScore_IgnoresNa()
     {
         var sql = MasterLookups.ScoreSql("a", ["x", "y"]);
@@ -70,7 +82,8 @@ public class MenuCSpecsDbSmokeTests
             .Select(r => (r.S("t").ToLowerInvariant(), r.S("c").ToLowerInvariant())).ToHashSet();
 
         MasterSpec[] lab = [LabKeslingMasters.Pelanggan, LabKeslingMasters.Sampel, LabKeslingMasters.Parameter, LabKeslingMasters.NilaiNormal];
-        foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Select(kv => (kv.Key, kv.Value))
+        foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters)
+                     .Select(kv => (kv.Key, kv.Value))
                      .Concat(lab.Select(l => (l.Table, l))))
         {
             foreach (var f in s.Fields.Where(f => !columns.Contains((s.Table, f.Column.ToLowerInvariant()))))
@@ -84,7 +97,7 @@ public class MenuCSpecsDbSmokeTests
             }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
         }
-        foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports))
+        foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports))
         {
             try { await reports.RunAsync(r, "", DateTime.Today.AddMonths(-1), DateTime.Today, DateTime.Today.Year); }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
@@ -121,6 +134,8 @@ public class MenuCSpecsDbSmokeTests
             await terima.SuplierAsync();
             await terima.CariBarangAsync("a");
             await terima.DaftarAsync(DateTime.Today.AddDays(-30), DateTime.Today, "");
+            var pst = await stok.PermintaanStokPasienAsync(DateTime.Today.AddDays(-7), DateTime.Today, "");
+            if (pst.Count > 0) await stok.DetailStokPasienAsync(pst[0].S("no_permintaan"));
             foreach (var m in Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>())
             {
                 await stok.DaftarAsync(m, DateTime.Today.AddDays(-7), DateTime.Today, "");

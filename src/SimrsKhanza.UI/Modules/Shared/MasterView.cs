@@ -238,7 +238,7 @@ public class MasterView : PageView
         if (!await Dialogs.ConfirmAsync(this, a.Label, a.Confirm)) return;
         await RunAsync(async () =>
         {
-            await _repo.RunActionAsync(a, _editingKeys);
+            await _repo.RunActionAsync(a, _editingKeys, SimrsKhanza.Core.Auth.AppSession.CurrentUser?.KodeLegacy ?? "");
             await LoadAsync();
             await NewAsync();
             Ui.Ok(StatusText, "Selesai.");

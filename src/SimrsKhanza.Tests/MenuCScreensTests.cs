@@ -36,6 +36,9 @@ public class MenuCScreensTests
                 .Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports.Select(kv => ("D_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Append(("D_btnPemesanan", (PageView)new SimrsKhanza.UI.Modules.Farmasi.PenerimaanView()))
+                .Append(("D_btnPermintaanStokObatPasien", (PageView)new SimrsKhanza.UI.Modules.Farmasi.PermintaanStokPasienView()))
+                .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports.Select(kv => ("D_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 
