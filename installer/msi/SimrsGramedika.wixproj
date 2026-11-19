@@ -5,8 +5,10 @@
       dotnet build installer\msi -c Release -p:Platform=x64|arm64 -p:SourceDir=<publish dir> -p:Version=1.0.0 -p:OutputPath=<dist>\
   -->
   <PropertyGroup>
-    <Version Condition="'$(Version)' == ''">1.0.0</Version>
-    <OutputName>SIMRS-Gramedika-$(Version)-win-$(Platform)</OutputName>
+    <!-- Version = numeric MSI ProductVersion; DisplayVersion (e.g. 0.1.0-alpha.202611191230) only names the file. -->
+    <Version Condition="'$(Version)' == ''">0.1.0</Version>
+    <DisplayVersion Condition="'$(DisplayVersion)' == ''">$(Version)</DisplayVersion>
+    <OutputName>SIMRS-Gramedika-$(DisplayVersion)-win-$(Platform)</OutputName>
     <DefineConstants>Version=$(Version);SourceDir=$(SourceDir)</DefineConstants>
     <!-- ICE38/43/57 misread the per-machine Start menu shortcut as per-user (they ignore ALLUSERS=1). -->
     <SuppressIces>ICE38;ICE43;ICE57;ICE61</SuppressIces>

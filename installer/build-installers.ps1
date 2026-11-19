@@ -10,7 +10,10 @@
   Usage: powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 [-Version 1.0.0] [-Only all|win|linux] [-Arch x64,arm64]
 #>
 param(
+    # Display version, e.g. 0.1.0-alpha.202611191230 (default: <Version> from the csproj + a timestamp when it is a pre-release).
     [string]$Version = "",
+    # Numeric version for MSI ProductVersion / Windows file info (default 0.1.<yy><day of year>).
+    [string]$FileVersion = "",
     [ValidateSet("all", "win", "linux")][string]$Only = "all",
     [string[]]$Arch = @("x64", "arm64")
 )
@@ -21,8 +24,13 @@ $dist = Join-Path $root "dist"
 $dotnet = (Get-Command dotnet -ErrorAction SilentlyContinue).Source
 if (-not $dotnet) { $dotnet = "C:\Program Files\dotnet\dotnet.exe" }
 
-if (-not $Version) { $Version = ([xml](Get-Content $proj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1 }
-if (-not $Version) { $Version = "1.0.0" }
+if (-not $Version) {
+    $Version = ([xml](Get-Content $proj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+    if (-not $Version) { $Version = "0.1.0-alpha" }
+    if ($Version -match "-") { $Version = "$Version.$(Get-Date -Format yyyyMMddHHmm)" }
+}
+if (-not $FileVersion) { $FileVersion = "0.1.$(Get-Date -Format yy)$((Get-Date).DayOfYear.ToString('000'))" }
+Write-Host "Versi: $Version (file version $FileVersion)" -ForegroundColor Cyan
 New-Item -ItemType Directory -Force $dist | Out-Null
 
 function Publish($rid) {
@@ -44,12 +52,12 @@ if ($Only -in "all", "win") {
         Rename-Item (Join-Path $win "SimrsKhanza.UI.exe") "SIMRS Gramedika.exe"
 
         Write-Host "== Inno Setup ($a)" -ForegroundColor Cyan
-        & $iscc /Q "/DAppVersion=$Version" "/DArch=$a" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows/SimrsGramedika.iss")
+        & $iscc /Q "/DAppVersion=$Version" "/DFileVersion=$FileVersion" "/DArch=$a" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows/SimrsGramedika.iss")
         if ($LASTEXITCODE -ne 0) { throw "Inno Setup $a gagal" }
 
         Write-Host "== MSI ($a)" -ForegroundColor Cyan
         & $dotnet build (Join-Path $PSScriptRoot "msi/SimrsGramedika.wixproj") -c Release -nologo -v q `
-            "-p:Platform=$a" "-p:SourceDir=$win" "-p:Version=$Version" "-p:OutputPath=$dist\" | Out-Host
+            "-p:Platform=$a" "-p:SourceDir=$win" "-p:Version=$FileVersion" "-p:DisplayVersion=$Version" "-p:OutputPath=$dist\" | Out-Host
         if ($LASTEXITCODE -ne 0) { throw "MSI $a gagal" }
     }
     Get-ChildItem $dist -Filter *.wixpdb -ErrorAction SilentlyContinue | Remove-Item -Force

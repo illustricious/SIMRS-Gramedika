@@ -2,7 +2,8 @@
   <!-- Per-machine install into Program Files; a newer version replaces the old one (MajorUpgrade). -->
   <Package Name="SIMRS Gramedika" Manufacturer="RSU Gramedika" Version="$(Version)"
            UpgradeCode="{3F6A9C21-8B47-4D5E-A1C2-7E9B0D4F6A13}" Scope="perMachine" Compressed="yes">
-    <MajorUpgrade DowngradeErrorMessage="Versi SIMRS Gramedika yang lebih baru sudah terpasang." />
+    <!-- Same-version upgrades allowed: several alpha builds on one day share a ProductVersion. -->
+    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="Versi SIMRS Gramedika yang lebih baru sudah terpasang." />
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
     <Icon Id="AppIcon" SourceFile="..\..\src\SimrsKhanza.UI\Assets\app.ico" />

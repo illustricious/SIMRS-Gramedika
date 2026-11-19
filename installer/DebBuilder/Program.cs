@@ -111,7 +111,7 @@ var installedBytes = WriteTar(dataTar,
 
 var control = $"""
 Package: {Package}
-Version: {version}
+Version: {version.Replace('-', '~')}
 Section: misc
 Priority: optional
 Architecture: {arch}

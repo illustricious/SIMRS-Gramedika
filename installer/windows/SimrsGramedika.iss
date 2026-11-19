@@ -11,6 +11,10 @@
 #ifndef OutputDir
   #define OutputDir "..\..\dist"
 #endif
+; Numeric version for the Windows file info (AppVersion may carry "-alpha...").
+#ifndef FileVersion
+  #define FileVersion "0.1.0"
+#endif
 ; x64 or arm64 (the publish folder must match).
 #ifndef Arch
   #define Arch "x64"
@@ -25,7 +29,7 @@ AppName={#AppName}
 AppVersion={#AppVersion}
 AppVerName={#AppName} {#AppVersion}
 AppPublisher=RSU Gramedika
-VersionInfoVersion={#AppVersion}
+VersionInfoVersion={#FileVersion}
 VersionInfoProductName={#AppName}
 DefaultDirName={autopf}\{#AppName}
 DefaultGroupName={#AppName}
