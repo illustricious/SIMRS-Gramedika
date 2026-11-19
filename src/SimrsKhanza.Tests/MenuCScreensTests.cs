@@ -32,7 +32,12 @@ public class MenuCScreensTests
                 .Concat(MenuCSpecs.Reports.Select(kv => (kv.Key, (PageView)new ReportView(kv.Value))))
                 .Append(("btnPenggajian", new PenggajianView()))
                 .Append(("btnSKPPenilaianPegawai", new SkpPenilaianView()))
-                .Append(("btnSKPRekapitulasiPenilaian", new SkpRekapView()));
+                .Append(("btnSKPRekapitulasiPenilaian", new SkpRekapView()))
+                .Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports.Select(kv => ("D_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Append(("D_btnPemesanan", (PageView)new SimrsKhanza.UI.Modules.Farmasi.PenerimaanView()))
+                .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
+                    .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 
             foreach (var (key, view) in screens)
             {

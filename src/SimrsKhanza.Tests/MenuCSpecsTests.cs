@@ -8,13 +8,15 @@ namespace SimrsKhanza.Tests;
 
 public class MenuCSpecsTests
 {
-    public static IEnumerable<object[]> MasterKeys() => MenuCSpecs.Masters.Keys.Select(k => new object[] { k });
+    public static IEnumerable<object[]> MasterKeys() =>
+        MenuCSpecs.Masters.Keys.Select(k => new object[] { "C", k })
+            .Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.Keys.Select(k => new object[] { "D", k }));
 
     [Theory]
     [MemberData(nameof(MasterKeys))]
-    public void MasterSpec_IsConsistent(string key)
+    public void MasterSpec_IsConsistent(string menu, string key)
     {
-        var s = MenuCSpecs.Masters[key];
+        var s = menu == "C" ? MenuCSpecs.Masters[key] : SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters[key];
         Assert.NotEmpty(s.Keys);
         Assert.NotEmpty(s.Display);
         Assert.Equal(s.Fields.Length, s.Fields.Select(f => f.Column).Distinct().Count());
@@ -68,7 +70,8 @@ public class MenuCSpecsDbSmokeTests
             .Select(r => (r.S("t").ToLowerInvariant(), r.S("c").ToLowerInvariant())).ToHashSet();
 
         MasterSpec[] lab = [LabKeslingMasters.Pelanggan, LabKeslingMasters.Sampel, LabKeslingMasters.Parameter, LabKeslingMasters.NilaiNormal];
-        foreach (var (key, s) in MenuCSpecs.Masters.Select(kv => (kv.Key, kv.Value)).Concat(lab.Select(l => (l.Table, l))))
+        foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Select(kv => (kv.Key, kv.Value))
+                     .Concat(lab.Select(l => (l.Table, l))))
         {
             foreach (var f in s.Fields.Where(f => !columns.Contains((s.Table, f.Column.ToLowerInvariant()))))
                 errors.Add($"{key}: kolom {s.Table}.{f.Column} tidak ada");
@@ -81,7 +84,7 @@ public class MenuCSpecsDbSmokeTests
             }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
         }
-        foreach (var (key, r) in MenuCSpecs.Reports)
+        foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports))
         {
             try { await reports.RunAsync(r, "", DateTime.Today.AddMonths(-1), DateTime.Today, DateTime.Today.Year); }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
@@ -98,6 +101,33 @@ public class MenuCSpecsDbSmokeTests
             await skp.NextNomorRekapAsync(DateTime.Today);
         }
         catch (Exception ex) { errors.Add($"SKP: {ex.Message}"); }
+
+        // Farmasi stock transactions: every read path, and every column the INSERT/UPDATEs write.
+        var stok = new SimrsKhanza.Data.Farmasi.FarmasiStokRepository(settings);
+        foreach (var (table, cols) in SimrsKhanza.Data.Farmasi.FarmasiStokRepository.WrittenColumns.Concat(SimrsKhanza.Data.Farmasi.PenerimaanRepository.WrittenColumns))
+            foreach (var c in cols.Where(c => !columns.Contains((table, c.ToLowerInvariant()))))
+                errors.Add($"Farmasi: kolom {table}.{c} tidak ada");
+        try
+        {
+            var lokasi = await stok.LokasiAsync();
+            var kode = lokasi.FirstOrDefault().Kode ?? "";
+            await stok.CariStokAsync(kode, "a", false);
+            await stok.CariStokAsync(kode, "a", true);
+            await stok.CariBarangAsync(kode, "a");
+            await stok.PetugasAsync();
+            await stok.PermintaanBaruAsync(kode);
+            var terima = new SimrsKhanza.Data.Farmasi.PenerimaanRepository(settings);
+            await terima.SettingAsync();
+            await terima.SuplierAsync();
+            await terima.CariBarangAsync("a");
+            await terima.DaftarAsync(DateTime.Today.AddDays(-30), DateTime.Today, "");
+            foreach (var m in Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>())
+            {
+                await stok.DaftarAsync(m, DateTime.Today.AddDays(-7), DateTime.Today, "");
+                await stok.NextNomorAsync(m, DateTime.Today);
+            }
+        }
+        catch (Exception ex) { errors.Add($"Farmasi: {ex.Message}"); }
 
         Assert.True(errors.Count == 0, string.Join("\n", errors));
     }

@@ -288,12 +288,38 @@ public partial class MainWindow : Window
             }
 
             // [C] Presensi, Manajemen & Penggajian Pegawai (most tiles are data — see MenuCSpecs below)
+            case "btnPemesanan": await OpenPageAsync(new Modules.Farmasi.PenerimaanView()); return;
             case "btnPenggajian": await OpenPageAsync(new Modules.Kepegawaian.PenggajianView()); return;
             case "btnSKPPenilaianPegawai": await OpenPageAsync(new Modules.Kepegawaian.SkpPenilaianView()); return;
             case "btnSKPRekapitulasiPenilaian": await OpenPageAsync(new Modules.Kepegawaian.SkpRekapView()); return;
 
             // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
+        }
+
+        // [D] Farmasi stock transactions; its masters & reports are data (MenuDSpecs) like [C].
+        var stokMode = key switch
+        {
+            "btnMutasiBarang" => SimrsKhanza.Data.Farmasi.StokMode.Mutasi,
+            "btnOpname" => SimrsKhanza.Data.Farmasi.StokMode.Opname,
+            "btnStokKeluarMedis" => SimrsKhanza.Data.Farmasi.StokMode.StokKeluar,
+            "btnPermintaanMedis" => (SimrsKhanza.Data.Farmasi.StokMode?)SimrsKhanza.Data.Farmasi.StokMode.Permintaan,
+            _ => null,
+        };
+        if (stokMode is { } sm)
+        {
+            await OpenPageAsync(new Modules.Farmasi.StokTransaksiView(sm));
+            return;
+        }
+        if (SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters.TryGetValue(key, out var masterD))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterD));
+            return;
+        }
+        if (SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports.TryGetValue(key, out var reportD))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportD));
+            return;
         }
 
         if (SimrsKhanza.Data.Kepegawaian.MenuCSpecs.Masters.TryGetValue(key, out var master))

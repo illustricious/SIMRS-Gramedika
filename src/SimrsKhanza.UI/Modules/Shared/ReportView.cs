@@ -27,7 +27,7 @@ public class ReportView : PageView
 
         var filters = new List<Control> { _cari };
         if (spec.Period == ReportPeriod.Year) { filters.Add(Ui.L("Tahun")); filters.Add(_tahun); }
-        else filters.Add(_period = new PeriodPicker(spec.Period == ReportPeriod.Month,
+        else if (spec.Period != ReportPeriod.None) filters.Add(_period = new PeriodPicker(spec.Period == ReportPeriod.Month,
             spec.Period == ReportPeriod.DateRange ? new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) : null));
         filters.Add(Ui.Btn("🔎 Tampilkan", async (_, _) => await ReloadAsync()));
         filters.Add(Ui.Btn("📄 Ekspor CSV", async (_, _) => await ExportAsync()));
