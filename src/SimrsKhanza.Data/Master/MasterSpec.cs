@@ -44,6 +44,7 @@ public record MasterSpec(
     public bool CanInsert { get; init; } = true;
     public bool CanEdit { get; init; } = true;
     public bool CanDelete { get; init; } = true;
+    public bool Singleton { get; init; }
     public string? Hint { get; init; }
     public MasterAction[] Actions { get; init; } = [];
     public Func<Db, Dictionary<string, object?>, Dictionary<string, object?>?, Task>? BeforeSave { get; init; }
@@ -116,6 +117,12 @@ public class MasterRepository(DatabaseSettings settings)
             if (Blank(v.GetValueOrDefault(f.Column)))
                 throw new ArgumentException($"{f.Label} wajib diisi.");
 
+        if (spec.Singleton)
+        {
+            await SaveSingletonAsync(db, spec, v);
+            return null;
+        }
+
         if (spec.BeforeSave is { } validate)
         {
             await db.BeginAsync();
@@ -171,6 +178,22 @@ public class MasterRepository(DatabaseSettings settings)
             throw new InvalidOperationException("Data yang dihapus tidak ditemukan.");
         await db.CommitAsync();
     }
+
+    private static Task SaveSingletonAsync(Db db, MasterSpec spec, Dictionary<string, object?> values) =>
+        db.WithSettingsLockAsync(spec.Table, async () =>
+        {
+            var count = await db.CountAsync($"SELECT COUNT(*) FROM `{spec.Table}`");
+            if (count > 1)
+                throw new InvalidOperationException("Ada lebih dari satu baris pengaturan. Periksa data di Khanza sebelum menyimpan.");
+            if (spec.BeforeSave is { } validate) await validate(db, values, null);
+            var columns = spec.Fields.Select(f => $"`{f.Column}`").ToArray();
+            var parameters = columns.Select((_, i) => $"@p{i}").ToArray();
+            var args = spec.Fields.Select(f => values[f.Column]).ToArray();
+            if (count == 0)
+                await db.ExecAsync($"INSERT INTO `{spec.Table}` ({string.Join(",", columns)}) VALUES ({string.Join(",", parameters)})", args);
+            else
+                await db.ExecAsync($"UPDATE `{spec.Table}` SET {string.Join(",", columns.Zip(parameters, (c, p) => $"{c}={p}"))} LIMIT 1", args);
+        });
 
     public async Task RunActionAsync(MasterAction action, Dictionary<string, object?> keys, string petugas = "")
     {

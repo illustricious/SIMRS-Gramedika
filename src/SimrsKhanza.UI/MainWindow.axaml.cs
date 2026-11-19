@@ -263,6 +263,17 @@ public partial class MainWindow : Window
             case "btnLabKeslingRekapPembayaran": await OpenStageAsync(Modules.LabKesling.LabKeslingStage.RekapPembayaran); return;
 
             case "btnSetupAplikasi": await OpenPengaturanAsync(); return;
+            case "btnDisplay": await OpenPageAsync(new Modules.Pengaturan.MenuUDisplayView(apotek: false)); return;
+            case "btnDisplayApotek": await OpenPageAsync(new Modules.Pengaturan.MenuUDisplayView(apotek: true)); return;
+            case "btnPasswordAsuransi": await OpenPageAsync(new Modules.Pengaturan.MenuUKredensialView(eksekutif: false)); return;
+            case "btnEEksekutif":
+                if (await RequireAdminUtamaAsync(label))
+                    await OpenPageAsync(new Modules.Pengaturan.MenuUKredensialView(eksekutif: true));
+                return;
+            case "btnVakum":
+                if (await RequireAdminUtamaAsync(label))
+                    await OpenPageAsync(new Modules.Pengaturan.MenuUVakumView());
+                return;
             case "btnUser":
             {
                 if (!await RequireAdminUtamaAsync(label)) return;
@@ -295,6 +306,12 @@ public partial class MainWindow : Window
 
             // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
+        }
+
+        if (SimrsKhanza.Data.Pengaturan.MenuUSpecs.Tiles.TryGetValue(key, out var menuU))
+        {
+            await OpenMenuUAsync(label, menuU);
+            return;
         }
 
         if (SimrsKhanza.Data.MenuA.MenuASpecs.Tiles.TryGetValue(key, out var menuA))
@@ -379,6 +396,28 @@ public partial class MainWindow : Window
 
     private System.Threading.Tasks.Task OpenStageAsync(Modules.LabKesling.LabKeslingStage stage)
         => OpenPageAsync(new Modules.LabKesling.LabKeslingStageView(stage));
+
+    private async Task OpenMenuUAsync(string label, SimrsKhanza.Data.Master.MasterSpec[] sections)
+    {
+        if (sections.Length == 1)
+        {
+            await OpenPageAsync(new Modules.Pengaturan.MenuUMasterView(sections[0]));
+            return;
+        }
+
+        var hub = new Modules.Pengaturan.MenuUHubView(label, sections);
+        hub.SectionRequested += async (_, spec) =>
+        {
+            var page = new Modules.Pengaturan.MenuUMasterView(spec);
+            page.BackRequested += (_, _) =>
+            {
+                this.FindControl<ContentControl>("PageHost")!.Content = hub;
+                ShowPage(Page.Feature);
+            };
+            await OpenFeatureAsync(page, page.ReloadAsync);
+        };
+        await OpenPageAsync(hub);
+    }
 
     private async System.Threading.Tasks.Task<bool> RequireAdminUtamaAsync(string label)
     {

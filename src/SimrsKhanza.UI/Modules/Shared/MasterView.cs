@@ -50,13 +50,21 @@ public class MasterView : PageView
         if (spec.ScoreOf is not null) formRows.Add(("Nilai Kepatuhan :", _score));
 
         var buttons = new List<Control>();
-        if (spec.CanInsert) buttons.Add(Ui.Btn("➕ Baru", async (_, _) => await NewAsync()));
+        if (spec.CanInsert && !spec.Singleton) buttons.Add(Ui.Btn("➕ Baru", async (_, _) => await NewAsync()));
         if (editable) buttons.Add(Ui.Btn("💾 Simpan", async (_, _) => await SaveAsync()));
         if (spec.CanDelete) buttons.Add(Ui.Btn("🗑 Hapus", async (_, _) => await DeleteAsync()));
         foreach (var a in spec.Actions) buttons.Add(Ui.Btn(a.Label, async (_, _) => await RunActionAsync(a)));
 
         _commands = Ui.Bar(buttons.ToArray());
         var form = new StackPanel { Spacing = 6, Width = 560, Children = { Ui.Form(formRows.ToArray()), _commands } };
+
+        if (spec.Singleton)
+        {
+            _commands.IsEnabled = false;
+            form.HorizontalAlignment = HorizontalAlignment.Left;
+            Build(spec.Title, new ScrollViewer { Content = form }, spec.Hint);
+            return;
+        }
 
         var filters = new List<Control> { _cari };
         if (_period is not null) filters.Add(_period);
@@ -95,13 +103,39 @@ public class MasterView : PageView
 
     public override async Task ReloadAsync()
     {
-        await RunAsync(async () =>
+        if (_spec.Singleton)
         {
-            foreach (var f in _spec.Fields.Where(f => f.Kind == FieldKind.Lookup))
-                ((LookupBox)_editors[f.Column]).SetItems(await _repo.LookupAsync(f.LookupSql!));
-        });
+            await RunAsync(async () =>
+            {
+                await LoadLookupsAsync();
+                await LoadSingletonAsync();
+            });
+            return;
+        }
+        await RunAsync(LoadLookupsAsync);
         await LoadAsync();
         await NewAsync();
+    }
+
+    private async Task LoadLookupsAsync()
+    {
+        foreach (var f in _spec.Fields.Where(f => f.Kind == FieldKind.Lookup))
+            ((LookupBox)_editors[f.Column]).SetItems(await _repo.LookupAsync(f.LookupSql!));
+    }
+
+    private async Task LoadSingletonAsync()
+    {
+        await NewAsync();
+        var rows = await _repo.ListAsync(_spec, null);
+        if (rows.Count > 1)
+        {
+            Ui.Err(StatusText, "Ada lebih dari satu baris pengaturan. Periksa data sebelum menyimpan.");
+            return;
+        }
+        if (rows.Count == 1)
+            foreach (var field in _spec.Fields) SetValue(field, rows[0][field.Column]);
+        _commands.IsEnabled = true;
+        StatusText.Text = rows.Count == 0 ? "Pengaturan belum diisi." : "";
     }
 
     private async Task LoadAsync() => await RunAsync(async () =>
@@ -137,6 +171,8 @@ public class MasterView : PageView
     protected void SetField(string column, object? value) => SetValue(_spec.Fields.Single(f => f.Column == column), value);
 
     protected virtual void InitializeNew() { }
+
+    protected virtual double ParseNumber(string? value) => Ui.ParseNumber(value);
 
     private async Task NewAsync()
     {
@@ -210,8 +246,8 @@ public class MasterView : PageView
         ComboBox cb => cb.SelectedItem as string,
         CalendarDatePicker dp => dp.SelectedDate?.Date,
         DateTimeBox dt => dt.Value,
-        TextBox tb when f.Kind == FieldKind.Number => Ui.ParseNumber(tb.Text),
-        TextBox tb when f.Kind == FieldKind.Integer => (long)Math.Round(Ui.ParseNumber(tb.Text)),
+        TextBox tb when f.Kind == FieldKind.Number => ParseNumber(tb.Text),
+        TextBox tb when f.Kind == FieldKind.Integer => (long)Math.Round(ParseNumber(tb.Text)),
         TextBox tb when f.Kind == FieldKind.Time => ParseTime(f, tb.Text),
         TextBox tb => (tb.Text ?? "").Trim(),
         _ => null,
@@ -235,6 +271,12 @@ public class MasterView : PageView
 
     private async Task SaveAsync() => await RunCommandAsync(async () =>
     {
+        if (_spec.Singleton)
+        {
+            await _repo.SaveAsync(_spec, ReadValues(), null);
+            Ui.Ok(StatusText, "Pengaturan tersimpan.");
+            return;
+        }
         if (_editingKeys is not null && SelectedRow is null) throw new InvalidOperationException("Pilih ulang data atau klik Baru.");
         if (_editingKeys is not null && !_spec.CanEdit) throw new InvalidOperationException("Data di menu ini tidak bisa diubah.");
         if (_editingKeys is null && !_spec.CanInsert) throw new InvalidOperationException("Pilih data yang akan diubah.");

@@ -15,7 +15,7 @@
         A normal window on purpose — legacy opens it in a browser that gets dragged to the
         second monitor; F11 toggles fullscreen, Esc leaves it.
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto">
         <Border Grid.Row="0" Background="#FF1E3A8A" Padding="16,10">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <Image Grid.Column="0" Source="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png" Width="72" Height="72" Margin="0,0,16,0" />
@@ -58,7 +58,15 @@
                   GridLinesVisibility="All" HeadersVisibility="Column" FontSize="20" RowHeight="40"
                   CanUserResizeColumns="True" DoubleTapped="OnGridDoubleTapped" />
 
-        <Border Grid.Row="4" Background="#FF1E3A8A" Padding="16,6">
+        <Border Grid.Row="4" Name="BannerPanel" IsVisible="False" Background="#FFFFE6A1" Padding="16,8">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <Image Name="BannerImage" IsVisible="False" MaxHeight="54" MaxWidth="180" Stretch="Uniform" />
+                <TextBlock Grid.Column="1" Name="BannerText" TextWrapping="Wrap" MaxLines="3"
+                           VerticalAlignment="Center" FontSize="18" Foreground="#FF172554" />
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="5" Background="#FF1E3A8A" Padding="16,6">
             <Grid ColumnDefinitions="*,Auto">
                 <TextBlock Name="StatusText" FontSize="13" Foreground="#FFC7D2FE" />
                 <TextBlock Grid.Column="1" Name="RecordText" FontSize="13" Foreground="#FFC7D2FE" />

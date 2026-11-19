@@ -112,6 +112,17 @@ public sealed class Db : IAsyncDisposable
     public async Task<string> AutoNomorAsync(string maxSql, string prefix, int len, params object?[] args)
         => prefix + (await CountAsync(maxSql, args) + 1).ToString(new string('0', len));
 
+    /// <summary>Serialize single-row settings writes across Gramedika clients, including legacy MyISAM tables.</summary>
+    internal async Task WithSettingsLockAsync(string table, Func<Task> write)
+    {
+        var identity = $"simrs.setting.{Conn.Database}.{table}";
+        var lockName = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(identity)));
+        if (await CountAsync("SELECT GET_LOCK(@p0,5)", lockName) != 1)
+            throw new InvalidOperationException("Pengaturan sedang disimpan oleh pengguna lain.");
+        try { await write(); }
+        finally { await ScalarAsync("SELECT RELEASE_LOCK(@p0)", lockName); }
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (Tx is not null) { try { await Tx.RollbackAsync(); } catch { /* connection gone */ } await Tx.DisposeAsync(); }

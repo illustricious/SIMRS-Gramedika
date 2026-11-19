@@ -3,10 +3,12 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
+using SimrsKhanza.Data.Pengaturan;
 
 namespace SimrsKhanza.UI.Modules.Antrian;
 
@@ -24,6 +26,9 @@ public partial class AntrianBoardWindow : Window
     private string _builtColumns = "";
     private bool _ready;
     private bool _loading;
+    private DateTime _nextBannerRefresh;
+    private byte[]? _bannerBytes;
+    private Bitmap? _bannerBitmap;
 
     public AntrianBoardWindow() : this(AntrianBoardKind.Radiologi)
     {
@@ -59,6 +64,8 @@ public partial class AntrianBoardWindow : Window
         {
             _clock.Stop();
             _refresh.Stop();
+            _bannerBitmap?.Dispose();
+            _ready = false;
         };
     }
 
@@ -75,11 +82,13 @@ public partial class AntrianBoardWindow : Window
         _loading = true;
         try
         {
-            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            var settings = DatabaseSettings.Load();
+            using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var snap = await new AntrianRepository(db).LoadAsync(_kind, _kdPoli, _kdDokter);
             Apply(snap);
             this.FindControl<TextBlock>("StatusText")!.Text =
                 $"Diperbarui {DateTime.Now:HH:mm:ss} — otomatis tiap {(int)_refresh.Interval.TotalSeconds} detik";
+            await MuatBannerAsync(settings);
         }
         catch (Exception ex)
         {
@@ -88,6 +97,43 @@ public partial class AntrianBoardWindow : Window
         finally
         {
             _loading = false;
+        }
+    }
+
+    private async Task MuatBannerAsync(DatabaseSettings settings)
+    {
+        var apotek = _kind is AntrianBoardKind.Apotek2 or AntrianBoardKind.Apotek2Racikan or AntrianBoardKind.Apotek2NonRacikan;
+        if ((!apotek && _kind is not (AntrianBoardKind.JadwalPoli or AntrianBoardKind.PoliDokter))
+            || DateTime.UtcNow < _nextBannerRefresh) return;
+        _nextBannerRefresh = DateTime.UtcNow.AddMinutes(1);
+        var panel = this.FindControl<Border>("BannerPanel")!;
+        try
+        {
+            var banner = await new MenuURepository(settings).MuatDisplayAsync(apotek);
+            if (!_ready) return;
+            var image = this.FindControl<Image>("BannerImage")!;
+            var bytes = banner?.Aktif == true ? banner.Gambar ?? [] : [];
+            if (_bannerBytes is null || !_bannerBytes.AsSpan().SequenceEqual(bytes))
+            {
+                _bannerBitmap?.Dispose();
+                _bannerBitmap = null;
+                if (bytes.Length > 0)
+                {
+                    try { _bannerBitmap = new Bitmap(new MemoryStream(bytes, writable: false)); }
+                    catch (ArgumentException) { /* Some legacy display images are invalid. Keep the announcement text. */ }
+                }
+                _bannerBytes = bytes;
+            }
+            image.Source = _bannerBitmap;
+            image.IsVisible = _bannerBitmap is not null;
+            var text = this.FindControl<TextBlock>("BannerText")!;
+            text.Text = banner?.Teks;
+            panel.IsVisible = banner?.Aktif == true && (_bannerBitmap is not null || !string.IsNullOrWhiteSpace(banner.Teks));
+        }
+        catch
+        {
+            // Optional banner settings must not interrupt live queue updates.
+            panel.IsVisible = false;
         }
     }
 
