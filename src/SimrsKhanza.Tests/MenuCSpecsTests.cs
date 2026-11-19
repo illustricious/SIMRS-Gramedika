@@ -83,11 +83,15 @@ public class MenuCSpecsDbSmokeTests
 
         MasterSpec[] lab = [LabKeslingMasters.Pelanggan, LabKeslingMasters.Sampel, LabKeslingMasters.Parameter, LabKeslingMasters.NilaiNormal];
         foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters)
+                     .Concat(SimrsKhanza.Data.MenuA.MenuASpecs.Tiles)
                      .Select(kv => (kv.Key, kv.Value))
+                     .Append(("Sesi KFR", SimrsKhanza.Data.MenuA.MenuASpecs.SesiKfr))
                      .Concat(lab.Select(l => (l.Table, l))))
         {
             foreach (var f in s.Fields.Where(f => !columns.Contains((s.Table, f.Column.ToLowerInvariant()))))
                 errors.Add($"{key}: kolom {s.Table}.{f.Column} tidak ada");
+            foreach (var c in s.ComputedColumns.Where(c => !columns.Contains((s.Table, c.ToLowerInvariant()))))
+                errors.Add($"{key}: kolom {s.Table}.{c} tidak ada");
             try
             {
                 var from = DateTime.Today.AddYears(-1);

@@ -6,6 +6,12 @@ Dokumen ini diupdate setiap ada progres. Jangan dihapus — ini adalah log kerja
 
 # 🚀 MULAI DARI SINI — Ringkasan Cepat (TL;DR)
 
+## Status terkini — 19 November 2026
+
+- Katalog Avalonia mencakup 1.224 tile. Sebanyak 200 tile membuka layar, termasuk **34 dari 34 tile Menu A**, 16 dari 16 tile B, 61 dari 61 tile C, dan 75 dari 75 tile D. Deposit Pasien juga muncul di kategori I dan K.
+- Penutupan sembilan tile A mencakup pemesanan dan masuk kamar, jadwal operasi, sesi KFR, pengeluaran dan pembalikan stok resep pulang, pemberian diet, dua formulir skrining, deposit dan jurnalnya, serta estimasi tarif ranap. Cakupan per layar dan pekerjaan lanjutan tercatat di [MENU_A_STATUS.md](MENU_A_STATUS.md).
+- Ringkasan dan riwayat di bawah merekam keadaan saat masing-masing sesi ditulis. [README proyek](../../README.md) memuat hitungan dashboard saat ini.
+
 > Bagian ini ditulis supaya AI/orang baru yang baca dokumen ini bisa langsung paham & lanjut kerja dalam &lt;5 menit. Detail lengkap + kronologi alasan tiap keputusan ada di bagian bawah dokumen ini (urut dari paling lama ke paling baru).
 
 ## Apa proyek ini?

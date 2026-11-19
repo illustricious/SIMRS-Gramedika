@@ -118,7 +118,8 @@ public class FarmasiStokRepository(DatabaseSettings settings)
     // ------------------------------------------------------------------ shared stock writes
 
     /// <summary>Legacy riwayatobat.catatRiwayat: stok awal from gudangbarang; for Opname stok akhir = the counted stock.</summary>
-    private static async Task CatatAsync(Db db, StokItem i, double masuk, double keluar, string posisi, string petugas, string bangsal, string keterangan)
+    internal static async Task CatatAsync(Db db, StokItem i, double masuk, double keluar, string posisi, string petugas, string bangsal, string keterangan,
+        string status = "Simpan")
     {
         var awal = Convert.ToDouble(await db.ScalarAsync(
             "SELECT stok FROM gudangbarang WHERE kode_brng=@p0 AND kd_bangsal=@p1 AND no_batch=@p2 AND no_faktur=@p3",
@@ -126,12 +127,12 @@ public class FarmasiStokRepository(DatabaseSettings settings)
         var opname = posisi == "Opname";
         await db.ExecAsync("""
             INSERT INTO riwayat_barang_medis (kode_brng,stok_awal,masuk,keluar,stok_akhir,posisi,tanggal,jam,petugas,kd_bangsal,status,no_batch,no_faktur,keterangan)
-            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,CURRENT_DATE(),CURRENT_TIME(),@p6,@p7,'Simpan',@p8,@p9,@p10)
+            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,CURRENT_DATE(),CURRENT_TIME(),@p6,@p7,@p11,@p8,@p9,@p10)
             """, i.Kode, awal, masuk, opname ? 0 : keluar, opname ? masuk : awal + masuk - keluar, posisi, petugas, bangsal, i.NoBatch, i.NoFaktur,
-            keterangan.Length > 150 ? keterangan[..150] : keterangan);
+            keterangan.Length > 150 ? keterangan[..150] : keterangan, status);
     }
 
-    private static Task TambahStokAsync(Db db, StokItem i, string bangsal, double delta) => db.ExecAsync("""
+    internal static Task TambahStokAsync(Db db, StokItem i, string bangsal, double delta) => db.ExecAsync("""
         INSERT INTO gudangbarang (kode_brng,kd_bangsal,stok,no_batch,no_faktur) VALUES (@p0,@p1,@p2,@p3,@p4)
         ON DUPLICATE KEY UPDATE stok=stok+@p2
         """, i.Kode, bangsal, delta, i.NoBatch, i.NoFaktur);

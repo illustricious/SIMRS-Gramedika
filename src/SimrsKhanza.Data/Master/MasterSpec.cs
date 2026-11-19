@@ -8,10 +8,12 @@ public enum FieldKind { Text, Number, Integer, Choice, Lookup, Date, Time, DateT
 
 /// <summary>One editable column of a master table. Column is a compile-time constant (used in SQL).</summary>
 public record MasterField(string Column, string Label, FieldKind Kind = FieldKind.Text, int MaxLen = 0,
-    string[]? Choices = null, string? LookupSql = null, bool Key = false, bool AutoKey = false, bool Required = false)
+    string[]? Choices = null, string? LookupSql = null, bool Key = false, bool AutoKey = false, bool Required = false,
+    bool AllowEmptyKey = false)
 {
     /// <summary>Value a new record starts with (instead of empty/0/today).</summary>
     public object? Default { get; init; }
+    public Func<object?>? DefaultFactory { get; init; }
 }
 
 /// <summary>
@@ -44,6 +46,9 @@ public record MasterSpec(
     public bool CanDelete { get; init; } = true;
     public string? Hint { get; init; }
     public MasterAction[] Actions { get; init; } = [];
+    public Func<Db, Dictionary<string, object?>, Dictionary<string, object?>?, Task>? BeforeSave { get; init; }
+    public Func<Db, Dictionary<string, object?>, Task>? BeforeDelete { get; init; }
+    public string[] ComputedColumns { get; init; } = [];
 
     /// <summary>Choice fields that count toward a "% Ya" compliance score (audit screens).</summary>
     public string[]? ScoreOf { get; init; }
@@ -107,11 +112,18 @@ public class MasterRepository(DatabaseSettings settings)
             foreach (var f in spec.Fields.Where(f => f.AutoKey))
                 v[f.Column] = await NextKeyAsync(db, spec, v.GetValueOrDefault(spec.AutoKeyDateField ?? "") as DateTime?);
 
-        foreach (var f in spec.Fields.Where(f => f.Key || f.Required))
+        foreach (var f in spec.Fields.Where(f => f.Required || (f.Key && !f.AllowEmptyKey)))
             if (Blank(v.GetValueOrDefault(f.Column)))
                 throw new ArgumentException($"{f.Label} wajib diisi.");
 
+        if (spec.BeforeSave is { } validate)
+        {
+            await db.BeginAsync();
+            await validate(db, v, originalKeys);
+        }
+
         var cols = v.Keys.Where(k => spec.Fields.Any(f => f.Column.Equals(k, StringComparison.OrdinalIgnoreCase))
+                                     || spec.ComputedColumns.Contains(k, StringComparer.OrdinalIgnoreCase)
                                      || k.Equals(spec.TotalColumn, StringComparison.OrdinalIgnoreCase)).ToList();
         var args = cols.Select(c => v[c]).ToList();
 
@@ -140,6 +152,7 @@ public class MasterRepository(DatabaseSettings settings)
                     keys.Select(k => originalKeys[k]).ToArray()) == 0)
                 throw new InvalidOperationException("Data yang diubah tidak ditemukan.");
         }
+        await db.CommitAsync();
         return spec.Fields.FirstOrDefault(f => f.AutoKey) is { } auto ? Convert.ToString(v[auto.Column]) : null;
     }
 
@@ -147,8 +160,16 @@ public class MasterRepository(DatabaseSettings settings)
     {
         var k = keys.Keys.ToList();
         await using var db = await Db.OpenAsync(settings);
-        await db.ExecAsync($"DELETE FROM `{spec.Table}` WHERE {string.Join(" AND ", k.Select((c, i) => $"`{c}`=@p{i}"))} LIMIT 1",
+        if (spec.BeforeDelete is { } validate)
+        {
+            await db.BeginAsync();
+            await validate(db, keys);
+        }
+        var deleted = await db.ExecAsync($"DELETE FROM `{spec.Table}` WHERE {string.Join(" AND ", k.Select((c, i) => $"`{c}`=@p{i}"))} LIMIT 1",
             k.Select(c => keys[c]).ToArray());
+        if (spec.BeforeDelete is not null && deleted != 1)
+            throw new InvalidOperationException("Data yang dihapus tidak ditemukan.");
+        await db.CommitAsync();
     }
 
     public async Task RunActionAsync(MasterAction action, Dictionary<string, object?> keys, string petugas = "")

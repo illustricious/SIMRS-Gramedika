@@ -28,7 +28,10 @@ public class MenuCScreensTests
 
             var withDb = Environment.GetEnvironmentVariable("SIMRS_DB_SMOKE") == "1";
             var shots = Environment.GetEnvironmentVariable("SIMRS_SCREENSHOT_DIR");
-            var screens = MenuCSpecs.Masters.Select(kv => (kv.Key, (PageView)new MasterView(kv.Value)))
+            var screens = SimrsKhanza.Data.MenuA.MenuASpecs.Tiles
+                .Select(kv => ("A_" + kv.Key, (PageView)new SimrsKhanza.UI.Modules.Informasi.MenuAView(kv.Value)))
+                .Append(("A_sesiKfr", new SimrsKhanza.UI.Modules.Informasi.MenuAView(SimrsKhanza.Data.MenuA.MenuASpecs.SesiKfr)))
+                .Concat(MenuCSpecs.Masters.Select(kv => (kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(MenuCSpecs.Reports.Select(kv => (kv.Key, (PageView)new ReportView(kv.Value))))
                 .Append(("btnPenggajian", new PenggajianView()))
                 .Append(("btnSKPPenilaianPegawai", new SkpPenilaianView()))

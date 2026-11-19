@@ -21,19 +21,21 @@ public class MasterView : PageView
     private readonly DataGrid _grid;
     private readonly TextBox _cari = Ui.Text("Cari...");
     private readonly PeriodPicker? _period;
+    private readonly WrapPanel _commands;
     private readonly Dictionary<string, Control> _editors = new();
     private readonly TextBlock _total = new() { VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _score = new() { FontWeight = FontWeight.Bold, VerticalAlignment = VerticalAlignment.Center };
     private Dictionary<string, object?>? _editingKeys;
     private bool _loading;
 
-    public MasterView(MasterSpec spec)
+    public MasterView(MasterSpec spec, string? initialSearch = null, DateTime? initialFrom = null)
     {
         _spec = spec;
+        _cari.Text = initialSearch;
         _grid = Ui.Grid(spec.Display.Select(d => new Col(d.Column, d.Header)).ToArray());
         _grid.SelectionChanged += (_, _) => { if (Ui.Selected<Row>(_grid) is { } r) Edit(r); };
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await LoadAsync(); };
-        if (spec.Period != PeriodFilter.None) _period = new PeriodPicker(spec.Period == PeriodFilter.Month);
+        if (spec.Period != PeriodFilter.None) _period = new PeriodPicker(spec.Period == PeriodFilter.Month, initialFrom);
 
         var editable = spec.CanInsert || spec.CanEdit;
         var formRows = new List<(string, Control)>();
@@ -53,7 +55,8 @@ public class MasterView : PageView
         if (spec.CanDelete) buttons.Add(Ui.Btn("🗑 Hapus", async (_, _) => await DeleteAsync()));
         foreach (var a in spec.Actions) buttons.Add(Ui.Btn(a.Label, async (_, _) => await RunActionAsync(a)));
 
-        var form = new StackPanel { Spacing = 6, Width = 560, Children = { Ui.Form(formRows.ToArray()), Ui.Bar(buttons.ToArray()) } };
+        _commands = Ui.Bar(buttons.ToArray());
+        var form = new StackPanel { Spacing = 6, Width = 560, Children = { Ui.Form(formRows.ToArray()), _commands } };
 
         var filters = new List<Control> { _cari };
         if (_period is not null) filters.Add(_period);
@@ -121,11 +124,26 @@ public class MasterView : PageView
         _score.Text = counted == 0 ? "-" : $"{answers.Count(a => a == "Ya") * 100.0 / counted:0.##} %";
     }
 
+    protected Row? SelectedRow => Ui.Selected<Row>(_grid);
+
+    protected IReadOnlyList<Row> ListedRows => _grid.ItemsSource is IEnumerable<GridRow> rows
+        ? rows.Select(r => r.Tag).OfType<Row>().ToArray() : [];
+
+    protected void AddCommand(string label, Func<Task> execute) =>
+        _commands.Children.Add(Ui.Btn(label, async (_, _) => await RunCommandAsync(execute)));
+
+    protected string ReadField(string column) => Str(ReadValue(_spec.Fields.Single(f => f.Column == column)));
+
+    protected void SetField(string column, object? value) => SetValue(_spec.Fields.Single(f => f.Column == column), value);
+
+    protected virtual void InitializeNew() { }
+
     private async Task NewAsync()
     {
         _loading = true;
         _editingKeys = null;
-        foreach (var f in _spec.Fields) SetValue(f, null);
+        foreach (var f in _spec.Fields) SetValue(f, f.DefaultFactory?.Invoke() ?? f.Default);
+        InitializeNew();
         _loading = false;
         await RenumberAsync();
         _grid.SelectedItem = null;
@@ -137,7 +155,12 @@ public class MasterView : PageView
     {
         foreach (var f in _spec.Fields.Where(f => f.AutoKey))
         {
-            var date = _spec.AutoKeyDateField is { } df && _editors[df] is CalendarDatePicker dp ? dp.SelectedDate : null;
+            var date = _spec.AutoKeyDateField is { } df ? _editors[df] switch
+            {
+                CalendarDatePicker dp => dp.SelectedDate,
+                DateTimeBox dt => dt.Value.Date,
+                _ => null,
+            } : null;
             try { SetValue(f, await _repo.NextKeyAsync(_spec, date)); } catch { /* shown on save */ }
         }
     }
@@ -164,7 +187,6 @@ public class MasterView : PageView
 
     private void SetValue(MasterField f, object? v)
     {
-        v ??= f.Default;
         switch (_editors[f.Column])
         {
             case LookupBox lb: lb.Kode = Str(v); break;
@@ -172,7 +194,7 @@ public class MasterView : PageView
                 var s = Str(v);
                 cb.SelectedItem = f.Choices!.Contains(s) ? s : f.Choices!.FirstOrDefault();
                 break;
-            case CalendarDatePicker dp: dp.SelectedDate = v is DateTime d ? d.Date : DateTime.Today; break;
+            case CalendarDatePicker dp: dp.SelectedDate = v is DateTime d ? d.Date : f.Key || f.Required ? DateTime.Today : null; break;
             case DateTimeBox dt: dt.Value = v is DateTime d2 ? d2 : DateTime.Now; break;
             case TextBox tb when f.Kind is FieldKind.Number or FieldKind.Integer: tb.Text = v is null ? "0" : Str(v); break;
             case TextBox tb: tb.Text = Str(v); break;
@@ -180,25 +202,20 @@ public class MasterView : PageView
     }
 
     private Dictionary<string, object?> ReadValues()
+        => _spec.Fields.ToDictionary(f => f.Column, ReadValue);
+
+    private object? ReadValue(MasterField f) => _editors[f.Column] switch
     {
-        var v = new Dictionary<string, object?>();
-        foreach (var f in _spec.Fields)
-        {
-            v[f.Column] = _editors[f.Column] switch
-            {
-                LookupBox lb => lb.Kode,
-                ComboBox cb => cb.SelectedItem as string,
-                CalendarDatePicker dp => dp.SelectedDate?.Date,
-                DateTimeBox dt => dt.Value,
-                TextBox tb when f.Kind == FieldKind.Number => Ui.ParseNumber(tb.Text),
-                TextBox tb when f.Kind == FieldKind.Integer => (long)Math.Round(Ui.ParseNumber(tb.Text)),
-                TextBox tb when f.Kind == FieldKind.Time => ParseTime(f, tb.Text),
-                TextBox tb => (tb.Text ?? "").Trim(),
-                _ => null,
-            };
-        }
-        return v;
-    }
+        LookupBox lb => lb.Kode,
+        ComboBox cb => cb.SelectedItem as string,
+        CalendarDatePicker dp => dp.SelectedDate?.Date,
+        DateTimeBox dt => dt.Value,
+        TextBox tb when f.Kind == FieldKind.Number => Ui.ParseNumber(tb.Text),
+        TextBox tb when f.Kind == FieldKind.Integer => (long)Math.Round(Ui.ParseNumber(tb.Text)),
+        TextBox tb when f.Kind == FieldKind.Time => ParseTime(f, tb.Text),
+        TextBox tb => (tb.Text ?? "").Trim(),
+        _ => null,
+    };
 
     private static object? ParseTime(MasterField f, string? s)
     {
@@ -208,8 +225,17 @@ public class MasterView : PageView
         throw new FormatException($"{f.Label}: format jam harus HH:mm atau HH:mm:ss.");
     }
 
-    private async Task SaveAsync() => await RunAsync(async () =>
+    private async Task RunCommandAsync(Func<Task> execute)
     {
+        if (!_commands.IsEnabled) return;
+        _commands.IsEnabled = false;
+        try { await RunAsync(execute); }
+        finally { _commands.IsEnabled = true; }
+    }
+
+    private async Task SaveAsync() => await RunCommandAsync(async () =>
+    {
+        if (_editingKeys is not null && SelectedRow is null) throw new InvalidOperationException("Pilih ulang data atau klik Baru.");
         if (_editingKeys is not null && !_spec.CanEdit) throw new InvalidOperationException("Data di menu ini tidak bisa diubah.");
         if (_editingKeys is null && !_spec.CanInsert) throw new InvalidOperationException("Pilih data yang akan diubah.");
         var wasNew = _editingKeys is null;
@@ -221,9 +247,9 @@ public class MasterView : PageView
 
     private async Task DeleteAsync()
     {
-        if (_editingKeys is null) { Ui.Err(StatusText, "Pilih data yang akan dihapus."); return; }
+        if (_editingKeys is null || SelectedRow is null) { Ui.Err(StatusText, "Pilih data yang akan dihapus."); return; }
         if (!await Dialogs.ConfirmAsync(this, "Hapus", "Hapus data terpilih?")) return;
-        await RunAsync(async () =>
+        await RunCommandAsync(async () =>
         {
             await _repo.DeleteAsync(_spec, _editingKeys);
             await LoadAsync();
@@ -234,9 +260,9 @@ public class MasterView : PageView
 
     private async Task RunActionAsync(MasterAction a)
     {
-        if (_editingKeys is null) { Ui.Err(StatusText, "Pilih data terlebih dahulu."); return; }
+        if (_editingKeys is null || SelectedRow is null) { Ui.Err(StatusText, "Pilih data terlebih dahulu."); return; }
         if (!await Dialogs.ConfirmAsync(this, a.Label, a.Confirm)) return;
-        await RunAsync(async () =>
+        await RunCommandAsync(async () =>
         {
             await _repo.RunActionAsync(a, _editingKeys, SimrsKhanza.Core.Auth.AppSession.CurrentUser?.KodeLegacy ?? "");
             await LoadAsync();

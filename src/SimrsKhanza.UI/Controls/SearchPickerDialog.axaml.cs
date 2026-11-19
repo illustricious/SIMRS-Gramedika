@@ -55,7 +55,8 @@ public partial class SearchPickerDialog : Window
     private async void OnSearchClick(object? sender, RoutedEventArgs e)
     {
         var query = this.FindControl<TextBox>("QueryBox")!.Text ?? string.Empty;
-        await RunSearchAsync(query);
+        try { await RunSearchAsync(query); }
+        catch (Exception ex) { await Modules.Shared.Dialogs.InfoAsync(this, "Pencarian gagal", ex.Message); }
     }
 
     private void OnOkClick(object? sender, RoutedEventArgs e)

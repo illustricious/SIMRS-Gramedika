@@ -3,22 +3,24 @@
 A cross-platform reimplementation of [SIMRS Khanza](https://github.com/mas-elkhanza/SIMRS-Khanza) — the open-source Indonesian hospital
 information system — written in C# on .NET 10 with Avalonia UI.
 
-It runs directly on an existing SIMRS Khanza MySQL/MariaDB database (`sik`): same tables, same user accounts and access rights,
-same stock and journal effects. The old Java application and this one can be used side by side during migration.
+It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses Khanza accounts and access rights.
 
 ## Status
 
-The menu structure follows the original Khanza main menu (categories A–U). Implemented so far:
+The dashboard follows the original Khanza menu categories A–U. As of 19 November 2026, **200 of 1,224 dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Screen coverage and feature parity are tracked separately.
 
-| Menu | Area | Status |
+| Menu | Area | Tiles with a screen |
 |------|------|--------|
-| A | Registration, outpatient/inpatient services, billing | Most tiles |
-| B | Barcode-based procedures & drugs, environmental health lab | Complete |
-| C | Attendance, staff management, K3, infection-control audits, patient-safety (SKP) | Complete |
-| D | Pharmacy inventory (masters, reports, transfers, stock take, stock out, requests, goods receipt) | In progress |
-| U | Application settings, users & access rights | Partial |
+| A | Registration, outpatient/inpatient services, billing | **34/34** |
+| B | Barcode-based procedures & drugs, environmental health lab | 16/16 |
+| C | Attendance, staff management, K3, infection-control audits, patient safety (SKP) | 61/61 |
+| D | Pharmacy inventory, patient stock, prescription review, and reports | 75/75 |
+| E, F, G, I, J, K, M, S | Shared master data, patient deposits, monthly outpatient reports, and patient records | 10 |
+| U | Application settings, users & access rights | 4/30 |
 
-Tiles that are not implemented yet show a "not implemented" notice.
+Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
+
+Pending tiles show a "not implemented" notice.
 
 ## Requirements
 

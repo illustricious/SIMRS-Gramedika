@@ -297,6 +297,19 @@ public partial class MainWindow : Window
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
         }
 
+        if (SimrsKhanza.Data.MenuA.MenuASpecs.Tiles.TryGetValue(key, out var menuA))
+        {
+            var page = new Modules.Informasi.MenuAView(menuA);
+            page.SesiKfrRequested += async (_, noRawat) =>
+            {
+                var sesi = new Modules.Informasi.MenuAView(SimrsKhanza.Data.MenuA.MenuASpecs.SesiKfr, noRawat);
+                sesi.BackRequested += async (_, _) => await OpenFeatureAsync(page, page.ReloadAsync);
+                await OpenFeatureAsync(sesi, sesi.ReloadAsync);
+            };
+            await OpenPageAsync(page);
+            return;
+        }
+
         // [D] Farmasi stock transactions; its masters & reports are data (MenuDSpecs) like [C].
         var stokMode = key switch
         {

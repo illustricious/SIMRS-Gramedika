@@ -176,12 +176,21 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
 
     public async Task AdmitAsync(string noRawat, string kodeKamar, string? diagnosaAwal, CancellationToken ct = default)
     {
-        var kamar = await db.KamarSet.FirstOrDefaultAsync(k => k.KodeKamar == kodeKamar, ct)
-            ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
-        if (kamar.Status != StatusKamar.Kosong)
-            throw new InvalidOperationException($"Kamar '{kodeKamar}' sedang tidak kosong.");
-        var reg = await db.RegPeriksaSet.FirstOrDefaultAsync(r => r.NoRawat == noRawat, ct)
+        await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var registrations = await db.RegPeriksaSet
+            .FromSqlInterpolated($"SELECT * FROM reg_periksa WHERE no_rawat={noRawat} FOR UPDATE").ToListAsync(ct);
+        var reg = registrations.SingleOrDefault()
             ?? throw new InvalidOperationException($"No.Rawat '{noRawat}' tidak ditemukan — pasien harus registrasi dulu.");
+        if (reg.Status == StatusRegistrasi.Batal)
+            throw new InvalidOperationException("Registrasi pasien sudah dibatalkan.");
+        var rooms = await db.KamarSet
+            .FromSqlInterpolated($"SELECT * FROM kamar WHERE kd_kamar={kodeKamar} FOR UPDATE").ToListAsync(ct);
+        var kamar = rooms.SingleOrDefault()
+            ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
+        var dipesanPasien = kamar.Status == StatusKamar.Dibooking && await db.Database.SqlQuery<long>(
+            $"SELECT COUNT(*) AS Value FROM permintaan_ranap WHERE no_rawat={noRawat} AND kd_kamar={kodeKamar}").SingleAsync(ct) == 1;
+        if (kamar.Status != StatusKamar.Kosong && !dipesanPasien)
+            throw new InvalidOperationException($"Kamar '{kodeKamar}' sedang tidak tersedia untuk pasien ini.");
         if (await db.KamarInapSet.AnyAsync(k => k.NoRawat == noRawat && k.StatusPulang == StatusPulang.BelumPulang, ct))
             throw new InvalidOperationException($"No.Rawat '{noRawat}' masih tercatat dirawat inap (belum pulang).");
 
@@ -200,6 +209,7 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
         reg.StatusLanjut = StatusLanjut.RawatInap;
 
         await db.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
     }
 
     private async Task<KamarInap> FindActiveStayAsync(RawatInapKey key, CancellationToken ct)

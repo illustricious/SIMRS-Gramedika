@@ -1,5 +1,5 @@
 # Dokumen Planning — Rewrite Aplikasi Utama SIMRS Khanza (C# + Avalonia)
-Tanggal: 2026-11-03 • Status: **Planning saja, belum ada kode rewrite ditulis**
+Rencana awal disusun 3 November 2026. Untuk progres implementasi saat ini, lihat [README](../../README.md) dan [status Menu A](MENU_A_STATUS.md).
 
 Fokus dokumen ini: titik awal konkret untuk mulai merancang ulang **aplikasi desktop utama** (`src/simrskhanza`, entry point `SIMRSKhanza.java`), karena ini adalah shell yang pertama dilihat/dipakai user dan jadi fondasi navigasi ke semua modul lain.
 
