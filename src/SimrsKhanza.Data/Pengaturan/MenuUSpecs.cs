@@ -195,7 +195,7 @@ public static class MenuUSpecs
             Depo(false), Depo(true)],
         ["btnSetupJamInap"] = [Single("Set Kamar Inap", "set_jam_minimal",
             Integer("lamajam","Jam Minimal"), Toggle("hariawal","Tagih Hari Awal"), Number("feeperujuk","Fee Perujuk"),
-            Toggle("diagnosaakhir","Diagnosis Akhir Wajib"), Integer("bayi","Batas Hari Bayi"),
+            Toggle("diagnosaakhir","Aktifkan Diagnosis Akhir"), Integer("bayi","Persentase Tarif Kamar Bayi"),
             Toggle("aktifkan_hapus_data_salah","Aktifkan Hapus Data Salah"),
             Toggle("kamar_inap_kasir_ralan","Kamar Inap di Kasir Ralan"), Toggle("ubah_status_kamar","Ubah Status Kamar"))
             with { BeforeSave = ValidasiAngkaAsync }],
@@ -203,7 +203,8 @@ public static class MenuUSpecs
             [Lookup("kd_kamar","Kamar",Kamar,key: true), Lookup("kd_pj","Cara Bayar",Penjab,key: true), Number("tarif","Tarif (Rp)")],
             "JOIN kamar k ON k.kd_kamar=x.kd_kamar JOIN bangsal b ON b.kd_bangsal=k.kd_bangsal JOIN penjab p ON p.kd_pj=x.kd_pj",
             ",b.nm_bangsal,p.png_jawab", "x.kd_kamar,b.nm_bangsal,p.png_jawab",
-            ("kd_kamar","Kamar"), ("nm_bangsal","Bangsal"), ("png_jawab","Cara Bayar"), ("tarif","Tarif"))],
+            ("kd_kamar","Kamar"), ("nm_bangsal","Bangsal"), ("png_jawab","Cara Bayar"), ("tarif","Tarif"))
+            with { Hint = "Tarif dipakai saat pasien masuk atau pindah kamar. Periode yang sudah tercatat memakai tarif tersimpan." }],
         ["btnSetupEmbalase"] = [Single("Set Embalase & Tuslah", "set_embalase",
             Number("embalase_per_obat","Embalase per Obat (Rp)"), Number("tuslah_per_obat","Tuslah per Obat (Rp)"))
             with { BeforeSave = ValidasiAngkaAsync }],

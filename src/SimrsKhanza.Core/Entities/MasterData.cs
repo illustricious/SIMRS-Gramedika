@@ -123,7 +123,7 @@ public class KamarInap
     public TimeOnly? JamKeluar { get; set; }
     public string? DiagnosaAwal { get; set; }
     public string? DiagnosaAkhir { get; set; }
-    /// <summary>Lama rawat dalam hari — dihitung saat pasien dipulangkan (tgl_keluar - tgl_masuk, minimal 1).</summary>
+    /// <summary>Lama rawat dalam hari menurut Set Kamar Inap saat pasien pindah atau pulang.</summary>
     public decimal? Lama { get; set; }
     /// <summary>Total biaya kamar (Lama * TarifKamar) — dihitung & ditulis saat dipulangkan, bukan saat masuk.</summary>
     public decimal? TotalBiaya { get; set; }

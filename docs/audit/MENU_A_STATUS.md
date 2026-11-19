@@ -13,7 +13,7 @@
 | IGD/UGD | Daftar, registrasi IGD, dan triase | Perubahan/penghapusan di layar utama dan sebagian aksi triase. |
 | Tindakan Ralan | Daftar tindakan dan pemeriksaan rawat jalan | Sebagian aksi tindakan dan submenu pasien. |
 | Permintaan Rawat Inap | Cari, tambah, ubah, batal, pesan kamar, proses masuk rawat inap, dan simpan PDF | Template surat dan persetujuan khusus legacy. |
-| Rawat Inap | Daftar, masuk, pindah kamar, pulang, dan cetak | Sebagian aksi tambahan di layar kamar inap legacy. |
+| Rawat Inap | Daftar, masuk, pindah kamar, pulang, cetak, dan buka tagihan pasien di Kasir. Tarif mengikuti cara bayar pada saat masuk atau pindah dan disimpan per periode kamar. | Sebagian aksi tambahan di layar kamar inap legacy. |
 | Jadwal Operasi | Cari, tambah, ubah status/jadwal, hapus, cek bentrok, dan simpan PDF | Tampilan agenda dan format cetak khusus legacy. |
 | Permintaan Lab PK | Daftar, filter, tambah, perubahan waktu sampel/hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
 | Permintaan Lab PA | Daftar, filter, tambah, perubahan waktu sampel/hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
@@ -35,8 +35,14 @@
 | Periksa Lab PA | Daftar, entri hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
 | Periksa Lab MB | Daftar, entri hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
 | Periksa Radiologi | Daftar, entri hasil, serta template hasil | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
-| Rawat Jalan (kasir) | Cari tagihan dan tandai lunas | Cakupan komponen tagihan, jurnal, dan pelunasan legacy. |
+| Rawat Jalan (kasir) | Cari tagihan dan tandai lunas untuk rawat jalan. Dengan hak Billing Ranap, layar juga menampilkan rincian tagihan kamar dan mencatat pelunasan sederhana rawat inap. | Masih ada komponen tagihan dan cara bayar legacy yang diselesaikan di Kasir Khanza. |
 | Deposit Pasien | Cari, catat, hitung PPN/admin, posting jurnal dan Sadewa, batalkan dengan jurnal balik, dan simpan bukti PDF | Format kuitansi khusus rumah sakit. |
 | Perkiraan Biaya Ranap | Cari pasien, simpan/hapus estimasi manual, pilih tarif terendah/tertinggi dari riwayat RS atau INACBG, dan simpan PDF | Rincian pembanding kasus serta format cetak legacy. |
 
-Pengujian tampilan tanpa database mencakup sembilan layar tambahan dan layar sesi KFR. Uji baca terhadap skema Khanza bisa dijalankan dengan `SIMRS_DB_SMOKE=1`. Verifikasi transaksi pada database uji masih diperlukan.
+Kasir rawat inap menghitung tarif kamar per periode, biaya harian sebagai tarif × jumlah × lama rawat, serta biaya masuk sekali untuk setiap periode kamar. Biaya registrasi rawat inap mengikuti opsi administrasi di Set Billing. Pelunasan setelah pasien pulang memakai satu akun yang memiliki rekening dan tanpa biaya admin. Aplikasi menyimpan rincian, nota, jurnal, dan status bayar bersama dalam satu transaksi. Tagihan dengan komponen lain seperti deposit, piutang, obat, atau tindakan diselesaikan di Kasir Khanza.
+
+Kasir menyediakan **Simpan Bukti Pelunasan PDF** untuk rawat inap yang berstatus lunas, memiliki nomor nota, dan mempunyai rincian tersimpan. PDF mengambil rincian dari tagihan yang sudah dibukukan.
+
+Pengujian tampilan tanpa database mencakup sembilan layar tambahan dan layar sesi KFR. Uji baca terhadap skema Khanza bisa dijalankan dengan `SIMRS_DB_SMOKE=1`.
+
+Uji transaksi pada database sintetis `simrs_ranap_fixture` mencakup penyimpanan tarif per cara bayar, masuk, pindah, pulang, dan pelunasan. Rincian uji berjumlah **Rp1.035.000**, sesuai hitungan SQL dari aturan Khanza Java. Uji juga memeriksa jurnal seimbang, pembayaran ganda, serta pembatalan transaksi jika rekening jurnal hilang. Untuk mengulang pengujian, siapkan database kosong dengan tabel Khanza, lalu isi `SIMRS_RANAP_FIXTURE_PORT` dan `SIMRS_RANAP_FIXTURE_PASSWORD` untuk server MariaDB lokal. Tes memasukkan data sintetis dan mensyaratkan tabel registrasi kosong.

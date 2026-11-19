@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
 using SimrsKhanza.UI.Modules.Shared;
@@ -35,6 +36,7 @@ public partial class RawatInapView : UserControl
         InitializeComponent();
 
         var grid = Grid();
+        this.FindControl<Button>("BillingButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("billing_ranap") == true;
         grid.ContextMenu = PatientContextMenu.Build(
             () => grid.SelectedItem is RawatInapListItem i ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
             request => PatientMenuRequested?.Invoke(this, request));
@@ -58,10 +60,11 @@ public partial class RawatInapView : UserControl
     private RawatInapListItem? Selected => Grid().SelectedItem as RawatInapListItem;
 
     /// <summary>Called from the right-click "Kamar Inap" patient menu — opens the Masuk panel with No.Rawat prefilled.</summary>
-    public void PrefillAdmit(string noRawat)
+    public async Task PrefillAdmitAsync(string noRawat)
     {
         ShowAction(ActionMode.Masuk);
         this.FindControl<TextBox>("AdmitNoRawatBox")!.Text = noRawat;
+        await LoadKamarKosongAsync("KamarCombo", noRawat);
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
@@ -182,7 +185,8 @@ public partial class RawatInapView : UserControl
     private async void OnMasukClick(object? sender, RoutedEventArgs e)
     {
         ShowAction(ActionMode.Masuk);
-        await LoadKamarKosongAsync("KamarCombo");
+        if (Text("AdmitNoRawatBox") is { } noRawat)
+            await LoadKamarKosongAsync("KamarCombo", noRawat);
     }
 
     private void OnPulangClick(object? sender, RoutedEventArgs e)
@@ -196,7 +200,36 @@ public partial class RawatInapView : UserControl
     {
         if (!RequireSelected(mustBeActive: true)) return;
         ShowAction(ActionMode.Pindah);
-        await LoadKamarKosongAsync("PindahKamarCombo");
+        await LoadKamarKosongAsync("PindahKamarCombo", Selected!.NoRawat);
+    }
+
+    private async void OnCariKamarClick(object? sender, RoutedEventArgs e)
+        => await CariKamarMasukAsync();
+
+    private async void OnAdmitNoRawatKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter) await CariKamarMasukAsync();
+    }
+
+    private void OnAdmitNoRawatChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (this.FindControl<ComboBox>("KamarCombo") is { } combo) combo.ItemsSource = null;
+    }
+
+    private async Task CariKamarMasukAsync()
+    {
+        if (Text("AdmitNoRawatBox") is not { } noRawat)
+        {
+            ShowStatus("Isi No. Rawat untuk melihat tarif sesuai cara bayar.", isError: true);
+            return;
+        }
+        await LoadKamarKosongAsync("KamarCombo", noRawat);
+    }
+
+    private void OnBillingClick(object? sender, RoutedEventArgs e)
+    {
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } s) return;
+        PatientMenuRequested?.Invoke(this, new(s.NoRawat, s.NoRekamMedis, s.NamaPasien, PatientMenuAction.BillingPembayaran));
     }
 
     private async void OnGantiClick(object? sender, RoutedEventArgs e)
@@ -237,13 +270,16 @@ public partial class RawatInapView : UserControl
         return true;
     }
 
-    private async System.Threading.Tasks.Task LoadKamarKosongAsync(string comboName)
+    private async System.Threading.Tasks.Task LoadKamarKosongAsync(string comboName, string? noRawat = null)
     {
         var combo = this.FindControl<ComboBox>(comboName)!;
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var kamar = await new RawatInapRepository(db).GetAvailableKamarAsync();
+            var repo = new RawatInapRepository(db);
+            var kamar = noRawat is null ? await repo.GetAvailableKamarAsync()
+                : await repo.GetAvailableKamarForVisitAsync(noRawat);
+            if (comboName == "KamarCombo" && noRawat != Text("AdmitNoRawatBox")) return;
             combo.ItemsSource = kamar;
             combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(KamarTersediaItem.Label));
             if (kamar.Count > 0) combo.SelectedIndex = 0;

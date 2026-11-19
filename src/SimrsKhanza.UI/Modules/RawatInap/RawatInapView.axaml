@@ -33,8 +33,12 @@
 
                 <StackPanel Name="MasukFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
                     <TextBlock Text="No. Rawat (pasien harus sudah registrasi) :" />
-                    <TextBox Name="AdmitNoRawatBox" PlaceholderText="contoh: 2026/11/07/000001" />
-                    <TextBlock Text="Kamar Kosong :" Margin="0,4,0,0" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                        <TextBox Name="AdmitNoRawatBox" PlaceholderText="contoh: 2026/11/07/000001"
+                                 TextChanged="OnAdmitNoRawatChanged" KeyDown="OnAdmitNoRawatKeyDown" />
+                        <Button Grid.Column="1" Content="Cari Tarif Kamar" Click="OnCariKamarClick" />
+                    </Grid>
+                    <TextBlock Text="Kamar Tersedia dan Tarif per Hari" Margin="0,4,0,0" />
                     <ComboBox Name="KamarCombo" HorizontalAlignment="Stretch" />
                     <TextBlock Text="Diagnosa Awal :" Margin="0,4,0,0" />
                     <TextBox Name="DiagnosaAwalBox" />
@@ -121,6 +125,7 @@
             <Button Content="📖 Masuk" Click="OnMasukClick" />
             <Button Name="PulangButton" Content="🚪 Pulang" Click="OnPulangClick" />
             <Button Name="PindahButton" Content="🔀 Pindah" Click="OnPindahClick" />
+            <Button Name="BillingButton" Content="Billing / Kasir" Click="OnBillingClick" />
             <Button Name="GantiButton" Content="✏ Ganti" Click="OnGantiClick" />
             <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="24,0,24,0" />
             <Button Content="🖨 Cetak" Click="OnCetakClick" />

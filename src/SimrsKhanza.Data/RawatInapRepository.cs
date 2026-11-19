@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SimrsKhanza.Core.Entities;
+using SimrsKhanza.Data.Keuangan;
 
 namespace SimrsKhanza.Data;
 
@@ -38,6 +39,7 @@ public record RawatInapFilter(
 public interface IRawatInapRepository
 {
     Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat, CancellationToken ct = default);
 
     /// <summary>Legacy "Daftar Pasien Rawat Inap" list — see RawatInapFilter / RawatInapMode.</summary>
     Task<IReadOnlyList<RawatInapListItem>> GetDaftarAsync(RawatInapFilter filter, CancellationToken ct = default);
@@ -45,14 +47,14 @@ public interface IRawatInapRepository
     /// <summary>
     /// Admits a patient already registered (reg_periksa row with that NoRawat
     /// must exist) into a room: inserts kamar_inap, flips the room to "ISI",
-    /// and flips reg_periksa.StatusLanjut to RawatInap. Refuses if the visit is
-    /// already admitted or the room isn't KOSONG.
+    /// and flips reg_periksa.StatusLanjut to RawatInap. Allows an empty room or
+    /// a room booked for the same patient visit.
     /// </summary>
     Task AdmitAsync(string noRawat, string kodeKamar, string? diagnosaAwal, CancellationToken ct = default);
 
     /// <summary>
     /// Discharges one active stay: stamps tgl_keluar/jam_keluar, computes Lama
-    /// (days, minimum 1) and TotalBiaya (Lama * TarifKamar), frees the room back
+    /// using set_jam_minimal and TotalBiaya (Lama * TarifKamar), frees the room back
     /// to "KOSONG". Returns the computed room bill.
     /// </summary>
     Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default);
@@ -72,22 +74,54 @@ public interface IRawatInapRepository
     Task GantiDiagnosaAsync(RawatInapKey key, string? diagnosaAwal, string? diagnosaAkhir, CancellationToken ct = default);
 }
 
-public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
+public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = null) : IRawatInapRepository
 {
     private const int MaxRows = 2000;
+    private DateTime Now => (clock ?? TimeProvider.System).GetLocalNow().DateTime;
 
-    public async Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarAsync(CancellationToken ct = default)
+    public Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarAsync(CancellationToken ct = default) =>
+        GetKamarTersediaAsync(null, ct);
+
+    private async Task<IReadOnlyList<KamarTersediaItem>> GetKamarTersediaAsync(string? kodeDipesan, CancellationToken ct)
     {
         var query =
             from k in db.KamarSet
             join b in db.BangsalSet on k.KodeBangsal equals b.KodeBangsal into bJoin
             from b in bJoin.DefaultIfEmpty()
-            where k.Status == StatusKamar.Kosong
+            where k.Status == StatusKamar.Kosong ||
+                  (kodeDipesan != null && k.KodeKamar == kodeDipesan && k.Status == StatusKamar.Dibooking)
             orderby b.NamaBangsal, k.KodeKamar
             select new KamarTersediaItem(k.KodeKamar, b != null ? b.NamaBangsal : null, k.Kelas, k.TarifKamar);
 
         return await query.ToListAsync(ct);
     }
+
+    public async Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat, CancellationToken ct = default)
+    {
+        var payer = await db.RegPeriksaSet.Where(r => r.NoRawat == noRawat).Select(r => r.KodePenjab).SingleOrDefaultAsync(ct)
+            ?? throw new InvalidOperationException("No. Rawat tidak ditemukan.");
+        var rates = await db.Database.SqlQuery<TarifPerKamar>($"""
+            SELECT kd_kamar AS KodeKamar,CAST(tarif AS DECIMAL(20,4)) AS Tarif
+            FROM set_harga_kamar WHERE kd_pj={payer}
+            """).ToDictionaryAsync(r => r.KodeKamar, r => r.Tarif, StringComparer.OrdinalIgnoreCase, ct);
+        var booking = await db.Database.SqlQuery<string>($"""
+            SELECT kd_kamar AS Value FROM permintaan_ranap WHERE no_rawat={noRawat}
+            """).SingleOrDefaultAsync(ct);
+        return (await GetKamarTersediaAsync(booking, ct)).Select(k =>
+            k with { TarifKamar = rates.GetValueOrDefault(k.KodeKamar, k.TarifKamar) }).ToList();
+    }
+
+    private sealed class TarifPerKamar
+    {
+        public string KodeKamar { get; set; } = "";
+        public decimal Tarif { get; set; }
+    }
+
+    private async Task<decimal> TarifAsync(Kamar kamar, string kodePenjab, CancellationToken ct) =>
+        await db.Database.SqlQuery<decimal?>($"""
+            SELECT CAST(tarif AS DECIMAL(20,4)) AS Value FROM set_harga_kamar
+            WHERE kd_kamar={kamar.KodeKamar} AND kd_pj={kodePenjab}
+            """).SingleOrDefaultAsync(ct) ?? kamar.TarifKamar;
 
     public async Task<IReadOnlyList<RawatInapListItem>> GetDaftarAsync(RawatInapFilter f, CancellationToken ct = default)
     {
@@ -177,16 +211,9 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
     public async Task AdmitAsync(string noRawat, string kodeKamar, string? diagnosaAwal, CancellationToken ct = default)
     {
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
-        var registrations = await db.RegPeriksaSet
-            .FromSqlInterpolated($"SELECT * FROM reg_periksa WHERE no_rawat={noRawat} FOR UPDATE").ToListAsync(ct);
-        var reg = registrations.SingleOrDefault()
-            ?? throw new InvalidOperationException($"No.Rawat '{noRawat}' tidak ditemukan — pasien harus registrasi dulu.");
-        if (reg.Status == StatusRegistrasi.Batal)
-            throw new InvalidOperationException("Registrasi pasien sudah dibatalkan.");
-        var rooms = await db.KamarSet
-            .FromSqlInterpolated($"SELECT * FROM kamar WHERE kd_kamar={kodeKamar} FOR UPDATE").ToListAsync(ct);
-        var kamar = rooms.SingleOrDefault()
-            ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
+        var reg = await KunjunganRanap.KunciAsync(db, noRawat, ct);
+        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
+        var kamar = await KunciKamarAsync(kodeKamar, ct);
         var dipesanPasien = kamar.Status == StatusKamar.Dibooking && await db.Database.SqlQuery<long>(
             $"SELECT COUNT(*) AS Value FROM permintaan_ranap WHERE no_rawat={noRawat} AND kd_kamar={kodeKamar}").SingleAsync(ct) == 1;
         if (kamar.Status != StatusKamar.Kosong && !dipesanPasien)
@@ -194,13 +221,14 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
         if (await db.KamarInapSet.AnyAsync(k => k.NoRawat == noRawat && k.StatusPulang == StatusPulang.BelumPulang, ct))
             throw new InvalidOperationException($"No.Rawat '{noRawat}' masih tercatat dirawat inap (belum pulang).");
 
+        var now = Now;
         db.KamarInapSet.Add(new KamarInap
         {
             NoRawat = noRawat,
             KodeKamar = kodeKamar,
-            TarifKamar = kamar.TarifKamar,
-            TanggalMasuk = DateOnly.FromDateTime(DateTime.Now),
-            JamMasuk = TimeOnly.FromDateTime(DateTime.Now),
+            TarifKamar = await TarifAsync(kamar, reg.KodePenjab, ct),
+            TanggalMasuk = DateOnly.FromDateTime(now),
+            JamMasuk = TimeOnly.FromDateTime(now),
             DiagnosaAwal = diagnosaAwal,
             StatusPulang = StatusPulang.BelumPulang,
         });
@@ -220,56 +248,75 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
 
     public async Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default)
     {
+        await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var reg = await KunjunganRanap.KunciAsync(db, key.NoRawat, ct);
+        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
         var stay = await FindActiveStayAsync(key, ct);
         if (stay.StatusPulang != StatusPulang.BelumPulang)
             throw new InvalidOperationException("Pasien ini sudah tercatat pulang/pindah — pilih baris yang masih dirawat.");
         if (statusPulang is StatusPulang.BelumPulang or StatusPulang.PindahKamar)
             throw new InvalidOperationException("Pilih status pulang yang valid.");
 
-        var total = CloseStay(stay, statusPulang, diagnosaAkhir ?? stay.DiagnosaAkhir);
-        await FreeKamarAsync(stay.KodeKamar, ct);
+        var kamar = await KunciKamarAsync(stay.KodeKamar, ct);
+        var aturan = await AturanLamaRawat.LoadAsync(db, ct);
+        var diagnosa = diagnosaAkhir ?? stay.DiagnosaAkhir;
+        if (aturan.DiagnosaAkhirWajib && string.IsNullOrWhiteSpace(diagnosa))
+            throw new InvalidOperationException("Diagnosis akhir wajib diisi sesuai Set Kamar Inap.");
+        var total = CloseStay(stay, statusPulang, diagnosa, aturan, Now);
+        kamar.Status = StatusKamar.Kosong;
         await db.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
         return total;
     }
 
     public async Task<decimal> PindahKamarAsync(RawatInapKey key, string kodeKamarBaru, CancellationToken ct = default)
     {
+        await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var reg = await KunjunganRanap.KunciAsync(db, key.NoRawat, ct);
+        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
         var stay = await FindActiveStayAsync(key, ct);
         if (stay.StatusPulang != StatusPulang.BelumPulang)
             throw new InvalidOperationException("Pasien ini sudah tercatat pulang/pindah — pilih baris yang masih dirawat.");
-        if (kodeKamarBaru == stay.KodeKamar)
+        if (string.Equals(kodeKamarBaru, stay.KodeKamar, StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("Kamar tujuan sama dengan kamar saat ini.");
 
-        var baru = await db.KamarSet.FirstOrDefaultAsync(k => k.KodeKamar == kodeKamarBaru, ct)
-            ?? throw new InvalidOperationException($"Kamar '{kodeKamarBaru}' tidak ditemukan.");
+        var asalDulu = string.CompareOrdinal(stay.KodeKamar, kodeKamarBaru) < 0;
+        var pertama = await KunciKamarAsync(asalDulu ? stay.KodeKamar : kodeKamarBaru, ct);
+        var kedua = await KunciKamarAsync(asalDulu ? kodeKamarBaru : stay.KodeKamar, ct);
+        var (asal, baru) = asalDulu ? (pertama, kedua) : (kedua, pertama);
         if (baru.Status != StatusKamar.Kosong)
             throw new InvalidOperationException($"Kamar '{kodeKamarBaru}' sedang tidak kosong.");
 
-        var total = CloseStay(stay, StatusPulang.PindahKamar, stay.DiagnosaAkhir);
-        await FreeKamarAsync(stay.KodeKamar, ct);
-
-        var now = DateTime.Now;
+        var now = Now;
+        var tanggal = DateOnly.FromDateTime(now);
+        var jam = new TimeOnly(now.Hour, now.Minute, now.Second);
+        if (await db.KamarInapSet.AnyAsync(k => k.NoRawat == stay.NoRawat && k.TanggalMasuk == tanggal && k.JamMasuk == jam, ct))
+            throw new InvalidOperationException("Waktu masuk kamar sudah dipakai. Coba lagi sesaat.");
+        var aturan = await AturanLamaRawat.LoadAsync(db, ct);
+        var total = CloseStay(stay, StatusPulang.PindahKamar, stay.DiagnosaAkhir, aturan, now);
+        asal.Status = StatusKamar.Kosong;
         db.KamarInapSet.Add(new KamarInap
         {
             NoRawat = stay.NoRawat,
             KodeKamar = kodeKamarBaru,
-            TarifKamar = baru.TarifKamar,
-            TanggalMasuk = DateOnly.FromDateTime(now),
-            JamMasuk = TimeOnly.FromDateTime(now),
+            TarifKamar = await TarifAsync(baru, reg.KodePenjab, ct),
+            TanggalMasuk = tanggal,
+            JamMasuk = jam,
             DiagnosaAwal = stay.DiagnosaAwal,
             StatusPulang = StatusPulang.BelumPulang,
         });
         baru.Status = StatusKamar.Isi;
 
         await db.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
         return total;
     }
 
-    private static decimal CloseStay(KamarInap stay, StatusPulang status, string? diagnosaAkhir)
+    private static decimal CloseStay(KamarInap stay, StatusPulang status, string? diagnosaAkhir,
+        AturanLamaRawat aturan, DateTime now)
     {
-        var now = DateTime.Now;
         var keluar = DateOnly.FromDateTime(now);
-        var lama = Math.Max(1, keluar.DayNumber - stay.TanggalMasuk.DayNumber);
+        var lama = AturanLamaRawat.HitungHari(stay.TanggalMasuk.ToDateTime(stay.JamMasuk), now, aturan.JamMinimal, aturan.HitungHariAwal);
         var total = lama * (stay.TarifKamar ?? 0m);
 
         stay.TanggalKeluar = keluar;
@@ -281,18 +328,21 @@ public class RawatInapRepository(SimrsKhanzaDbContext db) : IRawatInapRepository
         return total;
     }
 
-    private async Task FreeKamarAsync(string kodeKamar, CancellationToken ct)
+    private async Task<Kamar> KunciKamarAsync(string kodeKamar, CancellationToken ct)
     {
-        var kamar = await db.KamarSet.FirstOrDefaultAsync(k => k.KodeKamar == kodeKamar, ct);
-        if (kamar is not null) kamar.Status = StatusKamar.Kosong;
+        var rows = await db.KamarSet
+            .FromSqlInterpolated($"SELECT * FROM kamar WHERE kd_kamar={kodeKamar} FOR UPDATE").ToListAsync(ct);
+        return rows.SingleOrDefault() ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
     }
 
     public async Task GantiJenisBayarAsync(string noRawat, string kodePenjab, CancellationToken ct = default)
     {
-        var reg = await db.RegPeriksaSet.FirstOrDefaultAsync(r => r.NoRawat == noRawat, ct)
-            ?? throw new InvalidOperationException($"No.Rawat '{noRawat}' tidak ditemukan.");
+        await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var reg = await KunjunganRanap.KunciAsync(db, noRawat, ct);
+        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
         reg.KodePenjab = kodePenjab;
         await db.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
     }
 
     public async Task GantiDiagnosaAsync(RawatInapKey key, string? diagnosaAwal, string? diagnosaAkhir, CancellationToken ct = default)

@@ -10,7 +10,8 @@ Dokumen ini diupdate setiap ada progres. Jangan dihapus — ini adalah log kerja
 
 - Katalog Avalonia mencakup 1.224 tile. Sebanyak 226 tile membuka layar, termasuk **34 dari 34 tile Menu A**, 16 dari 16 tile B, 61 dari 61 tile C, 75 dari 75 tile D, dan **30 dari 30 tile U**. Deposit Pasien juga muncul di kategori I dan K.
 - Penutupan sembilan tile A mencakup pemesanan dan masuk kamar, jadwal operasi, sesi KFR, pengeluaran dan pembalikan stok resep pulang, pemberian diet, dua formulir skrining, deposit dan jurnalnya, serta estimasi tarif ranap. Cakupan per layar dan pekerjaan lanjutan tercatat di [MENU_A_STATUS.md](MENU_A_STATUS.md).
-- Penambahan 26 layar Menu U mencakup pengaturan klinis, farmasi, billing, display antrian, kredensial, dan pemeliharaan tabel. Pemeriksaan tahap ini mencakup pemetaan tile, sintaks, dan skema repo. Build serta uji database belum dijalankan untuk perubahan Menu U. [MENU_U_STATUS.md](MENU_U_STATUS.md)
+- Penambahan 26 layar Menu U mencakup pengaturan klinis, farmasi, billing, display antrian, kredensial, dan pemeliharaan tabel. Pemeriksaan awal mencakup pemetaan tile, sintaks, dan skema repo. [MENU_U_STATUS.md](MENU_U_STATUS.md)
+- Set Harga Kamar, Biaya Harian, dan Biaya Masuk Sekali sudah terhubung ke Rawat Inap dan Kasir. Skenario sintetis masuk, pindah, pulang, dan pelunasan cocok dengan perhitungan Khanza Java serta menghasilkan jurnal seimbang. Pelunasan di Avalonia terbatas pada komponen kamar dan registrasi dengan satu akun bayar tanpa biaya admin. [MENU_A_STATUS.md](MENU_A_STATUS.md)
 - Ringkasan dan riwayat di bawah merekam keadaan saat masing-masing sesi ditulis. [README proyek](../../README.md) memuat hitungan dashboard saat ini.
 
 > Bagian ini ditulis supaya AI/orang baru yang baca dokumen ini bisa langsung paham & lanjut kerja dalam &lt;5 menit. Detail lengkap + kronologi alasan tiap keputusan ada di bagian bawah dokumen ini (urut dari paling lama ke paling baru).

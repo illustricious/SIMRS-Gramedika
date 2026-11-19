@@ -1103,7 +1103,7 @@ public partial class MainWindow : Window
             case Modules.Shared.PatientMenuAction.KamarInap:
                 await OpenRawatInapAsync();
                 if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.RawatInap.RawatInapView rawatInapView)
-                    rawatInapView.PrefillAdmit(request.NoRawat);
+                    await rawatInapView.PrefillAdmitAsync(request.NoRawat);
                 return;
 
             case Modules.Shared.PatientMenuAction.TindakanDanPemeriksaan:
