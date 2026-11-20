@@ -10,7 +10,10 @@ public enum ReportPeriod { DateRange, Month, Year, None }
 /// DateRange/Month add @p1/@p2 = first day 00:00 / last day 23:59:59; Year adds @p1 = the year.
 /// "{hpp}" in Sql is replaced by the profile's HPP column (legacy HPPFARMASI: dasar | h_beli).
 /// </summary>
-public record ReportSpec(string Title, string Sql, (string Column, string Header)[] Columns, ReportPeriod Period, string? Hint = null);
+public record ReportSpec(string Title, string Sql, (string Column, string Header)[] Columns, ReportPeriod Period, string? Hint = null)
+{
+    public string SearchWatermark { get; init; } = "Cari...";
+}
 
 public class ReportRepository(DatabaseSettings settings)
 {

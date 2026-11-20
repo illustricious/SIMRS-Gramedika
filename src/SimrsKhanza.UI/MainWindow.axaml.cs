@@ -306,6 +306,21 @@ public partial class MainWindow : Window
 
             // Our own report screens (kunjungan/pendapatan/penjualan farmasi) have no 1:1 legacy tile; hang the menu here.
             case "btnLaporanBulananIRJ": await OpenLaporanMenuAsync(); return;
+            case "btnKedatanganPasienPerJam":
+                await OpenPageAsync(new Modules.Shared.ReportView(SimrsKhanza.Data.Master.VisitReportSpecs.HourlyArrivals));
+                return;
+            case "btnSensusHarianPoli":
+                await OpenPageAsync(new Modules.Shared.ReportView(SimrsKhanza.Data.Master.VisitReportSpecs.DailyClinicCensus));
+                return;
+            case "btnKunjunganRalan":
+                await OpenPageAsync(new Modules.Shared.ReportView(SimrsKhanza.Data.Master.VisitReportSpecs.OutpatientVisits));
+                return;
+            case "btnKunjunganRanap":
+                await OpenPageAsync(new Modules.Shared.ReportView(SimrsKhanza.Data.Master.VisitReportSpecs.InpatientVisits));
+                return;
+            case "btnRekapKunjungan":
+                await OpenPageAsync(new Modules.Shared.ReportView(SimrsKhanza.Data.Master.VisitReportSpecs.MonthlyVisitSummary));
+                return;
         }
 
         if (SimrsKhanza.Data.Pengaturan.MenuUSpecs.Tiles.TryGetValue(key, out var menuU))
@@ -375,6 +390,17 @@ public partial class MainWindow : Window
         if (SimrsKhanza.Data.Kepegawaian.MenuCSpecs.Reports.TryGetValue(key, out var report))
         {
             await OpenPageAsync(new Modules.Shared.ReportView(report));
+            return;
+        }
+
+        if (SimrsKhanza.Data.Master.MenuJSpecs.Masters.TryGetValue(key, out var masterJ))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterJ));
+            return;
+        }
+        if (SimrsKhanza.Data.Master.MenuJSpecs.Reports.TryGetValue(key, out var reportJ))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportJ));
             return;
         }
 

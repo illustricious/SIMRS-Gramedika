@@ -14,7 +14,7 @@ public class ReportView : PageView
     private readonly ReportSpec _spec;
     private readonly ReportRepository _repo = new(DatabaseSettings.Load());
     private readonly DataGrid _grid;
-    private readonly TextBox _cari = Ui.Text("Cari...");
+    private readonly TextBox _cari;
     private readonly PeriodPicker? _period;
     private readonly NumericUpDown _tahun = new() { Minimum = 2000, Maximum = 2100, Value = DateTime.Today.Year, Width = 110, FormatString = "0" };
     private List<Row> _rows = [];
@@ -22,6 +22,7 @@ public class ReportView : PageView
     public ReportView(ReportSpec spec)
     {
         _spec = spec;
+        _cari = Ui.Text(spec.SearchWatermark);
         _grid = Ui.Grid(spec.Columns.Select(c => new Col(c.Column, c.Header)).ToArray());
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await ReloadAsync(); };
 
@@ -64,10 +65,19 @@ public class ReportView : PageView
             static string Q(string s) => s.Contains(';') || s.Contains('"') || s.Contains('\n') ? $"\"{s.Replace("\"", "\"\"")}\"" : s;
             var sb = new StringBuilder();
             sb.AppendLine(string.Join(";", cols.Select(c => Q(c.Header))));
-            foreach (var r in _rows) sb.AppendLine(string.Join(";", cols.Select(c => Q(Ui.Fmt(r, c)))));
+            foreach (var r in _rows)
+                sb.AppendLine(string.Join(";", cols.Select(c => Q(CsvCell(r, c)))));
             await using var s = await file.OpenWriteAsync();
             await using var w = new StreamWriter(s, new UTF8Encoding(true));
             await w.WriteAsync(sb.ToString());
         }, "CSV tersimpan.");
+    }
+
+    private static string CsvCell(Row row, Col column)
+    {
+        var value = Ui.Fmt(row, column);
+        if (row[column.Name] is string && value.TrimStart().FirstOrDefault() is '=' or '+' or '-' or '@')
+            return "'" + value;
+        return value;
     }
 }
