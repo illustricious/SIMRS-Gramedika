@@ -1,6 +1,6 @@
 namespace SimrsKhanza.Data.Master;
 
-public static class MenuJSpecs
+public static partial class MenuJSpecs
 {
     public static IReadOnlyDictionary<string, MasterSpec> Masters { get; } = new Dictionary<string, MasterSpec>
     {
@@ -45,6 +45,39 @@ public static class MenuJSpecs
 
     public static IReadOnlyDictionary<string, ReportSpec> Reports { get; } = new Dictionary<string, ReportSpec>
     {
+        ["btnRegistrasiPoliPerTanggal"] = ClinicRegistrations(),
+        ["btnRekapMutasiBerkas"] = MedicalRecordMovement(),
+        ["btnLamaPenyiapanRM"] = MedicalRecordPreparation(),
+        ["btnDosisRadiologi"] = RadiologyDose(),
+        ["btnJumlahPorsiDiet"] = DietCounts("Rekap Bulanan Porsi Diet", "b.nm_bangsal", "Bangsal", ReportPeriod.Month),
+        ["btnJumlahMacamDiet"] = DietCounts("Rekap Bulanan Macam Diet", "d.nama_diet", "Diet", ReportPeriod.Month),
+        ["btnRekapPermintaanDiet"] = DietCounts("Rekap Permintaan Diet", "k.kelas", "Kelas", ReportPeriod.DateRange),
+        ["btnSisaDietPasien"] = DietLeftovers(),
+        ["btnPerujukLabPerTahun"] = AnnualActivity("Perujuk Lab Per Tahun", "periksa_lab", "tgl_periksa",
+            "dokter", "dokter_perujuk", "kd_dokter", "nm_dokter", "Dokter Perujuk"),
+        ["btnPerujukRadiologiPerTahun"] = AnnualActivity("Perujuk Radiologi Per Tahun", "periksa_radiologi", "tgl_periksa",
+            "dokter", "dokter_perujuk", "kd_dokter", "nm_dokter", "Dokter Perujuk"),
+        ["btnRekapRadiologiPerTahun"] = AnnualActivity("Rekap Radiologi Per Tahun", "periksa_radiologi", "tgl_periksa",
+            "jns_perawatan_radiologi", "kd_jenis_prw", "kd_jenis_prw", "nm_perawatan", "Tindakan"),
+        ["btnOperasiPerBulan"] = AnnualActivity("Operasi Per Bulan", "operasi", "tgl_operasi",
+            "paket_operasi", "kode_paket", "kode_paket", "nm_perawatan", "Paket Operasi"),
+        ["btnLamaPelayananLab"] = ServiceStages("Lama Pelayanan Lab PK", "permintaan_lab",
+            "noorder", "tgl_permintaan", "jam_permintaan", "tgl_sampel", "jam_sampel", "tgl_hasil", "jam_hasil", "Sampel", "Hasil"),
+        ["btnLamaPelayananLabPA"] = ServiceStages("Lama Pelayanan Lab PA", "permintaan_labpa",
+            "noorder", "tgl_permintaan", "jam_permintaan", "tgl_sampel", "jam_sampel", "tgl_hasil", "jam_hasil", "Sampel", "Hasil"),
+        ["btnLamaPelayananLabMB"] = ServiceStages("Lama Pelayanan Lab MB", "permintaan_labmb",
+            "noorder", "tgl_permintaan", "jam_permintaan", "tgl_sampel", "jam_sampel", "tgl_hasil", "jam_hasil", "Sampel", "Hasil"),
+        ["btnLamaPelayananRadiologi"] = ServiceStages("Lama Pelayanan Radiologi", "permintaan_radiologi",
+            "noorder", "tgl_permintaan", "jam_permintaan", "tgl_sampel", "jam_sampel", "tgl_hasil", "jam_hasil", "Sampel", "Hasil"),
+        ["btnLamaPelayananApotek"] = ServiceStages("Lama Pelayanan Apotek", "resep_obat",
+            "no_resep", "tgl_peresepan", "jam_peresepan", "tgl_perawatan", "jam", "tgl_penyerahan", "jam_penyerahan", "Validasi", "Penyerahan"),
+        ["btnLamaPelayananRalan"] = RegistrationToService("Lama Pelayanan Ralan", "Nota Terbit",
+            "nota_jalan", "tanggal", "jam"),
+        ["btnLamaPelayananPoli"] = RegistrationToService("Lama Pelayanan Poli", "Pemeriksaan Pertama",
+            "pemeriksaan_ralan", "tgl_perawatan", "jam_rawat"),
+        ["btnLamaOperasi"] = OperationDuration(),
+        ["btnLamaPelayananCSSD"] = CssdDuration(),
+        ["btnRekapLabPerTahun"] = AnnualLabActivity(),
         ["btnKunjunganLabRalan"] = ExamVisits("Lab", "periksa_lab", "Ralan"),
         ["btnKunjunganLabRanap"] = ExamVisits("Lab", "periksa_lab", "Ranap"),
         ["btnKunjunganRadRalan"] = ExamVisits("Radiologi", "periksa_radiologi", "Ralan"),

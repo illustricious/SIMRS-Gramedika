@@ -1,6 +1,6 @@
 # Status Menu J
 
-**21 dari 96 tile Menu J** membuka layar Avalonia. Tile mengikuti hak akses Khanza. Laporan baru membaca tabel Khanza dan menyediakan ekspor CSV.
+**43 dari 96 tile Menu J** membuka layar Avalonia. Tile mengikuti hak akses Khanza. Laporan baru membaca tabel Khanza dan menyediakan ekspor CSV.
 
 | Tile | Cakupan Avalonia |
 |---|---|
@@ -16,7 +16,18 @@
 | Poli Asal Pasien Ranap dan Dokter Asal Pasien Ranap | Jumlah registrasi yang berlanjut ke rawat inap menurut poli atau dokter asal pada registrasi. |
 | Pembatalan Periksa Per Dokter | Jumlah registrasi batal, tidak batal, dan total menurut dokter pada registrasi. |
 | Laporan Bulanan IRJ | Layar laporan bulanan yang sudah tersedia sebelumnya. |
+| Registrasi Poli Per Tanggal | Jumlah registrasi baru, lama, batal, dan tidak batal per poli dan tanggal registrasi. |
+| Rekap Mutasi Berkas, Lama Penyiapan RM | Riwayat perpindahan berkas dan durasi dari registrasi sampai berkas dikirim. |
+| Dosis Radiologi | Daftar parameter penyinaran dan dosis yang tersimpan per pemeriksaan. |
+| Rekap Bulanan Porsi Diet, Rekap Bulanan Macam Diet, Rekap Permintaan Diet | Porsi tercatat per tanggal dan bangsal, jenis diet, atau kelas kamar. |
+| Sisa Diet Pasien | Daftar sisa makanan per komponen, pasien, dan waktu makan. Entri dan perubahan data masih melalui Khanza Java. |
+| Rekap Lab Per Tahun, Rekap Radiologi Per Tahun | Jumlah tindakan per bulan pada tahun yang dipilih. Rekap lab juga menampilkan hitungan parameter. |
+| Perujuk Lab Per Tahun, Perujuk Radiologi Per Tahun | Jumlah tindakan per dokter perujuk dan bulan. |
+| Operasi Per Bulan, Lama Operasi | Jumlah tindakan per paket dan bulan serta daftar durasi menurut waktu pada laporan operasi. |
+| Lama Pelayanan Ralan, Lama Pelayanan Poli | Durasi dari registrasi sampai nota terbit atau pemeriksaan pertama. |
+| Lama Pelayanan Apotek, Radiologi, Lab PK, Lab PA, dan Lab MB | Durasi antar tahap resep atau permintaan pemeriksaan berdasarkan waktu yang tercatat. |
+| Lama Pelayanan CSSD | Durasi pengambilan, sterilisasi, dan pengembalian per sirkulasi. |
 
 Daftar rawat jalan dan rawat inap berfokus pada data kunjungan inti. Rincian diagnosis, filter wilayah, cetak format lama, dan mode filter tanggal keluar rawat inap masih di luar cakupan.
 
-Laporan diagnosis saat ini menyediakan rekap dasar. Tabel silang demografi dan format cetak lama belum tersedia. Tile yang masih terbuka meliputi surveilans, laporan RL, waktu pelayanan, HAIs, BOR/ALOS, dan laporan khusus lainnya.
+Laporan diagnosis saat ini menyediakan rekap dasar. Tabel silang demografi dan format cetak lama belum tersedia. Masih ada 53 tile yang belum tersambung, termasuk surveilans, laporan RL, Lama Pelayanan Pasien, HAIs, BOR/ALOS, dan laporan khusus lainnya.

@@ -23,6 +23,8 @@ public static partial class LegacyTilePermissions
     private static readonly Dictionary<string, string[]> ManualTileColumns = new(StringComparer.Ordinal)
     {
         ["btnCekReferensiCaraKeluarBPJS"] = ["bpjs_cek_carakeluar"],
+        ["btnLamaPelayananLabPA"] = ["lama_pelayanan_lab"],
+        ["btnLamaPelayananLabMB"] = ["lama_pelayanan_lab"],
     };
 
     public static bool CanSeeTile(AuthenticatedUser user, string tileKey)

@@ -7,7 +7,7 @@ It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses
 
 ## Status
 
-The dashboard follows the original Khanza menu categories A–U. As of 20 November 2026, **246 of 1,224 dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Screen coverage and feature parity are tracked separately.
+The dashboard follows the original Khanza menu categories A–U. As of 20 November 2026, **268 of 1,224 dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Screen coverage and feature parity are tracked separately.
 
 | Menu | Area | Tiles with a screen |
 |------|------|--------|
@@ -16,7 +16,7 @@ The dashboard follows the original Khanza menu categories A–U. As of 20 Novemb
 | C | Attendance, staff management, K3, infection-control audits, patient safety (SKP) | 61/61 |
 | D | Pharmacy inventory, patient stock, prescription review, and reports | 75/75 |
 | E, F, G, I, K, M, S | Shared master data, patient deposits, and patient records | 9 |
-| J | ICD masters, visit reports, and diagnosis reports | 21/96 |
+| J | ICD masters, visit and diagnosis reports, and operational reports | 43/96 |
 | U | Application settings, tariffs, queue displays, and account administration | **30/30** |
 
 Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
