@@ -1,6 +1,6 @@
 # Status Menu J
 
-**43 dari 96 tile Menu J** membuka layar Avalonia. Tile mengikuti hak akses Khanza. Laporan baru membaca tabel Khanza dan menyediakan ekspor CSV.
+**68 dari 96 tile Menu J** membuka layar Avalonia. Tile mengikuti hak akses Khanza. Laporan baru membaca tabel Khanza dan menyediakan ekspor CSV.
 
 | Tile | Cakupan Avalonia |
 |---|---|
@@ -27,7 +27,27 @@
 | Lama Pelayanan Ralan, Lama Pelayanan Poli | Durasi dari registrasi sampai nota terbit atau pemeriksaan pertama. |
 | Lama Pelayanan Apotek, Radiologi, Lab PK, Lab PA, dan Lab MB | Durasi antar tahap resep atau permintaan pemeriksaan berdasarkan waktu yang tercatat. |
 | Lama Pelayanan CSSD | Durasi pengambilan, sterilisasi, dan pengembalian per sirkulasi. |
+| Obat Penyakit | Kelola pasangan kode penyakit, obat, dan referensi. |
+| RL 1.3 Ketersediaan Tempat Tidur | Kapasitas aktif, terisi, dan kosong per bangsal dan kelas. |
+| Ranap Per Ruang, Masuk Ruang Per Tahun, Daftar Pasien Ranap | Kunjungan keluar per bangsal, jumlah masuk per bulan, dan daftar pasien bulanan dengan kamar terakhir. |
+| Penyakit Ranap Per Cara Bayar | Jumlah diagnosis per penyakit dan cara bayar berdasarkan tanggal keluar. |
+| Sensus Harian Ralan, Status Data RM, Cek Entry Ralan | Sensus registrasi dengan diagnosis utama, keberadaan dokumen per kunjungan, dan volume entri per hari. |
+| Demografi Umur Kunjungan | Jumlah kunjungan berdasarkan umur yang tercatat, satuan umur, jenis kelamin, dan layanan. |
+| KIP Pasien Ralan dan Ranap | Daftar diagnosis utama. Ralan memakai tanggal registrasi dan ranap memakai tanggal keluar. Tabel silang umur dan mortalitas pada cetakan lama belum tersedia. |
+| Anggota TNI dan POLRI Dirawat, Daftar Pasien Ranap TNI dan POLRI | Daftar registrasi serta daftar rawat inap bulanan menurut data keanggotaan. |
+| Laporan Penyakit TNI dan POLRI, Jumlah Pengunjung Ralan TNI dan POLRI | Hitungan diagnosis atau kunjungan menurut jabatan anggota, dengan pasien lain dikelompokkan menurut cara bayar. |
+| RL 3.7 Radiologi, RL 3.8 Laboratorium | Rekap pemeriksaan menurut jenis dan jenis kelamin. Parameter hasil lab dihitung terpisah. |
+| Harian dan Bulanan Klasifikasi Pasien Ranap, Klasifikasi Pasien Per Ruang | Daftar penilaian dan rekap kategori minimal, parsial, dan total menurut tanggal atau bangsal. |
 
 Daftar rawat jalan dan rawat inap berfokus pada data kunjungan inti. Rincian diagnosis, filter wilayah, cetak format lama, dan mode filter tanggal keluar rawat inap masih di luar cakupan.
 
-Laporan diagnosis saat ini menyediakan rekap dasar. Tabel silang demografi dan format cetak lama belum tersedia. Masih ada 53 tile yang belum tersambung, termasuk surveilans, laporan RL, Lama Pelayanan Pasien, HAIs, BOR/ALOS, dan laporan khusus lainnya.
+Laporan diagnosis saat ini menyediakan rekap dasar. Tabel silang demografi dan format cetak lama belum tersedia.
+
+## 28 tile yang belum tersambung
+
+- Penyakit AFP & PD3I, Surveilans AFP & PD3I, Surveilans Ralan, dan Surveilans Ranap.
+- RL 3.2 Rawat Darurat, RL 3.3 Gigi dan Mulut, RL 3.4 Kebidanan, dan RL 3.6 Pembedahan.
+- RL 4A Morbiditas Ranap, RL 4B Morbiditas Ralan, RL 4A Sebab Morbiditas Ranap, dan RL 4B Sebab Morbiditas Ralan.
+- Lama Pelayanan Pasien, Harian HAIs, Harian HAIs 2, Bulanan HAIs, HAIs Per Kamar/Bangsal, Hitung BOR, dan Hitung ALOS.
+- Data TB, Skrining Pernapasan Ralan Per Tahun, Laporan Tahunan IRJ, dan Laporan Tahunan IGD.
+- Kepatuhan Kelengkapan Keselamatan Bedah, Laporan Tahunan Penolakan Anjuran Medis, Pemeriksaan Fisik Ralan Per Penyakit, Data Sasaran Usia Produktif, dan Data Sasaran Usia Lansia.

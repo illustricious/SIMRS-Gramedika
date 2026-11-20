@@ -4,6 +4,7 @@ public static partial class MenuJSpecs
 {
     public static IReadOnlyDictionary<string, MasterSpec> Masters { get; } = new Dictionary<string, MasterSpec>
     {
+        ["btnObatPenyakit"] = DiseaseDrugs(),
         ["btnICD9"] = new("ICD 9", "icd9",
             [new("kode", "Kode", MaxLen: 8, Key: true, Required: true),
              new("deskripsi_pendek", "Deskripsi Pendek", MaxLen: 40),
@@ -45,6 +46,30 @@ public static partial class MenuJSpecs
 
     public static IReadOnlyDictionary<string, ReportSpec> Reports { get; } = new Dictionary<string, ReportSpec>
     {
+        ["btnRl13KetersediaanKamar"] = BedAvailability(),
+        ["btnRanapPerRuang"] = WardDischarges(),
+        ["btnKunjunganBangsalTahun"] = AnnualWardAdmissions(),
+        ["btnDaftarPasienRanap"] = InpatientRegister(),
+        ["btnPenyakitRanapCaraBayar"] = InpatientDiagnosisByPayer(),
+        ["btnSensusHarianRalan"] = OutpatientDailyCensus(),
+        ["btnStatusDataRM"] = MedicalRecordStatus(),
+        ["btnCekEntryRalan"] = OutpatientEntryAudit(),
+        ["btnDemografiUmurKunjungan"] = VisitAgeDemographics(),
+        ["btnKIPPasienRalan"] = PrimaryDiagnosisIndex("KIP Pasien Ralan", "Ralan"),
+        ["btnKIPPasienRanap"] = PrimaryDiagnosisIndex("KIP Pasien Ranap", "Ranap"),
+        ["btnRl37"] = AncillaryActivity("RL 3.7 Radiologi", lab: false),
+        ["btnRl38"] = AncillaryActivity("RL 3.8 Laboratorium", lab: true),
+        ["btnHarianKlasifikasiPasienRanap"] = DailyInpatientClassification(),
+        ["btnBulananKlasifikasiPasienRanap"] = InpatientClassificationSummary("Bulanan Klasifikasi Pasien Ranap", byWard: false),
+        ["btnKlasifikasiPasienPerRuang"] = InpatientClassificationSummary("Klasifikasi Pasien Per Ruang", byWard: true),
+        ["btnAnggotaMiliterDirawat"] = ServiceMemberCare("Anggota TNI Dirawat", "tni", ReportPeriod.DateRange),
+        ["btnAnggotaPolriDirawat"] = ServiceMemberCare("Anggota POLRI Dirawat", "polri", ReportPeriod.DateRange),
+        ["btnDaftarPasienRanapTNI"] = ServiceMemberCare("Daftar Pasien Ranap TNI", "tni", ReportPeriod.Month),
+        ["btnDaftarPasienRanapPolri"] = ServiceMemberCare("Daftar Pasien Ranap POLRI", "polri", ReportPeriod.Month),
+        ["btnLaporanPenyakitTNI"] = ServiceMemberSummary("Laporan Penyakit TNI", "tni", diagnoses: true),
+        ["btnLaporanPenyakitPolri"] = ServiceMemberSummary("Laporan Penyakit POLRI", "polri", diagnoses: true),
+        ["btnJumlahPengunjungRalanTNI"] = ServiceMemberSummary("Jumlah Pengunjung Ralan TNI", "tni", diagnoses: false),
+        ["btnJumlahPengunjungRalanPolri"] = ServiceMemberSummary("Jumlah Pengunjung Ralan POLRI", "polri", diagnoses: false),
         ["btnRegistrasiPoliPerTanggal"] = ClinicRegistrations(),
         ["btnRekapMutasiBerkas"] = MedicalRecordMovement(),
         ["btnLamaPenyiapanRM"] = MedicalRecordPreparation(),
