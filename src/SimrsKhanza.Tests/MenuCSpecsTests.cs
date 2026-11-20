@@ -60,7 +60,7 @@ public class MenuCSpecsTests
 }
 
 /// <summary>
-/// Runs every menu [C] (and Lab Kesling) list/report query and checks every form column against the
+/// Runs the registered menu list/report queries and checks every form column against the
 /// configured database. Opt-in: set SIMRS_DB_SMOKE=1 (uses the saved connection profile).
 /// </summary>
 [Collection("DatabaseSettingsStore")] // DatabaseSettingsStoreTests swap the settings file path; don't overlap
@@ -83,7 +83,7 @@ public class MenuCSpecsDbSmokeTests
 
         MasterSpec[] lab = [LabKeslingMasters.Pelanggan, LabKeslingMasters.Sampel, LabKeslingMasters.Parameter, LabKeslingMasters.NilaiNormal];
         foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters)
-                     .Concat(SimrsKhanza.Data.MenuA.MenuASpecs.Tiles)
+                     .Concat(SimrsKhanza.Data.MenuA.MenuASpecs.Tiles).Concat(MenuJSpecs.Masters)
                      .Select(kv => (kv.Key, kv.Value))
                      .Append(("Sesi KFR", SimrsKhanza.Data.MenuA.MenuASpecs.SesiKfr))
                      .Concat(lab.Select(l => (l.Table, l))))
@@ -101,7 +101,8 @@ public class MenuCSpecsDbSmokeTests
             }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
         }
-        foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports))
+        foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports)
+                     .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports).Concat(MenuJSpecs.Reports))
         {
             try { await reports.RunAsync(r, "", DateTime.Today.AddMonths(-1), DateTime.Today, DateTime.Today.Year); }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }

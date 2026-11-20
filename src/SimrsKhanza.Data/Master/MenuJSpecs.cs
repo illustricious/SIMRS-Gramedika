@@ -4,6 +4,7 @@ public static partial class MenuJSpecs
 {
     public static IReadOnlyDictionary<string, MasterSpec> Masters { get; } = new Dictionary<string, MasterSpec>
     {
+        ["btnPenyakitPD3I"] = VaccinePreventableDiseases(),
         ["btnObatPenyakit"] = DiseaseDrugs(),
         ["btnICD9"] = new("ICD 9", "icd9",
             [new("kode", "Kode", MaxLen: 8, Key: true, Required: true),
@@ -46,6 +47,33 @@ public static partial class MenuJSpecs
 
     public static IReadOnlyDictionary<string, ReportSpec> Reports { get; } = new Dictionary<string, ReportSpec>
     {
+        ["btnHarianHAIs"] = InfectionDaily("Harian HAIs", microbiology: false),
+        ["btnHarianHAIs2"] = InfectionDaily("Harian HAIs 2", microbiology: true),
+        ["btnBulananHAIs"] = InfectionSummary("Bulanan HAIs", ward: false),
+        ["btnHAIsBangsal"] = InfectionSummary("HAIs Per Kamar/Bangsal", ward: true),
+        ["btnHitungBor"] = BedOccupancy(),
+        ["btnHitungAlos"] = AverageLengthOfStay(),
+        ["btnRl33"] = DentalActivity(),
+        ["btnRl36"] = SurgeryActivity(),
+        ["btnSkriningRalanPernapasanPerTahun"] = AnnualRespiratoryScreening(),
+        ["btnLaporanTahunanPenolakanAnjuranMedis"] = AnnualTreatmentRefusals(),
+        ["btnPemeriksaanFisikRalanPerPenyakit"] = PhysicalExamsByDisease(),
+        ["btnSurveilansPD3I"] = DiagnosisStatistics("Surveilans AFP & PD3I", "", pd3i: true),
+        ["btnSurveilansRalan"] = DiagnosisStatistics("Surveilans Ralan", "Ralan"),
+        ["btnSurveilansRanap"] = DiagnosisStatistics("Surveilans Ranap", "Ranap"),
+        ["btnRl4a"] = DiagnosisStatistics("RL 4A Morbiditas Ranap", "Ranap", external: false),
+        ["btnRl4b"] = DiagnosisStatistics("RL 4B Morbiditas Ralan", "Ralan", external: false),
+        ["btnRl4asebab"] = DiagnosisStatistics("RL 4A Sebab Morbiditas Ranap", "Ranap", external: true),
+        ["btnRl4bsebab"] = DiagnosisStatistics("RL 4B Sebab Morbiditas Ralan", "Ralan", external: true),
+        ["btnRl32"] = EmergencyActivity(),
+        ["btnRl34"] = ObstetricActivity(),
+        ["btnLaporanTahunanIRJ"] = AnnualRegistrations("Laporan Tahunan IRJ", emergency: false),
+        ["btnLaporanTahunanIGD"] = AnnualRegistrations("Laporan Tahunan IGD", emergency: true),
+        ["btnDataSITT"] = TuberculosisRegister(),
+        ["btnKepatuhanKelengkapanKeselamatanBedah"] = SurgicalDocumentation(),
+        ["btnDataSasaranUsiaProduktif"] = AnnualAgeTargets("Data Sasaran Usia Produktif", senior: false),
+        ["btnDataSasaranUsiaLansia"] = AnnualAgeTargets("Data Sasaran Usia Lansia", senior: true),
+        ["btnLamaPelayananPasien"] = PatientServiceDuration(),
         ["btnRl13KetersediaanKamar"] = BedAvailability(),
         ["btnRanapPerRuang"] = WardDischarges(),
         ["btnKunjunganBangsalTahun"] = AnnualWardAdmissions(),
