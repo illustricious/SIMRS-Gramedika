@@ -72,7 +72,7 @@ SIMRS_DB_SMOKE=1 dotnet test SimrsKhanza.sln
 
 ## Installers
 
-[v1.5.0 Windows AMD64 installer](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v1.5.0) is available as a self-contained `.exe` for Windows 10/11 x64.
+[SIMRS Gramedika 0.1.5-alpha.202611211516](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v0.1.5-alpha.202611211516) is available as a self-contained `.exe` for Windows 10/11 x64.
 
 `installer/build-installers.ps1` produces a self-contained Windows installer (Inno Setup) and a `.deb` package — see
 [installer/README.md](installer/README.md).

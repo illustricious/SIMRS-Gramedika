@@ -15,7 +15,7 @@
     <Description>Sistem Informasi Manajemen Rumah Sakit — SIMRS Gramedika</Description>
     <Company>RSU Gramedika</Company>
     <Copyright>RSU Gramedika</Copyright>
-    <Version>1.5.0</Version>
+    <Version>0.1.5-alpha</Version>
   </PropertyGroup>
 
   <ItemGroup>

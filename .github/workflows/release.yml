@@ -10,8 +10,8 @@ on:
         description: "Version (empty = <Version> from SimrsKhanza.UI.csproj)"
         required: false
   push:
-    # v1.5.0 is published separately with the locally built Windows AMD64 installer.
-    tags: ["v*", "!v1.5.0"]
+    # The 0.1.5 alpha series uses the locally built Windows AMD64 installer.
+    tags: ["v*", "!v0.1.5-alpha.*"]
 
 permissions:
   contents: write
