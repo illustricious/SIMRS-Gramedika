@@ -46,7 +46,9 @@ public class ReportView : PageView
         _rows = await _repo.RunAsync(_spec, _cari.Text, _period?.From ?? DateTime.Today, _period?.To ?? DateTime.Today,
             (int)(_tahun.Value ?? DateTime.Today.Year));
         Ui.Fill(_grid, _rows);
-        Ui.Info(StatusText, $"{_rows.Count} baris");
+        var totals = _spec.TotalColumns.Select(column =>
+            $"{_spec.Columns.First(c => c.Column == column).Header}: {_rows.Sum(row => row.D(column)):N2}");
+        Ui.Info(StatusText, string.Join(" | ", new[] { $"{_rows.Count} baris" }.Concat(totals)));
     });
 
     private async Task ExportAsync()

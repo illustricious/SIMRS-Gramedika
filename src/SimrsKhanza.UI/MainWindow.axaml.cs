@@ -404,6 +404,23 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (SimrsKhanza.Data.Master.MenuIReports.Reports.TryGetValue(key, out var reportI)
+            || SimrsKhanza.Data.Master.MenuIAdditionalReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIDrugReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIBillingReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIPaymentReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIClinicianReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIProcedureReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIPaymentPointReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIDailyReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIPatientFeesReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIAccountPaymentReports.Reports.TryGetValue(key, out reportI)
+            || SimrsKhanza.Data.Master.MenuIFinalReports.Reports.TryGetValue(key, out reportI))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportI));
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
     }
 

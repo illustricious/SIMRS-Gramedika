@@ -13,6 +13,7 @@ public enum ReportPeriod { DateRange, Month, Year, None }
 public record ReportSpec(string Title, string Sql, (string Column, string Header)[] Columns, ReportPeriod Period, string? Hint = null)
 {
     public string SearchWatermark { get; init; } = "Cari...";
+    public string[] TotalColumns { get; init; } = [];
 }
 
 public class ReportRepository(DatabaseSettings settings)
