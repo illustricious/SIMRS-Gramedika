@@ -17,19 +17,20 @@ public partial class LabMenuView : UserControl
 
     private static readonly (LabAction Action, string Icon, string Label)[] Tiles =
     [
-        (LabAction.PermintaanPk, "🧪", "Permintaan Lab PK"),
-        (LabAction.PermintaanPa, "🧪", "Permintaan Lab PA"),
-        (LabAction.PermintaanMb, "🧪", "Permintaan Lab MB"),
-        (LabAction.PeriksaPk, "🔬", "Periksa Lab PK"),
-        (LabAction.PeriksaPa, "🔬", "Periksa Lab PA"),
-        (LabAction.PeriksaMb, "🔬", "Periksa Lab MB"),
+        (LabAction.PermintaanPk, "btnPermintaanLab", "Permintaan Lab PK"),
+        (LabAction.PermintaanPa, "btnPermintaanLab", "Permintaan Lab PA"),
+        (LabAction.PermintaanMb, "btnPermintaanLab", "Permintaan Lab MB"),
+        (LabAction.PeriksaPk, "btnLaboratorium", "Periksa Lab PK"),
+        (LabAction.PeriksaPa, "btnLaboratorium", "Periksa Lab PA"),
+        (LabAction.PeriksaMb, "btnLaboratorium", "Periksa Lab MB"),
     ];
 
     public LabMenuView()
     {
         InitializeComponent();
 
-        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
+        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action),
+            key => DashboardIcons.Create(0, key));
     }
 
     public static KategoriLab KategoriFor(LabAction action) => action switch

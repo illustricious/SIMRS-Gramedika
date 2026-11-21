@@ -12,8 +12,8 @@
         Not ported: Nota, Cetak lembar permintaan, bridging Fuji/RIS import, foto/URL upload, jurnal akuntansi.
     -->
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Input Data Hasil Periksa Radiologi ] ::" FontWeight="Bold"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Input Data Hasil Periksa Radiologi"
+                   Margin="0,0,0,6" />
 
         <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
                 Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4">
@@ -55,7 +55,7 @@
         </Grid>
 
         <DataGrid Grid.Row="3" Name="PemeriksaanGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
-                  FontSize="11" RowHeight="26" CanUserResizeColumns="True" x:DataType="local:RadPick">
+                  CanUserResizeColumns="True" x:DataType="local:RadPick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="P" Width="36">
                     <DataTemplate x:DataType="local:RadPick">
@@ -116,7 +116,7 @@
                     <Button Content="🔍 Cari" Click="OnCariBhpClick" />
                 </StackPanel>
                 <DataGrid Grid.Row="1" Name="BhpGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
-                          FontSize="11" RowHeight="26" CanUserResizeColumns="True" x:DataType="local:RadBhpPick">
+                          CanUserResizeColumns="True" x:DataType="local:RadBhpPick">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="Jml" Width="0.5*" MinWidth="60">
                             <DataTemplate x:DataType="local:RadBhpPick">
@@ -155,22 +155,6 @@
     <UserControl.Styles>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
-        </Style>
-        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
-        <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
-<Style Selector="Button">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
-        </Style>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
         </Style>
     </UserControl.Styles>
 </UserControl>

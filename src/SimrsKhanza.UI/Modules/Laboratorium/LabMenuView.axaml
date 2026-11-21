@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Laboratorium.LabMenuView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasDiagnosticsPageBrush}">
 
     <!--
         Legacy Khanza's Laboratorium menu is itself a 6-icon submenu (Permintaan/
@@ -11,9 +11,10 @@
         single-purpose screen (LabPermintaanView / LabPeriksaView, parameterized
         by KategoriLab) instead of a form+grid+hasil screen all at once.
     -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Laboratorium ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Laboratorium" />
+        </Border>
 
         <Grid Grid.Row="1" Name="TilePanel" ColumnSpacing="8" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
 
@@ -23,17 +24,6 @@
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="Button.labTile">
-            <Setter Property="Height" Value="180" />
-            <Setter Property="Margin" Value="6" />
-            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="FontWeight" Value="Medium" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

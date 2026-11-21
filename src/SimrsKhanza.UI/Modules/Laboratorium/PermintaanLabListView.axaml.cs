@@ -46,7 +46,7 @@ public partial class PermintaanLabListView : UserControl
             LabCategory.PA => "Patologi Anatomi",
             _ => "Mikrobiologi & Bio Molekuler",
         };
-        this.FindControl<TextBlock>("TitleText")!.Text = $":: [ Data Permintaan Laboratorium {title} ] ::";
+        this.FindControl<TextBlock>("TitleText")!.Text = $"Data Permintaan Laboratorium {title}";
 
         string[] baseHead(string lokasi) =>
         [

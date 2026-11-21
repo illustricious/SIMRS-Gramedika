@@ -15,8 +15,8 @@
     -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="12">
 
-        <TextBlock Grid.Row="0" Text=":: [ Pasien — Identitas Pasien ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Pasien — Identitas Pasien"
+                   Margin="0,0,0,8" />
 
         <Grid Grid.Row="1" ColumnDefinitions="3*,16,2*">
 

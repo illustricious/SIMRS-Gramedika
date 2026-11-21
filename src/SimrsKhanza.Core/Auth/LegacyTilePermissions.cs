@@ -9,6 +9,7 @@ public static partial class LegacyTilePermissions
 {
     /// <summary>Permission key granted only to accounts from the legacy `admin` table.</summary>
     public const string AdminUtamaKey = "admin_utama";
+    public const string DatabaseBackupTile = "btnDatabaseBackup";
 
     /// <summary>
     /// Tiles whose akses flag has no `user` column — legacy sets them true only for

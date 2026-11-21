@@ -30,15 +30,17 @@ public class ReportView : PageView
         if (spec.Period == ReportPeriod.Year) { filters.Add(Ui.L("Tahun")); filters.Add(_tahun); }
         else if (spec.Period != ReportPeriod.None) filters.Add(_period = new PeriodPicker(spec.Period == ReportPeriod.Month,
             spec.Period == ReportPeriod.DateRange ? new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) : null));
-        filters.Add(Ui.Btn("🔎 Tampilkan", async (_, _) => await ReloadAsync()));
-        filters.Add(Ui.Btn("📄 Ekspor CSV", async (_, _) => await ExportAsync()));
+        var tampilkan = Ui.Btn("Tampilkan", async (_, _) => await ReloadAsync());
+        tampilkan.Classes.Add("accent");
+        filters.Add(tampilkan);
+        filters.Add(Ui.Btn("Ekspor CSV", async (_, _) => await ExportAsync()));
 
         var body = new DockPanel();
         var bar = Ui.Bar(filters.ToArray());
         DockPanel.SetDock(bar, Dock.Top);
         body.Children.Add(bar);
         body.Children.Add(_grid);
-        Build(spec.Title, body, spec.Hint ?? "Laporan dari tabel SIMRS Khanza yang sama.");
+        Build(spec.Title, body, spec.Hint);
     }
 
     public override async Task ReloadAsync() => await RunAsync(async () =>

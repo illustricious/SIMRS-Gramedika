@@ -2,98 +2,131 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Registrasi.RegistrasiView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
-    <!--
-        Layout cross-checked against TWO screenshots the user shared:
-        1. "Registrasi Periksa Hari Ini" — collapsible "Input Data" input
-           block (toggle = the green-circled icon), Simpan/Baru/Ganti/Hapus/
-           Cetak/Semua/Keluar action bar.
-        2. "Daftar Pasien Rawat Jalan" — a search row (No.Rawat/No.Reg/
-           No.R.M./Nama Pasien), two tabs ("Registrasi Awal" / "Rujukan
-           Internal Poli"), and a wide grid (Kode Dokter, Dokter Dituju,
-           No.RM, Pasien, Poliklinik, Penanggung Jawab, Alamat P.J.,
-           Hubungan P.J., Biaya Reg, Jenis Bayar, Status, No.Rawat, Tanggal,
-           Jam, No.Reg, Status Bayar, Stts Poli, No.Telp Pasien).
-        Both turned out to be the same screen (this one) at different zoom/
-        scroll — merged here instead of building two near-duplicate pages.
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12" RowSpacing="6">
 
-        Embedded into MainWindow's content area (not a separate Window), per
-        earlier feedback: "Registrasi" swaps the page in place. "Kembali ke
-        Menu" means back to the dashboard, not app exit.
-    -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+        <Border Classes="tegasHeading">
+            <StackPanel Spacing="1">
+                <TextBlock Classes="pageTitle" Text="Registrasi Periksa Hari Ini" />
+                <TextBlock Classes="pageSubtitle" Text="Rawat Jalan" />
+            </StackPanel>
+        </Border>
 
-        <TextBlock Grid.Row="0" Text=":: [ Registrasi / Daftar Pasien Rawat Jalan ] ::" FontSize="13"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+        <Border Grid.Row="1" Background="{DynamicResource ThemePanelBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6">
+          <StackPanel>
+            <Border Name="InputDataPanel" Padding="10,7"
+                    IsVisible="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}">
+              <StackPanel>
+              <Grid ColumnDefinitions="43*,57*" ColumnSpacing="16">
+                <Grid ColumnDefinitions="88,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
+                    <TextBlock Grid.Row="0" Text="No. Reg." VerticalAlignment="Center" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="InputNoRegBox" IsReadOnly="True" Width="96" HorizontalAlignment="Left" />
 
-        <StackPanel Grid.Row="1" Spacing="0">
-            <!-- Collapsible top input block -->
-            <Border Name="InputDataPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
-                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4" Margin="0,0,0,4">
-                <Grid ColumnDefinitions="Auto,*,24,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" >
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Rekam Medik :" VerticalAlignment="Center" Margin="0,2" />
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="InputNoRekamMedisBox" Width="160"
-                              HorizontalAlignment="Left" Margin="2" IsReadOnly="True" />
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Penanggung Jawab :" VerticalAlignment="Center" Margin="0,2" />
-                    <TextBox Grid.Row="0" Grid.Column="4" Name="InputPenanggungJawabBox" Margin="2" />
+                    <TextBlock Grid.Row="1" Text="No. Rawat" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Name="InputNoRawatBox" IsReadOnly="True" Width="170" HorizontalAlignment="Left" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Dr Dituju :" VerticalAlignment="Center" Margin="0,2" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" Name="InputDokterCombo" Margin="2" HorizontalAlignment="Stretch" />
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Alamat P.J. :" VerticalAlignment="Center" Margin="0,2" />
-                    <TextBox Grid.Row="1" Grid.Column="4" Name="InputAlamatPjBox" Margin="2" />
+                    <TextBlock Grid.Row="2" Text="Tgl. Reg." VerticalAlignment="Center" />
+                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                        <TextBox Name="InputTanggalBox" IsReadOnly="True" Width="100" HorizontalAlignment="Left" AutomationProperties.Name="Tanggal registrasi" />
+                        <TextBlock Text="Jam" VerticalAlignment="Center" />
+                        <TextBox Name="InputJamBox" IsReadOnly="True" Width="76" HorizontalAlignment="Left" AutomationProperties.Name="Jam registrasi" />
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Unit / Poli :" VerticalAlignment="Center" Margin="0,2" />
-                    <ComboBox Grid.Row="2" Grid.Column="1" Name="InputPoliCombo" Margin="2" HorizontalAlignment="Stretch" />
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Jenis Bayar :" VerticalAlignment="Center" Margin="0,2" />
-                    <ComboBox Grid.Row="2" Grid.Column="4" Name="InputPenjabCombo" Margin="2" HorizontalAlignment="Stretch" />
+                    <TextBlock Grid.Row="3" Text="Dr. Dituju" VerticalAlignment="Center" />
+                    <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="67,*" ColumnSpacing="6">
+                        <TextBox IsReadOnly="True" AutomationProperties.Name="Kode dokter"
+                                 Text="{ReflectionBinding #InputDokterCombo.SelectedItem.KodeDokter, FallbackValue=''}" />
+                        <ComboBox Grid.Column="1" Name="InputDokterCombo" HorizontalAlignment="Stretch"
+                                  AutomationProperties.Name="Dokter dituju" />
+                    </Grid>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Hubungan P.J. :" VerticalAlignment="Center" Margin="0,2" />
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="InputHubunganBox" Margin="2" />
-
-                    <TextBlock Grid.Row="4" Grid.Column="0" Name="InputStatusText" Grid.ColumnSpan="5"
-                               TextWrapping="Wrap" Margin="4" Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    <TextBlock Grid.Row="4" Text="Unit" VerticalAlignment="Center" />
+                    <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="58,*,Auto,Auto" ColumnSpacing="6">
+                        <TextBox IsReadOnly="True" AutomationProperties.Name="Kode unit"
+                                 Text="{ReflectionBinding #InputPoliCombo.SelectedItem.KodePoli, FallbackValue=''}" />
+                        <ComboBox Grid.Column="1" Name="InputPoliCombo" HorizontalAlignment="Stretch" AutomationProperties.Name="Unit / Poli" />
+                        <TextBlock Grid.Column="2" Text="Biaya" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="3" Name="InputBiayaBox" IsReadOnly="True" Width="88" HorizontalAlignment="Left" AutomationProperties.Name="Biaya registrasi tercatat" />
+                    </Grid>
                 </Grid>
-            </Border>
 
-            <!-- Collapse/expand toggle, mirrors the green-circled icon in the user's screenshot -->
-            <ToggleButton Name="InputDataToggle" IsChecked="False" Click="OnToggleInputData"
-                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
-                <StackPanel Orientation="Horizontal" Spacing="4">
-                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
-                    <TextBlock Text=":: Input Data" FontStyle="Italic"
-                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                <Grid Grid.Column="1" ColumnDefinitions="111,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
+                    <TextBlock Grid.Row="0" Text="No. Rekam Medik" VerticalAlignment="Center" />
+                    <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*" ColumnSpacing="6">
+                        <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" AutomationProperties.Name="Nomor rekam medis" />
+                        <TextBox Grid.Column="1" Name="InputNamaPasienBox" IsReadOnly="True" AutomationProperties.Name="Nama pasien" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" Text="Penanggung Jawab" VerticalAlignment="Center" />
+                    <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto,88" ColumnSpacing="6">
+                        <TextBox Name="InputPenanggungJawabBox" AutomationProperties.Name="Penanggung jawab" />
+                        <TextBlock Grid.Column="1" Text="Hubungan" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="2" Name="InputHubunganBox" AutomationProperties.Name="Hubungan penanggung jawab" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="2" Text="Alamat P.J." VerticalAlignment="Center" />
+                    <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto,88" ColumnSpacing="6">
+                        <TextBox Name="InputAlamatPjBox" AutomationProperties.Name="Alamat penanggung jawab" />
+                        <TextBlock Grid.Column="1" Text="Status" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="2" Name="InputStatusDaftarBox" IsReadOnly="True" AutomationProperties.Name="Status pendaftaran" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="3" Text="Jenis Bayar" VerticalAlignment="Center" />
+                    <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,Auto,108" ColumnSpacing="6">
+                        <ComboBox Name="InputPenjabCombo" HorizontalAlignment="Stretch" AutomationProperties.Name="Jenis bayar" />
+                        <TextBlock Grid.Column="1" Text="No. Kartu" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="2" Name="InputNoKartuBox" IsReadOnly="True" AutomationProperties.Name="Nomor kartu" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="4" Text="Asal Rujukan" VerticalAlignment="Center" />
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="InputAsalRujukanBox" IsReadOnly="True" AutomationProperties.Name="Asal rujukan" />
+                </Grid>
+              </Grid>
+              <TextBlock Name="InputStatusText" Classes="registrationStatus" TextWrapping="Wrap" Margin="0,3,0,0" IsVisible="False" />
+              </StackPanel>
+            </Border>
+            <ToggleButton Name="InputDataToggle" Classes="inputData" IsChecked="False" Click="OnInputDataClick"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                          AutomationProperties.Name="Input Data" Padding="12,4">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Path Width="12" Height="8" Stretch="Uniform" StrokeThickness="1.7"
+                          StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                          Stroke="{DynamicResource ThemeIconBrush}" Data="M2,2 L7,7 L12,2" />
+                    <TextBlock Text="Input Data" VerticalAlignment="Center" />
                 </StackPanel>
             </ToggleButton>
-        </StackPanel>
+          </StackPanel>
+        </Border>
 
         <!-- Tabs: "Registrasi Awal" (implemented) / "Rujukan Internal Poli" (deferred) -->
-        <TabControl Grid.Row="2">
+        <TabControl Grid.Row="2" Background="{DynamicResource ThemePanelBrush}" Padding="4,0,4,4">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="Registrasi Awal" FontSize="12" FontWeight="Medium"
                                Foreground="{DynamicResource ThemeTextBrush}" />
                 </TabItem.Header>
-                <DataGrid Name="RegistrasiGrid" Margin="0,8" FontSize="11" RowHeight="22"
+                <DataGrid Name="RegistrasiGrid" Classes="compactColumns" Margin="0,2,0,0"
                           AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True"
-                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal" HeadersVisibility="Column"
                           x:DataType="data:RegistrasiListItem" SelectionChanged="OnRegistrasiSelected">
                     <!-- Star-sized (proportional) instead of fixed pixel widths — columns now
                          auto-fill whatever width the grid has (no horizontal scroll / manual
                          resize needed to "see everything" on a normal window), while keeping
                          roughly the same relative proportions as before. Still user-resizable. -->
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="No.Reg" Binding="{Binding NoReg}" Width="0.5*" MinWidth="40" />
-                        <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.1*" MinWidth="95" />
-                        <DataGridTextColumn Header="Tanggal" Binding="{Binding TanggalRegistrasi}" Width="0.75*" MinWidth="70" />
-                        <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="0.55*" MinWidth="55" />
+                        <DataGridTextColumn Header="No. Reg" Binding="{Binding NoReg}" Width="0.5*" MinWidth="72" />
+                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="1.1*" MinWidth="148" />
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding TanggalRegistrasi}" Width="0.75*" MinWidth="95" />
+                        <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="0.55*" MinWidth="66" />
                         <DataGridTextColumn Header="Kode Dokter" Binding="{Binding KodeDokter}" Width="0.7*" MinWidth="60" />
-                        <DataGridTextColumn Header="Dokter Dituju" Binding="{Binding NamaDokter}" Width="1.3*" MinWidth="100" />
+                        <DataGridTextColumn Header="Dokter Dituju" Binding="{Binding NamaDokter}" Width="1.3*" MinWidth="140" />
                         <DataGridTextColumn Header="Nomer RM" Binding="{Binding NoRekamMedis}" Width="0.65*" MinWidth="60" />
-                        <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" Width="1.3*" MinWidth="100" />
+                        <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" FontWeight="SemiBold" Width="1.3*" MinWidth="136" />
                         <DataGridTextColumn Header="J.K." Binding="{Binding JenisKelamin}" Width="0.3*" MinWidth="30" />
                         <DataGridTextColumn Header="Umur" Binding="{Binding Umur}" Width="0.5*" MinWidth="45" />
-                        <DataGridTextColumn Header="Poliklinik" Binding="{Binding NamaPoli}" Width="1.0*" MinWidth="80" />
+                        <DataGridTextColumn Header="Poliklinik" Binding="{Binding NamaPoli}" Width="1.0*" MinWidth="128" />
                         <DataGridTextColumn Header="Jenis Bayar" Binding="{Binding JenisBayar}" Width="0.8*" MinWidth="70" />
                         <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding PenanggungJawab}" Width="1.0*" MinWidth="90" />
                         <DataGridTextColumn Header="Alamat P.J." Binding="{Binding AlamatPj}" Width="1.0*" MinWidth="90" />
@@ -114,66 +147,48 @@
                     <TextBlock Text="Rujukan Internal Poli" FontSize="12" FontWeight="Medium"
                                Foreground="{DynamicResource ThemeTextBrush}" />
                 </TabItem.Header>
-                <TextBlock Text="Belum diimplementasikan di tahap scaffold ini." Margin="16"
-                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                <TextBlock Text="Rujukan internal poli belum tersedia." Classes="pageSubtitle" Margin="16" />
             </TabItem>
         </TabControl>
 
-        <!-- Bottom filter + action bar -->
-        <StackPanel Grid.Row="3" Spacing="8">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
-                <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <CalendarDatePicker Grid.Column="1" Name="PeriodeFromPicker" />
-                <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
-                <CalendarDatePicker Grid.Column="3" Name="PeriodeToPicker" />
-                <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <TextBox Grid.Column="6" Name="KeyWordBox" />
-                <TextBlock Grid.Column="7" Name="RecordCountText" Text="Record : 0"
-                           VerticalAlignment="Center" Margin="12,0,0,0"
-                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
-            </Grid>
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <!-- Simpan/Baru moved into "Input Data" above (where the fields
-                     actually are) — real writes now, see OnInputSimpanClick.
-                     Ganti/Hapus (edit/delete an EXISTING registration) stay
-                     placeholder: riskier to get right against real patient
-                     data without a clearer spec, deliberately deferred. -->
-                <Button Name="InputSimpanButton" Content="💾 Simpan" Click="OnInputSimpanClick" />
-                <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
-                <Button Content="🩺 Periksa" Click="OnPeriksaClick" />
-                <Button Content="🖨 Cetak" Click="OnCetakClick" />
-                <Button Content="🔎 Cari / Semua" Click="OnSearchClick" />
-                <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" HorizontalAlignment="Right" />
+        <Border Grid.Row="3" Background="{DynamicResource ThemePanelBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="9,6">
+            <StackPanel Spacing="4">
+                <Grid ColumnDefinitions="72,*,Auto,*">
+                    <TextBlock Text="Dokter" Classes="pageSubtitle" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="1" Name="FilterDokterCombo" HorizontalAlignment="Stretch"
+                              PlaceholderText="Semua dokter" AutomationProperties.Name="Filter dokter" />
+                    <TextBlock Grid.Column="2" Text="Unit" Classes="pageSubtitle"
+                               Margin="20,0,12,0" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="3" Name="FilterPoliCombo" HorizontalAlignment="Stretch"
+                              PlaceholderText="Semua unit" AutomationProperties.Name="Filter unit" />
+                </Grid>
+                <Grid ColumnDefinitions="72,Auto,Auto,Auto,Auto,*,Auto">
+                    <TextBlock Text="Periode" Classes="pageSubtitle" VerticalAlignment="Center" />
+                    <CalendarDatePicker Grid.Column="1" Name="PeriodeFromPicker" AutomationProperties.Name="Dari tanggal" />
+                    <TextBlock Grid.Column="2" Text="s.d." Classes="pageSubtitle" VerticalAlignment="Center" Margin="8,0" />
+                    <CalendarDatePicker Grid.Column="3" Name="PeriodeToPicker" AutomationProperties.Name="Sampai tanggal" />
+                    <TextBlock Grid.Column="4" Text="Kata kunci" Classes="pageSubtitle" VerticalAlignment="Center" Margin="16,0,8,0" />
+                    <TextBox Grid.Column="5" Name="KeyWordBox" PlaceholderText="No. rawat, no. RM, atau nama pasien"
+                             AutomationProperties.Name="Cari registrasi" />
+                    <Button Grid.Column="6" Content="Cari" Classes="accent" Click="OnSearchClick" Margin="8,0,0,0" />
+                </Grid>
+                <Grid ColumnDefinitions="*,Auto">
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
+                        <Button Name="InputSimpanButton" Content="Simpan" Classes="accent"
+                                IsEnabled="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}"
+                                Click="OnInputSimpanClick" />
+                        <Button Content="Hapus" Foreground="{DynamicResource ThemeAccentBrush}" Click="OnPlaceholderClick" />
+                        <Button Content="Cetak" Click="OnCetakClick" />
+                        <Button Content="Semua" Click="OnSemuaClick" />
+                        <Button Content="Periksa" Click="OnPeriksaClick" />
+                        <TextBlock Name="RecordCountText" Text="0 registrasi" Classes="pageSubtitle"
+                                   Margin="4,0,0,0" VerticalAlignment="Center" />
+                    </WrapPanel>
+                    <Button Grid.Column="1" Content="Kembali ke Menu" Click="OnBackClick" />
+                </Grid>
             </StackPanel>
-        </StackPanel>
+        </Border>
     </Grid>
 
-    <UserControl.Styles>
-        <Style Selector="Button.accentText">
-            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
-        </Style>
-        <!-- Scoped to this screen only (NOT app-wide — an earlier attempt at a
-             global zoom via LayoutTransformControl on MainWindow was reverted
-             per feedback: shrank everything, not just this admittedly dense
-             form+grid screen). Default theme TextBlock/TextBox sizes felt
-             oversized given how many fields/columns this screen packs in. -->
-        <Style Selector="TextBlock">
-            <Setter Property="FontSize" Value="11" />
-        </Style>
-        <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
-<Style Selector="Button">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
-        </Style>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
-    </UserControl.Styles>
 </UserControl>

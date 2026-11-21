@@ -5,52 +5,35 @@
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
         x:Class="SimrsKhanza.UI.MainWindow"
         Title="SIMRS Gramedika"
-        Icon="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png"
+        Icon="avares://SimrsKhanza.UI/Assets/app.ico"
         Width="1200" Height="760"
+        MinWidth="800" MinHeight="540"
         WindowState="Maximized"
         WindowDecorations="BorderOnly"
         Background="{DynamicResource ThemePrimaryBrush}">
 
-    <!--
-        Shell layout mirrors the legacy src/simrskhanza/frmUtama.java screen:
-        a two-row shortcut toolbar (top row = secondary/admin menus, second row
-        = direct-access feature shortcuts incl. "Menu"), a content area that
-        shows a hero/welcome panel until "Menu" is clicked (then an icon-grid
-        dashboard, data-driven from IMenuPermissionService), and a status bar.
-        Color palette sampled from rsugramedika10.com (the user's reference):
-        deep blue primary, red accent, white/gray via App.axaml ThemeDictionaries.
-        See docs/audit/PLANNING_APLIKASI.md for the full rationale.
-
-        NOTE: an earlier revision wrapped this whole shell in a
-        LayoutTransformControl at 85% scale to shrink everything app-wide —
-        REVERTED per user feedback ("jangan jadi kecil banget semua
-        tampilannya"), they only meant the Registrasi grid's font felt too
-        large, not a global zoom-out. Font-size tuning now stays scoped to the
-        specific screen that needs it (see RegistrasiView.axaml) instead of a
-        blanket transform on the whole app.
-    -->
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
         <!-- Row 0: top shortcut bar — secondary/admin menus. Doubles as the window
              title bar (client area is extended, system chrome is off): the empty
              space is the drag handle and the minimize/maximize/close buttons sit
              on the same blue strip, per user request. -->
-        <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource ThemePrimaryBrush}"
+        <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource TegasNavigationBrush}" MinHeight="42"
                 PointerPressed="OnTitleBarPointerPressed">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Image Source="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png" Width="28" Height="28" Margin="10,0,4,0" RenderOptions.BitmapInterpolationMode="HighQuality"
+                    <Image Source="{StaticResource GramedikaMark}" Width="28" Height="28" Margin="14,0,8,0"
                            VerticalAlignment="Center" />
                     <Button Classes="shortcut" Content="Program" Click="OnTopShortcutClick" />
                     <Button Classes="shortcut" Content="Presensi Pegawai" Click="OnTopShortcutClick" />
                     <Button Classes="shortcut" Content="Informasi" Click="OnTopShortcutClick" />
                     <Button Classes="shortcut" Content="Anjungan &amp; Antrian" Click="OnTopShortcutClick" />
                     <Button Classes="shortcut" Content="Tentang Program" Click="OnTopShortcutClick" />
-                    <Border Width="1" Background="#2A4FA8" Margin="4,8" />
-                    <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="🌙 Mode Gelap"
+                    <Border Width="1" Background="#627B9F" Margin="6,9" />
+                    <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="Mode Gelap"
                                   Click="OnThemeToggleClick" HorizontalAlignment="Right" />
                 </StackPanel>
-                <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#B9C6E8" FontSize="12"
+                <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#E1EBFA" FontSize="12" FontWeight="SemiBold"
                            HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
                 <!-- BorderOnly keeps the thin OS frame (edge resize + snap work); the caption
                      buttons are our own so they sit on the blue header. Close here quits the
@@ -64,50 +47,105 @@
         </Border>
 
         <!-- Row 1: feature shortcuts (direct access, mirrors legacy second toolbar row) -->
-        <Border Grid.Row="1" Background="{DynamicResource ThemeSurfaceBrush}"
+        <Border Grid.Row="1" Background="{DynamicResource ThemePanelBrush}"
                 BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal">
-                <Button Name="MenuShortcut" Classes="shortcut2" Content="☰  Menu" Click="OnMenuShortcutClick" />
-                <Button Classes="shortcut2" Content="Registrasi" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="IGD/UGD" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Laboratorium" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Radiologi" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Farmasi" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Rawat Inap" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2" Content="Rawat Jalan" Click="OnFeatureShortcutClick" />
-                <Button Classes="shortcut2 accent" Content="Keluar" Click="OnExitClick" HorizontalAlignment="Right" />
-            </StackPanel>
+            <WrapPanel Name="FeatureShortcuts" Orientation="Horizontal" Margin="12,6" ItemSpacing="3">
+                <Button Name="MenuShortcut" Classes="shortcut2" Tag="Menu Utama" AutomationProperties.Name="Menu Utama" Click="OnMenuShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M3,3 H9 V9 H3 Z M13,3 H19 V9 H13 Z M3,13 H9 V19 H3 Z M13,13 H19 V19 H13 Z" />
+                        <TextBlock Text="Menu Utama" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Registrasi" AutomationProperties.Name="Registrasi" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M8,5 H5 V21 H19 V5 H16 M8,3 H16 V7 H8 Z M8,12 H16 M8,16 H13" />
+                        <TextBlock Text="Registrasi" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="IGD/UGD" AutomationProperties.Name="IGD/UGD" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M3,7 H21 V20 H3 Z M8,7 V4 H16 V7 M12,10 V17 M8.5,13.5 H15.5" />
+                        <TextBlock Text="IGD/UGD" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Laboratorium" AutomationProperties.Name="Laboratorium" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M9,4 H15 M10,4 V10 L5,18 Q4,20 7,20 H17 Q20,20 19,18 L14,10 V4 M8,15 H16" />
+                        <TextBlock Text="Laboratorium" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Radiologi" AutomationProperties.Name="Radiologi" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M3,4 H21 V17 H3 Z M8,21 H16 M12,17 V21 M6,11 H10 L12,8 L14,14 L16,11 H18" />
+                        <TextBlock Text="Radiologi" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Farmasi" AutomationProperties.Name="Farmasi" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M4,9 L9,4 A4,4 0 0 1 15,4 L20,9 A4,4 0 0 1 20,15 L15,20 A4,4 0 0 1 9,20 L4,15 A4,4 0 0 1 4,9 Z M7,7 L17,17" />
+                        <TextBlock Text="Farmasi" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Rawat Inap" AutomationProperties.Name="Rawat Inap" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M3,7 V20 M21,20 V15 Q21,12 18,12 H10 V17 M3,17 H21 M6,12 A2,2 0 1 0 6,8 A2,2 0 0 0 6,12 Z" />
+                        <TextBlock Text="Rawat Inap" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Classes="shortcut2" Tag="Rawat Jalan" AutomationProperties.Name="Rawat Jalan" Click="OnFeatureShortcutClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M12,12 A3,3 0 1 0 12,6 A3,3 0 0 0 12,12 M5,20 V18 C5,15 8,14 12,14 C16,14 19,15 19,18 V20" />
+                        <TextBlock Text="Rawat Jalan" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Border Width="1" Height="20" Margin="4,0" VerticalAlignment="Center" Background="{DynamicResource ThemeBorderBrush}" />
+                <Button Classes="shortcut2 logout" Tag="Keluar" AutomationProperties.Name="Keluar" Click="OnExitClick">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stretch="Uniform" StrokeThickness="1.6"
+                              StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                              Stroke="{ReflectionBinding $parent[Button].Foreground}" Data="M10,4 H4 V20 H10 M8,12 H20 M16,8 L20,12 L16,16" />
+                        <TextBlock Text="Keluar" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </WrapPanel>
         </Border>
 
-        <!-- Row 2: content area — hero panel by default, dashboard grid after "Menu" -->
+        <!-- Shared dashboard and feature area. -->
         <Grid Grid.Row="2" Name="ContentHost" Background="{DynamicResource ThemeBackgroundBrush}">
 
-            <!-- Hero / welcome panel (default view, mirrors the legacy splash-like home screen) -->
-            <StackPanel Name="HeroPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8">
-                <Image Source="avares://SimrsKhanza.UI/Assets/SIMRS Gramedika Hospital System Icon.png" Width="128" Height="128" RenderOptions.BitmapInterpolationMode="HighQuality"
-                       Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,8" />
-                <TextBlock Text="SIMRS GRAMEDIKA" FontSize="40" FontWeight="Bold"
-                           Foreground="{DynamicResource ThemePrimaryBrush}" HorizontalAlignment="Center" />
-                <TextBlock Text="Rewrite scaffold — C# + Avalonia UI" FontSize="14"
-                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" HorizontalAlignment="Center" />
-                <TextBlock Text="Klik &quot;Menu&quot; di toolbar untuk membuka daftar modul." FontSize="13"
-                           Foreground="{DynamicResource ThemeTextSecondaryBrush}" HorizontalAlignment="Center"
-                           Margin="0,24,0,0" />
-            </StackPanel>
-
-            <!-- Menu / dashboard panel (shown after clicking "Menu") -->
-            <Grid Name="MenuPanel" IsVisible="False" RowDefinitions="Auto,*" Margin="16">
-                <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,0,0,12">
-                    <TextBlock Grid.Column="0" Text="Tampilkan Menu:" VerticalAlignment="Center"
-                               Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,8,0" />
-                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Left" MinWidth="520" MaxDropDownHeight="520" />
-                    <TextBox Grid.Column="2" Name="MenuSearchBox" PlaceholderText="🔎 Cari menu di semua kategori..." Width="280" />
-                    <TextBlock Grid.Column="3" Name="MenuCountText" VerticalAlignment="Center" Margin="12,0,0,0" FontSize="11"
-                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+            <Grid Name="MenuPanel" IsVisible="False" RowDefinitions="Auto,Auto,*" Margin="24,20">
+                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
+                    <TextBlock Text="Menu Utama" Classes="pageTitle" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" Name="MenuSearchBox" PlaceholderText="Cari menu di semua kategori"
+                             Width="296" MinHeight="36" AutomationProperties.Name="Cari menu di semua kategori" />
                 </Grid>
-                <ScrollViewer Grid.Row="1" Name="DashboardScroll">
-                    <UniformGrid Name="DashboardPanel" Columns="5" />
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,12">
+                    <TextBlock Text="Kategori" Classes="pageSubtitle" VerticalAlignment="Center" Margin="0,0,12,0" />
+                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Stretch"
+                              MaxDropDownHeight="520" AutomationProperties.Name="Kategori menu" />
+                    <TextBlock Grid.Column="2" Name="MenuCountText" Classes="pageSubtitle" VerticalAlignment="Center" Margin="16,0,0,0" />
+                </Grid>
+                <ScrollViewer Grid.Row="2" Name="DashboardScroll">
+                    <UniformGrid Name="DashboardPanel" Columns="5" VerticalAlignment="Top" />
                 </ScrollViewer>
+                <TextBlock Grid.Row="2" Name="EmptyMenuText" Classes="pageSubtitle" VerticalAlignment="Top" Margin="0,24,0,0"
+                           IsVisible="False" />
             </Grid>
 
             <!-- Feature page host — single-window navigation: clicking a feature
@@ -123,8 +161,6 @@
                            Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Name="ClockText" Text=""
                            Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" Margin="24,0,0,0" />
-                <TextBlock Grid.Column="3" Text="SIMRS Gramedika — rewrite C#/Avalonia"
-                           Foreground="#B9C6E8" FontSize="11" VerticalAlignment="Center" />
             </Grid>
         </Border>
 
@@ -136,12 +172,12 @@
         <Style Selector="Button.shortcut, ToggleButton.shortcut">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />
-            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Padding" Value="9,4" />
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="CornerRadius" Value="5" />
         </Style>
         <Style Selector="Button.shortcut:pointerover /template/ ContentPresenter, ToggleButton.shortcut:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#2A4FA8" />
+            <Setter Property="Background" Value="#31588A" />
         </Style>
         <Style Selector="Button.caption">
             <Setter Property="Background" Value="Transparent" />
@@ -155,7 +191,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
         <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#2A4FA8" />
+            <Setter Property="Background" Value="#31588A" />
             <Setter Property="Foreground" Value="White" />
         </Style>
         <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
@@ -164,28 +200,43 @@
         <Style Selector="Button.shortcut2">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="Padding" Value="14,10" />
-            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="Medium" />
-            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="CornerRadius" Value="5" />
         </Style>
-        <Style Selector="Button.shortcut2.accent">
+        <Style Selector="Button.shortcut2.logout">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="Button.shortcut2.current">
+            <Setter Property="BorderThickness" Value="0,0,0,2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="Button.shortcut2:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeBorderBrush}" />
         </Style>
         <Style Selector="Button.menuTile">
-            <Setter Property="Width" Value="150" />
-            <Setter Property="Height" Value="110" />
-            <Setter Property="Margin" Value="8" />
-            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Margin" Value="0,0,10,10" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="MinHeight" Value="112" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Top" />
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="CornerRadius" Value="8" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="Button.menuTile:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeIconBrush}" />
         </Style>
     </Window.Styles>
 </Window>

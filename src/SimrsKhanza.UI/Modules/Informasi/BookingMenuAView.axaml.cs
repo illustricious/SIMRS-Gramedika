@@ -12,7 +12,7 @@ public partial class BookingMenuAView : UserControl
     public BookingMenuAView(string jenis)
     {
         InitializeComponent(); _jenis = jenis;
-        this.FindControl<TextBlock>("Judul")!.Text = $":: [ {jenis} ] ::";
+        this.FindControl<TextBlock>("Judul")!.Text = $"{jenis}";
         this.FindControl<CalendarDatePicker>("Dari")!.SelectedDate = DateTime.Today;
         this.FindControl<CalendarDatePicker>("Sampai")!.SelectedDate = DateTime.Today;
     }

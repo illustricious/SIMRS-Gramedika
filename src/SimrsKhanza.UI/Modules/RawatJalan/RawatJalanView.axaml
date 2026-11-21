@@ -15,8 +15,8 @@
     -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="12">
 
-        <TextBlock Grid.Row="0" Text=":: [ Rawat Jalan — Pemeriksaan Dokter ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan — Pemeriksaan Dokter"
+                   Margin="0,0,0,8" />
 
         <Grid Grid.Row="1" ColumnDefinitions="2*,16,3*">
 
@@ -24,7 +24,7 @@
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Text="Antrian Pemeriksaan" FontWeight="Medium" Margin="0,0,0,4"
                            Foreground="{DynamicResource ThemeTextBrush}" />
-                <DataGrid FontSize="11" RowHeight="22" Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
                           GridLinesVisibility="All" HeadersVisibility="Column"
                           x:DataType="data:RawatJalanQueueItem"
                           SelectionChanged="OnQueueSelectionChanged">
@@ -104,8 +104,6 @@
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
-        <Style Selector="DataGridColumnHeader"><Setter Property="FontSize" Value="11" /><Setter Property="MinHeight" Value="24" /><Setter Property="Padding" Value="6,2" /></Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

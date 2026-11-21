@@ -10,8 +10,8 @@
         The RIS bridging buttons (FUJI, Care Stream) and barcode/lembar printing are not ported.
     -->
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Data Permintaan Radiologi ] ::" FontWeight="Bold"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Data Permintaan Radiologi"
+                   Margin="0,0,0,6" />
 
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
             <TextBlock Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,4" />
@@ -53,11 +53,11 @@
                 <TabControl Name="RalanSubTabs">
                     <TabItem Header="Data Permintaan">
                         <DataGrid Name="RalanDataGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
-                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                                  HeadersVisibility="Column" CanUserResizeColumns="True" />
                     </TabItem>
                     <TabItem Header="Item Permintaan">
                         <DataGrid Name="RalanItemGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
-                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                                  HeadersVisibility="Column" CanUserResizeColumns="True" />
                     </TabItem>
                 </TabControl>
             </TabItem>
@@ -65,11 +65,11 @@
                 <TabControl Name="RanapSubTabs">
                     <TabItem Header="Data Permintaan">
                         <DataGrid Name="RanapDataGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
-                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                                  HeadersVisibility="Column" CanUserResizeColumns="True" />
                     </TabItem>
                     <TabItem Header="Item Permintaan">
                         <DataGrid Name="RanapItemGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
-                                  HeadersVisibility="Column" FontSize="11" RowHeight="22" CanUserResizeColumns="True" />
+                                  HeadersVisibility="Column" CanUserResizeColumns="True" />
                     </TabItem>
                 </TabControl>
             </TabItem>
@@ -91,24 +91,6 @@
     <UserControl.Styles>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
-        </Style>
-        <Style Selector="TextBlock">
-            <Setter Property="FontSize" Value="11" />
-        </Style>
-        <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
-<Style Selector="Button">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
-        </Style>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
         </Style>
     </UserControl.Styles>
 </UserControl>

@@ -5,10 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <!-- .exe/window icon — generated from the user-supplied logo.png (see
-         docs/audit/HANDOVER.md). Win32 .exe icons need .ico, not .png
-         directly, so Assets/app.ico is a 256x256 PNG-compressed ICO
-         generated from it. -->
+    <!-- Windows executable icon generated at multiple sizes from Assets/app.svg. -->
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
 
     <!-- Product identity shown in Windows file properties / installers. AssemblyName stays
@@ -18,7 +15,7 @@
     <Description>Sistem Informasi Manajemen Rumah Sakit — SIMRS Gramedika</Description>
     <Company>RSU Gramedika</Company>
     <Copyright>RSU Gramedika</Copyright>
-    <Version>0.1.0-alpha</Version>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

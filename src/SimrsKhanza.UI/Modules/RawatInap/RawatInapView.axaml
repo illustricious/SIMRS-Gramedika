@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.RawatInap.RawatInapView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Mirrors legacy "Daftar Pasien Rawat Inap" (DlgKamarInap): filter on top,
@@ -12,9 +12,10 @@
         Pindah and Ganti open a small action panel above the grid (the legacy
         opens modal dialogs; this app stays single-window).
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Daftar Pasien Rawat Inap ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Daftar Pasien Rawat Inap" />
+        </Border>
 
         <Grid Grid.Row="1" ColumnDefinitions="Auto,170,6,110,6,220,40,Auto,Auto" Margin="0,0,0,6">
             <TextBlock Grid.Column="0" Text="No. Rawat :" VerticalAlignment="Center" Margin="0,0,6,0" />
@@ -72,7 +73,7 @@
             </StackPanel>
         </Border>
 
-        <DataGrid FontSize="11" RowHeight="22" Grid.Row="3" Name="RawatInapGrid" AutoGenerateColumns="False" IsReadOnly="True"
+        <DataGrid Grid.Row="3" Name="RawatInapGrid" AutoGenerateColumns="False" IsReadOnly="True"
                   GridLinesVisibility="All" HeadersVisibility="Column" CanUserResizeColumns="True"
                   x:DataType="data:RawatInapListItem">
             <DataGrid.Columns>
@@ -136,8 +137,6 @@
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
-        <Style Selector="DataGridColumnHeader"><Setter Property="FontSize" Value="11" /><Setter Property="MinHeight" Value="24" /><Setter Property="Padding" Value="6,2" /></Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

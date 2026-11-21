@@ -79,6 +79,11 @@ public partial class KasirView : UserControl
             this.FindControl<TextBlock>("PatientText")!.Text = $"{bill.NamaPasien} · No. RM {bill.NoRekamMedis} · No. Rawat {bill.NoRawat}";
             this.FindControl<DataGrid>("RincianGrid")!.ItemsSource = bill.Rincian;
             this.FindControl<TextBlock>("TotalText")!.Text = Rupiah(bill.Total);
+            var adaRincianLayanan = bill.RincianTindakanObat.Count > 0;
+            this.FindControl<TextBlock>("TotalLabel")!.Text = adaRincianLayanan ? "Subtotal Rincian Dasar" : "Total Rincian";
+            this.FindControl<StackPanel>("RincianLayananPanel")!.IsVisible = adaRincianLayanan;
+            this.FindControl<DataGrid>("RincianLayananGrid")!.ItemsSource = bill.RincianTindakanObat;
+            this.FindControl<TextBlock>("SubtotalLayananText")!.Text = Rupiah(bill.RincianTindakanObat.Sum(r => r.Total));
             this.FindControl<TextBlock>("StatusBayarText")!.Text = bill.NoNota is { } nota
                 ? $"{bill.StatusBayar ?? "-"} · Nota {nota}" : bill.StatusBayar ?? "-";
             var bayar = this.FindControl<Button>("BayarButton")!;
@@ -105,7 +110,7 @@ public partial class KasirView : UserControl
 
     private async void OnBayarClick(object? sender, RoutedEventArgs e)
     {
-        if (_paying || _current is not { } bill || !BolehAkses(bill.Ranap)) return;
+        if (_paying || _current is not { AlasanBelumBisaBayar: null } bill || !BolehAkses(bill.Ranap)) return;
         var akun = this.FindControl<ComboBox>("AkunBayarBox")!.SelectedItem as string;
         if (bill.Ranap && akun is null) { Status("Pilih akun bayar terlebih dahulu."); return; }
 

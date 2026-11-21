@@ -1283,6 +1283,7 @@ public static class LegacyMenuCatalog
             ("btnEEksekutif", "Set E-Eksekutif"),
             ("btnTracker", "Tracker Login"),
             ("btnVakum", "Vakum Table"),
+            (SimrsKhanza.Core.Auth.LegacyTilePermissions.DatabaseBackupTile, "Backup Database"),
             ("btnDisplay", "Display Antrian Registrasi & Poli"),
             ("btnDisplayApotek", "Display Antrian Apotek"),
             ("btnSetupHarga", "Set Harga Obat"),

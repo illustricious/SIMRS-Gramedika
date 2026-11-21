@@ -42,6 +42,17 @@ public class MenuCScreensTests
                 .Append(("D_btnPermintaanStokObatPasien", (PageView)new SimrsKhanza.UI.Modules.Farmasi.PermintaanStokPasienView()))
                 .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports.Select(kv => ("D_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuESpecs.Masters.Select(kv => ("E_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuESpecs.Reports.Select(kv => ("E_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuFSpecs.Masters.Select(kv => ("F_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuFSpecs.Reports.Select(kv => ("F_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuGSpecs.Masters.Select(kv => ("G_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuGSpecs.Reports.Select(kv => ("G_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Parkir.MenuHSpecs.Masters.Select(kv => ("H_" + kv.Key, (PageView)(
+                    kv.Key == SimrsKhanza.Data.Parkir.MenuHSpecs.JenisParkirKey
+                        ? new SimrsKhanza.UI.Modules.Parkir.JenisParkirView()
+                        : new MasterView(kv.Value)))))
+                .Append(("H_btnParkirMasuk", (PageView)new SimrsKhanza.UI.Modules.Parkir.ParkirMasukView()))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 

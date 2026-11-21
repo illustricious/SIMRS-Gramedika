@@ -42,8 +42,8 @@ public static class Ui
         var g = new DataGrid
         {
             AutoGenerateColumns = false, IsReadOnly = true, SelectionMode = DataGridSelectionMode.Single,
-            GridLinesVisibility = DataGridGridLinesVisibility.All, HeadersVisibility = DataGridHeadersVisibility.Column,
-            CanUserResizeColumns = true, CanUserSortColumns = true, FontSize = 12,
+            GridLinesVisibility = DataGridGridLinesVisibility.Horizontal, HeadersVisibility = DataGridHeadersVisibility.Column,
+            CanUserResizeColumns = true, CanUserSortColumns = true,
         };
         SetColumns(g, cols);
         return g;
@@ -58,8 +58,10 @@ public static class Ui
                 Header = cols[i].Header,
                 Binding = new Binding($"Cells[{i}]"),
                 Width = cols[i].Width > 0 ? new DataGridLength(cols[i].Width) : DataGridLength.Auto,
+                MinWidth = cols[i].Width > 0 ? Math.Min(72, cols[i].Width) : 72,
             });
         g.Tag = cols;
+        if (g.IsLoaded) DataGridHeaderFit.Fit(g);
     }
 
     public static void Fill(DataGrid g, IEnumerable<Row> rows)
@@ -78,15 +80,17 @@ public static class Ui
         return control;
     }
 
-    public static TextBlock Title(string text) => Themed(new TextBlock
+    public static TextBlock Title(string text) => new()
     {
-        Text = $":: [ {text} ] ::", FontWeight = FontWeight.Bold, Margin = new Thickness(0, 0, 0, 10),
-    }, TextBlock.ForegroundProperty, "ThemePrimaryBrush");
+        Text = text, Classes = { "pageTitle" },
+    };
 
-    public static TextBlock Hint(string text) => Themed(new TextBlock
+    public static TextBlock Hint(string text) => new()
     {
-        Text = text, FontSize = 11, TextWrapping = TextWrapping.Wrap,
-    }, TextBlock.ForegroundProperty, "ThemeTextSecondaryBrush");
+        Text = text, Classes = { "pageSubtitle" },
+    };
+
+    public static TextBlock Section(string text) => new() { Text = text, Classes = { "sectionTitle" } };
 
     public static TextBlock Status() => new() { TextWrapping = TextWrapping.Wrap, VerticalAlignment = VerticalAlignment.Center };
 
@@ -235,6 +239,20 @@ public class DateTimeBox : StackPanel
             _time.SelectedTime = new TimeSpan(value.Hour, value.Minute, value.Second);
         }
     }
+
+    public DateTime? SelectedValue
+    {
+        get => _date.SelectedDate.HasValue ? Value : null;
+        set
+        {
+            if (value is { } date) Value = date;
+            else
+            {
+                _date.SelectedDate = null;
+                _time.SelectedTime = null;
+            }
+        }
+    }
 }
 
 /// <summary>Base for the code-built feature pages: title + back button + status line.</summary>
@@ -245,14 +263,13 @@ public abstract class PageView : UserControl
 
     protected void Build(string title, Control body, string? hint = null)
     {
-        var back = new Button { Content = "⬅ Kembali" };
-        back.Bind(Button.ForegroundProperty, this.GetResourceObservable("ThemeAccentBrush"));
+        var back = new Button { Content = "‹  Kembali" };
         back.Click += (_, _) => BackRequested?.Invoke(this, EventArgs.Empty);
 
-        var top = new StackPanel { Children = { Ui.Title(title) } };
+        var top = new StackPanel { Spacing = 4, Margin = new Thickness(0, 0, 0, 16), Children = { Ui.Title(title) } };
         if (hint is not null) top.Children.Add(Ui.Hint(hint));
 
-        var root = new DockPanel { Margin = new Thickness(16) };
+        var root = new DockPanel { Margin = new Thickness(24, 20) };
         DockPanel.SetDock(top, Dock.Top);
         var bottom = new DockPanel { Margin = new Thickness(0, 8, 0, 0) };
         DockPanel.SetDock(back, Dock.Left);

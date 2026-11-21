@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Igd.IgdView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasEmergencyPageBrush}">
 
     <!--
         Legacy "IGD/UGD" (DlgIGD.java) is NOT a triage screen: it is
@@ -14,9 +14,10 @@
         built earlier (data_triase_igd) lives on as IgdTriaseView, reached from
         the "Triase" button (legacy: right-click "Data Triase Gawat Darurat").
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Registrasi IGD Hari Ini ] ::" FontWeight="Bold"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Registrasi IGD Hari Ini" />
+        </Border>
 
         <StackPanel Grid.Row="1" Spacing="0">
             <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
@@ -59,7 +60,7 @@
 
         <DataGrid Grid.Row="2" Name="IgdGrid" Margin="0,6" AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
-                  FontSize="11" RowHeight="22" x:DataType="data:RegistrasiListItem">
+                  x:DataType="data:RegistrasiListItem">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No.Reg" Binding="{Binding NoReg}" Width="0.5*" MinWidth="40" />
                 <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.1*" MinWidth="95" />
@@ -111,27 +112,9 @@
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
-        <Style Selector="TextBlock">
-            <Setter Property="FontSize" Value="12" />
-        </Style>
-        <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="MinHeight" Value="28" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
         <Style Selector="DatePicker">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="MinHeight" Value="28" />
-        </Style>
-        <Style Selector="Button">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="MinHeight" Value="28" />
-            <Setter Property="Padding" Value="8,3" />
-        </Style>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="MinHeight" Value="28" />
-            <Setter Property="Padding" Value="6,3" />
         </Style>
     </UserControl.Styles>
 </UserControl>

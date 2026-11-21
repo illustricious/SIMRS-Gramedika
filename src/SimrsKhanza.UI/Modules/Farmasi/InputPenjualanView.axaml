@@ -15,8 +15,8 @@
         the field here just says so rather than faking a preview number.
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Transaksi Penjualan Obat, Alkes &amp; BHP Medis ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Transaksi Penjualan Obat, Alkes &amp; BHP Medis"
+                   Margin="0,0,0,8" />
 
         <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
                 Background="{DynamicResource ThemeSurfaceBrush}" Padding="10" CornerRadius="4" Margin="0,0,0,6">

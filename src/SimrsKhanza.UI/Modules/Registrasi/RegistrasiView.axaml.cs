@@ -40,20 +40,12 @@ public partial class RegistrasiView : UserControl
         var today = DateTime.Today;
         this.FindControl<CalendarDatePicker>("PeriodeFromPicker")!.SelectedDate = today;
         this.FindControl<CalendarDatePicker>("PeriodeToPicker")!.SelectedDate = today;
-
-        // "Input Data" starts COLLAPSED (toggle IsChecked="False") — per user
-        // feedback this is the correct default, matching the legacy app:
-        // the form only appears once the user explicitly clicks the toggle.
-        // Set explicitly here (rather than relying on the XAML default) so
-        // it stays correct regardless of IsChecked's XAML value — see
-        // OnToggleInputData for the click handler that flips it.
-        var toggle = this.FindControl<ToggleButton>("InputDataToggle")!;
-        this.FindControl<Border>("InputDataPanel")!.IsVisible = toggle.IsChecked == true;
     }
 
     /// <summary>Called by MainWindow each time this page becomes visible.</summary>
     public async System.Threading.Tasks.Task ReloadAsync()
     {
+        this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = false;
         await LoadAsync();
         await LoadInputLookupsAsync();
     }
@@ -70,19 +62,31 @@ public partial class RegistrasiView : UserControl
             var repo = new RegistrasiRepository(db);
 
             var dokter = await repo.GetDokterAsync();
-            dokterCombo.ItemsSource = dokter;
-            dokterCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Dokter.NamaDokter));
-            if (dokter.Count > 0) dokterCombo.SelectedIndex = 0;
-
             var poli = await repo.GetPoliklinikAsync();
-            poliCombo.ItemsSource = poli;
-            poliCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Poliklinik.NamaPoli));
-            if (poli.Count > 0) poliCombo.SelectedIndex = 0;
-
             var penjab = await repo.GetPenjabAsync();
-            penjabCombo.ItemsSource = penjab;
+
+            dokterCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Dokter.NamaDokter));
+            dokterCombo.ItemsSource = dokter;
+            poliCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Poliklinik.NamaPoli));
+            poliCombo.ItemsSource = poli;
             penjabCombo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Penjab.NamaPenanggungJawab));
-            if (penjab.Count > 0) penjabCombo.SelectedIndex = 0;
+            penjabCombo.ItemsSource = penjab;
+
+            var filterDokter = this.FindControl<ComboBox>("FilterDokterCombo")!;
+            var dokterCode = (filterDokter.SelectedItem as Dokter)?.KodeDokter;
+            filterDokter.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Dokter.NamaDokter));
+            filterDokter.ItemsSource = dokter.Prepend(new Dokter { NamaDokter = "Semua dokter" }).ToList();
+            filterDokter.SelectedItem = dokter.FirstOrDefault(x => x.KodeDokter == dokterCode);
+            if (filterDokter.SelectedIndex < 0) filterDokter.SelectedIndex = 0;
+
+            var filterPoli = this.FindControl<ComboBox>("FilterPoliCombo")!;
+            var poliCode = (filterPoli.SelectedItem as Poliklinik)?.KodePoli;
+            filterPoli.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Poliklinik.NamaPoli));
+            filterPoli.ItemsSource = poli.Prepend(new Poliklinik { NamaPoli = "Semua unit" }).ToList();
+            filterPoli.SelectedItem = poli.FirstOrDefault(x => x.KodePoli == poliCode);
+            if (filterPoli.SelectedIndex < 0) filterPoli.SelectedIndex = 0;
+
+            if (_selected is { } row) SelectInputLookups(row);
         }
         catch (Exception)
         {
@@ -90,11 +94,14 @@ public partial class RegistrasiView : UserControl
         }
     }
 
-    private void OnToggleInputData(object? sender, RoutedEventArgs e)
+    private async void OnSemuaClick(object? sender, RoutedEventArgs e)
     {
-        var panel = this.FindControl<Border>("InputDataPanel")!;
-        var toggle = (ToggleButton)sender!;
-        panel.IsVisible = toggle.IsChecked == true;
+        var dokter = this.FindControl<ComboBox>("FilterDokterCombo")!;
+        if (dokter.ItemCount > 0) dokter.SelectedIndex = 0;
+        var poli = this.FindControl<ComboBox>("FilterPoliCombo")!;
+        if (poli.ItemCount > 0) poli.SelectedIndex = 0;
+        this.FindControl<TextBox>("KeyWordBox")!.Text = string.Empty;
+        await LoadAsync();
     }
 
     private async void OnSearchClick(object? sender, RoutedEventArgs e) => await LoadAsync();
@@ -106,6 +113,8 @@ public partial class RegistrasiView : UserControl
         var fromPicker = this.FindControl<CalendarDatePicker>("PeriodeFromPicker")!;
         var toPicker = this.FindControl<CalendarDatePicker>("PeriodeToPicker")!;
         var keyWord = this.FindControl<TextBox>("KeyWordBox")!.Text?.Trim();
+        var dokterCode = (this.FindControl<ComboBox>("FilterDokterCombo")!.SelectedItem as Dokter)?.KodeDokter;
+        var poliCode = (this.FindControl<ComboBox>("FilterPoliCombo")!.SelectedItem as Poliklinik)?.KodePoli;
 
         var from = fromPicker.SelectedDate is { } f ? DateOnly.FromDateTime(f.Date) : DateOnly.MinValue;
         var to = toPicker.SelectedDate is { } t ? DateOnly.FromDateTime(t.Date) : DateOnly.FromDateTime(DateTime.Today);
@@ -116,6 +125,10 @@ public partial class RegistrasiView : UserControl
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
             var items = await repo.GetByPeriodeAsync(from, to);
+            if (!string.IsNullOrEmpty(dokterCode))
+                items = items.Where(i => i.KodeDokter == dokterCode).ToList();
+            if (!string.IsNullOrEmpty(poliCode))
+                items = items.Where(i => i.KodePoli == poliCode).ToList();
 
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
@@ -127,36 +140,92 @@ public partial class RegistrasiView : UserControl
             }
 
             grid.ItemsSource = items;
-            recordCount.Text = $"Record : {items.Count}";
+            recordCount.Text = $"{items.Count} registrasi";
         }
         catch (Exception)
         {
             // No reachable MySQL server — show an empty grid rather than crash.
             grid.ItemsSource = new List<RegistrasiListItem>();
-            recordCount.Text = "Record : 0 (tidak konek DB)";
+            recordCount.Text = "Database tidak terhubung";
         }
     }
 
-    private void OnRegistrasiSelected(object? sender, SelectionChangedEventArgs e)
+    private async void OnRegistrasiSelected(object? sender, SelectionChangedEventArgs e)
     {
         _selected = this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem as RegistrasiListItem;
-        if (_selected is not { } row) return;
-        this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text = row.NoRekamMedis;
-        this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text = row.PenanggungJawab ?? "";
-        this.FindControl<TextBox>("InputAlamatPjBox")!.Text = row.AlamatPj ?? "";
-        this.FindControl<TextBox>("InputHubunganBox")!.Text = row.HubunganPj ?? "";
+        var row = _selected;
+        SetInputText("InputNoRegBox", row?.NoReg);
+        SetInputText("InputNoRawatBox", row?.NoRawat);
+        SetInputText("InputTanggalBox", row?.TanggalRegistrasi?.ToString("dd/MM/yyyy"));
+        SetInputText("InputJamBox", row?.JamRegistrasi?.ToString("HH:mm:ss"));
+        SetInputText("InputNoRekamMedisBox", row?.NoRekamMedis);
+        SetInputText("InputNamaPasienBox", row?.NamaPasien);
+        SetInputText("InputBiayaBox", row?.BiayaReg?.ToString("N0",
+            System.Globalization.CultureInfo.GetCultureInfo("id-ID")));
+        SetInputText("InputPenanggungJawabBox", row?.PenanggungJawab);
+        SetInputText("InputAlamatPjBox", row?.AlamatPj);
+        SetInputText("InputHubunganBox", row?.HubunganPj);
+        SetInputText("InputStatusDaftarBox", null);
+        SetInputText("InputNoKartuBox", null);
+        SetInputText("InputAsalRujukanBox", null);
+
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        status.IsVisible = row is not null;
+        if (row is null)
+        {
+            this.FindControl<ComboBox>("InputDokterCombo")!.SelectedIndex = -1;
+            this.FindControl<ComboBox>("InputPoliCombo")!.SelectedIndex = -1;
+            this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedIndex = -1;
+            return;
+        }
+
+        SelectInputLookups(row);
+        status.Classes.Remove("error");
+        status.Classes.Remove("saved");
+        status.Text = $"Mengubah {row.NoRawat} — {row.NamaPasien}";
+        if (IsInputOpen) await LoadVisitDetailsAsync(row);
+    }
+
+    private bool IsInputOpen => this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked == true;
+
+    private async void OnInputDataClick(object? sender, RoutedEventArgs e)
+    {
+        if (IsInputOpen && _selected is { } row)
+            await LoadVisitDetailsAsync(row);
+    }
+
+    private async Task LoadVisitDetailsAsync(RegistrasiListItem row)
+    {
+        try
+        {
+            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            var details = await new RegistrasiRepository(db).GetInputDetailsAsync(row.NoRawat);
+            if (!ReferenceEquals(_selected, row)) return;
+
+            SetInputText("InputStatusDaftarBox", details?.StatusPendaftaran);
+            SetInputText("InputNoKartuBox", details?.NoKartu);
+            SetInputText("InputAsalRujukanBox", details?.AsalRujukan);
+        }
+        catch (Exception)
+        {
+            if (ReferenceEquals(_selected, row))
+                this.FindControl<TextBlock>("InputStatusText")!.Text =
+                    "Status pendaftaran, nomor kartu, dan asal rujukan tidak dapat dimuat.";
+        }
+    }
+
+    private void SetInputText(string controlName, string? value) =>
+        this.FindControl<TextBox>(controlName)!.Text = value ?? string.Empty;
+
+
+    private void SelectInputLookups(RegistrasiListItem row)
+    {
         var dokter = this.FindControl<ComboBox>("InputDokterCombo")!;
         var poli = this.FindControl<ComboBox>("InputPoliCombo")!;
         var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!;
         dokter.SelectedItem = (dokter.ItemsSource as IEnumerable<Dokter>)?.FirstOrDefault(x => x.KodeDokter == row.KodeDokter);
         poli.SelectedItem = (poli.ItemsSource as IEnumerable<Poliklinik>)?.FirstOrDefault(x => x.KodePoli == row.KodePoli);
         penjab.SelectedItem = (penjab.ItemsSource as IEnumerable<Penjab>)?.FirstOrDefault(x => x.KodePenjab == row.KodePj);
-        this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
-        this.FindControl<Border>("InputDataPanel")!.IsVisible = true;
-        var status = this.FindControl<TextBlock>("InputStatusText")!;
-        status.Foreground = Avalonia.Media.Brushes.Green;
-        status.Text = $"Mengubah {row.NoRawat} — {row.NamaPasien}";
-        status.IsVisible = true;
     }
 
     private async void OnInputSimpanClick(object? sender, RoutedEventArgs e)
@@ -169,8 +238,6 @@ public partial class RegistrasiView : UserControl
 
         if (_selected is null || string.IsNullOrWhiteSpace(noRekamMedis) || dokter is null || poli is null || penjab is null)
         {
-            this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
-            this.FindControl<Border>("InputDataPanel")!.IsVisible = true;
             ShowInputError(status, "Pilih pasien pada tabel dan lengkapi dokter, poli, serta jenis bayar.");
             return;
         }
@@ -184,7 +251,8 @@ public partial class RegistrasiView : UserControl
                 this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "",
                 this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "");
 
-            status.Foreground = Avalonia.Media.Brushes.Green;
+            status.Classes.Remove("error");
+            status.Classes.Add("saved");
             status.Text = $"Registrasi tersimpan — No.Rawat {noRawat}.";
             status.IsVisible = true;
 
@@ -198,19 +266,10 @@ public partial class RegistrasiView : UserControl
         }
     }
 
-    private void OnInputBaruClick(object? sender, RoutedEventArgs e) => ClearInputForm();
-
-    private void ClearInputForm()
-    {
-        this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text = string.Empty;
-        this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text = string.Empty;
-        this.FindControl<TextBox>("InputAlamatPjBox")!.Text = string.Empty;
-        this.FindControl<TextBlock>("InputStatusText")!.IsVisible = false;
-    }
-
     private static void ShowInputError(TextBlock block, string message)
     {
-        block.Foreground = Avalonia.Media.Brush.Parse("#DC2626");
+        block.Classes.Remove("saved");
+        block.Classes.Add("error");
         block.Text = message;
         block.IsVisible = true;
     }
@@ -275,5 +334,5 @@ public partial class RegistrasiView : UserControl
         }
     }
 
-    private static string? EmptyToNull(string? value) => string.IsNullOrWhiteSpace(value) ? null : value;
+
 }

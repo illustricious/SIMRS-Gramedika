@@ -14,6 +14,7 @@ public record MasterField(string Column, string Label, FieldKind Kind = FieldKin
     /// <summary>Value a new record starts with (instead of empty/0/today).</summary>
     public object? Default { get; init; }
     public Func<object?>? DefaultFactory { get; init; }
+    public bool NullWhenEmpty { get; init; }
 }
 
 /// <summary>

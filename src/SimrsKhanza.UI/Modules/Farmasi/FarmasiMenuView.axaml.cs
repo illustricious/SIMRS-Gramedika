@@ -19,17 +19,18 @@ public partial class FarmasiMenuView : UserControl
 
     private static readonly (FarmasiAction Action, string Icon, string Label)[] Tiles =
     [
-        (FarmasiAction.InputPenjualan, "💊", "Input Penjualan Obat & BHP"),
-        (FarmasiAction.DataPenjualan, "📋", "Data Penjualan Obat & BHP"),
-        (FarmasiAction.DataPenyerahanDarah, "🩸", "Data Penyerahan Darah"),
-        (FarmasiAction.DaftarResepDokter, "📝", "Daftar Resep Dokter"),
-        (FarmasiAction.NoResep, "🔢", "No. Resep"),
+        (FarmasiAction.InputPenjualan, "btnBeriObat", "Input Penjualan Obat & BHP"),
+        (FarmasiAction.DataPenjualan, "btnRegistrasi", "Data Penjualan Obat & BHP"),
+        (FarmasiAction.DataPenyerahanDarah, "btnPenyerahanDarah", "Data Penyerahan Darah"),
+        (FarmasiAction.DaftarResepDokter, "btnResepObat", "Daftar Resep Dokter"),
+        (FarmasiAction.NoResep, "btnBarcodeRalan", "No. Resep"),
     ];
 
     public FarmasiMenuView()
     {
         InitializeComponent();
-        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
+        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action),
+            key => DashboardIcons.Create(0, key));
     }
 
     private void OnBackClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

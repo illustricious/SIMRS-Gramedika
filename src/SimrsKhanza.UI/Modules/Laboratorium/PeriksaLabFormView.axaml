@@ -11,7 +11,7 @@
         Not ported: Nota, Cetak lembar hasil, Hapus on this form, LIS/analyzer imports (Sysmex, LICA, ...).
     -->
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Name="TitleText" FontWeight="Bold" Foreground="{DynamicResource ThemePrimaryBrush}" Margin="0,0,0,6" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Name="TitleText" Margin="0,0,0,6" />
 
         <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
                 Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4">
@@ -56,7 +56,7 @@
 
         <Grid Grid.Row="3" ColumnDefinitions="380,8,*">
             <DataGrid Grid.Column="0" Name="TarifGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
-                      FontSize="11" RowHeight="24" CanUserResizeColumns="True" x:DataType="local:TarifPick">
+                      CanUserResizeColumns="True" x:DataType="local:TarifPick">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="P" Width="36">
                         <DataTemplate x:DataType="local:TarifPick">
@@ -71,7 +71,7 @@
 
             <Grid Grid.Column="2">
                 <DataGrid Name="DetailGrid" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
-                          FontSize="11" RowHeight="26" CanUserResizeColumns="True" x:DataType="local:LabDetailRow">
+                          CanUserResizeColumns="True" x:DataType="local:LabDetailRow">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="P" Width="36">
                             <DataTemplate x:DataType="local:LabDetailRow">
@@ -101,7 +101,7 @@
                 </DataGrid>
 
                 <DataGrid Name="PaDetailGrid" IsVisible="False" AutoGenerateColumns="False" GridLinesVisibility="All" HeadersVisibility="Column"
-                          FontSize="11" CanUserResizeColumns="True" x:DataType="local:PaRow">
+                          CanUserResizeColumns="True" x:DataType="local:PaRow">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Pemeriksaan" Binding="{Binding Nama}" IsReadOnly="True" Width="1.4*" MinWidth="130" />
                         <DataGridTemplateColumn Header="Diagnosa Klinis" Width="1.2*" MinWidth="110">
@@ -150,25 +150,9 @@
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
-        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
-        <Style Selector="TextBox, ComboBox">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
-        </Style>
-<Style Selector="Button">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
-        </Style>
         <Style Selector="RadioButton">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="MinHeight" Value="24" />
-        </Style>
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
         </Style>
     </UserControl.Styles>
 </UserControl>

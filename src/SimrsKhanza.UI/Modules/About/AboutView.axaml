@@ -1,14 +1,15 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.About.AboutView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!-- Embedded in MainWindow's PageHost like every other module — same
          single-window navigation, same design language (not a separate
          Window; an earlier revision made it one, reverted per feedback). -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
-        <TextBlock Grid.Row="0" Text=":: [ Tentang Program ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Tentang Program" />
+        </Border>
 
         <ScrollViewer Grid.Row="1">
             <StackPanel Spacing="4" MaxWidth="520" HorizontalAlignment="Left">

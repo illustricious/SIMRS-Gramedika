@@ -62,7 +62,7 @@ public partial class PeriksaLabListView : UserControl
         _category = category;
         InitializeComponent();
 
-        this.FindControl<TextBlock>("TitleText")!.Text = $":: [ Data Pemeriksaan Laboratorium {LabUi.Title(category)} ] ::";
+        this.FindControl<TextBlock>("TitleText")!.Text = $"Data Pemeriksaan Laboratorium {LabUi.Title(category)}";
         var pa = category == LabCategory.PA;
         this.FindControl<DataGrid>("NestedGrid")!.IsVisible = !pa;
         this.FindControl<DataGrid>("PaGrid")!.IsVisible = pa;

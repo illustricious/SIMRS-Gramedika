@@ -6,8 +6,8 @@
 
     <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
 
-        <TextBlock Grid.Row="0" Text=":: [ Kasir — Tagihan Pasien ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,8" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Kasir — Tagihan Pasien"
+                   Margin="0,0,0,8" />
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8">
             <TextBlock Text="No. Rawat :" VerticalAlignment="Center" />
@@ -20,7 +20,7 @@
             <StackPanel Spacing="8">
             <TextBlock Name="NotFoundText" Foreground="{DynamicResource ThemeAccentBrush}" TextWrapping="Wrap" IsVisible="False" />
             <StackPanel Spacing="6" Name="BillPanel" IsVisible="False">
-                <TextBlock Name="PatientText" FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock Name="PatientText" Classes="sectionTitle" />
                 <DataGrid Name="RincianGrid" AutoGenerateColumns="False" IsReadOnly="True"
                           MaxHeight="360" GridLinesVisibility="All" HeadersVisibility="Column" x:DataType="data:KasirRincian">
                     <DataGrid.Columns>
@@ -32,11 +32,30 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid ColumnDefinitions="180,*" RowDefinitions="Auto,Auto">
-                    <TextBlock Text="Total Rincian" FontWeight="Bold" />
+                    <TextBlock Name="TotalLabel" Text="Total Rincian" FontWeight="Bold" />
                     <TextBlock Grid.Column="1" Name="TotalText" FontWeight="Bold" />
                     <TextBlock Grid.Row="1" Text="Status Bayar" />
                     <TextBlock Grid.Row="1" Grid.Column="1" Name="StatusBayarText" />
                 </Grid>
+                <StackPanel Name="RincianLayananPanel" Spacing="6" Margin="0,8,0,0" IsVisible="False">
+                    <TextBlock Text="Rincian Tindakan dan Obat &amp; BHP" Classes="sectionTitle" />
+                    <DataGrid Name="RincianLayananGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                              MaxHeight="260" GridLinesVisibility="All" HeadersVisibility="Column" x:DataType="data:KasirRincian">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Jenis" Binding="{Binding Jenis}" Width="165"/>
+                            <DataGridTextColumn Header="Rincian" Binding="{Binding Nama}" Width="*"/>
+                            <DataGridTextColumn Header="Tarif (Rp)" Binding="{Binding Tarif, StringFormat='#,0.####'}" Width="115"/>
+                            <DataGridTextColumn Header="Jumlah" Binding="{Binding Jumlah, StringFormat=0.####}" Width="80"/>
+                            <DataGridTextColumn Header="Total (Rp)" Binding="{Binding Total, StringFormat='#,0.####'}" Width="115"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid ColumnDefinitions="180,*">
+                        <TextBlock Text="Subtotal Tindakan dan Obat" FontWeight="Bold" />
+                        <TextBlock Grid.Column="1" Name="SubtotalLayananText" FontWeight="Bold" />
+                    </Grid>
+                    <TextBlock Text="Subtotal berasal dari transaksi layanan. Total obat mencakup embalase dan tuslah yang tercatat. Pelunasan dilakukan di Kasir Khanza."
+                               TextWrapping="Wrap" />
+                </StackPanel>
                 <StackPanel Name="AkunBayarRow" Orientation="Horizontal" Spacing="8" IsVisible="False">
                     <TextBlock Text="Akun Bayar" VerticalAlignment="Center" />
                     <ComboBox Name="AkunBayarBox" MinWidth="240" PlaceholderText="Pilih akun bayar" />

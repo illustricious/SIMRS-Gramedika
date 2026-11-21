@@ -38,13 +38,21 @@ public partial class MainWindow : Window
 
         _clockTimer.Tick += (_, _) => UpdateClock();
         _clockTimer.Start();
+        Closed += (_, _) => _clockTimer.Stop();
         UpdateClock();
+
+        this.FindControl<ToggleButton>("ThemeToggle")!.Content =
+            Application.Current?.RequestedThemeVariant == ThemeVariant.Dark ? "Mode Terang" : "Mode Gelap";
 
         if (user is not null)
         {
             SetupMenuCategoryCombo(user);
         }
 
+        this.FindControl<ContentControl>("PageHost")!.PropertyChanged += (_, args) =>
+        {
+            if (args.Property == ContentControl.ContentProperty) UpdateShortcutAppearance();
+        };
         ShowPage(Page.Menu);
     }
 
@@ -66,40 +74,51 @@ public partial class MainWindow : Window
 
         if (sender is ToggleButton toggle)
         {
-            toggle.Content = goingDark ? "☀  Mode Terang" : "🌙  Mode Gelap";
+            toggle.Content = goingDark ? "Mode Terang" : "Mode Gelap";
         }
     }
 
     private void OnMenuShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var menu = this.FindControl<Grid>("MenuPanel")!;
-        // "Menu" toggles between the hero/welcome panel and the icon-grid
-        // dashboard, mirroring the legacy app's behavior where clicking
-        // "Menu" opens the module grid over the home screen.
-        ShowPage(menu.IsVisible ? Page.Hero : Page.Menu);
+        ShowPage(Page.Menu);
     }
 
     /// <summary>
-    /// Single-window navigation: exactly one of Hero / Menu / PageHost (feature
-    /// views like Registrasi) is visible at a time. Avoids popping separate
-    /// Windows per feature, per the user's feedback that the legacy app stays
-    /// in one window and swaps the view in place.
+    /// The dashboard and feature views share the same window.
     /// </summary>
-    private enum Page { Hero, Menu, Feature }
+    private enum Page { Menu, Feature }
 
     private void ShowPage(Page page)
     {
-        // The legacy home screen IS the Menu Utama grid, so "home" (Hero) now resolves to it.
-        if (page == Page.Hero) page = Page.Menu;
-
-        var hero = this.FindControl<StackPanel>("HeroPanel")!;
         var menu = this.FindControl<Grid>("MenuPanel")!;
         var pageHost = this.FindControl<ContentControl>("PageHost")!;
 
-        hero.IsVisible = page == Page.Hero;
         menu.IsVisible = page == Page.Menu;
         pageHost.IsVisible = page == Page.Feature;
+        UpdateShortcutAppearance();
     }
+
+    private void UpdateShortcutAppearance()
+    {
+        var pageHost = this.FindControl<ContentControl>("PageHost")!;
+        var module = pageHost.IsVisible ? pageHost.Content?.GetType().Namespace : null;
+        var active = module switch
+        {
+            "SimrsKhanza.UI.Modules.Registrasi" => "Registrasi",
+            "SimrsKhanza.UI.Modules.Igd" => "IGD/UGD",
+            "SimrsKhanza.UI.Modules.Laboratorium" => "Laboratorium",
+            "SimrsKhanza.UI.Modules.Radiologi" => "Radiologi",
+            "SimrsKhanza.UI.Modules.Farmasi" => "Farmasi",
+            "SimrsKhanza.UI.Modules.RawatInap" => "Rawat Inap",
+            "SimrsKhanza.UI.Modules.RawatJalan" => "Rawat Jalan",
+            _ => pageHost.IsVisible ? null : "Menu Utama",
+        };
+        pageHost.Classes.Set("biruTegas", (active is not null and not "Menu Utama") ||
+            module is "SimrsKhanza.UI.Modules.Informasi" or "SimrsKhanza.UI.Modules.About");
+        foreach (var button in this.FindControl<WrapPanel>("FeatureShortcuts")!.Children.OfType<Button>())
+            button.Classes.Set("current", active is not null && Equals(button.Tag, active));
+    }
+
 
     private void SetupMenuCategoryCombo(AuthenticatedUser user)
     {
@@ -113,9 +132,6 @@ public partial class MainWindow : Window
         BuildDashboard();
     }
 
-    private const int DashboardColumns = 5;
-
-    /// <summary>Builds the tile grid for the selected legacy category (A–U). Icons are placeholders (initials) for now.</summary>
     private void BuildDashboard()
     {
         var panel = this.FindControl<UniformGrid>("DashboardPanel");
@@ -127,81 +143,48 @@ public partial class MainWindow : Window
         // Legacy frmUtama TCari: a search term looks across every category.
         var cari = this.FindControl<TextBox>("MenuSearchBox")?.Text?.Trim() ?? "";
         var source = cari.Length == 0
-            ? LegacyMenuCatalog.Tiles[combo.SelectedIndex]
-            : LegacyMenuCatalog.Tiles.SelectMany(t => t)
+            ? LegacyMenuCatalog.Tiles[combo.SelectedIndex].Select(t => (t.Key, t.Label, Category: combo.SelectedIndex))
+            : LegacyMenuCatalog.Tiles.SelectMany((tiles, category) => tiles.Select(t => (t.Key, t.Label, Category: category)))
                 .Where(t => t.Label.Contains(cari, StringComparison.OrdinalIgnoreCase))
-                .DistinctBy(t => t.Key)
-                .ToArray();
+                .DistinctBy(t => t.Key);
 
         var shown = 0;
-        foreach (var (key, label) in source)
+        foreach (var (key, label, category) in source)
         {
             // Same per-user hak akses filter as legacy frmUtama (akses.getXxx()).
             if (_user is not null && !LegacyTilePermissions.CanSeeTile(_user, key)) continue;
             shown++;
 
-            var icon = new Border
-            {
-                Width = 48, Height = 48, CornerRadius = new CornerRadius(12),
-                Child = new TextBlock
-                {
-                    Text = Initials(label), Foreground = Brushes.White, FontWeight = FontWeight.Bold, FontSize = 16,
-                    HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center,
-                },
-            };
-            icon.Bind(Border.BackgroundProperty, this.GetResourceObservable("ThemePrimaryLightBrush"));
+            var icon = DashboardIcons.Create(category, key);
             var caption = new TextBlock
             {
-                Text = label, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Center, FontSize = 12,
-                MaxWidth = 220,
+                Text = label, TextWrapping = TextWrapping.Wrap,
             };
 
             var button = new Button
             {
                 Classes = { "menuTile" },
-                Width = double.NaN, Height = double.NaN, MinHeight = 120,
-                HorizontalAlignment = HorizontalAlignment.Stretch, VerticalAlignment = VerticalAlignment.Stretch,
-                HorizontalContentAlignment = HorizontalAlignment.Center, VerticalContentAlignment = VerticalAlignment.Center,
-                Content = new StackPanel { Spacing = 8, HorizontalAlignment = HorizontalAlignment.Center, Children = { icon, caption } },
+                Content = new StackPanel { Spacing = 8, Children = { icon, caption } },
             };
-            var k = key;
-            var l = label;
-            button.Click += (_, _) => OnLegacyTileClick(k, l);
+            Avalonia.Automation.AutomationProperties.SetName(button, label);
+            button.Click += (_, _) => OnLegacyTileClick(key, label);
             panel.Children.Add(button);
         }
 
-        var count = this.FindControl<TextBlock>("MenuCountText");
-        if (count is not null)
-            count.Text = shown == 0
-                ? (cari.Length > 0 ? "Tidak ada menu yang cocok / tidak punya akses" : "Tidak ada menu yang bisa diakses di kategori ini")
-                : $"{shown} menu";
+        this.FindControl<TextBlock>("MenuCountText")!.Text = $"{shown} menu";
+        var empty = this.FindControl<TextBlock>("EmptyMenuText")!;
+        empty.Text = cari.Length > 0 ? "Tidak ada menu yang cocok dengan pencarian." : "Tidak ada menu yang bisa diakses di kategori ini.";
+        empty.IsVisible = shown == 0;
 
         LayoutDashboardTiles();
     }
 
-    // Tiles always span the full width (5 columns); rows stretch toward the viewport height
-    // (clamped 120–220px) so a small category fills the area instead of leaving a void.
     private void LayoutDashboardTiles()
     {
         var panel = this.FindControl<UniformGrid>("DashboardPanel");
         var scroll = this.FindControl<ScrollViewer>("DashboardScroll");
-        if (panel is null || scroll is null || panel.Children.Count == 0) return;
-
-        var rows = (int)Math.Ceiling(panel.Children.Count / (double)DashboardColumns);
-        var tileHeight = Math.Clamp(scroll.Bounds.Height / rows, 120, 220);
-        foreach (var child in panel.Children)
-        {
-            if (child is Button b) b.Height = tileHeight - b.Margin.Top - b.Margin.Bottom;
-        }
-    }
-
-    private static string Initials(string label)
-    {
-        var words = label.Split([' ', '/', '&', '-', '(', ')', '.', ','], StringSplitOptions.RemoveEmptyEntries);
-        if (words.Length == 0) return "?";
-        return words.Length == 1
-            ? words[0][..Math.Min(2, words[0].Length)].ToUpperInvariant()
-            : (words[0][..1] + words[1][..1]).ToUpperInvariant();
+        if (panel is null || scroll is null || scroll.Bounds.Width <= 0) return;
+        panel.Columns = Math.Clamp((int)(scroll.Bounds.Width / 188), 2, 7);
     }
 
     /// <summary>
@@ -273,6 +256,10 @@ public partial class MainWindow : Window
             case "btnVakum":
                 if (await RequireAdminUtamaAsync(label))
                     await OpenPageAsync(new Modules.Pengaturan.MenuUVakumView());
+                return;
+            case LegacyTilePermissions.DatabaseBackupTile:
+                if (_user is not null && ReferenceEquals(_user, AppSession.CurrentUser))
+                    await OpenPageAsync(new Modules.Pengaturan.DatabaseBackupView());
                 return;
             case "btnUser":
             {
@@ -404,6 +391,43 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (SimrsKhanza.Data.Inventaris.MenuESpecs.Masters.TryGetValue(key, out var logisticsMaster)
+            || SimrsKhanza.Data.Inventaris.MenuFSpecs.Masters.TryGetValue(key, out logisticsMaster))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(logisticsMaster));
+            return;
+        }
+        if (SimrsKhanza.Data.Inventaris.MenuESpecs.Reports.TryGetValue(key, out var logisticsReport)
+            || SimrsKhanza.Data.Inventaris.MenuFSpecs.Reports.TryGetValue(key, out logisticsReport))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(logisticsReport));
+            return;
+        }
+
+        if (SimrsKhanza.Data.Inventaris.MenuGSpecs.Masters.TryGetValue(key, out var masterG))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterG));
+            return;
+        }
+        if (SimrsKhanza.Data.Inventaris.MenuGSpecs.Reports.TryGetValue(key, out var reportG))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportG));
+            return;
+        }
+
+        if (SimrsKhanza.Data.Parkir.MenuHSpecs.Masters.TryGetValue(key, out var masterH))
+        {
+            await OpenPageAsync(key == SimrsKhanza.Data.Parkir.MenuHSpecs.JenisParkirKey
+                ? new Modules.Parkir.JenisParkirView()
+                : new Modules.Shared.MasterView(masterH));
+            return;
+        }
+        if (key == SimrsKhanza.Data.Parkir.MenuHSpecs.ParkirMasukKey)
+        {
+            await OpenPageAsync(new Modules.Parkir.ParkirMasukView());
+            return;
+        }
+
         if (SimrsKhanza.Data.Master.MenuIReports.Reports.TryGetValue(key, out var reportI)
             || SimrsKhanza.Data.Master.MenuIAdditionalReports.Reports.TryGetValue(key, out reportI)
             || SimrsKhanza.Data.Master.MenuIDrugReports.Reports.TryGetValue(key, out reportI)
@@ -418,6 +442,12 @@ public partial class MainWindow : Window
             || SimrsKhanza.Data.Master.MenuIFinalReports.Reports.TryGetValue(key, out reportI))
         {
             await OpenPageAsync(new Modules.Shared.ReportView(reportI));
+            return;
+        }
+
+        if (SimrsKhanza.Data.Master.MenuTSpecs.Masters.TryGetValue(key, out var masterT))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterT));
             return;
         }
 
@@ -503,7 +533,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Laporan.LaporanMenuView view)
         {
             view = new Modules.Laporan.LaporanMenuView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.TileClicked += async (_, action) => await OpenLaporanTileAsync(action);
             pageHost.Content = view;
         }
@@ -553,7 +583,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Pasien.PasienView view)
         {
             view = new Modules.Pasien.PasienView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             pageHost.Content = view;
         }
 
@@ -568,7 +598,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Kasir.KasirView view)
         {
             view = new Modules.Kasir.KasirView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             pageHost.Content = view;
         }
 
@@ -591,7 +621,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Pengaturan.PengaturanView view)
         {
             view = new Modules.Pengaturan.PengaturanView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             pageHost.Content = view;
         }
 
@@ -601,7 +631,7 @@ public partial class MainWindow : Window
 
     private async void OnFeatureShortcutClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var label = (sender as Button)?.Content?.ToString() ?? "Fitur";
+        var label = (sender as Button)?.Tag as string ?? "Fitur";
 
         switch (label)
         {
@@ -648,7 +678,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Farmasi.FarmasiMenuView view)
         {
             view = new Modules.Farmasi.FarmasiMenuView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.TileClicked += async (_, action) => await OpenFarmasiTileAsync(action);
             pageHost.Content = view;
         }
@@ -713,7 +743,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Laboratorium.LabMenuView view)
         {
             view = new Modules.Laboratorium.LabMenuView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.TileClicked += async (_, action) => await OpenLabTileAsync(action);
             pageHost.Content = view;
         }
@@ -741,7 +771,7 @@ public partial class MainWindow : Window
         {
             IsAdminUtama = _user?.IsAdminUtama == true,
         };
-        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
         view.HasilRequested += async (_, req) =>
             await OpenPeriksaLabFormAsync(req.Category, req.NoRawat, req.NoOrder, () => OpenPermintaanLabAsync(req.Category));
 
@@ -753,7 +783,7 @@ public partial class MainWindow : Window
     private async System.Threading.Tasks.Task OpenPeriksaLabAsync(SimrsKhanza.Data.LabCategory category)
     {
         var view = new Modules.Laboratorium.PeriksaLabListView(category);
-        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
         view.InputRequested += async (_, noRawat) =>
             await OpenPeriksaLabFormAsync(category, noRawat, null, () => OpenPeriksaLabAsync(category));
 
@@ -782,7 +812,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Radiologi.RadiologiMenuView view)
         {
             view = new Modules.Radiologi.RadiologiMenuView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.TileClicked += async (_, action) => await OpenRadiologiTileAsync(action);
             pageHost.Content = view;
         }
@@ -802,7 +832,7 @@ public partial class MainWindow : Window
         {
             IsAdminUtama = _user?.IsAdminUtama == true,
         };
-        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
         view.HasilRequested += async (_, req) =>
             await OpenPeriksaRadiologiFormAsync(req.NoRawat, req.NoOrder, OpenPermintaanRadiologiAsync);
 
@@ -814,7 +844,7 @@ public partial class MainWindow : Window
     private async System.Threading.Tasks.Task OpenPeriksaRadiologiAsync()
     {
         var view = new Modules.Radiologi.PeriksaRadiologiListView();
-        view.BackRequested += (_, _) => ShowPage(Page.Hero);
+        view.BackRequested += (_, _) => ShowPage(Page.Menu);
         view.InputRequested += async (_, noRawat) =>
             await OpenPeriksaRadiologiFormAsync(noRawat, null, OpenPeriksaRadiologiAsync);
 
@@ -843,7 +873,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Igd.IgdView view)
         {
             view = new Modules.Igd.IgdView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.TriaseRequested += async (_, _) => await OpenIgdTriaseAsync();
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
@@ -873,7 +903,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.RawatInap.RawatInapView view)
         {
             view = new Modules.RawatInap.RawatInapView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
@@ -889,7 +919,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Registrasi.RegistrasiView view)
         {
             view = new Modules.Registrasi.RegistrasiView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.PeriksaRequested += async (_, _) => { _pemeriksaanFromTindakan = false; await OpenRawatJalanAsync(); };
             view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
@@ -906,7 +936,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.RawatJalan.TindakanRalanView view)
         {
             view = new Modules.RawatJalan.TindakanRalanView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             view.PemeriksaanRequested += async (_, _) => { _pemeriksaanFromTindakan = true; await OpenRawatJalanAsync(); };
             pageHost.Content = view;
         }
@@ -939,6 +969,14 @@ public partial class MainWindow : Window
 
         switch (label)
         {
+            case "Presensi Pegawai":
+                var category = this.FindControl<ComboBox>("MenuCategoryCombo")!;
+                if (category.ItemsSource is not null)
+                    category.SelectedIndex = Array.FindIndex(LegacyMenuCatalog.Categories,
+                        name => name.StartsWith("[C]", StringComparison.Ordinal));
+                ShowPage(Page.Menu);
+                return;
+
             case "Informasi":
                 _ = OpenInformasiAsync();
                 return;
@@ -1064,7 +1102,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.Informasi.InformasiView view)
         {
             view = new Modules.Informasi.InformasiView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             pageHost.Content = view;
         }
 
@@ -1079,7 +1117,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.About.AboutView view)
         {
             view = new Modules.About.AboutView();
-            view.BackRequested += (_, _) => ShowPage(Page.Hero);
+            view.BackRequested += (_, _) => ShowPage(Page.Menu);
             pageHost.Content = view;
         }
 

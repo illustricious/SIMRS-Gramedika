@@ -35,13 +35,15 @@
 | Periksa Lab PA | Daftar, entri hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
 | Periksa Lab MB | Daftar, entri hasil, dan cetak | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
 | Periksa Radiologi | Daftar, entri hasil, serta template hasil | Paritas aturan dan format khusus legacy belum diuji menyeluruh. |
-| Rawat Jalan (kasir) | Cari tagihan dan tandai lunas untuk rawat jalan. Dengan hak Billing Ranap, layar juga menampilkan rincian tagihan kamar dan mencatat pelunasan sederhana rawat inap. | Masih ada komponen tagihan dan cara bayar legacy yang diselesaikan di Kasir Khanza. |
+| Rawat Jalan (kasir) | Cari tagihan per No. Rawat, lihat rincian tindakan dan pemberian obat/BHP, serta tandai lunas tagihan rawat jalan sederhana. Dengan hak Billing Ranap, layar juga menampilkan rincian kamar dan mencatat pelunasan sederhana rawat inap. | Pelunasan tagihan dengan tindakan atau pemberian obat/BHP dilakukan di Kasir Khanza. |
 | Deposit Pasien | Cari, catat, hitung PPN/admin, posting jurnal dan Sadewa, batalkan dengan jurnal balik, dan simpan bukti PDF | Format kuitansi khusus rumah sakit. |
 | Perkiraan Biaya Ranap | Cari pasien, simpan/hapus estimasi manual, pilih tarif terendah/tertinggi dari riwayat RS atau INACBG, dan simpan PDF | Rincian pembanding kasus serta format cetak legacy. |
 
 Kasir rawat inap menghitung tarif kamar per periode, biaya harian sebagai tarif × jumlah × lama rawat, serta biaya masuk sekali untuk setiap periode kamar. Biaya registrasi rawat inap mengikuti opsi administrasi di Set Billing. Pelunasan setelah pasien pulang memakai satu akun yang memiliki rekening dan tanpa biaya admin. Aplikasi menyimpan rincian, nota, jurnal, dan status bayar bersama dalam satu transaksi. Tagihan dengan komponen lain seperti deposit, piutang, obat, atau tindakan diselesaikan di Kasir Khanza.
 
 Kasir menyediakan **Simpan Bukti Pelunasan PDF** untuk rawat inap yang berstatus lunas, memiliki nomor nota, dan mempunyai rincian tersimpan. PDF mengambil rincian dari tagihan yang sudah dibukukan.
+
+Untuk kunjungan yang belum lunas dan belum dibukukan, subtotal tindakan dan obat/BHP ditampilkan tersendiri. Tindakan dikelompokkan menurut pelaksana, jenis, dan tarif. Tagihan rawat inap mencakup tindakan rawat jalan pada No. Rawat yang sama dan mengikuti tarif master Khanza untuk tindakan khusus paramedis. Total obat/BHP mengambil nilai pemberian obat, termasuk embalase dan tuslah yang tercatat. Penghitungan obat langsung, resep pulang, retur, lab, dan radiologi tetap dilakukan di Kasir Khanza.
 
 Pengujian tampilan tanpa database mencakup sembilan layar tambahan dan layar sesi KFR. Uji baca terhadap skema Khanza bisa dijalankan dengan `SIMRS_DB_SMOKE=1`.
 

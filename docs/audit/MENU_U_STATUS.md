@@ -1,6 +1,6 @@
 # Status Menu U
 
-**19 November 2026 · 30 dari 30 tile memiliki layar Avalonia.** Empat layar sudah tersedia sebelumnya. Dua puluh enam layar tambahan terhubung melalui dashboard dan mengikuti hak akses pengguna Khanza.
+**Menu U memiliki 31 tile.** Tiga puluh berasal dari katalog Khanza dan satu tile Backup Database ditambahkan di Avalonia.
 
 | Tile | Fungsi Avalonia |
 |---|---|
@@ -15,6 +15,7 @@
 | Set E-Eksekutif | Simpan atau hapus kredensial portal menggunakan skema legacy. Formulir hanya menampilkan status penyimpanan. |
 | Tracker Login | Cari catatan login. |
 | Vakum Table | Cari tabel dan lihat perkiraan jumlah baris. Pengosongan berjalan per tabel setelah Admin Utama mengetik nama database dan tabel. |
+| Backup Database | Tersedia sementara untuk semua akun yang berhasil login. Ekspor struktur, data, view, trigger, routine, dan event dari database aktif ke file SQL. |
 | Display Antrian Registrasi & Poli | Simpan teks, status aktif, dan gambar. Papan Poli native menampilkan pengumuman. |
 | Display Antrian Apotek | Simpan teks, status aktif, dan gambar. Papan Apotek, Racikan, dan Nonracikan native menampilkan pengumuman. |
 | Set Harga Obat | Atur sumber harga, PPN, dan margin umum, per jenis, atau per barang. Harga jual barang di master dapat dihitung ulang dengan konfirmasi. |
@@ -36,5 +37,9 @@
 | Set Resep Per Cara Bayar | Kelola pasangan cara bayar dan obat yang tersimpan di tabel legacy. |
 
 Pengumuman pada papan native ditampilkan sebagai teks dan gambar. Pengaturan tarif dan harga yang sudah dibaca modul Avalonia tetap menggunakan tabel Khanza yang sama. Integrasi lanjutan masih diperlukan untuk aturan otomatis registrasi, penomoran RM, pembatasan resep, serta opsi billing di luar cakupan pelunasan rawat inap sederhana.
+
+Backup memerlukan `mariadb-dump` untuk server MariaDB atau `mysqldump` untuk server MySQL di PATH komputer yang menjalankan Avalonia. Kredensial profil aktif harus memiliki akses baca ke objek yang diekspor. Snapshot transaksi berlaku untuk tabel InnoDB. Hindari perubahan struktur selama dump dan jalankan pada periode tenang bila database memakai tabel nontransaksional.
+
+Klien MariaDB 11.4 memerlukan TLS pada koneksi ke server jarak jauh. Jika server tidak menawarkan TLS, aktifkan TLS dan gunakan sertifikat server tepercaya yang sesuai dengan nama host pada profil koneksi.
 
 Penyambungan awal tile Menu U diperiksa lewat rute dashboard, sintaks sumber, dan skema repo. Pengosongan tabel serta penulisan kredensial belum diuji. [Status integrasi Rawat Inap dan Kasir](MENU_A_STATUS.md)

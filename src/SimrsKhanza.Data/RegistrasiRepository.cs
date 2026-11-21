@@ -43,6 +43,8 @@ public record RegistrasiSearchFilter(
     string? NoRekamMedis = null,
     string? NamaPasien = null);
 
+public sealed record RegistrasiInputDetails(string? StatusPendaftaran, string? NoKartu, string? AsalRujukan);
+
 public interface IRegistrasiRepository
 {
     /// <summary>Convenience wrapper — kept for callers that only care about "today".</summary>
@@ -174,6 +176,16 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             KodePoli: row.KodePoli,
             KodePj: row.KodePenjab)).ToList();
     }
+
+    public Task<RegistrasiInputDetails?> GetInputDetailsAsync(string noRawat, CancellationToken ct = default)
+        => db.Database.SqlQuery<RegistrasiInputDetails>($"""
+            SELECT r.stts_daftar AS StatusPendaftaran, p.no_peserta AS NoKartu,
+                   (SELECT MIN(m.perujuk) FROM rujuk_masuk m WHERE m.no_rawat = r.no_rawat) AS AsalRujukan
+            FROM reg_periksa r
+            JOIN pasien p ON p.no_rkm_medis = r.no_rkm_medis
+            WHERE r.no_rawat = {noRawat}
+            """).SingleOrDefaultAsync(ct);
+
 
     public async Task<IReadOnlyList<Core.Entities.Poliklinik>> GetPoliklinikAsync(CancellationToken ct = default)
         => await db.PoliklinikSet.OrderBy(p => p.NamaPoli).ToListAsync(ct);

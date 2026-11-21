@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.RawatJalan.TindakanRalanView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy "Rawat Jalan" toolbar button = DlgRawatJalan, "::[ Perawatan/Tindakan
@@ -12,9 +12,10 @@
         Entering NEW tindakan (jns_perawatan picker + billing fields) is not built
         yet; "Pemeriksaan" opens the existing vitals/exam form instead.
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Text=":: [ Perawatan/Tindakan Rawat Jalan ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Perawatan/Tindakan Rawat Jalan" />
+        </Border>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
             <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
@@ -31,7 +32,7 @@
 
         <TabControl Grid.Row="2" Name="Tabs" SelectionChanged="OnTabChanged">
             <TabItem Header="Tindakan Dokter">
-                <DataGrid FontSize="11" RowHeight="22" Name="DokterGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                <DataGrid Name="DokterGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
                           HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
@@ -53,7 +54,7 @@
                 </DataGrid>
             </TabItem>
             <TabItem Header="Tindakan Paramedis">
-                <DataGrid FontSize="11" RowHeight="22" Name="ParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                <DataGrid Name="ParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
                           HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
@@ -75,7 +76,7 @@
                 </DataGrid>
             </TabItem>
             <TabItem Header="Tindakan Dokter + Paramedis">
-                <DataGrid FontSize="11" RowHeight="22" Name="DokterParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                <DataGrid Name="DokterParamedisGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
                           HeadersVisibility="Column" x:DataType="data:TindakanRalanRow">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.2*" MinWidth="110" />
@@ -111,8 +112,6 @@
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="TextBlock"><Setter Property="FontSize" Value="11" /></Style>
-        <Style Selector="DataGridColumnHeader"><Setter Property="FontSize" Value="11" /><Setter Property="MinHeight" Value="24" /><Setter Property="Padding" Value="6,2" /></Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

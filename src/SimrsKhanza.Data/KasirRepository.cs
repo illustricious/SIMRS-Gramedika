@@ -14,6 +14,7 @@ public record KasirBillItem(
 {
     public bool Ranap { get; init; }
     public IReadOnlyList<KasirRincian> Rincian { get; init; } = [];
+    public IReadOnlyList<KasirRincian> RincianTindakanObat { get; init; } = [];
     public bool RincianTersimpan { get; init; }
     public string? NoNota { get; init; }
     public string? AlasanBelumBisaBayar { get; init; }
@@ -32,6 +33,7 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
     private const string Kamar = "Kamar";
     private const string Harian = "Harian";
     private const string BiayaMasuk = "Biaya Masuk";
+    private const string BayarDiKhanza = "Ada komponen yang harus diselesaikan di Kasir Khanza.";
 
     private sealed class Kunjungan
     {
@@ -50,9 +52,21 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
         var visit = await KunjunganQuery.SingleOrDefaultAsync(r => r.Reg.NoRawat == noRawat, ct);
         if (visit is null) return null;
         var result = (await BuatRingkasanAsync([visit], ct)).Single();
-        if (result.Ranap && result.StatusBayar != "Sudah Bayar" && result.AlasanBelumBisaBayar is null)
-            result = result with { AlasanBelumBisaBayar = await CekKomponenLainAsync(noRawat, ct) };
-        return result;
+        if (result.StatusBayar == "Sudah Bayar" || visit.Reg.Status == StatusRegistrasi.Batal
+            || result.RincianTersimpan || result.NoNota is not null)
+            return result;
+
+        if (!result.Ranap && await AdaBillingRalanAsync(noRawat, ct))
+            return result with { AlasanBelumBisaBayar = "Tagihan sudah tercatat di Khanza. Periksa status pelunasannya." };
+
+        var rincian = await MuatRincianTindakanObatAsync(noRawat, result.Ranap, ct);
+        var alasan = result.AlasanBelumBisaBayar;
+        if (alasan is null)
+        {
+            alasan = result.Ranap ? await CekKomponenLainAsync(noRawat, ct)
+                : rincian.Count > 0 ? BayarDiKhanza : null;
+        }
+        return result with { RincianTindakanObat = rincian, AlasanBelumBisaBayar = alasan };
     }
 
     public async Task MarkPaidAsync(string noRawat, CancellationToken ct = default)
@@ -63,6 +77,10 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
             await db.KamarInapSet.AnyAsync(k => k.NoRawat == noRawat, ct))
             throw new InvalidOperationException("Gunakan pelunasan rawat inap dengan akun bayar.");
         if (reg.Status == StatusRegistrasi.Batal) throw new InvalidOperationException("Registrasi pasien sudah dibatalkan.");
+        if (await AdaBillingRalanAsync(noRawat, ct))
+            throw new InvalidOperationException("Tagihan sudah tercatat di Khanza. Periksa status pelunasannya.");
+        if ((await MuatRincianTindakanObatAsync(noRawat, false, ct)).Count > 0)
+            throw new InvalidOperationException(BayarDiKhanza);
         reg.StatusBayar = StatusBayar.SudahBayar;
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
@@ -182,7 +200,58 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
                 EXISTS(SELECT 1 FROM set_service_ranap WHERE besar<>0 AND (kamar='Yes' OR registrasi='Yes' OR harian='Yes'))
             ) AS Value
             """).SingleAsync(ct);
-        return lainnya ? "Ada komponen tambahan di luar rincian ini. Selesaikan tagihan di Kasir Khanza." : null;
+        return lainnya ? BayarDiKhanza : null;
+    }
+
+    private Task<bool> AdaBillingRalanAsync(string noRawat, CancellationToken ct) =>
+        db.Database.SqlQuery<bool>($"""
+            SELECT EXISTS(SELECT 1 FROM billing WHERE no_rawat={noRawat}) AS Value
+            """).SingleAsync(ct);
+
+    private async Task<IReadOnlyList<KasirRincian>> MuatRincianTindakanObatAsync(
+        string noRawat, bool ranap, CancellationToken ct)
+    {
+        // Billing Ranap uses the master tarif for paramedic-only services, including services before admission.
+        // Other procedures use the price originally recorded on the transaction.
+        var rows = await db.Database.SqlQuery<KasirRincian>($"""
+            SELECT Jenis,Nama,CAST(Tarif AS DECIMAL(20,4)) AS Tarif,
+                   CAST(SUM(Jumlah) AS DECIMAL(20,4)) AS Jumlah,
+                   CAST(SUM(Total) AS DECIMAL(20,4)) AS Total
+            FROM (
+                SELECT 'Ralan Dokter' AS Jenis,j.kd_jenis_prw AS Kode,j.nm_perawatan AS Nama,
+                       COALESCE(r.biaya_rawat,0) AS Tarif,1 AS Jumlah,COALESCE(r.biaya_rawat,0) AS Total
+                FROM rawat_jl_dr r JOIN jns_perawatan j ON j.kd_jenis_prw=r.kd_jenis_prw WHERE r.no_rawat={noRawat}
+                UNION ALL
+                SELECT 'Ralan Paramedis',j.kd_jenis_prw,j.nm_perawatan,
+                       COALESCE(CASE WHEN {ranap} THEN j.total_byrpr ELSE r.biaya_rawat END,0),
+                       1,COALESCE(CASE WHEN {ranap} THEN j.total_byrpr ELSE r.biaya_rawat END,0)
+                FROM rawat_jl_pr r JOIN jns_perawatan j ON j.kd_jenis_prw=r.kd_jenis_prw WHERE r.no_rawat={noRawat}
+                UNION ALL
+                SELECT 'Ralan Dokter + Paramedis',j.kd_jenis_prw,j.nm_perawatan,
+                       COALESCE(r.biaya_rawat,0),1,COALESCE(r.biaya_rawat,0)
+                FROM rawat_jl_drpr r JOIN jns_perawatan j ON j.kd_jenis_prw=r.kd_jenis_prw WHERE r.no_rawat={noRawat}
+                UNION ALL
+                SELECT 'Ranap Dokter',j.kd_jenis_prw,j.nm_perawatan,
+                       COALESCE(r.biaya_rawat,0),1,COALESCE(r.biaya_rawat,0)
+                FROM rawat_inap_dr r JOIN jns_perawatan_inap j ON j.kd_jenis_prw=r.kd_jenis_prw
+                WHERE r.no_rawat={noRawat} AND {ranap}
+                UNION ALL
+                SELECT 'Ranap Paramedis',j.kd_jenis_prw,j.nm_perawatan,
+                       COALESCE(j.total_byrpr,0),1,COALESCE(j.total_byrpr,0)
+                FROM rawat_inap_pr r JOIN jns_perawatan_inap j ON j.kd_jenis_prw=r.kd_jenis_prw
+                WHERE r.no_rawat={noRawat} AND {ranap}
+                UNION ALL
+                SELECT 'Ranap Dokter + Paramedis',j.kd_jenis_prw,j.nm_perawatan,
+                       COALESCE(r.biaya_rawat,0),1,COALESCE(r.biaya_rawat,0)
+                FROM rawat_inap_drpr r JOIN jns_perawatan_inap j ON j.kd_jenis_prw=r.kd_jenis_prw
+                WHERE r.no_rawat={noRawat} AND {ranap}
+                UNION ALL
+                SELECT 'Obat & BHP',b.kode_brng,b.nama_brng,COALESCE(o.biaya_obat,0),o.jml,o.total
+                FROM detail_pemberian_obat o JOIN databarang b ON b.kode_brng=o.kode_brng WHERE o.no_rawat={noRawat}
+            ) layanan
+            GROUP BY layanan.Jenis,layanan.Kode,layanan.Nama,layanan.Tarif
+            """).OrderBy(r => r.Jenis).ThenBy(r => r.Nama).ThenBy(r => r.Tarif).ToListAsync(ct);
+        return rows;
     }
 
     public async Task<IReadOnlyList<KasirBillItem>> GetLaporanPendapatanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default)

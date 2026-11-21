@@ -15,7 +15,7 @@ public partial class MenuAInformasiView : UserControl
         InitializeComponent();
         _jadwal = jadwal;
         this.FindControl<WrapPanel>("FormJadwal")!.IsVisible = jadwal;
-        this.FindControl<TextBlock>("Judul")!.Text = jadwal ? ":: [ Jadwal Praktek ] ::" : ":: [ Informasi Kamar ] ::";
+        this.FindControl<TextBlock>("Judul")!.Text = jadwal ? "Jadwal Praktek" : "Informasi Kamar";
     }
     public async Task ReloadAsync()
     {

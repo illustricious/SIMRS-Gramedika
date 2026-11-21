@@ -8,8 +8,8 @@
     <!-- Port of legacy setting/DlgUser.java: same `user` table (AES 'nur'/'windi'),
          so accounts made here also log into the original Khanza and vice versa. -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Manajemen User &amp; Hak Akses ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Manajemen User &amp; Hak Akses"
+                   Margin="0,0,0,12" />
 
         <Grid Grid.Row="1" ColumnDefinitions="2*,12,3*">
 

@@ -15,33 +15,64 @@
             legacy frmUtama layout (two-row shortcut toolbar + status bar).
         -->
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://SimrsKhanza.UI/Styles/AppMark.axaml" />
+            </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="TegasPageBrush">#E8F0FB</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#E0EEF2</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#F2E9EE</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#EAEAF8</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingBrush">#D9E8FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#244F92</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasRowAltBrush">#EFF5FD</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasNavigationBrush">#16335C</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#193C73</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasActionBrush">#245797</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryBrush">#1E3A8A</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#172B66</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryLightBrush">#3B82F6</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeAccentBrush">#DC2626</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#F7F9FC</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeSurfaceBrush">#F1F5F9</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#E2E8F0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePanelBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#EAF0F8</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBrush">#244795</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#EAF0FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#DCE4EF</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextBrush">#1E293B</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#64748B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#54647C</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
                     <!-- Subtle zebra striping for DataGrid rows (odd = white/background, even = this) -->
-                    <SolidColorBrush x:Key="ThemeRowAltBrush">#EFF5FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#F6F8FC</SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="TegasPageBrush">#1A2334</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#1A2B35</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#30232D</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#242840</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingBrush">#273C5B</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#80B1FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasRowAltBrush">#263348</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasNavigationBrush">#192E4C</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#203F6A</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasActionBrush">#3565A7</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryBrush">#2E4F9E</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#223B78</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryLightBrush">#60A5FA</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeAccentBrush">#F87171</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#2A2E35</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#363B44</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#454B56</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#181F2B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#272F40</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePanelBrush">#212939</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#2D3A52</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBrush">#AFC9FF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#2C3C5D</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#3C485A</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextBrush">#E2E8F0</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#94A3B8</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#AFBDD0</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeRowAltBrush">#30384A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#242F42</SolidColorBrush>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -68,23 +99,32 @@
             <Setter Property="Background" Value="{DynamicResource ThemeRowAltBrush}" />
         </Style>
 
-        <!--
-            App-wide compact/uniform look, modelled on the IGD screen (user asked for every
-            patient table/form to match it): base font 11 Segoe UI, controls MinHeight 24,
-            DataGrid rows 22px, blue column headers, soft grid lines. Local FontSize/RowHeight
-            attributes on a control still win (e.g. the big-screen antrian boards), so only
-            screens that never set their own get the compact default.
-        -->
         <Style Selector="Window">
             <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial" />
-            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontSize" Value="13" />
         </Style>
-        <Style Selector="TextBox, ComboBox, DatePicker, Button, ToggleButton, CheckBox, RadioButton, TabItem, MenuItem">
-            <Setter Property="FontSize" Value="11" />
+        <Style Selector="TextBlock.pageTitle">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="TextBlock.sectionTitle">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="TextBlock.pageSubtitle">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+        <Style Selector="TextBox, ComboBox, DatePicker, CalendarDatePicker, Button, ToggleButton, CheckBox, RadioButton, TabItem, MenuItem">
+            <Setter Property="FontSize" Value="13" />
         </Style>
         <Style Selector="TextBox, ComboBox">
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Padding" Value="8,4" />
         </Style>
         <Style Selector="DatePicker">
             <Setter Property="DayFormat" Value="d" />
@@ -102,10 +142,9 @@
             <Setter Property="SelectedDateFormat" Value="Custom" />
             <Setter Property="CustomDateFormatString" Value="dd/MM/yyyy" />
             <Setter Property="MinWidth" Value="135" />
-            <Setter Property="FontSize" Value="11" />
         </Style>
         <Style Selector="Calendar">
-            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontSize" Value="13" />
             <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         </Style>
@@ -127,8 +166,8 @@
         <Style Selector="ScrollBar:horizontal /template/ Thumb"><Setter Property="MinHeight" Value="16" /><Setter Property="MinWidth" Value="48" /></Style>
         <Style Selector="ScrollBar:vertical /template/ Thumb"><Setter Property="MinWidth" Value="16" /><Setter Property="MinHeight" Value="48" /></Style>
         <Style Selector="Button">
-            <Setter Property="MinHeight" Value="24" />
-            <Setter Property="Padding" Value="8,2" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Padding" Value="10,4" />
         </Style>
         <Style Selector="TabItem">
             <Setter Property="MinHeight" Value="24" />
@@ -137,24 +176,141 @@
         </Style>
         <Style Selector="DataGrid">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="RowHeight" Value="22" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="RowHeight" Value="32" />
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource ThemeBorderBrush}" />
             <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource ThemeBorderBrush}" />
         </Style>
         <Style Selector="DataGridColumnHeader">
-            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ThemeTableHeaderBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="MinHeight" Value="26" />
-            <Setter Property="Padding" Value="6,2" />
-            <Setter Property="SeparatorBrush" Value="{DynamicResource ThemePrimaryLightBrush}" />
-        </Style>
-        <Style Selector="DataGridColumnHeader /template/ Grid#PART_ColumnHeaderRoot">
-            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="SeparatorBrush" Value="{DynamicResource ThemeBorderBrush}" />
         </Style>
         <Style Selector="DataGridColumnHeader /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="DataGridColumnHeader /template/ Grid#PART_ColumnHeaderRoot">
+            <Setter Property="Background" Value="{DynamicResource ThemeTableHeaderBrush}" />
+        </Style>
+        <Style Selector="DataGridCell TextBlock">
+            <Setter Property="Margin" Value="8,0" />
+            <Setter Property="FontSize" Value="{ReflectionBinding $parent[DataGrid].FontSize}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas TextBlock.pageTitle">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="Border.tegasHeading">
+            <Setter Property="Background" Value="{DynamicResource TegasHeadingBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TegasHeadingEdgeBrush}" />
+            <Setter Property="BorderThickness" Value="3,0,0,0" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="9,5,9,5" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas TextBlock.pageSubtitle">
+            <Setter Property="FontSize" Value="11" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGrid">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="RowHeight" Value="26" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGridCell TextBlock">
+            <Setter Property="Margin" Value="6,0" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGridRow:nth-child(2n)">
+            <Setter Property="Background" Value="{DynamicResource TegasRowAltBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button, ContentControl.biruTegas ToggleButton, ContentControl.biruTegas TextBox, ContentControl.biruTegas ComboBox">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="26" />
+            <Setter Property="Padding" Value="7,3" />
+        </Style>
+        <Style Selector="Border#InputDataPanel TextBlock">
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+        <Style Selector="Border#InputDataPanel TextBox:readonly">
+            <Setter Property="Background" Value="{DynamicResource TegasHeadingBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGridColumnHeader">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="Background" Value="{DynamicResource TegasTableHeaderBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+            <Setter Property="SeparatorBrush" Value="{DynamicResource TegasTableHeaderBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGridColumnHeader /template/ Grid#PART_ColumnHeaderRoot">
+            <Setter Property="Background" Value="{DynamicResource TegasTableHeaderBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas DataGridColumnHeader /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button.accent">
+            <Setter Property="Background" Value="{DynamicResource TegasActionBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button.accent /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TegasActionBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas Button.accent:disabled /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}" />
+        </Style>
+        <Style Selector="ContentControl.biruTegas TextBox, ContentControl.biruTegas ComboBox">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
+        <Style Selector="ToggleButton.inputData">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="ToggleButton.inputData:checked /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
+        </Style>
+        <Style Selector="ToggleButton.inputData:checked Path">
+            <Setter Property="RenderTransform" Value="rotate(180deg)" />
+        </Style>
+        <Style Selector="Button.clinicalTile">
+            <Setter Property="Height" Value="110" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Button.clinicalTile:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeIconBrush}" />
+        </Style>
+        <Style Selector="TextBlock.registrationStatus">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}" />
+        </Style>
+        <Style Selector="TextBlock.registrationStatus.saved">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
+        </Style>
+        <Style Selector="TextBlock.registrationStatus.error">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
     </Application.Styles>
 </Application>

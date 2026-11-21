@@ -1,15 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Radiologi.RadiologiMenuView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasDiagnosticsPageBrush}">
 
     <!-- Same submenu pattern as Laboratorium/LabMenuView — user shared a
          screenshot of the legacy Radiologi icon row (Permintaan Radiologi /
          Periksa Radiologi), so this splits what used to be one combined
          screen into 2 tiles matching it. -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Radiologi ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Radiologi" />
+        </Border>
 
         <Grid Grid.Row="1" Name="TilePanel" ColumnSpacing="8" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
 
@@ -19,17 +20,6 @@
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="Button.labTile">
-            <Setter Property="Height" Value="180" />
-            <Setter Property="Margin" Value="6" />
-            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="FontWeight" Value="Medium" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>

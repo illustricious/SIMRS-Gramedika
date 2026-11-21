@@ -1,7 +1,9 @@
 using SimrsKhanza.Config;
+using SimrsKhanza.Data.Inventaris;
 using SimrsKhanza.Data.Kepegawaian;
 using SimrsKhanza.Data.LabKesling;
 using SimrsKhanza.Data.Master;
+using SimrsKhanza.Data.Parkir;
 using SimrsKhanza.Data.Sql;
 
 namespace SimrsKhanza.Tests;
@@ -83,7 +85,8 @@ public class MenuCSpecsDbSmokeTests
 
         MasterSpec[] lab = [LabKeslingMasters.Pelanggan, LabKeslingMasters.Sampel, LabKeslingMasters.Parameter, LabKeslingMasters.NilaiNormal];
         foreach (var (key, s) in MenuCSpecs.Masters.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Masters).Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Masters)
-                     .Concat(SimrsKhanza.Data.MenuA.MenuASpecs.Tiles).Concat(MenuJSpecs.Masters)
+                     .Concat(SimrsKhanza.Data.MenuA.MenuASpecs.Tiles).Concat(MenuJSpecs.Masters).Concat(MenuGSpecs.Masters)
+                     .Concat(MenuESpecs.Masters).Concat(MenuFSpecs.Masters).Concat(MenuHSpecs.Masters)
                      .Select(kv => (kv.Key, kv.Value))
                      .Append(("Sesi KFR", SimrsKhanza.Data.MenuA.MenuASpecs.SesiKfr))
                      .Concat(lab.Select(l => (l.Table, l))))
@@ -102,11 +105,21 @@ public class MenuCSpecsDbSmokeTests
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
         }
         foreach (var (key, r) in MenuCSpecs.Reports.Concat(SimrsKhanza.Data.Farmasi.MenuDSpecs.Reports)
-                     .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports).Concat(MenuJSpecs.Reports))
+                     .Concat(SimrsKhanza.Data.Farmasi.MenuDLists.Reports).Concat(MenuJSpecs.Reports).Concat(MenuGSpecs.Reports)
+                     .Concat(MenuESpecs.Reports).Concat(MenuFSpecs.Reports).Concat(MenuIReports.Reports).Concat(MenuIAdditionalReports.Reports).Concat(MenuIDrugReports.Reports).Concat(MenuIBillingReports.Reports).Concat(MenuIPaymentReports.Reports).Concat(MenuIClinicianReports.Reports).Concat(MenuIProcedureReports.Reports).Concat(MenuIPaymentPointReports.Reports).Concat(MenuIDailyReports.Reports).Concat(MenuIPatientFeesReports.Reports).Concat(MenuIAccountPaymentReports.Reports).Concat(MenuIFinalReports.Reports))
         {
             try { await reports.RunAsync(r, "", DateTime.Today.AddMonths(-1), DateTime.Today, DateTime.Today.Year); }
             catch (Exception ex) { errors.Add($"{key}: {ex.Message}"); }
         }
+
+        var parkir = new ParkirRepository(settings);
+        try
+        {
+            await parkir.JenisAsync();
+            await parkir.PetugasAsync(null);
+            await parkir.ListAsync(DateTime.Today, DateTime.Today, "");
+        }
+        catch (Exception ex) { errors.Add($"Parkir: {ex.Message}"); }
 
         var skp = new SkpRepository(settings);
         try

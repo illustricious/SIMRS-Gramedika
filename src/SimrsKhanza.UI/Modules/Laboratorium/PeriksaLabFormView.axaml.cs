@@ -104,7 +104,7 @@ public partial class PeriksaLabFormView : UserControl
         InitializeComponent();
 
         var pa = category == LabCategory.PA;
-        this.FindControl<TextBlock>("TitleText")!.Text = $":: [ Input Data Hasil Periksa Laboratorium {LabUi.Title(category)} ] ::";
+        this.FindControl<TextBlock>("TitleText")!.Text = $"Input Data Hasil Periksa Laboratorium {LabUi.Title(category)}";
         this.FindControl<DataGrid>("DetailGrid")!.IsVisible = !pa;
         this.FindControl<DataGrid>("PaDetailGrid")!.IsVisible = pa;
         this.FindControl<RadioButton>("RbDewasa")!.IsVisible = !pa;

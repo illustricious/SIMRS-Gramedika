@@ -12,14 +12,15 @@ public partial class RadiologiMenuView : UserControl
 
     private static readonly (RadiologiAction Action, string Icon, string Label)[] Tiles =
     [
-        (RadiologiAction.Permintaan, "📋", "Permintaan Radiologi"),
-        (RadiologiAction.Periksa, "🩻", "Periksa Radiologi"),
+        (RadiologiAction.Permintaan, "btnRegistrasi", "Permintaan Radiologi"),
+        (RadiologiAction.Periksa, "btnPeriksaRadiologi", "Periksa Radiologi"),
     ];
 
     public RadiologiMenuView()
     {
         InitializeComponent();
-        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action));
+        MenuTileBuilder.Build(this.FindControl<Grid>("TilePanel")!, Tiles, action => TileClicked?.Invoke(this, action),
+            key => DashboardIcons.Create(0, key));
     }
 
     private void OnBackClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

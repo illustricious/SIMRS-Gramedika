@@ -66,6 +66,7 @@ public partial class App : Application
             // MainWindow before the old one closes, or closing it would end the app.
             main.LogoutRequested += (_, _) =>
             {
+                AppSession.CurrentUser = null;
                 ShowLogin(desktop, authService, show: true);
                 main.Close();
             };

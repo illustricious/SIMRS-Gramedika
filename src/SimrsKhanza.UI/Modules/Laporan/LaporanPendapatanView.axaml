@@ -5,8 +5,8 @@
              Background="{DynamicResource ThemeBackgroundBrush}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
-        <TextBlock Grid.Row="0" Text=":: [ Laporan Pendapatan ] ::"
-                   Foreground="{DynamicResource ThemePrimaryBrush}" FontWeight="Bold" Margin="0,0,0,12" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Laporan Pendapatan"
+                   Margin="0,0,0,12" />
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
             <TextBlock Text="Periode :" VerticalAlignment="Center" />

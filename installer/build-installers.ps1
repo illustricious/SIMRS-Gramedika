@@ -15,9 +15,12 @@ param(
     # Numeric version for MSI ProductVersion / Windows file info (default 0.1.<yy><day of year>).
     [string]$FileVersion = "",
     [ValidateSet("all", "win", "linux")][string]$Only = "all",
-    [string[]]$Arch = @("x64", "arm64")
+    [ValidateSet("x64", "arm64")][string[]]$Arch = @("x64", "arm64"),
+    [switch]$WindowsSetupOnly,
+    [string]$InnoSetupCompiler = ""
 )
 $ErrorActionPreference = "Stop"
+if ($WindowsSetupOnly -and $Only -ne "win") { throw "-WindowsSetupOnly memerlukan -Only win." }
 $root = Split-Path -Parent $PSScriptRoot
 $proj = Join-Path $root "src/SimrsKhanza.UI/SimrsKhanza.UI.csproj"
 $dist = Join-Path $root "dist"
@@ -29,23 +32,36 @@ if (-not $Version) {
     if (-not $Version) { $Version = "0.1.0-alpha" }
     if ($Version -match "-") { $Version = "$Version.$(Get-Date -Format yyyyMMddHHmm)" }
 }
-if (-not $FileVersion) { $FileVersion = "0.1.$(Get-Date -Format yy)$((Get-Date).DayOfYear.ToString('000'))" }
+if (-not $FileVersion) {
+    $FileVersion = if ($Version -match '^\d+\.\d+\.\d+$') { $Version } else {
+        "0.1.$(Get-Date -Format yy)$((Get-Date).DayOfYear.ToString('000'))"
+    }
+}
 Write-Host "Versi: $Version (file version $FileVersion)" -ForegroundColor Cyan
 New-Item -ItemType Directory -Force $dist | Out-Null
 
 function Publish($rid) {
     $out = Join-Path $root "publish/$rid"
-    if (Test-Path $out) { Remove-Item -Recurse -Force $out }
+    if (Test-Path -LiteralPath $out) {
+        $publishRoot = (Resolve-Path -LiteralPath (Join-Path $root "publish")).ProviderPath
+        $expected = [IO.Path]::GetFullPath($out)
+        $target = (Resolve-Path -LiteralPath $out).ProviderPath
+        if ($target -ne $expected -or
+            -not $target.StartsWith($publishRoot + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) {
+            throw "Folder publish tidak valid: $target"
+        }
+        Remove-Item -LiteralPath $target -Recurse -Force
+    }
     Write-Host "== dotnet publish $rid ($Version)" -ForegroundColor Cyan
     & $dotnet publish $proj -c Release -r $rid --self-contained true -o $out `
-        -p:Version=$Version -p:DebugType=none -p:DebugSymbols=false -nologo -v q | Out-Host
+        -p:Version=$Version -p:DebugType=none -p:DebugSymbols=false -m:1 -nr:false -nologo -v q | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "publish $rid gagal" }
     return $out
 }
 
 if ($Only -in "all", "win") {
-    $iscc = @("$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe", "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe") |
-        Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+    $iscc = @($InnoSetupCompiler, "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe", "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe", "$env:ProgramFiles\Inno Setup 6\ISCC.exe") |
+        Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) } | Select-Object -First 1
     if (-not $iscc) { throw "Inno Setup 6 tidak ditemukan. Pasang dengan: winget install JRSoftware.InnoSetup" }
     foreach ($a in $Arch) {
         $win = Publish "win-$a"
@@ -55,12 +71,16 @@ if ($Only -in "all", "win") {
         & $iscc /Q "/DAppVersion=$Version" "/DFileVersion=$FileVersion" "/DArch=$a" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows/SimrsGramedika.iss")
         if ($LASTEXITCODE -ne 0) { throw "Inno Setup $a gagal" }
 
+        if ($WindowsSetupOnly) { continue }
+
         Write-Host "== MSI ($a)" -ForegroundColor Cyan
         & $dotnet build (Join-Path $PSScriptRoot "msi/SimrsGramedika.wixproj") -c Release -nologo -v q `
             "-p:Platform=$a" "-p:SourceDir=$win" "-p:Version=$FileVersion" "-p:DisplayVersion=$Version" "-p:OutputPath=$dist\" | Out-Host
         if ($LASTEXITCODE -ne 0) { throw "MSI $a gagal" }
     }
-    Get-ChildItem $dist -Filter *.wixpdb -ErrorAction SilentlyContinue | Remove-Item -Force
+    if (-not $WindowsSetupOnly) {
+        Get-ChildItem $dist -Filter *.wixpdb -ErrorAction SilentlyContinue | Remove-Item -Force
+    }
 }
 
 if ($Only -in "all", "linux") {

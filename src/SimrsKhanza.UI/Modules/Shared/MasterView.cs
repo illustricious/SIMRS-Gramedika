@@ -50,17 +50,29 @@ public class MasterView : PageView
         if (spec.ScoreOf is not null) formRows.Add(("Nilai Kepatuhan :", _score));
 
         var buttons = new List<Control>();
-        if (spec.CanInsert && !spec.Singleton) buttons.Add(Ui.Btn("➕ Baru", async (_, _) => await NewAsync()));
-        if (editable) buttons.Add(Ui.Btn("💾 Simpan", async (_, _) => await SaveAsync()));
-        if (spec.CanDelete) buttons.Add(Ui.Btn("🗑 Hapus", async (_, _) => await DeleteAsync()));
+        if (spec.CanInsert && !spec.Singleton) buttons.Add(Ui.Btn("Baru", async (_, _) => await NewAsync()));
+        if (editable)
+        {
+            var save = Ui.Btn("Simpan", async (_, _) => await SaveAsync());
+            save.Classes.Add("accent");
+            buttons.Add(save);
+        }
+        if (spec.CanDelete) buttons.Add(Ui.Btn("Hapus", async (_, _) => await DeleteAsync()));
         foreach (var a in spec.Actions) buttons.Add(Ui.Btn(a.Label, async (_, _) => await RunActionAsync(a)));
 
         _commands = Ui.Bar(buttons.ToArray());
-        var form = new StackPanel { Spacing = 6, Width = 560, Children = { Ui.Form(formRows.ToArray()), _commands } };
+        var fields = Ui.Form(formRows.ToArray());
+        fields.ColumnDefinitions = new ColumnDefinitions("0.85*,1.15*");
+        var form = new StackPanel
+        {
+            Spacing = 12, Margin = new Thickness(16),
+            Children = { Ui.Section(editable ? "Detail Data" : "Rincian"), fields, _commands },
+        };
 
         if (spec.Singleton)
         {
             _commands.IsEnabled = false;
+            form.Width = 520;
             form.HorizontalAlignment = HorizontalAlignment.Left;
             Build(spec.Title, new ScrollViewer { Content = form }, spec.Hint);
             return;
@@ -68,17 +80,20 @@ public class MasterView : PageView
 
         var filters = new List<Control> { _cari };
         if (_period is not null) filters.Add(_period);
-        filters.Add(Ui.Btn("🔎 Cari", async (_, _) => await LoadAsync()));
+        filters.Add(Ui.Btn("Cari", async (_, _) => await LoadAsync()));
         var left = new DockPanel();
         var bar = Ui.Bar(filters.ToArray());
         DockPanel.SetDock(bar, Dock.Top);
         left.Children.Add(bar);
         left.Children.Add(_grid);
 
-        var body = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,Auto") };
+        var body = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,0.58*") };
         body.Children.Add(left);
-        body.Children.Add(new ScrollViewer { Content = form, [Avalonia.Controls.Grid.ColumnProperty] = 2 });
-        Build(spec.Title, body, spec.Hint ?? "Tabel yang sama dengan SIMRS Khanza lama — perubahan di sini langsung terlihat di sana.");
+        var detail = Ui.Box(new ScrollViewer { Content = form, HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto });
+        detail.Bind(Border.BackgroundProperty, this.GetResourceObservable("ThemePanelBrush"));
+        detail.SetValue(Avalonia.Controls.Grid.ColumnProperty, 2);
+        body.Children.Add(detail);
+        Build(spec.Title, body, spec.Hint);
     }
 
     private Control Editor(MasterField f)
@@ -228,11 +243,14 @@ public class MasterView : PageView
             case LookupBox lb: lb.Kode = Str(v); break;
             case ComboBox cb:
                 var s = Str(v);
-                cb.SelectedItem = f.Choices!.Contains(s) ? s : f.Choices!.FirstOrDefault();
+                cb.SelectedItem = f.Choices!.Contains(s) ? s : f.NullWhenEmpty ? null : f.Choices!.FirstOrDefault();
                 break;
             case CalendarDatePicker dp: dp.SelectedDate = v is DateTime d ? d.Date : f.Key || f.Required ? DateTime.Today : null; break;
+            case DateTimeBox dt when f.NullWhenEmpty: dt.SelectedValue = v is DateTime selected ? selected : null; break;
             case DateTimeBox dt: dt.Value = v is DateTime d2 ? d2 : DateTime.Now; break;
-            case TextBox tb when f.Kind is FieldKind.Number or FieldKind.Integer: tb.Text = v is null ? "0" : Str(v); break;
+            case TextBox tb when f.Kind is FieldKind.Number or FieldKind.Integer:
+                tb.Text = v is null && !f.NullWhenEmpty ? "0" : Convert.ToString(v, CultureInfo.InvariantCulture);
+                break;
             case TextBox tb: tb.Text = Str(v); break;
         }
     }
@@ -242,10 +260,13 @@ public class MasterView : PageView
 
     private object? ReadValue(MasterField f) => _editors[f.Column] switch
     {
+        LookupBox lb when f.NullWhenEmpty && string.IsNullOrWhiteSpace(lb.Kode) => null,
         LookupBox lb => lb.Kode,
         ComboBox cb => cb.SelectedItem as string,
         CalendarDatePicker dp => dp.SelectedDate?.Date,
+        DateTimeBox dt when f.NullWhenEmpty => dt.SelectedValue,
         DateTimeBox dt => dt.Value,
+        TextBox tb when f.NullWhenEmpty && string.IsNullOrWhiteSpace(tb.Text) => null,
         TextBox tb when f.Kind == FieldKind.Number => ParseNumber(tb.Text),
         TextBox tb when f.Kind == FieldKind.Integer => (long)Math.Round(ParseNumber(tb.Text)),
         TextBox tb when f.Kind == FieldKind.Time => ParseTime(f, tb.Text),
