@@ -7,17 +7,33 @@ It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses
 
 ## Status
 
-The dashboard follows the original Khanza menu categories A–U. As of 20 November 2026, **321 of 1,224 dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Screen coverage and feature parity are tracked separately.
+As of 21 November 2026, **381 of 1,224 dashboard tiles** in the published branch open a screen. **843 tiles** still need a screen. Counts include shared tiles in each category where they appear. Screen coverage and feature parity are tracked separately.
 
-| Menu | Area | Tiles with a screen |
-|------|------|--------|
-| A | Registration, outpatient/inpatient services, billing | **34/34** |
-| B | Barcode-based procedures & drugs, environmental health lab | 16/16 |
-| C | Attendance, staff management, K3, infection-control audits, patient safety (SKP) | 61/61 |
-| D | Pharmacy inventory, patient stock, prescription review, and reports | 75/75 |
-| E, F, G, I, K, M, S | Shared master data, patient deposits, and patient records | 9 |
-| J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
-| U | Application settings, tariffs, queue displays, and account administration | **30/30** |
+| Menu | Area | Tiles with a screen | Pending |
+|---|---|---:|---:|
+| A | Registrasi, Tagihan Ranap & Ralan, Pelayanan & Billing Pasien | 34/34 | 0 |
+| B | Tindakan & Obat & BHP Via Barcode, Lab Kesehatan Lingkungan | 16/16 | 0 |
+| C | Presensi, Manajemen & Penggajian Pegawai Rumah Sakit | 61/61 | 0 |
+| D | Transaksi Inventory Obat, BHP Medis, Alat Kesehatan Pasien | 75/75 | 0 |
+| E | Transaksi Inventory Barang Non Medis, Penunjang ( Lab & RO ) | 2/33 | 31 |
+| F | Transaksi Inventory Barang Dapur Kering & Basah | 2/27 | 25 |
+| G | Aset, Inventaris Barang & Instalasi Kesehatan Lingkungan | 1/28 | 27 |
+| H | Menejemen Parkir Kendaraan Pasien & Karyawan | 0/3 | 3 |
+| I | Olah Data Tagihan Rawat Inap & Rawat Jalan | 60/60 | 0 |
+| J | Olah Data Penyakit, Laporan DKK, Laporal RL & Laporan Internal | 96/96 | 0 |
+| K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 2/87 | 85 |
+| L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes & Pihak Ke 3 | 0/183 | 183 |
+| M | Olah Data Rekam Medis Pasien | 1/255 | 254 |
+| N | Unit Pelayanan Tranfusi Darah | 0/11 | 11 |
+| O | Analisa, Dashboard & Info Grafik | 0/113 | 113 |
+| P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 0/45 | 45 |
+| Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 0/16 | 16 |
+| R | Pre-Construction & Infection Control Risk Assessment | 0/10 | 10 |
+| S | Toko / Minimarket / Koperasi | 1/25 | 24 |
+| T | Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh | 0/16 | 16 |
+| U | Pengaturan Program Aplikasi HMS | 30/30 | 0 |
+
+See the [full backlog by tile](docs/audit/TILE_BACKLOG.md) and [Menu I implementation notes](docs/audit/MENU_BELUM_DAN_PELAJARAN_I.md).
 
 Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
 
