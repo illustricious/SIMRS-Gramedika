@@ -19,15 +19,19 @@ public class ReportView : PageView
     private readonly NumericUpDown _tahun = new() { Minimum = 2000, Maximum = 2100, Value = DateTime.Today.Year, Width = 110, FormatString = "0" };
     private List<Row> _rows = [];
 
-    public ReportView(ReportSpec spec)
+    private readonly string? _visit;
+
+    public ReportView(ReportSpec spec, string? visit = null)
     {
         _spec = spec;
+        _visit = visit;
         _cari = Ui.Text(spec.SearchWatermark);
         _grid = Ui.Grid(spec.Columns.Select(c => new Col(c.Column, c.Header)).ToArray());
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await ReloadAsync(); };
 
         var filters = new List<Control> { _cari };
-        if (spec.Period == ReportPeriod.Year) { filters.Add(Ui.L("Tahun")); filters.Add(_tahun); }
+        if (visit is not null) filters.Add(Ui.L($"No. Rawat: {visit}"));
+        else if (spec.Period == ReportPeriod.Year) { filters.Add(Ui.L("Tahun")); filters.Add(_tahun); }
         else if (spec.Period != ReportPeriod.None) filters.Add(_period = new PeriodPicker(spec.Period == ReportPeriod.Month,
             spec.Period == ReportPeriod.DateRange ? new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1) : null));
         var tampilkan = Ui.Btn("Tampilkan", async (_, _) => await ReloadAsync());
@@ -45,7 +49,7 @@ public class ReportView : PageView
 
     public override async Task ReloadAsync() => await RunAsync(async () =>
     {
-        _rows = await _repo.RunAsync(_spec, _cari.Text, _period?.From ?? DateTime.Today, _period?.To ?? DateTime.Today,
+        _rows = _visit is not null ? await _repo.RunForVisitAsync(_spec, _visit, _cari.Text) : await _repo.RunAsync(_spec, _cari.Text, _period?.From ?? DateTime.Today, _period?.To ?? DateTime.Today,
             (int)(_tahun.Value ?? DateTime.Today.Year));
         Ui.Fill(_grid, _rows);
         var totals = _spec.TotalColumns.Select(column =>

@@ -80,11 +80,12 @@ public static class MenuMSpecs
     {
         var selected = string.Join(",", fields.Select(f => $"s.`{f.Column}` AS `{f.Column}`"));
         var searched = string.Join(",", fields.Select(f => $"s.`{f.Column}`"));
-        var sql = $"SELECT s.tanggal,s.no_rawat,r.no_rkm_medis,p.nm_pasien,{selected} FROM `{table}` s JOIN reg_periksa r ON r.no_rawat=s.no_rawat LEFT JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis WHERE s.tanggal BETWEEN @p1 AND @p2 AND CONCAT_WS(' ',s.no_rawat,r.no_rkm_medis,p.nm_pasien,{searched}) LIKE @p0 ORDER BY s.tanggal DESC,s.no_rawat";
-        return ReadOnly(title, sql,
+        var select = $"SELECT s.tanggal,s.no_rawat,r.no_rkm_medis,p.nm_pasien,{selected} FROM `{table}` s JOIN reg_periksa r ON r.no_rawat=s.no_rawat LEFT JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis";
+        var search = $"CONCAT_WS(' ',s.no_rawat,r.no_rkm_medis,p.nm_pasien,{searched}) LIKE @p0 ORDER BY s.tanggal DESC,s.no_rawat";
+        return ReadOnly(title, $"{select} WHERE s.tanggal BETWEEN @p1 AND @p2 AND {search}",
             [("tanggal", "Tanggal"), ("no_rawat", "No. Rawat"), ("no_rkm_medis", "No. RM"), ("nm_pasien", "Pasien"),
              .. fields.Select(f => (f.Column, f.Header))], ReportPeriod.DateRange,
-            "Pengkajian klinis baca-saja. Catatan dibuat atau diubah dari alur pelayanan Khanza.");
+            "Pengkajian klinis baca-saja. Catatan dibuat atau diubah dari alur pelayanan Khanza.") with { VisitSql = $"{select} WHERE s.no_rawat=@p1 AND {search}" };
     }
 
     private static ReportSpec MedicalSpecialty(string title, string table, params (string Column, string Header)[] fields)

@@ -12,6 +12,7 @@ public enum ReportPeriod { DateRange, Month, Year, None }
 /// </summary>
 public record ReportSpec(string Title, string Sql, (string Column, string Header)[] Columns, ReportPeriod Period, string? Hint = null)
 {
+    public string? VisitSql { get; init; }
     public string SearchWatermark { get; init; } = "Cari...";
     public string[] TotalColumns { get; init; } = [];
 }
@@ -19,6 +20,14 @@ public record ReportSpec(string Title, string Sql, (string Column, string Header
 public class ReportRepository(DatabaseSettings settings)
 {
     public static string Resolve(ReportSpec spec, DatabaseSettings settings) => spec.Sql.Replace("{hpp}", settings.HppColumn);
+
+    public async Task<List<Row>> RunForVisitAsync(ReportSpec spec, string noRawat, string? search)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(noRawat);
+        var sql = spec.VisitSql ?? throw new InvalidOperationException("Laporan tidak mendukung filter kunjungan.");
+        await using var db = await Db.OpenAsync(settings);
+        return await db.QueryAsync(sql, $"%{search?.Trim()}%", noRawat);
+    }
 
     public async Task<List<Row>> RunAsync(ReportSpec spec, string? cari, DateTime from, DateTime to, int year)
     {

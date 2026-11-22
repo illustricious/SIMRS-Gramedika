@@ -23,7 +23,7 @@ public partial class IgdTriaseView : UserControl
 
         PatientContextMenu.Attach<IgdAntrianItem>(this.FindControl<DataGrid>("AntrianGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien),
-            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Emergency);
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.EmergencyTriage);
 
         this.FindControl<ComboBox>("CaraMasukCombo")!.ItemsSource = Enum.GetValues<CaraMasukIgd>();
         this.FindControl<ComboBox>("CaraMasukCombo")!.SelectedItem = CaraMasukIgd.Jalan;

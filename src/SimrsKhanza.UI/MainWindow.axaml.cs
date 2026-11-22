@@ -166,15 +166,10 @@ public partial class MainWindow : Window
                 Margin = new Thickness(12),
                 Children = { icon, caption },
             };
-            var tileContent = new Grid { RowDefinitions = new RowDefinitions("3,*") };
-            tileContent.Children.Add(new Border { Classes = { "menuTileTopRule" } });
-            Grid.SetRow(tileBody, 1);
-            tileContent.Children.Add(tileBody);
-
             var button = new Button
             {
                 Classes = { "menuTile" },
-                Content = tileContent,
+                Content = tileBody,
             };
             Avalonia.Automation.AutomationProperties.SetName(button, label);
             button.Click += (_, _) => OnLegacyTileClick(key, label);
@@ -1285,6 +1280,14 @@ public partial class MainWindow : Window
 
         switch (request.Action)
         {
+            case PatientMenuAction.Skrining when request.TileKey is { } key && _user is not null &&
+                !string.IsNullOrWhiteSpace(request.NoRawat) && LegacyTilePermissions.CanSeeTile(_user, key) &&
+                SimrsKhanza.Data.Master.MenuMSpecs.Reports.TryGetValue(key, out var report) && report.VisitSql is not null:
+                var screening = new Modules.Shared.ReportView(report, request.NoRawat);
+                screening.BackRequested += Back;
+                await OpenFeatureAsync(screening, screening.ReloadAsync);
+                return;
+
             case PatientMenuAction.DataRekamMedis when _user?.HasPermission("pasien") == true:
                 var pasien = new Modules.Pasien.PasienView();
                 pasien.BackRequested += Back;

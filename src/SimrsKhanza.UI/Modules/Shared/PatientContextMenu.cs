@@ -8,10 +8,10 @@ using SimrsKhanza.Data;
 
 namespace SimrsKhanza.UI.Modules.Shared;
 
-public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran }
-public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic }
+public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining }
+public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic, EmergencyTriage }
 
-public record PatientMenuRequest(string NoRawat, string NoRekamMedis, string NamaPasien, PatientMenuAction Action);
+public record PatientMenuRequest(string NoRawat, string NoRekamMedis, string NamaPasien, PatientMenuAction Action, string? TileKey = null);
 public record PatientMenuTarget(string NoRawat, string NoRekamMedis, string NamaPasien, bool IsInpatient = false);
 
 public static class PatientContextMenu
@@ -44,6 +44,47 @@ public static class PatientContextMenu
             MenuItem ActionItem(string text, PatientMenuAction action, bool allowed) =>
                 Entry(text, allowed ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, action))) : null);
 
+            MenuItem Screen(string label, string key) => Entry(label,
+                hasVisit && user is not null && LegacyTilePermissions.CanSeeTile(user, key)
+                    ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, PatientMenuAction.Skrining, key)))
+                    : null);
+
+            MenuItem ScreeningMenu() => Group("Skrining",
+                    Screen("Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah"),
+                    Screen("Skrining Kekerasan Pada Perempuan", "btnSkriningKekerasanPadaPerempuan"),
+                    Screen("Skrining Obesitas", "btnSkriningObesitas"),
+                    Group("Skrining Kanker",
+                        Screen("Skrining Risiko Kanker Payudara", "btnSkriningRisikoKankerPayudara"),
+                        Screen("Skrining Risiko Kanker Paru", "btnSkriningRisikoKankerParu"),
+                        Screen("Skrining Risiko Kanker Serviks", "btnSkriningRisikoKankerServiks"),
+                        Screen("Skrining Kanker Kolorektal", "btnSkriningKankerKolorektal")),
+                    Group("Skrining Kesehatan Gigi & Mulut",
+                        Screen("Usia Remaja", "btnSkriningKesehatanGigiMulutRemaja"),
+                        Screen("Usia Balita", "btnSkriningKesehatanGigiMulutBalita"),
+                        Screen("Usia Dewasa", "btnSkriningKesehatanGigiMulutDewasa"),
+                        Screen("Usia Lansia", "btnSkriningKesehatanGigiMulutLansia")),
+                    Group("Skrining Paru",
+                        Screen("Skrining TBC", "btnSkriningTBC"),
+                        Screen("Skrining PUMA", "btnSkriningPUMA"),
+                        Screen("Skrining Pneumonia Severity Index", "btnSkriningPneumoniaSeverityIndex"),
+                        Screen("Skrining CURB-65", "btnSkriningCURB65")),
+                    Screen("Skrining Adiksi Nikotin", "btnSkriningAdiksiNikotin"),
+                    Screen("Skrining Thalassemia", "btnSkriningThalassemia"),
+                    Group("Skrining Instrumen",
+                        Screen("SDQ", "btnSkriningInstrumenSDQ"),
+                        Screen("SRQ", "btnSkriningInstrumenSRQ"),
+                        Screen("ACRS", "btnSkriningInstrumenACRS"),
+                        Screen("Mental Emosional", "btnSkriningInstrumenMentalEmosional"),
+                        Screen("AMT", "btnSkriningInstrumenAMT"),
+                        Screen("ESAT", "btnSkriningInstrumenESAT")),
+                    Screen("Skrining Diabetes Melitus", "btnSkriningDiabetesMelitus"),
+                    Screen("Skrining Anemia", "btnSkriningAnemia"),
+                    Screen("Skrining Hipertensi", "btnSkriningHipertensi"),
+                    Screen("Skrining Kesehatan Penglihatan", "btnSkriningKesehatanPenglihatan"),
+                    Screen("Skrining Indra Pendengaran", "btnSkriningIndraPendengaran"),
+                    Screen("Skrining Frailty Syndrome", "btnSkriningFrailtySyndrome"),
+                    Screen("Skrining TOLAC", "btnSkriningTOLAC"));
+
             var history = ActionItem("Riwayat Perawatan", PatientMenuAction.RiwayatPerawatan, Can("resume_pasien"));
             var identity = ActionItem("Identitas Pasien", PatientMenuAction.DataRekamMedis, Can("pasien"));
             menu.ItemsSource = kind == PatientMenuKind.Diagnostic
@@ -59,7 +100,7 @@ public static class PatientContextMenu
                 ]
                 :
                 [
-                    Group("Data Rekam Medis", identity, Entry("Resume Pasien"), history),
+                    Group("Data Rekam Medis", [.. (kind is PatientMenuKind.Registration or PatientMenuKind.Emergency ? new[] { ScreeningMenu() } : Array.Empty<MenuItem>()), identity, Entry("Resume Pasien"), history]),
                     Group("Permintaan", Entry("Jadwal Operasi"), Entry("Permintaan Lab"),
                         Entry("Permintaan Radiologi"), Entry("Permintaan Rawat Inap")),
                     ActionItem("Kamar Inap", PatientMenuAction.KamarInap, hasVisit && !patient.IsInpatient && Can("kamar_inap")),
@@ -73,7 +114,7 @@ public static class PatientContextMenu
                             (patient.IsInpatient ? Can("billing_ranap") : Can("kasir_ralan") || Can("billing_ralan")))),
                     new Separator(),
                     Entry("Laporan"), Entry("Grafik Analisa"), Entry("Surat-Surat"),
-                    .. (kind == PatientMenuKind.Emergency
+                    .. (kind is PatientMenuKind.Emergency or PatientMenuKind.EmergencyTriage
                         ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
                         : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"), Entry("Label & Barcode") }),
                     new Separator(),

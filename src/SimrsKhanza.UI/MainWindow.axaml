@@ -10,6 +10,7 @@
         MinWidth="800" MinHeight="540"
         WindowState="Maximized"
         WindowDecorations="BorderOnly"
+        ExtendClientAreaToDecorationsHint="True"
         Background="{DynamicResource ThemePrimaryBrush}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
@@ -19,6 +20,7 @@
              space is the drag handle and the minimize/maximize/close buttons sit
              on the same blue strip, per user request. -->
         <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource TegasNavigationBrush}" MinHeight="42"
+                BorderBrush="{DynamicResource ThemeAccentBrush}" BorderThickness="0,0,0,2"
                 PointerPressed="OnTitleBarPointerPressed">
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
@@ -130,25 +132,23 @@
         <Grid Grid.Row="2" Name="ContentHost" Background="{DynamicResource ThemeBackgroundBrush}">
 
             <Grid Name="MenuPanel" IsVisible="False" RowDefinitions="Auto,Auto,*" Margin="24,20">
-                <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,16">
-                    <StackPanel VerticalAlignment="Center" Spacing="3">
-                        <TextBlock Text="Menu Utama" Classes="pageTitle" />
-                        <TextBlock Text="Pilih kategori untuk membuka menu" Classes="pageSubtitle" />
-                    </StackPanel>
-                    <TextBox Grid.Column="1" Name="MenuSearchBox" PlaceholderText="Cari menu di semua kategori"
-                             Width="296" Height="36" VerticalAlignment="Top" Margin="0,2,10,0"
+                <StackPanel Spacing="3" Margin="0,0,0,16">
+                    <TextBlock Text="Menu Utama" Classes="pageTitle" />
+                    <TextBlock Text="Pilih kategori untuk membuka menu" Classes="pageSubtitle" />
+                </StackPanel>
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,2*,3*,Auto" ColumnSpacing="12" Margin="0,0,0,12">
+                    <TextBlock Text="Kategori" Classes="pageSubtitle menuSectionLabel" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Stretch" Height="38"
+                              MaxDropDownHeight="440" AutomationProperties.Name="Kategori menu" />
+                    <TextBox Grid.Column="2" Name="MenuSearchBox" PlaceholderText="Cari menu di semua kategori"
+                             Height="38" VerticalContentAlignment="Center"
                              AutomationProperties.Name="Cari menu di semua kategori" />
-                </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="0,0,10,12">
-                    <TextBlock Text="Kategori" Classes="pageSubtitle menuSectionLabel" VerticalAlignment="Center" Margin="0,0,12,0" />
-                    <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Stretch"
-                              MaxDropDownHeight="520" AutomationProperties.Name="Kategori menu" />
-                    <Border Grid.Column="2" Background="{DynamicResource ThemeIconBackgroundBrush}"
-                            CornerRadius="14" Padding="10,4" Margin="16,0,0,0" VerticalAlignment="Center">
+                    <Border Grid.Column="3" Background="{DynamicResource ThemeIconBackgroundBrush}"
+                            CornerRadius="14" Padding="10,4" VerticalAlignment="Center">
                         <TextBlock Name="MenuCountText" Classes="menuCount" VerticalAlignment="Center" />
                     </Border>
                 </Grid>
-                <ScrollViewer Grid.Row="2" Name="DashboardScroll">
+                <ScrollViewer Grid.Row="2" Name="DashboardScroll" AllowAutoHide="False" VerticalScrollBarVisibility="Visible">
                     <UniformGrid Name="DashboardPanel" Columns="5" VerticalAlignment="Top" />
                 </ScrollViewer>
                 <TextBlock Grid.Row="2" Name="EmptyMenuText" Classes="pageSubtitle" VerticalAlignment="Top" Margin="0,24,0,0"
@@ -230,7 +230,7 @@
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="TextBlock.menuCount">
-            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
@@ -253,11 +253,6 @@
         <Style Selector="Button.menuTile:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryBrush}" />
-        </Style>
-        <Style Selector="Border.menuTileTopRule">
-            <Setter Property="Height" Value="3" />
-            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
-            <Setter Property="CornerRadius" Value="7,7,0,0" />
         </Style>
         <Style Selector="Button.menuTile:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />

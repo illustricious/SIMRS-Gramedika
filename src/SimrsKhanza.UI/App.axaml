@@ -225,9 +225,9 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         </Style>
-        <Style Selector="MenuItem:pointerover">
+        <Style Selector="MenuItem:pointerover, MenuItem:selected">
             <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
         </Style>
         <Style Selector="MenuItem:pressed">
             <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
@@ -247,6 +247,14 @@
             <Setter Property="Margin" Value="8,4" />
             <Setter Property="Background" Value="{DynamicResource ThemeBorderBrush}" />
         </Style>
+        <!-- Keep Fluent's scroll interaction but show a stable, visible track and thumb. -->
+        <Style Selector="ScrollViewer">
+            <Setter Property="AllowAutoHide" Value="False" />
+        </Style>
+        <Style Selector="ScrollBar">
+            <Setter Property="AllowAutoHide" Value="False" />
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+        </Style>
         <Style Selector="ScrollBar:horizontal">
             <Setter Property="Height" Value="22" />
             <Setter Property="MinHeight" Value="22" />
@@ -258,12 +266,56 @@
         <Style Selector="ScrollBar /template/ Thumb">
             <Setter Property="Background" Value="{DynamicResource ThemeTextSecondaryBrush}" />
             <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="RenderTransform" Value="none" />
+        </Style>
+        <Style Selector="ScrollBar /template/ Rectangle#TrackRect">
+            <Setter Property="Fill" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Opacity" Value="1" />
         </Style>
         <Style Selector="ScrollBar /template/ Thumb:pointerover">
             <Setter Property="Background" Value="{DynamicResource ThemeTextBrush}" />
         </Style>
         <Style Selector="ScrollBar:horizontal /template/ Thumb"><Setter Property="MinHeight" Value="16" /><Setter Property="MinWidth" Value="48" /></Style>
-        <Style Selector="ScrollBar:vertical /template/ Thumb"><Setter Property="MinWidth" Value="16" /><Setter Property="MinHeight" Value="48" /></Style>
+        <Style Selector="ScrollBar:vertical /template/ Thumb">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="MinHeight" Value="48" />
+            <Setter Property="RenderTransform" Value="none" />
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryLightBrush}" />
+        </Style>
+        <Style Selector="ScrollBar:vertical /template/ Thumb /template/ Border">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryLightBrush}" />
+        </Style>
+        <Style Selector="ScrollBar:vertical /template/ Thumb:pointerover /template/ Border, ScrollBar:vertical /template/ Thumb:pressed /template/ Border">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBrush}" />
+        </Style>
+        <Style Selector="ComboBox#MenuCategoryCombo">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="MinHeight" Value="38" />
+        </Style>
+        <Style Selector="ComboBox#MenuCategoryCombo /template/ Border#PopupBorder">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="4" />
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter, ComboBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="ComboBoxItem:selected:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
         <Style Selector="Button">
             <Setter Property="MinHeight" Value="32" />
             <Setter Property="Padding" Value="10,4" />
