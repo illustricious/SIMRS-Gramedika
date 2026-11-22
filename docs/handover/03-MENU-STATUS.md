@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026: **629 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 22 November 2026: **674 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -20,6 +20,7 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 | J | Penyakit, DKK, RL, internal | 96 | Edit + Baca | [MENU_J_STATUS](../audit/MENU_J_STATUS.md). Master ICD, laporan kunjungan dan diagnosis |
 | K | Tarif, keuangan, akuntansi | 87 | Edit + Baca + Khusus | [MENU_K_STATUS](../audit/MENU_K_STATUS.md). Tarif (total otomatis), master akun, hutang/piutang, bank, jurnal, Posting Jurnal manual |
 | N | Unit transfusi darah (UTD) | 11 | Edit + Baca | [MENU_NR_STATUS](../audit/MENU_NR_STATUS.md). Komponen darah dan pendonor bisa diedit. Donor, stok, penyerahan, dan BHP hanya-baca |
+| P | Surat, persetujuan, pengumuman e-pasien | 45 | Edit + Baca | [MENU_P_STATUS](../audit/MENU_P_STATUS.md). Register surat masuk/keluar dan referensi bisa diedit. 31 surat pasien dan persetujuan hanya-baca |
 | Q | Perpustakaan | 16 | Edit + Baca | [MENU_Q_STATUS](../audit/MENU_Q_STATUS.md). Katalog, inventaris, anggota, pengaturan bisa diedit. Peminjaman dan denda hanya-baca |
 | R | PCRA/ICRA | 10 | Edit + Baca | [MENU_NR_STATUS](../audit/MENU_NR_STATUS.md). 9 referensi bisa diedit, pengkajian proyek hanya-baca |
 | S | Toko, minimarket, koperasi | 25 | Edit + Baca | [MENU_S_STATUS](../audit/MENU_S_STATUS.md). Transaksi toko dicatat di Khanza |
@@ -35,7 +36,6 @@ Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaa
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes, pihak ke-3 | 0/183 | Butuh kredensial dan API eksternal. Lihat [BRIDGING_RECON](../audit/BRIDGING_RECON.md). Kerjakan terakhir |
 | M | Rekam medis | 1/255 | Hampir semua formulir `penilaian*`, `skrining*`, `surat*`, `hasil*`. Putuskan pendekatan "formulir dinamis" dulu ([PLANNING_APLIKASI](../audit/PLANNING_APLIKASI.md)) |
 | O | Analisa, dashboard, infografik | 0/113 | Agregasi dari tabel yang sudah dipakai laporan I/J |
-| P | Surat masuk/keluar, pengumuman e-pasien | 0/45 | Tabel `surat*`. Master dan daftar |
 
 ## Keterbatasan lintas menu
 

@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 629 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 595 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 674 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 550 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -19,7 +19,7 @@ Per 22 November 2026, 629 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 | M | Olah Data Rekam Medis Pasien | 1/255 | 254 |
 | N | Unit Pelayanan Tranfusi Darah | 11/11 | 0 |
 | O | Analisa, Dashboard & Info Grafik | 0/113 | 113 |
-| P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 0/45 | 45 |
+| P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 45/45 | 0 |
 | Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 16/16 | 0 |
 | R | Pre-Construction & Infection Control Risk Assessment | 10/10 | 0 |
 | S | Toko / Minimarket / Koperasi | 25/25 | 0 |
@@ -595,51 +595,7 @@ Semua tile sudah membuka layar. Lihat `MENU_NR_STATUS.md`.
 
 ## P · Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien
 
-- Indeks Surat (`btnSuratIndeks`)
-- Map Surat (`btnSuratMap`)
-- Almari Surat (`btnSuratAlmari`)
-- Rak Surat (`btnSuratRak`)
-- Ruang Surat (`btnSuratRuang`)
-- Klasifikasi Surat (`btnSuratKlasifikasi`)
-- Status Surat (`btnSuratStatus`)
-- Sifat Surat (`btnSuratSifat`)
-- Stts Balas Surat (`btnSuratBalas`)
-- Surat Masuk (`btnSuratMasuk`)
-- Surat Keluar (`btnSuratKeluar`)
-- Surat Keterangan Sakit (`btnSuratSakit`)
-- Surat Keterangan Sakit Pihak 2 (`btnSuratSakitPihak2`)
-- Surat Hamil (`btnSuratHamil`)
-- Surat Cuti Hamil (`btnSuratCutiHamil`)
-- Surat Kontrol (`btnSKDPBPJS`)
-- Surat Bebas Narkoba (`btnSuratBebasNarkoba`)
-- Surat Keterangan Covid (`btnSuratKeteranganCovid`)
-- Surat Keterangan Rawat Inap (`btnSuratKeteranganRawatInap`)
-- Surat Keterangan Sehat (`btnSuratKeteranganSehat`)
-- Surat Bebas TBC (`btnSuratBebasTBC`)
-- Surat Keterangan Buta Warna (`btnSuratButaWarna`)
-- Surat Bebas Tato (`btnSuratBebasTato`)
-- Surat Keterangan Layak Terbang (`btnSuratKeteranganLayakTerbang`)
-- Surat Keterangan Berobat (`btnSuratKeteranganBerobat`)
-- Surat Kewaspadaan Kesehatan (`btnSuratKewaspadaanKesehatan`)
-- Pengumuman E-Pasien (`btnPengumumanEPasien`)
-- Template Persetujuan Penolakan Tindakan (`btnTemplatePersetujuanPenolakanTindakan`)
-- Persetujuan/Penolakan Tindakan (`btnPersetujuanPenolakanTindakan`)
-- Pulang Atas Permintaan Sendiri (`btnPersetujuanPulangAtasPermintanSendiri`)
-- Pernyataan Pasien Umum (`btnPernyataanPasienUmum`)
-- Persetujuan Umum (`btnPersetujuanUmum`)
-- Persetujuan Rawat Inap (`btnPersetujuanRawatInap`)
-- Persetujuan Penundaan Pelayanan (`btnPersetujuanPenundaanPelayanan`)
-- Master Menolak Anjuran Medis (`btnMasterMenolakAnjuranMedis`)
-- Penolakan Anjuran Medis (`btnPenolakanAnjuranMedis`)
-- Persetujuan Pemeriksaan HIV (`btnPersetujuanPemeriksaanHIV`)
-- Surat Pernyataan Memilih DPJP (`btnSuratPernyataanMemilihDPJP`)
-- Serah Terima Anggota Tubuh/Barang (`btnSuratSerahTerimaBarangAnggotaTubuh`)
-- Persetujuan Bimbingan Rohani & Mental (`btnSuratPermintaanBinrohtal`)
-- Permintaan Perlindungan Diri Dari Kekerasan (`btnSuratPermintaanPerlindunganDariKekerasan`)
-- Surat Permohonan Privasi (`btnSuratPermohonanPrivasi`)
-- Surat Permintaan Second Opinion (`btnSuratPermintaanSecondOpinion`)
-- Surat Penolakan Resusitasi (`btnSuratPenolakanResusitasi`)
-- Surat Pegajuan Cuti Perawatan (`btnSuratPengajuanCutiPerawatan`)
+Semua tile sudah membuka layar. Lihat `MENU_P_STATUS.md`.
 
 ## Q · Manajemen Perpustakaan & Koleksi Pustaka Digital
 
