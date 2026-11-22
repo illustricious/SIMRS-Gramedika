@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026: **674 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 22 November 2026: **728 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -35,7 +35,7 @@ Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaa
 |---|---|---:|---|
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes, pihak ke-3 | 0/183 | Butuh kredensial dan API eksternal. Lihat [BRIDGING_RECON](../audit/BRIDGING_RECON.md). Kerjakan terakhir |
 | M | Rekam medis | 1/255 | Hampir semua formulir `penilaian*`, `skrining*`, `surat*`, `hasil*`. Putuskan pendekatan "formulir dinamis" dulu ([PLANNING_APLIKASI](../audit/PLANNING_APLIKASI.md)) |
-| O | Analisa, dashboard, infografik | 0/113 | Agregasi dari tabel yang sudah dipakai laporan I/J |
+| O | Analisa, dashboard, infografik | 54/113 | Bagian 1 selesai ([MENU_O_STATUS](../audit/MENU_O_STATUS.md)). Sisa 59: TB, IKP, K3, HAIs, limbah, air, diet, perbaikan inventaris, pengajuan aset, hemodialisa, penerimaan obat |
 
 ## Keterbatasan lintas menu
 

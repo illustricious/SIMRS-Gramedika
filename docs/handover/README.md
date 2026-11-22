@@ -22,10 +22,10 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 
 ## Status
 
-- **674 dari 1.224 tile** dashboard membuka layar. 550 sisanya belum.
+- **728 dari 1.224 tile** dashboard membuka layar. 496 sisanya belum.
 - Selesai penuh (100% berlayar): A, B, C, D, E, F, G, H, I, J, K, N, P, Q, R, S, T, U.
-- Belum: L (183), M (254 dari 255), O (113). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
-- Build bersih, **125 tes lolos, 1 dilewati** (tes billing ranap butuh DB nyata).
+- Belum: L (183), M (254 dari 255), O (59 dari 113, bagian 1 selesai). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
+- Build bersih, **127 tes lolos, 1 dilewati** (tes billing ranap butuh DB nyata).
 - "Berlayar" artinya tile membuka layar, bukan berarti setara fungsi Khanza. Keterbatasan tiap menu ada di `docs/audit/MENU_*_STATUS.md`.
 - **Belum pernah diuji ke database produksi.** Layar Menu K, N, P, Q, R, S, dan kebanyakan menu lain baru lolos build, tes struktur (layar bisa dibangun), dan pencocokan nama tabel/kolom dengan `schema_sik.sql`. Kesalahan nama kolom atau perilaku data nyata baru terlihat saat dibuka dengan data.
 
@@ -41,7 +41,7 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 ## Langkah berikutnya yang disarankan
 
 1. **Uji ke salinan database nyata** (bukan produksi): buka tiap layar Menu K, N, P, Q, R, S, J, I, dan perbaiki kolom yang salah. Ini risiko terbesar saat ini.
-2. **Menu O (113)**: dashboard dan analisa dari tabel yang sudah dipakai laporan I/J.
+2. **Menu O sisa 59**: TB, IKP, K3, HAIs, limbah, air, diet, perbaikan inventaris, pengajuan aset, hemodialisa. Grafik belum digambar (baru tabel agregat).
 3. **Menu M (254)**: rekam medis, sebagian besar formulir `penilaian*`/`skrining*`/`surat*`. Perlu keputusan "formulir dinamis" di `PLANNING_APLIKASI.md` sebelum mulai.
 4. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
 5. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.1.5 dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*`.

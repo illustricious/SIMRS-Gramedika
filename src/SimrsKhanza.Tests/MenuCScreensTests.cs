@@ -71,6 +71,7 @@ public class MenuCScreensTests
                 .Concat(SimrsKhanza.Data.Master.MenuQSpecs.Reports.Select(kv => ("Q_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Master.MenuPSpecs.Masters.Select(kv => ("P_" + kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Master.MenuPSpecs.Reports.Select(kv => ("P_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuOSpecs.Reports.Select(kv => ("O_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 
