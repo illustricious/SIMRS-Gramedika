@@ -1,55 +1,83 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
+             xmlns:local="using:SimrsKhanza.UI.Modules.RawatJalan"
              x:Class="SimrsKhanza.UI.Modules.RawatJalan.RawatJalanView"
              Background="{DynamicResource ThemeBackgroundBrush}">
 
     <!--
-        Rawat Jalan: left pane is the examination queue (reg_periksa rows that
-        don't have a pemeriksaan_ralan row yet), right pane is the doctor's
-        examination form for whichever patient is selected. Unlike Registrasi,
-        "Simpan" here is a REAL write (RawatJalanRepository.SaveExaminationAsync
-        -> pemeriksaan_ralan), the first non-read-only screen in the scaffold.
-        Embedded into MainWindow's PageHost, same single-window pattern as
-        Registrasi.
+        Rawat Jalan: kiri daftar kunjungan rawat jalan (status_lanjut Ralan, bukan IGD) per rentang tanggal,
+        kanan daftar pemeriksaan (SOAP) kunjungan terpilih dan form tambah/ubah/hapus. Aturan akses mengikuti
+        DlgRawatJalan (RawatJalanService): non-Admin Utama hanya data miliknya, ubah/hapus 48 jam.
     -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
 
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan — Pemeriksaan Dokter"
-                   Margin="0,0,0,8" />
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan — Pemeriksaan Dokter" Margin="0,0,0,8" />
 
-        <Grid Grid.Row="1" ColumnDefinitions="2*,16,3*">
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8" Margin="0,0,0,8">
+            <TextBlock Text="Periode" VerticalAlignment="Center" />
+            <CalendarDatePicker Grid.Column="1" Name="DariPicker" AutomationProperties.Name="Dari tanggal" />
+            <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" />
+            <CalendarDatePicker Grid.Column="3" Name="SampaiPicker" AutomationProperties.Name="Sampai tanggal" />
+            <TextBlock Grid.Column="4" Text="Kata kunci" VerticalAlignment="Center" />
+            <TextBox Grid.Column="5" Name="CariBox" PlaceholderText="No. rawat, no. RM, pasien, poli, atau dokter"
+                     AutomationProperties.Name="Cari kunjungan" KeyDown="OnCariKeyDown" />
+            <Button Grid.Column="6" Content="Cari" Classes="accent" Click="OnCariClick" />
+            <Button Grid.Column="7" Content="Semua" Click="OnSemuaClick" />
+        </Grid>
 
-            <!-- Left: queue of patients waiting to be examined -->
+        <Grid Grid.Row="2" ColumnDefinitions="2*,16,3*">
+
             <Grid Grid.Column="0" RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0" Text="Antrian Pemeriksaan" FontWeight="Medium" Margin="0,0,0,4"
+                <TextBlock Grid.Row="0" Name="QueueCountText" Text="Kunjungan Rawat Jalan" FontWeight="Medium" Margin="0,0,0,4"
                            Foreground="{DynamicResource ThemeTextBrush}" />
                 <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
                           GridLinesVisibility="All" HeadersVisibility="Column"
-                          x:DataType="data:RawatJalanQueueItem"
+                          x:DataType="data:RawatJalanKunjungan"
                           SelectionChanged="OnQueueSelectionChanged">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="150" />
-                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
-                        <DataGridTextColumn Header="Poli" Binding="{Binding NamaPoli}" Width="110" />
-                        <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="70" />
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal, StringFormat=\{0:yyyy-MM-dd\}}" Width="90" />
+                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="140" />
+                        <DataGridTextColumn Header="Pasien" Binding="{Binding Pasien}" Width="*" />
+                        <DataGridTextColumn Header="Poli" Binding="{Binding Poli}" Width="100" />
+                        <DataGridTextColumn Header="Dokter" Binding="{Binding Dokter}" Width="120" />
+                        <DataGridTextColumn Header="SOAP" Binding="{Binding JumlahPemeriksaan}" Width="52" />
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
 
-            <!-- Right: examination form for the selected patient -->
             <ScrollViewer Grid.Column="2">
                 <StackPanel Spacing="6">
                     <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="10">
-                        <StackPanel>
-                            <TextBlock Name="SelectedPatientText" Text="(belum ada pasien dipilih dari antrian)"
-                                       FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
-                        </StackPanel>
+                        <TextBlock Name="SelectedPatientText" Text="(belum ada kunjungan dipilih)"
+                                   FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" TextWrapping="Wrap" />
                     </Border>
 
-                    <TextBlock Text="Tanda Vital" FontWeight="Medium" Margin="0,8,0,0"
+                    <TextBlock Text="Pemeriksaan tersimpan (pilih baris untuk mengubah)" FontWeight="Medium" Margin="0,4,0,0"
                                Foreground="{DynamicResource ThemeTextBrush}" />
-                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                    <DataGrid Name="SoapGrid" AutoGenerateColumns="False" IsReadOnly="True" Height="140"
+                              GridLinesVisibility="All" HeadersVisibility="Column"
+                              x:DataType="local:SoapItem" SelectionChanged="OnSoapSelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal}" Width="90" />
+                            <DataGridTextColumn Header="Jam" Binding="{Binding Jam}" Width="70" />
+                            <DataGridTextColumn Header="Tensi" Binding="{Binding Tensi}" Width="64" />
+                            <DataGridTextColumn Header="Penilaian" Binding="{Binding Penilaian}" Width="*" />
+                            <DataGridTextColumn Header="Pemeriksa" Binding="{Binding Pemeriksa}" Width="130" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*" ColumnSpacing="8" Margin="0,8,0,0">
+                        <TextBlock Text="Tanggal" VerticalAlignment="Center" />
+                        <CalendarDatePicker Grid.Column="1" Name="TanggalPicker" AutomationProperties.Name="Tanggal pemeriksaan" />
+                        <TextBlock Grid.Column="2" Text="Jam" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="3" Name="JamBox" Width="86" AutomationProperties.Name="Jam pemeriksaan" />
+                        <TextBlock Grid.Column="4" Text="Dokter/Paramedis" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="5" Name="PegawaiCombo" HorizontalAlignment="Stretch" AutomationProperties.Name="Dokter atau paramedis" />
+                    </Grid>
+
+                    <TextBlock Text="Tanda Vital" FontWeight="Medium" Margin="0,8,0,0" Foreground="{DynamicResource ThemeTextBrush}" />
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Tensi :" VerticalAlignment="Center" />
                         <TextBox Grid.Row="0" Grid.Column="1" Name="TensiBox" PlaceholderText="120/80" Margin="4" />
                         <TextBlock Grid.Row="0" Grid.Column="3" Text="Nadi :" VerticalAlignment="Center" />
@@ -67,8 +95,18 @@
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="SpO2 :" VerticalAlignment="Center" />
                         <TextBox Grid.Row="3" Grid.Column="1" Name="Spo2Box" PlaceholderText="%" Margin="4" />
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Kesadaran :" VerticalAlignment="Center" />
-                        <ComboBox Grid.Row="3" Grid.Column="4" Name="KesadaranCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="GCS :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="4" Name="GcsBox" PlaceholderText="E4V5M6" Margin="4" />
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="Alergi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="AlergiBox" Margin="4" />
+                        <TextBlock Grid.Row="4" Grid.Column="3" Text="Lingkar Perut :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="4" Grid.Column="4" Name="LingkarPerutBox" PlaceholderText="cm" Margin="4" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto,*">
+                        <TextBlock Text="Kesadaran :" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <ComboBox Grid.Column="1" Name="KesadaranCombo" Margin="4" HorizontalAlignment="Stretch" />
                     </Grid>
 
                     <TextBlock Text="Keluhan" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,8,0,2" />
@@ -92,13 +130,17 @@
                     <TextBlock Name="SaveStatusText" Margin="0,8,0,0" TextWrapping="Wrap"
                                Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
 
-                    <Button Name="SimpanButton" Content="💾 Simpan Pemeriksaan" Click="OnSimpanClick"
-                            HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4" Margin="0,8,0,0">
+                        <Button Content="Baru" Click="OnBaruClick" />
+                        <Button Name="SimpanButton" Content="Simpan" Classes="accent" Click="OnSimpanClick" IsEnabled="False" />
+                        <Button Name="UbahButton" Content="Ganti" Click="OnUbahClick" IsEnabled="False" />
+                        <Button Name="HapusButton" Content="Hapus" Click="OnHapusClick" IsEnabled="False" />
+                    </WrapPanel>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
             <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
         </StackPanel>
     </Grid>

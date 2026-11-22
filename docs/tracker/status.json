@@ -1645,27 +1645,27 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs OnSimpanClick + src/SimrsKhanza.Data/RawatJalanRepository.cs SaveExaminationAsync menyimpan satu baris pemeriksaan_ralan (SOAP dan tanda vital). Kurang: GCS, alergi, lingkar perut, tanggal/jam, penolakan bila billing terverifikasi, tab Penanganan Dokter/Petugas/Dokter+Petugas dan obstetri. NIP pemeriksa berupa placeholder D0000099, FK ke pegawai.nik akan gagal di DB nyata."
+    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs SimpanAsync lewat OnSimpanClick: dokter/paramedis wajib, minimal satu isian, non-Admin Utama hanya atas NIK sendiri, waktu input tidak sebelum registrasi, pegawai harus ada. NIP placeholder dihapus. GCS, alergi, lingkar perut, tanggal, jam sudah ada. Tes aturan murni di src/SimrsKhanza.Tests/RawatJalanServiceTests.cs; SQL belum dijalankan ke DB. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBatal": {
-    "status": "kurang",
-    "bukti": "Tidak ada tombol Baru/kosongkan di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs; form hanya dikosongkan otomatis setelah simpan."
+    "status": "sebagian",
+    "bukti": "Tombol Baru (OnBaruClick, src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs) mengosongkan form SOAP. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHapus": {
-    "status": "kurang",
-    "bukti": "src/SimrsKhanza.Data/RawatJalanRepository.cs tidak punya hapus pemeriksaan_ralan; pemeriksaan yang sudah disimpan tidak tampil lagi di layar."
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs HapusAsync dengan konfirmasi: non-Admin Utama 48 jam dan milik sendiri. Satu baris sekali, Java menghapus semua baris tercentang. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnEdit": {
-    "status": "kurang",
-    "bukti": "src/SimrsKhanza.Data/RawatJalanRepository.cs tidak punya ubah; antrian hanya memuat kunjungan yang belum punya pemeriksaan_ralan (UnexaminedVisits), jadi SOAP yang sudah ada tidak bisa dibuka."
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs UbahAsync (Ganti): non-Admin Utama hanya miliknya, 48 jam, tidak sebelum registrasi; kunci lama dipakai agar tanggal/jam bisa diubah. Tidak mengubah no_rawat seperti Java. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPrint": {
     "status": "kurang",
     "bukti": "Tidak ada cetak di RawatJalanView."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAll": {
-    "status": "kurang",
-    "bukti": "Tidak ada filter/pencarian yang perlu direset di RawatJalanView."
+    "status": "selesai",
+    "bukti": "OnSemuaClick di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs mengosongkan kata kunci dan memuat ulang daftar."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnKeluar": {
     "status": "selesai",
@@ -1676,8 +1676,8 @@
     "bukti": "Tidak ada pemilih pasien; pasien dari baris antrian."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCari": {
-    "status": "kurang",
-    "bukti": "Antrian src/SimrsKhanza.Data/RawatJalanRepository.cs GetQueueAsync hanya 7 hari terakhir tanpa pencarian, filter poli atau dokter."
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs LoadQueueAsync + src/SimrsKhanza.Data/RawatJalanService.cs AntrianAsync: rentang tanggal dan kata kunci (no. rawat, reg, RM, pasien, poli, dokter). Dicocokkan dengan perilaku Java secara umum, bukan kolom per kolom."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTambahTindakan": {
     "status": "kurang",
@@ -1704,8 +1704,8 @@
     "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPegawai": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "PegawaiCombo diisi src/SimrsKhanza.Data/RawatJalanService.cs PegawaiAsync: Admin Utama memilih pegawai, akun lain terkunci pada NIK sendiri. Tidak ada dialog cari."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|Btn5Soap": {
     "status": "kurang",
@@ -2453,6 +2453,6 @@
   },
   "jendela|simrskhanza/DlgRawatJalan.java|DlgRawatJalan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsKhanza.Data/RawatJalanRepository.cs: antrian 7 hari dan satu form SOAP/tanda vital. Tidak ada tab Penanganan Dokter/Petugas, tindakan, obstetri, catatan, riwayat, resep, edit atau hapus, dan antrian ikut memuat kunjungan non-rawat jalan."
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsKhanza.Data/RawatJalanService.cs: daftar kunjungan Ralan non-IGD per tanggal dengan pencarian, banyak SOAP per kunjungan (tambah, ganti, hapus) dengan aturan akses Khanza. Belum: tab tindakan dokter/petugas, obstetri, catatan, resep, permintaan, dan tombol formulir klinis."
   }
 }
