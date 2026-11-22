@@ -2,7 +2,7 @@
 
 Diaudit 22 November 2026. Sumber: `simrskhanza/DlgReg.java` (handler tombol, baris 6794-7017 dan sekitarnya). Avalonia: `RegistrasiView.axaml(.cs)` dan `RegistrasiRepository`. Status per ID ada di [fitur.tsv](fitur.tsv); 348 popup klik kanan sudah dinilai sebelumnya, 27 tombol dan jendela dinilai di audit ini.
 
-Hasil tombol/jendela: **3 selesai, 8 sebagian, 14 kurang, 1 ditunda (bridging), 1 jendela sebagian**.
+Hasil tombol/jendela setelah perbaikan A-D: 4 selesai, 6 sebagian, 13 kurang, 1 ditunda, jendela sebagian. (Sebelum perbaikan: 3 selesai, 8 sebagian, 14 kurang.)
 
 ## Selisih terpenting (urut dampak)
 
@@ -17,5 +17,16 @@ Hasil tombol/jendela: **3 selesai, 8 sebagian, 14 kurang, 1 ditunda (bridging), 
 ## Yang sudah setara
 Tombol Semua, Keluar, dan toggle Input Data.
 
-## Usulan perbaikan (belum dikerjakan)
-A. Registrasi baru (pilih pasien + cek rawat inap + status Baru/Lama + biaya + kuota) dengan tes. B. Hapus dengan aturan 48 jam dan cek tagihan. C. Cek tagihan/48 jam/hak pada Ubah. D. Kecualikan IGDK di daftar. E. Perluas pencarian.
+## Perbaikan A-D (22 November 2026)
+
+Kode: `RegistrasiService.cs`, `RegistrasiView.axaml(.cs)`, tes `RegistrasiServiceTests.cs`.
+
+- **A. Registrasi baru:** tombol Baru, isi No. RM lalu Enter (nama, penanggung jawab, jenis bayar terisi dari pasien), pilih dokter dan unit, Simpan. Aturan Java: tolak pasien rawat inap aktif, no. reg per dokter per hari, no. rawat `yyyy/MM/dd/NNNNNN` dari MAX+1 (bukan hitung baris, sehingga aman setelah ada yang dihapus) dengan ulang saat nomor bentrok, status daftar Baru/Lama, status poli, biaya registrasi baru/lama, umur. Kuota jadwal tersedia tetapi nonaktif bawaan karena pengaturannya belum ada di Gramedika.
+- **B. Hapus:** konfirmasi, batas 48 jam untuk non-Admin Utama, ditolak bila sudah ada billing.
+- **C. Ubah:** ditolak bila ada billing atau batal, hak `edit_registrasi` dan batas 48 jam untuk non-Admin Utama, biaya dihitung ulang bila poli berubah.
+- **D. IGD:** kunjungan poli IGDK tidak lagi tampil di daftar Registrasi. Pencarian juga diperluas (E).
+
+Belum diuji ke database nyata: tes hanya untuk aturan murni (batas 48 jam, umur, kolom biaya, hari jadwal).
+
+## Masih tertinggal
+Pemilih pasien lewat dialog, dialog perujuk dan asal rujukan, tab Rujukan Internal Poli, grafik/demografi dari layar ini, tanggal-jam mundur, mode urut no. reg poli atau dokter+poli, closing kasir, catatan pasien, cetak berkop RS, hapus banyak baris.

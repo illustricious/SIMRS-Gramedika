@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
 using SimrsKhanza.UI.Modules.Shared;
@@ -11,6 +12,12 @@ namespace SimrsKhanza.UI.Modules.Registrasi;
 public partial class RegistrasiView : UserControl
 {
     private RegistrasiListItem? _selected;
+    private bool _newMode;
+    private RegistrasiPasien? _pasienBaru;
+    private const string KodePoliIgd = "IGDK";
+
+    private static RegistrasiAkses Akses() =>
+        new(AppSession.CurrentUser?.IsAdminUtama == true, AppSession.CurrentUser?.HasPermission("edit_registrasi") == true);
     /// <summary>Raised when "Kembali ke Menu" is clicked — MainWindow swaps back to the dashboard.</summary>
     public event EventHandler? BackRequested;
 
@@ -123,7 +130,8 @@ public partial class RegistrasiView : UserControl
             var settings = DatabaseSettings.Load();
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
-            var items = await repo.GetByPeriodeAsync(from, to);
+            // Seperti DlgReg: kunjungan IGD (poli IGDK) hanya tampil di layar IGD.
+            var items = (await repo.GetByPeriodeAsync(from, to)).Where(i => i.KodePoli != KodePoliIgd).ToList();
             if (!string.IsNullOrEmpty(dokterCode))
                 items = items.Where(i => i.KodeDokter == dokterCode).ToList();
             if (!string.IsNullOrEmpty(poliCode))
@@ -131,10 +139,11 @@ public partial class RegistrasiView : UserControl
 
             if (!string.IsNullOrWhiteSpace(keyWord))
             {
-                items = items.Where(i => i.NamaPasien.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
-                                       || i.NoRekamMedis.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
-                                       || i.NoRawat.Contains(keyWord, StringComparison.OrdinalIgnoreCase)
-                                       || (i.NoReg?.Contains(keyWord, StringComparison.OrdinalIgnoreCase) ?? false))
+                bool Has(string? text) => text?.Contains(keyWord, StringComparison.OrdinalIgnoreCase) ?? false;
+                items = items.Where(i => Has(i.NamaPasien) || Has(i.NoRekamMedis) || Has(i.NoRawat) || Has(i.NoReg)
+                                       || Has(i.TanggalRegistrasi?.ToString("yyyy-MM-dd")) || Has(i.TanggalRegistrasi?.ToString("dd/MM/yyyy"))
+                                       || Has(i.NamaPoli) || Has(i.NamaDokter) || Has(i.PenanggungJawab) || Has(i.AlamatPj)
+                                       || Has(i.JenisBayar) || Has(i.HubunganPj) || Has(i.StatusPoli) || Has(i.Status))
                               .ToList();
             }
 
@@ -153,6 +162,8 @@ public partial class RegistrasiView : UserControl
     {
         _selected = this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem as RegistrasiListItem;
         var row = _selected;
+        if (_newMode && row is null) return;
+        SetNewMode(false);
         SetInputText("InputNoRegBox", row?.NoReg);
         SetInputText("InputNoRawatBox", row?.NoRawat);
         SetInputText("InputTanggalBox", row?.TanggalRegistrasi?.ToString("dd/MM/yyyy"));
@@ -233,6 +244,73 @@ public partial class RegistrasiView : UserControl
         penjab.SelectedItem = (penjab.ItemsSource as IEnumerable<Penjab>)?.FirstOrDefault(x => x.KodePenjab == row.KodePj);
     }
 
+    private void SetNewMode(bool on)
+    {
+        _newMode = on;
+        if (!on) _pasienBaru = null;
+        this.FindControl<TextBox>("InputNoRekamMedisBox")!.IsReadOnly = !on;
+    }
+
+    private void OnBaruClick(object? sender, RoutedEventArgs e)
+    {
+        _selected = null;
+        SetNewMode(true);
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = null;
+        foreach (var name in new[] { "InputNoRegBox", "InputNoRawatBox", "InputTanggalBox", "InputJamBox", "InputNoRekamMedisBox", "InputNamaPasienBox",
+                     "InputBiayaBox", "InputPenanggungJawabBox", "InputAlamatPjBox", "InputHubunganBox", "InputStatusDaftarBox", "InputNoKartuBox", "InputAsalRujukanBox" })
+            SetInputText(name, null);
+        this.FindControl<ComboBox>("InputDokterCombo")!.SelectedIndex = -1;
+        this.FindControl<ComboBox>("InputPoliCombo")!.SelectedIndex = -1;
+        this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedIndex = -1;
+        this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        status.Classes.Remove("error");
+        status.Classes.Remove("saved");
+        status.Text = "Registrasi baru: isi No. Rekam Medik lalu Enter, pilih dokter, unit, dan jenis bayar. No. reg, no. rawat, status, dan biaya diisi otomatis.";
+        status.IsVisible = true;
+        this.FindControl<TextBox>("InputNoRekamMedisBox")!.Focus();
+    }
+
+    private async void OnNoRmLostFocus(object? sender, RoutedEventArgs e) => await LoadPasienBaruAsync();
+
+    private async void OnNoRmKeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+    {
+        if (e.Key == Avalonia.Input.Key.Enter) await LoadPasienBaruAsync();
+    }
+
+    private async System.Threading.Tasks.Task LoadPasienBaruAsync()
+    {
+        if (!_newMode) return;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        var rm = this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim();
+        if (string.IsNullOrEmpty(rm) || _pasienBaru?.NoRekamMedis == rm) return;
+        try
+        {
+            var pasien = await new RegistrasiService(DatabaseSettings.Load()).CariPasienAsync(rm);
+            if (!_newMode) return;
+            _pasienBaru = pasien;
+            if (pasien is null)
+            {
+                SetInputText("InputNamaPasienBox", null);
+                ShowInputError(status, $"Pasien {rm} tidak ditemukan. Daftarkan pasien lebih dulu di layar Pasien.");
+                return;
+            }
+            SetInputText("InputNamaPasienBox", $"{pasien.Nama} ({pasien.Umur})");
+            SetInputText("InputPenanggungJawabBox", pasien.NamaKeluarga);
+            SetInputText("InputHubunganBox", pasien.Keluarga);
+            SetInputText("InputAlamatPjBox", pasien.Alamat);
+            SetInputText("InputStatusDaftarBox", pasien.StatusDaftar);
+            var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!;
+            penjab.SelectedItem = (penjab.ItemsSource as IEnumerable<Penjab>)?.FirstOrDefault(x => x.KodePenjab == pasien.KodePenjab);
+            status.Classes.Remove("error");
+            status.Text = $"Registrasi baru untuk {pasien.Nama}. Lengkapi dokter dan unit lalu Simpan.";
+        }
+        catch (Exception ex)
+        {
+            ShowInputError(status, $"Gagal memuat pasien: {ex.Message}");
+        }
+    }
+
     private async void OnInputSimpanClick(object? sender, RoutedEventArgs e)
     {
         var status = this.FindControl<TextBlock>("InputStatusText")!;
@@ -240,34 +318,72 @@ public partial class RegistrasiView : UserControl
         var poli = this.FindControl<ComboBox>("InputPoliCombo")!.SelectedItem as Poliklinik;
         var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedItem as Penjab;
         var dokter = this.FindControl<ComboBox>("InputDokterCombo")!.SelectedItem as Dokter;
+        var pj = this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text?.Trim() ?? "";
+        var alamat = this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "";
+        var hubungan = this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "";
 
-        if (_selected is null || string.IsNullOrWhiteSpace(noRekamMedis) || dokter is null || poli is null || penjab is null)
+        if (string.IsNullOrWhiteSpace(noRekamMedis) || dokter is null || poli is null || penjab is null || (!_newMode && _selected is null))
         {
-            ShowInputError(status, "Pilih pasien pada tabel dan lengkapi dokter, poli, serta jenis bayar.");
+            ShowInputError(status, _newMode
+                ? "Isi No. Rekam Medik pasien dan lengkapi dokter, unit, serta jenis bayar."
+                : "Pilih pasien pada tabel dan lengkapi dokter, poli, serta jenis bayar.");
             return;
         }
 
         try
         {
-            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            var noRawat = _selected.NoRawat;
-            await new RegistrasiRepository(db).UpdateAsync(noRawat, noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab,
-                this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text?.Trim() ?? "",
-                this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "",
-                this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "");
+            var service = new RegistrasiService(DatabaseSettings.Load());
+            string noRawat;
+            if (_newMode)
+            {
+                if (_pasienBaru?.NoRekamMedis != noRekamMedis) await LoadPasienBaruAsync();
+                if (_pasienBaru is null) { ShowInputError(status, $"Pasien {noRekamMedis} tidak ditemukan."); return; }
+                noRawat = await service.DaftarAsync(new(noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab, pj, alamat, hubungan, DateTime.Now), Akses());
+                SetNewMode(false);
+                await LoadAsync();
+                status.Classes.Remove("error");
+                status.Classes.Add("saved");
+                status.Text = $"Registrasi baru tersimpan — No.Rawat {noRawat}.";
+                status.IsVisible = true;
+                return;
+            }
 
+            noRawat = _selected!.NoRawat;
+            await service.UbahAsync(noRawat, noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab, pj, alamat, hubungan, Akses());
+            await LoadAsync();
             status.Classes.Remove("error");
             status.Classes.Add("saved");
-            status.Text = $"Registrasi tersimpan — No.Rawat {noRawat}.";
-            status.IsVisible = true;
-
-            await LoadAsync();
             status.Text = $"Perubahan registrasi {noRawat} tersimpan.";
             status.IsVisible = true;
         }
         catch (Exception ex)
         {
             ShowInputError(status, $"Gagal simpan registrasi: {ex.Message}");
+        }
+    }
+
+    private async void OnHapusClick(object? sender, RoutedEventArgs e)
+    {
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        if (_selected is not { } row)
+        {
+            ShowInputError(status, "Pilih registrasi pada tabel yang akan dihapus.");
+            return;
+        }
+        if (!await Dialogs.ConfirmAsync(this, "Hapus Registrasi", $"Hapus registrasi {row.NoRawat} — {row.NamaPasien}?")) return;
+        try
+        {
+            await new RegistrasiService(DatabaseSettings.Load()).HapusAsync(row.NoRawat, Akses());
+            _selected = null;
+            await LoadAsync();
+            status.Classes.Remove("error");
+            status.Classes.Add("saved");
+            status.Text = $"Registrasi {row.NoRawat} dihapus.";
+            status.IsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            ShowInputError(status, $"Gagal hapus registrasi: {ex.Message}");
         }
     }
 

@@ -55,7 +55,7 @@
                 <Grid Grid.Column="1" ColumnDefinitions="111,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
                     <TextBlock Grid.Row="0" Text="No. Rekam Medik" VerticalAlignment="Center" />
                     <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*" ColumnSpacing="6">
-                        <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" AutomationProperties.Name="Nomor rekam medis" />
+                        <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" LostFocus="OnNoRmLostFocus" KeyDown="OnNoRmKeyDown" AutomationProperties.Name="Nomor rekam medis" />
                         <TextBox Grid.Column="1" Name="InputNamaPasienBox" IsReadOnly="True" AutomationProperties.Name="Nama pasien" />
                     </Grid>
 
@@ -175,10 +175,11 @@
                 </Grid>
                 <Grid ColumnDefinitions="*,Auto">
                     <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
+                        <Button Content="Baru" Click="OnBaruClick" />
                         <Button Name="InputSimpanButton" Content="Simpan" Classes="accent"
                                 IsEnabled="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}"
                                 Click="OnInputSimpanClick" />
-                        <Button Content="Hapus" Foreground="{DynamicResource ThemeAccentBrush}" Click="OnPlaceholderClick" />
+                        <Button Content="Hapus" Foreground="{DynamicResource ThemeAccentBrush}" Click="OnHapusClick" />
                         <Button Content="Cetak" Click="OnCetakClick" />
                         <Button Content="Semua" Click="OnSemuaClick" />
                         <Button Content="Periksa" Click="OnPeriksaClick" />

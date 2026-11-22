@@ -1529,23 +1529,23 @@
   },
   "jendela|simrskhanza/DlgReg.java|DlgReg": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs: daftar per periode, filter dokter/poli, cari, ubah registrasi, cetak PDF, klik kanan pasien. Belum ada registrasi baru, hapus, pilih pasien, tab Rujukan Internal Poli, dan daftar Avalonia tidak mengecualikan poli IGDK seperti Java."
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs: daftar tanpa IGDK, cari, registrasi baru, ubah, hapus, cetak PDF, klik kanan pasien. Belum: pilih pasien lewat dialog, tab Rujukan Internal Poli, grafik/demografi, tanggal-jam mundur, asal rujukan."
   },
   "aksi|simrskhanza/DlgReg.java|BtnSimpan": {
-    "status": "kurang",
-    "bukti": "Simpan di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (OnInputSimpanClick) hanya UpdateAsync pada registrasi terpilih. Registrasi baru hanya lewat IgdView (src/SimrsKhanza.Data/RegistrasiRepository.cs CreateAsync) tanpa cek Java: pasien sedang rawat inap, kuota dokter, status daftar Baru/Lama, biaya sesuai status, no. reg/rawat bisa diubah."
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs DaftarAsync (dipanggil OnInputSimpanClick mode Baru): tolak pasien rawat inap aktif, no. reg per dokter per hari, no. rawat MAX+1 dengan ulang saat duplikat, stts_daftar Baru/Lama dari tgl_daftar, status_poli dari riwayat poli, biaya registrasi/registrasilama, umur Th/Bl/Hr. Tes murni di src/SimrsKhanza.Tests/RegistrasiServiceTests.cs; SQL belum dijalankan ke DB. Belum: kuota jadwal aktif secara bawaan (terapkanKuota=false), mode urut no. reg poli/dokter+poli, closing kasir, catatan pasien, asal rujukan, tanggal-jam mundur."
   },
   "aksi|simrskhanza/DlgReg.java|BtnBatal": {
-    "status": "kurang",
-    "bukti": "Tidak ada tombol Baru/kosongkan form di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs; form hanya terisi dari baris terpilih."
+    "status": "selesai",
+    "bukti": "Tombol Baru (OnBaruClick) di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs mengosongkan form dan masuk mode registrasi baru."
   },
   "aksi|simrskhanza/DlgReg.java|BtnEdit": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnInputSimpanClick memanggil src/SimrsKhanza.Data/RegistrasiRepository.cs UpdateAsync: dokter, poli, jenis bayar, penanggung jawab, alamat, hubungan. Belum ada penolakan bila tagihan terverifikasi (Sequel.cariRegistrasi), batas 48 jam atau hak edit_registrasi, dan biaya/tanggal tidak bisa diubah."
+    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs UbahAsync: tolak bila ada billing atau batal, non-Admin Utama wajib hak edit_registrasi dan paling lama 48 jam, biaya dihitung ulang saat poli berubah. Belum mengubah tanggal/jam, no. reg/rawat, stts_daftar, umur secara manual."
   },
   "aksi|simrskhanza/DlgReg.java|BtnHapus": {
-    "status": "kurang",
-    "bukti": "Tombol Hapus di RegistrasiView.axaml memakai OnPlaceholderClick (src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs); tidak menghapus reg_periksa."
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs HapusAsync lewat OnHapusClick (src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs, konfirmasi): non-Admin Utama paling lama 48 jam. Tambahan Gramedika: ditolak bila ada billing (Java tidak). Hanya satu baris, Java menghapus semua baris tercentang."
   },
   "aksi|simrskhanza/DlgReg.java|BtnPrint": {
     "status": "sebagian",
@@ -1557,7 +1557,7 @@
   },
   "aksi|simrskhanza/DlgReg.java|BtnCari": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync memfilter nama pasien, no. RM, no. rawat, no. reg setelah periode. Java juga mencari tanggal, status daftar, poli, dokter, penanggung jawab, alamat PJ, jenis bayar, hubungan PJ."
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync: poli IGDK dikecualikan dan pencarian mencakup nama, RM, no. rawat, no. reg, tanggal, poli, dokter, PJ, alamat PJ, jenis bayar, hubungan PJ, status. Dicocokkan dengan kolom Java yang terbaca; query Java terpotong, belum diverifikasi penuh."
   },
   "aksi|simrskhanza/DlgReg.java|BtnKeluar": {
     "status": "selesai",
