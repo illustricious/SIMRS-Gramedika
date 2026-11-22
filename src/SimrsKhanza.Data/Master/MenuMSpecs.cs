@@ -117,8 +117,8 @@ public static class MenuMSpecs
         { CanDelete = false, Hint = "Kode insiden yang sudah dipakai pada laporan tidak dihapus dari layar ini." },
 
         ["btnMasterTemplateHasilRadiologi"] = new("Template Hasil Radiologi", "template_hasil_radiologi",
-            [Key("no_template", "No. Template", 5), new("nama_pemeriksaan", "Nama Pemeriksaan", MaxLen: 80, NullWhenEmpty: true),
-             new("template_hasil_radiologi", "Isi Template", FieldKind.Memo, MaxLen: 10000, NullWhenEmpty: true)],
+            [Key("no_template", "No. Template", 5), new("nama_pemeriksaan", "Nama Pemeriksaan", MaxLen: 80) { NullWhenEmpty = true },
+             new("template_hasil_radiologi", "Isi Template", FieldKind.Memo, MaxLen: 10000) { NullWhenEmpty = true }],
             "SELECT no_template,nama_pemeriksaan,template_hasil_radiologi FROM template_hasil_radiologi WHERE CONCAT_WS(' ',no_template,nama_pemeriksaan,template_hasil_radiologi) LIKE @p0 ORDER BY nama_pemeriksaan,no_template",
             [("no_template", "No. Template"), ("nama_pemeriksaan", "Pemeriksaan"), ("template_hasil_radiologi", "Isi Template")])
         { CanDelete = false, Hint = "Template dapat ditambah atau diubah. Penghapusan dinonaktifkan untuk menjaga template yang dipakai pemeriksaan." },
@@ -137,21 +137,21 @@ public static class MenuMSpecs
         ["btnMasterTemplatePemeriksaanDokter"] = new("Template Pemeriksaan Dokter", "template_pemeriksaan_dokter",
             [Key("no_template", "No. Template", 20), new("kd_dokter", "Dokter", FieldKind.Lookup,
                 LookupSql: "SELECT kd_dokter AS kode,nm_dokter AS nama FROM dokter ORDER BY nm_dokter"),
-             new("keluhan", "Keluhan", FieldKind.Memo, MaxLen: 2000, NullWhenEmpty: true),
-             new("pemeriksaan", "Pemeriksaan", FieldKind.Memo, MaxLen: 2000, NullWhenEmpty: true),
-             new("penilaian", "Penilaian", FieldKind.Memo, MaxLen: 2000, NullWhenEmpty: true),
+             new("keluhan", "Keluhan", FieldKind.Memo, MaxLen: 2000) { NullWhenEmpty = true },
+             new("pemeriksaan", "Pemeriksaan", FieldKind.Memo, MaxLen: 2000) { NullWhenEmpty = true },
+             new("penilaian", "Penilaian", FieldKind.Memo, MaxLen: 2000) { NullWhenEmpty = true },
              new("rencana", "Rencana", FieldKind.Memo, MaxLen: 2000, Required: true),
              new("instruksi", "Instruksi", FieldKind.Memo, MaxLen: 2000, Required: true),
-             new("evaluasi", "Evaluasi", FieldKind.Memo, MaxLen: 2000, NullWhenEmpty: true)],
+             new("evaluasi", "Evaluasi", FieldKind.Memo, MaxLen: 2000) { NullWhenEmpty = true }],
             "SELECT t.no_template,t.kd_dokter,d.nm_dokter,t.keluhan,t.pemeriksaan,t.penilaian,t.rencana,t.instruksi,t.evaluasi FROM template_pemeriksaan_dokter t LEFT JOIN dokter d ON d.kd_dokter=t.kd_dokter WHERE CONCAT_WS(' ',t.no_template,t.kd_dokter,d.nm_dokter,t.keluhan,t.pemeriksaan,t.penilaian,t.rencana,t.instruksi,t.evaluasi) LIKE @p0 ORDER BY d.nm_dokter,t.no_template",
             [("no_template", "No. Template"), ("nm_dokter", "Dokter"), ("keluhan", "Keluhan"), ("pemeriksaan", "Pemeriksaan"),
              ("penilaian", "Penilaian"), ("rencana", "Rencana"), ("instruksi", "Instruksi"), ("evaluasi", "Evaluasi")])
         { CanDelete = false, Hint = "Template terkait diagnosa, tindakan, resep, dan permintaan penunjang. Penghapusan dinonaktifkan; rincian template dikelola pada alur klinis Khanza." },
 
         ["btnMasterTemplateInformasiEdukasi"] = new("Template Informasi & Edukasi", "template_pelaksanaan_informasi_edukasi",
-            [Key("no_template", "No. Template", 5), new("materi_edukasi", "Materi Edukasi", MaxLen: 1000, NullWhenEmpty: true),
-             new("lama_edukasi", "Lama Edukasi", MaxLen: 10, NullWhenEmpty: true),
-             new("metode_edukasi", "Metode", FieldKind.Choice, Choices: ["Ceramah", "Diskusi", "Demonstrasi"], NullWhenEmpty: true)],
+            [Key("no_template", "No. Template", 5), new("materi_edukasi", "Materi Edukasi", MaxLen: 1000) { NullWhenEmpty = true },
+             new("lama_edukasi", "Lama Edukasi", MaxLen: 10) { NullWhenEmpty = true },
+             new("metode_edukasi", "Metode", FieldKind.Choice, Choices: ["Ceramah", "Diskusi", "Demonstrasi"]) { NullWhenEmpty = true }],
             "SELECT no_template,materi_edukasi,lama_edukasi,metode_edukasi FROM template_pelaksanaan_informasi_edukasi WHERE CONCAT_WS(' ',no_template,materi_edukasi,lama_edukasi,metode_edukasi) LIKE @p0 ORDER BY no_template",
             [("no_template", "No. Template"), ("materi_edukasi", "Materi Edukasi"), ("lama_edukasi", "Lama"), ("metode_edukasi", "Metode")])
         { CanDelete = false, Hint = "Template dapat ditambah atau diubah; penghapusan dinonaktifkan untuk menjaga materi edukasi yang dipakai." },
@@ -178,6 +178,14 @@ public static class MenuMSpecs
             "SELECT kode_imunisasi,nama_imunisasi FROM master_imunisasi WHERE CONCAT_WS(' ',kode_imunisasi,nama_imunisasi) LIKE @p0 ORDER BY nama_imunisasi,kode_imunisasi",
             [("kode_imunisasi", "Kode"), ("nama_imunisasi", "Imunisasi")])
         { CanDelete = false, Hint = "Master imunisasi yang sudah terhubung ke riwayat pasien tidak dihapus dari layar ini." },
+
+        ["btnMasterTriasePemeriksaan"] = TriageReference("Master Triase Pemeriksaan", "master_triase_pemeriksaan", "kode_pemeriksaan", "Kode", "nama_pemeriksaan", "Pemeriksaan"),
+        ["btnMasterTriaseMacamKasus"] = TriageReference("Master Triase Macam Kasus", "master_triase_macam_kasus", "kode_kasus", "Kode", "macam_kasus", "Macam Kasus"),
+        ["btnMasterTriaseSkala1"] = TriageScale("Master Triase Skala 1", "master_triase_skala1", "kode_skala1", "pengkajian_skala1"),
+        ["btnMasterTriaseSkala2"] = TriageScale("Master Triase Skala 2", "master_triase_skala2", "kode_skala2", "pengkajian_skala2"),
+        ["btnMasterTriaseSkala3"] = TriageScale("Master Triase Skala 3", "master_triase_skala3", "kode_skala3", "pengkajian_skala3"),
+        ["btnMasterTriaseSkala4"] = TriageScale("Master Triase Skala 4", "master_triase_skala4", "kode_skala4", "pengkajian_skala4"),
+        ["btnMasterTriaseSkala5"] = TriageScale("Master Triase Skala 5", "master_triase_skala5", "kode_skala5", "pengkajian_skala5"),
     };
 
     public static readonly IReadOnlyDictionary<string, ReportSpec> Reports = new Dictionary<string, ReportSpec>
@@ -282,14 +290,6 @@ public static class MenuMSpecs
             [("tanggal", "Tanggal"), ("id", "ID Pengaduan"), ("no_rkm_medis", "No. RM"), ("nm_pasien", "Pasien"),
              ("pesan", "Pesan"), ("pesan_balasan", "Balasan")], ReportPeriod.DateRange,
             "Daftar pengaduan baca-saja; komunikasi dan balasan dicatat melalui alur e-Pasien Khanza."),
-
-        ["btnMasterTriasePemeriksaan"] = TriageReference("Master Triase Pemeriksaan", "master_triase_pemeriksaan", "kode_pemeriksaan", "Kode", "nama_pemeriksaan", "Pemeriksaan"),
-        ["btnMasterTriaseMacamKasus"] = TriageReference("Master Triase Macam Kasus", "master_triase_macam_kasus", "kode_kasus", "Kode", "macam_kasus", "Macam Kasus"),
-        ["btnMasterTriaseSkala1"] = TriageScale("Master Triase Skala 1", "master_triase_skala1", "kode_skala1", "pengkajian_skala1"),
-        ["btnMasterTriaseSkala2"] = TriageScale("Master Triase Skala 2", "master_triase_skala2", "kode_skala2", "pengkajian_skala2"),
-        ["btnMasterTriaseSkala3"] = TriageScale("Master Triase Skala 3", "master_triase_skala3", "kode_skala3", "pengkajian_skala3"),
-        ["btnMasterTriaseSkala4"] = TriageScale("Master Triase Skala 4", "master_triase_skala4", "kode_skala4", "pengkajian_skala4"),
-        ["btnMasterTriaseSkala5"] = TriageScale("Master Triase Skala 5", "master_triase_skala5", "kode_skala5", "pengkajian_skala5"),
 
         ["btnDataTriaseIGD"] = ReadOnly("Data Triase IGD",
             "SELECT t.tgl_kunjungan,t.no_rawat,r.no_rkm_medis,p.nm_pasien,t.cara_masuk,t.alat_transportasi,t.alasan_kedatangan,t.keterangan_kedatangan,m.macam_kasus,t.tekanan_darah,t.nadi,t.pernapasan,t.suhu,t.saturasi_o2,t.nyeri,pr.keluhan_utama,pr.kebutuhan_khusus,pr.plan AS plan_primer,sk.anamnesa_singkat,sk.plan AS plan_sekunder,COALESCE(gp.nama,gs.nama) AS petugas,(SELECT GROUP_CONCAT(ms.pengkajian_skala1 SEPARATOR '; ') FROM data_triase_igddetail_skala1 d JOIN master_triase_skala1 ms ON ms.kode_skala1=d.kode_skala1 WHERE d.no_rawat=t.no_rawat) AS skala1,(SELECT GROUP_CONCAT(ms.pengkajian_skala2 SEPARATOR '; ') FROM data_triase_igddetail_skala2 d JOIN master_triase_skala2 ms ON ms.kode_skala2=d.kode_skala2 WHERE d.no_rawat=t.no_rawat) AS skala2,(SELECT GROUP_CONCAT(ms.pengkajian_skala3 SEPARATOR '; ') FROM data_triase_igddetail_skala3 d JOIN master_triase_skala3 ms ON ms.kode_skala3=d.kode_skala3 WHERE d.no_rawat=t.no_rawat) AS skala3,(SELECT GROUP_CONCAT(ms.pengkajian_skala4 SEPARATOR '; ') FROM data_triase_igddetail_skala4 d JOIN master_triase_skala4 ms ON ms.kode_skala4=d.kode_skala4 WHERE d.no_rawat=t.no_rawat) AS skala4,(SELECT GROUP_CONCAT(ms.pengkajian_skala5 SEPARATOR '; ') FROM data_triase_igddetail_skala5 d JOIN master_triase_skala5 ms ON ms.kode_skala5=d.kode_skala5 WHERE d.no_rawat=t.no_rawat) AS skala5 FROM data_triase_igd t JOIN reg_periksa r ON r.no_rawat=t.no_rawat LEFT JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis LEFT JOIN master_triase_macam_kasus m ON m.kode_kasus=t.kode_kasus LEFT JOIN data_triase_igdprimer pr ON pr.no_rawat=t.no_rawat LEFT JOIN data_triase_igdsekunder sk ON sk.no_rawat=t.no_rawat LEFT JOIN pegawai gp ON gp.nik=pr.nik LEFT JOIN pegawai gs ON gs.nik=sk.nik WHERE t.tgl_kunjungan BETWEEN @p1 AND @p2 AND CONCAT_WS(' ',t.no_rawat,r.no_rkm_medis,p.nm_pasien,m.macam_kasus,t.keterangan_kedatangan,pr.keluhan_utama,sk.anamnesa_singkat) LIKE @p0 ORDER BY t.tgl_kunjungan DESC,t.no_rawat",
