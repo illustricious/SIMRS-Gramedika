@@ -1521,11 +1521,11 @@
   },
   "popup|simrskhanza/DlgRawatJalan.java|PopupSOAP|MnCopySOAP": {
     "status": "kurang",
-    "bukti": "docs/tracker/AUDIT_CABANG.md — perintah popup salin/tempel enam bidang belum tersedia di editor layanan terkait."
+    "bukti": "Menu popup SOAP (formulir, copy/paste SOAPIE) belum ada di RawatJalanView."
   },
   "popup|simrskhanza/DlgRawatJalan.java|PopupPemeriksaan|MnPasteSOAP": {
     "status": "kurang",
-    "bukti": "docs/tracker/AUDIT_CABANG.md — perintah popup salin/tempel enam bidang belum tersedia di editor layanan terkait."
+    "bukti": "Menu popup SOAP (formulir, copy/paste SOAPIE) belum ada di RawatJalanView."
   },
   "jendela|simrskhanza/DlgReg.java|DlgReg": {
     "status": "sebagian",
@@ -1634,5 +1634,825 @@
   "aksi|simrskhanza/DlgReg.java|BtnPrint5": {
     "status": "kurang",
     "bukti": "Cetak untuk pasien terpilih (BtnPrint5ActionPerformed) belum ada; hanya cetak daftar."
+  },
+  "popup|simrskhanza/DlgRawatJalan.java|PopupSOAP|MnSOAPDokter": {
+    "status": "kurang",
+    "bukti": "Menu popup SOAP (formulir, copy/paste SOAPIE) belum ada di RawatJalanView."
+  },
+  "popup|simrskhanza/DlgRawatJalan.java|PopupSOAP|MnSOAPPetugas": {
+    "status": "kurang",
+    "bukti": "Menu popup SOAP (formulir, copy/paste SOAPIE) belum ada di RawatJalanView."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs OnSimpanClick + src/SimrsKhanza.Data/RawatJalanRepository.cs SaveExaminationAsync menyimpan satu baris pemeriksaan_ralan (SOAP dan tanda vital). Kurang: GCS, alergi, lingkar perut, tanggal/jam, penolakan bila billing terverifikasi, tab Penanganan Dokter/Petugas/Dokter+Petugas dan obstetri. NIP pemeriksa berupa placeholder D0000099, FK ke pegawai.nik akan gagal di DB nyata."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnBatal": {
+    "status": "kurang",
+    "bukti": "Tidak ada tombol Baru/kosongkan di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs; form hanya dikosongkan otomatis setelah simpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHapus": {
+    "status": "kurang",
+    "bukti": "src/SimrsKhanza.Data/RawatJalanRepository.cs tidak punya hapus pemeriksaan_ralan; pemeriksaan yang sudah disimpan tidak tampil lagi di layar."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnEdit": {
+    "status": "kurang",
+    "bukti": "src/SimrsKhanza.Data/RawatJalanRepository.cs tidak punya ubah; antrian hanya memuat kunjungan yang belum punya pemeriksaan_ralan (UnexaminedVisits), jadi SOAP yang sudah ada tidak bisa dibuka."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPrint": {
+    "status": "kurang",
+    "bukti": "Tidak ada cetak di RawatJalanView."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAll": {
+    "status": "kurang",
+    "bukti": "Tidak ada filter/pencarian yang perlu direset di RawatJalanView."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnKeluar": {
+    "status": "selesai",
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs OnBackClick (Kembali ke Menu)."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|btnPasien": {
+    "status": "kurang",
+    "bukti": "Tidak ada pemilih pasien; pasien dari baris antrian."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCari": {
+    "status": "kurang",
+    "bukti": "Antrian src/SimrsKhanza.Data/RawatJalanRepository.cs GetQueueAsync hanya 7 hari terakhir tanpa pencarian, filter poli atau dokter."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnTambahTindakan": {
+    "status": "kurang",
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/TindakanRalanView.axaml.cs hanya menampilkan tindakan (read-only); tambah tindakan jasa dokter/petugas dari layar ini belum ada. Input tindakan hanya lewat barcode Menu B."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPetugas": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPetugas2": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter2": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkInput": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPegawai": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|Btn5Soap": {
+    "status": "kurang",
+    "bukti": "Pilihan 5 SOAP terakhir belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnTemplatePemeriksaan": {
+    "status": "kurang",
+    "bukti": "Template pemeriksaan belum dipakai di RawatJalanView (master template ada di Menu M)."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkInput1": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkInput2": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkInput3": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter3": {
+    "status": "kurang",
+    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkJln": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|ChkAccor": {
+    "status": "kurang",
+    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnRiwayat": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs menu Riwayat Perawatan membuka PatientHistoryWindow (daftar kunjungan pasien); riwayat SOAP/obat/lab per kunjungan seperti Java belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnResepObat": {
+    "status": "kurang",
+    "bukti": "Input resep dokter belum ada; menu klik kanan Resep Dokter tanpa aksi."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCopyResep": {
+    "status": "kurang",
+    "bukti": "Copy resep belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnResepLuar": {
+    "status": "kurang",
+    "bukti": "Resep luar belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnInputObat": {
+    "status": "kurang",
+    "bukti": "Pemberian obat dan BHP dari kunjungan belum ada (penjualan obat ada di Farmasi, stok keluar di Menu D)."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnObatBhp": {
+    "status": "kurang",
+    "bukti": "Daftar obat dan BHP per kunjungan belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnBerkasDigital": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanLab": {
+    "status": "kurang",
+    "bukti": "Layar permintaan lab ada (LabPermintaanRepository) tetapi tidak dibuka dari Rawat Jalan; entri menu klik kanan tanpa aksi."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanRad": {
+    "status": "kurang",
+    "bukti": "Layar permintaan radiologi ada tetapi tidak dibuka dari Rawat Jalan; entri menu klik kanan tanpa aksi."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnJadwalOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSKDP": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnKamar": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs aksi Kamar Inap tersedia dari klik kanan; permintaan rawat inap dari tombol ini belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnTriaseIGD": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnRujukInternal": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnResume": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanIGD": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanGigi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanKandungan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanAnak": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanPsikiatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanGeriatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalFisioterapi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalTerapiWicara": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisIGD": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisIGDPsikiatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedis": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisKandungan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisAnak": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisTHT": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisPsikiatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisPenyakitDalam": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisMata": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisNeurologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisOrthopedi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisBedah": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisBedahMulut": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisGeriatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisKulitKelamin": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisParu": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisRehabMedik": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisHemodialisa": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnRujukKeluar": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiIGD": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanCekGDS": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanKeperawatan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianUlangNyeri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanPEWSAnak": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanPEWSDewasa": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanMEOWS": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanEWSNeonatus": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringReaksiTranfusi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnUjiFungsiKFR": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukHCU": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukICU": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPreOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSignInSebelumAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnTimeOutSebelumInsisi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSignOutSebelumMenutupLuka": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPostOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorAldrettePascaAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorStewardPascaAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnMedicalCheckUp": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhDewasa": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhAnak": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhLansia": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhNeonatus": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhGeriatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhPsikiatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanSkriningFungsional": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSG": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnDokumentasiESWL": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanPersalinanan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiDewasa": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiLansia": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiAnak": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningGiziLanjut": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAsuhanGizi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringAsuhanGizi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanADIMEGizi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnKonselingFarmasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnInformasiObat": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnRekonsiliasiObat": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnTransferAntarRuang": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnEdukasiPasienKeluarga": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPengkajianRestrain": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienTerminal": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianKorbanKekerasan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienPenyakitMenular": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienKeracunan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanGeriatri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanBunuhDiri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanPerilakuKekerasan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanMelarikanDiri": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorBromagePascaAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreInduksi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGUrologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGGynecologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGNeonatus": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGAbdomen": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanEKG": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanTreadmill": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanSlitLamp": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanOCT": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanECHO": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanECHOPediatrik": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenatalaksanaanTerapiOkupasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPsikolog": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPsikologKlinis": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianBayiBaruLahir": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianDerajatDehidrasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPelaksanaanInformasiEdukasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnLayananKedokteranFisikRehabilitasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiFaringLaring": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiHidung": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiTelinga": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienImunitasRendah": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanKeseimbanganCairan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiCHBP": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiInduksiPersalinan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiHemodialisa": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiRuangOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanCairanHemodialisa": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPemberianFibrinolitik": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanKonsultasiMedik": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanKonsultasiPerawat": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningMerokokUsiaRemaja": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKekerasanPadaWanita": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningObesitas": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerPayudara": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerParu": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutremaja": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutBalita": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutLansia": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutDewasa": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerServiks": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningAnemia": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningHipertensi": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanPenglihatan": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningIndraPendengaran": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningFrailtySyndrome": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningTBC": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningPUMA": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningAdiksiNikotin": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningThalassemia": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenSDQ": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenACRS": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenMentalEmosional": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenAMT": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningPneumoniaSeverityIndex": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningCURB65": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenSRQ": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKankerKolorektal": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningDiabetesMelitus": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisJantung": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisUrologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnLaporanTindakan": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanPengkajianPaskaOperasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKesiapanAnestesi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanAnastesiSedasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiBayi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukNICU": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukPICU": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningGiziKehamilan": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnIntervensiNyeriFarmakologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnIntervensiNyeriNonFarmakologi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnResepIterasiBPJS": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukIsolasi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningTOLAC": {
+    "status": "sebagian",
+    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnAdmisiSkoringTOLAC": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPersalinanTOLAC": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringTolac": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnLaporanReaksiTranfusi": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianGRACEScore": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianBISHOPScore": {
+    "status": "kurang",
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+  },
+  "jendela|simrskhanza/DlgRawatJalan.java|DlgRawatJalan": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsKhanza.Data/RawatJalanRepository.cs: antrian 7 hari dan satu form SOAP/tanda vital. Tidak ada tab Penanganan Dokter/Petugas, tindakan, obstetri, catatan, riwayat, resep, edit atau hapus, dan antrian ikut memuat kunjungan non-rawat jalan."
   }
 }

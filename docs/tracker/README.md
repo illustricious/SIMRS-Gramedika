@@ -20,6 +20,6 @@ Pemetaan statis mengenali JFrame/JDialog dengan pewarisan langsung, rantai popup
 
 Kesetaraan fungsi perlu diperiksa per alur. Handler keyboard/mouse tanpa ActionListener, menu yang dibentuk dinamis, validasi, SQL, hasil cetak dan integrasi di balik tombol belum diurai menjadi fitur terpisah. Angka belum diaudit menunjukkan pekerjaan pemeriksaan. Angka kurang dan sebagian menunjukkan kekurangan yang sudah dikonfirmasi. Penilaian disimpan eksplisit agar membuka layar saja tidak otomatis menandai alur sebagai selesai.
 
-Hasil audit per layar: [Registrasi](AUDIT_REGISTRASI.md).
+Hasil audit per layar: [Registrasi](AUDIT_REGISTRASI.md), [Rawat Jalan](AUDIT_RAWAT_JALAN.md).
 
 Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [audit cabang pelayanan](AUDIT_CABANG.md).
