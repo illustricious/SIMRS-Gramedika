@@ -4,14 +4,14 @@ namespace SimrsKhanza.Data.Master;
 /// Menu O (analisa dan info grafik), bagian pertama: registrasi/kunjungan, rawat inap, lab/radiologi ralan,
 /// pegawai, item apotek, inventaris, dan pasien meninggal. Semua layar berupa tabel agregat hanya-baca
 /// (kategori, jumlah, persen) dari tabel yang sama dengan grafik Khanza. Grafik batang/pai belum digambar.
-/// Grup lain (TB, IKP, K3, HAIs, limbah, air, diet, perbaikan inventaris, pengajuan aset, hemodialisa) belum dikerjakan.
+/// Bagian 2 (IKP, TB, K3, HAIs, kesling, diet, dll.) ada di MenuOMoreSpecs.cs.
 /// </summary>
 public static class MenuOSpecs
 {
     private static readonly (string, string)[] CountColumns = [("kategori", "Kategori"), ("jumlah", "Jumlah")];
 
     /// <summary>Daftar hitung per kategori. <paramref name="dim"/> = ekspresi kategori, <paramref name="from"/> = FROM + JOIN.</summary>
-    private static ReportSpec Count(string title, string dim, string from, string date, ReportPeriod period,
+    internal static ReportSpec Count(string title, string dim, string from, string date, ReportPeriod period,
         string measure = "COUNT(*)", string extraWhere = "", string? hint = null, string order = "jumlah DESC,kategori")
     {
         var dateFilter = period switch
@@ -48,7 +48,7 @@ public static class MenuOSpecs
     private static string ByDay(string date) => $"DATE_FORMAT({date},'%Y-%m-%d')";
 
     /// <summary>Tiga tile Per Tahun/Bulan/Tanggal untuk satu sumber data.</summary>
-    private static void Series(Dictionary<string, ReportSpec> map, string[] keys, string label, string from, string date,
+    internal static void Series(Dictionary<string, ReportSpec> map, string[] keys, string label, string from, string date,
         string measure = "COUNT(*)", string extraWhere = "")
     {
         map[keys[0]] = Count($"{label} Per Tahun", ByYear(date), from, date, ReportPeriod.None, measure, extraWhere, order: "kategori");
@@ -145,6 +145,7 @@ public static class MenuOSpecs
             "periksa_lab l JOIN reg_periksa r ON r.no_rawat=l.no_rawat", "l.tgl_periksa", "COUNT(DISTINCT l.no_rawat)", "AND r.status_lanjut='Ralan'");
         Series(map, ["btnGrafikRadRalanPerTahun", "btnGrafikRadRalanPerBulan", "btnGrafikRadRalanPerHari"], "Kunjungan Rad Ralan",
             "periksa_radiologi l JOIN reg_periksa r ON r.no_rawat=l.no_rawat", "l.tgl_periksa", "COUNT(DISTINCT l.no_rawat)", "AND r.status_lanjut='Ralan'");
+        MenuOMoreSpecs.Add(map);
         return map;
     }
 }

@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 728 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 496 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 787 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 437 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -479,65 +479,7 @@ Semua tile sudah membuka layar. Lihat `MENU_NR_STATUS.md`.
 
 ## O · Analisa, Dashboard & Info Grafik
 
-- Kejadian IKP Per Tahun (`btnGrafikKejadianIKPPerTahun`)
-- Kejadian IKP Per Bulan (`btnGrafikKejadianIKPPerBulan`)
-- Kejadian IKP Per Tanggal (`btnGrafikKejadianIKPPerTanggal`)
-- Kejadian IKP Per Jenis (`btnGrafikKejadianIKPPerJenis`)
-- Kejadian IKP Per Dampak (`btnGrafikKejadianIKPPerDampak`)
-- Periode Laporan TB (`btnGrafikTBLaporanPeriode`)
-- Rujukan TB (`btnGrafikTBRujukan`)
-- Riwayat TB (`btnGrafikTBRiwayat`)
-- Tipe Diagnosis TB (`btnGrafikTBTipeDiagnosis`)
-- Status HIV TB (`btnGrafikTBSTatusHIV`)
-- Skoring Anak TB (`btnGrafikTBSkoringAnak`)
-- Konfirmasi Skoring 5 TB (`btnGrafikTBKonfirmasiSkoring5`)
-- Konfirmasi Skoring 6 TB (`btnGrafikTBKonfirmasiSkoring6`)
-- Sumber Obat TB (`btnGrafikTBSumberObat`)
-- Hasil Akhir Pengobatan TB (`btnGrafikTBHasilAkhirPengobatan`)
-- Hasil Tes HIV TB (`btnGrafikTBHasilTesHIV`)
-- Pemakaian Air PDAM Per Tanggal (`btnGrafikPemakaianAirPDAMPerTanggal`)
-- Pemakaian Air PDAM Per Bulan (`btnGrafikPemakaianAirPDAMPerBulan`)
-- Pemakaian Air Tanah Per Tanggal (`btnGrafikPemakaianAirTanahPerTanggal`)
-- Pemakaian Air Tanah Per Bulan (`btnGrafikPemakaianAirTanahPerBulan`)
-- Limbah B3 Medis Per Tanggal (`btnGrafikLimbahB3MedisPerTanggal`)
-- Limbah B3 Medis Per Bulan (`btnGrafikLimbahB3MedisPerBulan`)
-- Limbah Padat Domestik Per Tanggal (`btnGrafikLimbahDomestikPerTanggal`)
-- Limbah Padat Domestik Medis Per Bulan (`btnGrafikLimbahDomestikPerBulan`)
-- K3 Per Tahun (`btnGrafikK3PerTahun`)
-- K3 Per Bulan (`btnGrafikK3PerBulan`)
-- K3 Per Tanggal (`btnGrafikK3PerTanggal`)
-- K3 Per Jenis Cidera (`btnGrafikK3PerJenisCidera`)
-- K3 Per Penyebab Kecelakaan (`btnGrafikK3PerPenyebab`)
-- K3 Per Jenis Luka (`btnGrafikK3PerJenisLuka`)
-- K3 Per Lokasi Kejadian (`btnGrafikK3PerLokasiKejadian`)
-- K3 Per Dampak Cidera (`btnGrafikK3PerDampakCidera`)
-- K3 Per Jenis Pekerjaan (`btnGrafikK3PerJenisPekerjaan`)
-- K3 Per Bagian Tubuh (`btnGrafikK3PerBagianTubuh`)
-- Pengajuan Aset Per Urgensi (`btnGrafikPengajuanAsetUrgensi`)
-- Pengajuan Aset Per Status (`btnGrafikPengajuanAsetStatus`)
-- Pengajuan Aset Per Departemen (`btnGrafikPengajuanAsetDepartemen`)
-- Pasien HAIs Per Ruang (`btnGrafikHAIsPasienRuang`)
-- Pasien HAIs Per Bulan (`btnGrafikHAIsPasienBulan`)
-- Laju HAIs VAP Per Ruang (`btnGrafikHAIsLajuVAP`)
-- Laju HAIs IAD Per Ruang (`btnGrafikHAIsLajuIAD`)
-- Laju HAIs Plebitis Per Ruang (`btnGrafikHAIsLajuPleb`)
-- Laju HAIs ISK Per Ruang (`btnGrafikHAIsLajuISK`)
-- Laju HAIs ILO Per Ruang (`btnGrafikHAIsLajuILO`)
-- Laju HAIs HAP Per Ruang (`btnGrafikHAIsLajuHAP`)
-- Penerimaan Obat, Alkes & BHP Per Bulan (`btnGrafikPenerimaanObatPerBulan`)
-- Hemodialisa Per Tanggal (`btnGrafikHemodialisaPerTanggal`)
-- Hemodialisa Per Bulan (`btnGrafikHemodialisaPerBulan`)
-- Hemodialisa Per Tahun (`btnGrafikHemodialisaPerTahun`)
-- Porsi Diet Per Tanggal (`btnGrafikPorsiDietPerTanggal`)
-- Porsi Diet Per Bulan (`btnGrafikPorsiDietPerBulan`)
-- Porsi Diet Per Tahun (`btnGrafikPorsiDietPerTahun`)
-- Porsi Diet Per Ruang (`btnGrafikPorsiDietPerRuang`)
-- Perbaikan Inventaris Per Tanggal (`btnGrafikPerbaikanInventarisPerTanggal`)
-- Perbaikan Inventaris Per Bulan (`btnGrafikPerbaikanInventarisPerBulan`)
-- Perbaikan Inventaris Per Tahun (`btnGrafikPerbaikanInventarisPerTahun`)
-- Perbaikan Inventaris Per Pelaksana & Status (`btnGrafikPerbaikanInventarisPerPelaksanaStatus`)
-- Limbah B3 Cair Per Tanggal (`btnGrafikLimbahB3MedisCairPerTanggal`)
-- Limbah B3 Cair Per Bulan (`btnGrafikLimbahB3MedisCairPerBulan`)
+Semua tile sudah membuka layar. Lihat `MENU_O_STATUS.md`.
 
 ## P · Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien
 
