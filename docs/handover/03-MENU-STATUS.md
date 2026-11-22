@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026 (rilis 0.2.0-alpha): **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 22 November 2026 (rilis 0.2.5-alpha): **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -28,6 +28,8 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 | S | Toko, minimarket, koperasi | 25 | Edit + Baca | [MENU_S_STATUS](../audit/MENU_S_STATUS.md). Transaksi toko dicatat di Khanza |
 | T | Filantropi, CSR, zakat | 16 | Edit | 16 daftar referensi Dankes. Kepemilikan Rumah butuh `docs/audit/menu_t_kepemilikan_rumah.sql` |
 | U | Pengaturan program | 30 (+1 backup) | Edit + Khusus | [MENU_U_STATUS](../audit/MENU_U_STATUS.md). Tile Backup Database ditambah Avalonia untuk semua akun login |
+
+Kesetaraan fungsi alur klinis diaudit terpisah di [tracker](../tracker/README.md): **Registrasi** (registrasi baru, hapus, ubah dengan penjagaan, IGD dikecualikan; lihat `AUDIT_REGISTRASI.md`) dan **Rawat Jalan** (NIP nyata, banyak SOAP, antrian Ralan; lihat `AUDIT_RAWAT_JALAN.md`) sudah diperbaiki sebagian. **Farmasi (penjualan)** kini memakai petugas dari akun login. Alur lain belum diaudit.
 
 Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaan), Pasien, Rawat Inap, Kasir, IGD, Laboratorium PK/PA/MB, Radiologi, Farmasi (penjualan), Laporan, papan Antrian (Anjungan, Poli, Apotek), Informasi, Tentang Program. Klik kanan baris pasien membuka menu konteks (Data Rekam Medis, Riwayat Perawatan, Kamar Inap, Tindakan, Billing, dst, sesuai hak akses).
 

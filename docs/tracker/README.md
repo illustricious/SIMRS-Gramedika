@@ -23,3 +23,13 @@ Kesetaraan fungsi perlu diperiksa per alur. Handler keyboard/mouse tanpa ActionL
 Hasil audit per layar: [Registrasi](AUDIT_REGISTRASI.md), [Rawat Jalan](AUDIT_RAWAT_JALAN.md).
 
 Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [audit cabang pelayanan](AUDIT_CABANG.md).
+
+## Status audit per alur (22 November 2026)
+
+| Alur | Java | Dokumen | Hasil |
+|---|---|---|---|
+| Registrasi | `DlgReg.java` | [AUDIT_REGISTRASI.md](AUDIT_REGISTRASI.md) | 348 popup dinilai (298 kurang, 50 sebagian); 26 tombol/jendela: 4 selesai, 10 sebagian, 11 kurang, 1 ditunda. Perbaikan A-D selesai |
+| Rawat Jalan | `DlgRawatJalan.java` | [AUDIT_RAWAT_JALAN.md](AUDIT_RAWAT_JALAN.md) | 203 aksi dan jendela: 2 selesai, 43 sebagian, 158 kurang; 4 popup kurang. Perbaikan A-E selesai |
+| Farmasi (penjualan) | belum dipetakan ke file Java | dicatat di AUDIT_RAWAT_JALAN.md (bagian Masih tertinggal) | NIP placeholder diganti petugas dari akun login; belum diaudit per tombol |
+
+Belum diaudit: Rawat Inap, Kasir, IGD, Laboratorium, Radiologi, Pasien, Farmasi (per tombol), dan semua alur lain. Pola kerja: baca handler Java, baca layar C#, isi `status.json` dengan bukti, tulis `AUDIT_<ALUR>.md`, jalankan `node tools/tracker.mjs`, perbaiki celah berisiko data lebih dulu. Log rinci: [../handover/05-SESSION-2026-11-22.md](../handover/05-SESSION-2026-11-22.md).

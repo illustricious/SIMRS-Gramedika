@@ -22,7 +22,13 @@ The dashboard follows the original Khanza menu categories A–U. As of 22 Novemb
 | I | Billing, patient deposits, receivables, drug and procedure reports | 60/60 |
 | J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
 | K | Tariffs, finance masters, payables and receivables, bank feeds, journals, manual journal posting | **87/87** |
-| M | Patient records | 255/255 |
+| L | Bridging (VClaim, Aplicare, PCare, INA-CBG, Kemenkes, third parties) | 0/183 (deferred: needs credentials and external APIs) |
+| M | Patient records | **255/255** |
+| N | Blood transfusion unit (UTD) | **11/11** |
+| O | Analytics and infographics (read-only aggregate tables, charts not drawn yet) | **113/113** |
+| P | Letters, consent forms, e-patient announcements | **45/45** |
+| Q | Library and digital collection | **16/16** |
+| R | PCRA/ICRA (pre-construction and infection control risk assessment) | **10/10** |
 | S | Store, minimarket, and cooperative master data and transaction reports | **25/25** |
 | T | Philanthropy, CSR, zakat, infaq, and shodaqoh reference data | **16/16** |
 | U | Application settings, tariffs, queue displays, and account administration | **30/30 legacy tiles** + database backup |
@@ -53,7 +59,13 @@ Menu K provides editable tariffs (outpatient, inpatient, lab, radiology, UTD, su
 
 Menu M now covers all 255 tiles with patient reference masters, clinical records, TNI/POLRI SOAP, record circulation, complaints, triage, discharge summaries, nutrition, clinical templates, nursing and medical assessments, diagnostic results, patient monitoring, therapy, screening and perioperative workflows. Clinical records remain read-only here and are entered through the corresponding Khanza care workflows. See [Menu M status](docs/audit/MENU_M_STATUS.md).
 
-Pending tiles show a "not implemented" notice.
+Menu N and R provide editable blood-component, donor and PCRA/ICRA reference data with read-only donation, stock and project lists. Menu Q has editable catalog, inventory, members and loan settings with read-only loans and fines. Menu P has editable letter registers and references plus read-only patient letters and consent lists. Menu O provides read-only aggregate tables (count per category, with totals) for registrations, inpatients, lab and radiology, staff, pharmacy items, inventory, patient safety, TB, K3, HAIs, utilities, waste, hemodialysis and diet; charts are not drawn yet. See the `docs/audit/MENU_*_STATUS.md` files.
+
+### Workflow parity (beyond screen coverage)
+
+Screen coverage does not mean the legacy workflow is fully reproduced. The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited so far: [Registrasi](docs/tracker/AUDIT_REGISTRASI.md) and [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md). Fixed after those audits: new registration, delete and edit guards for Registrasi; the real examiner NIP, multiple SOAP entries per visit with edit/delete, an outpatient-only queue with search for Rawat Jalan; and the logged-in petugas for pharmacy sales (no more placeholder NIP). Remaining gaps are listed in each audit file. Nothing has been verified against a production database yet.
+
+Pending tiles (Menu L) show a "not implemented" notice.
 
 Project handover notes for developers are in [docs/handover](docs/handover/README.md).
 
@@ -84,7 +96,7 @@ SIMRS_DB_SMOKE=1 dotnet test SimrsKhanza.sln
 
 ## Installers
 
-[SIMRS Gramedika 0.2.0-alpha.202611221622](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v0.2.0-alpha.202611221622) is available as a self-contained single-file `.exe` for Windows 10/11 x64 (no installer, no .NET install needed). Other operating systems will follow after version 1.
+[SIMRS Gramedika 0.2.5-alpha.202611222238](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v0.2.5-alpha.202611222238) is available as a self-contained single-file `.exe` for Windows 10/11 x64 (no installer, no .NET install needed). Other operating systems will follow after version 1.
 
 `installer/build-installers.ps1` produces a self-contained Windows installer (Inno Setup) and a `.deb` package — see
 [installer/README.md](installer/README.md).
@@ -98,6 +110,10 @@ src/SimrsKhanza.Data     repositories on the legacy sik schema (menu specs, stoc
 src/SimrsKhanza.UI       Avalonia desktop application
 src/SimrsKhanza.Tests    unit, headless-UI and optional database smoke tests
 installer/               Windows and Debian packaging
+tools/                   feature tracker scripts (Node 22): node tools/tracker.mjs
+docs/handover            developer handover, runbook, session logs
+docs/tracker             feature parity tracker and per-flow audits
+docs/audit               schema, per-menu status and backlog
 ```
 
 ## Credits

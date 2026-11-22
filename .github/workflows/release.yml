@@ -10,8 +10,8 @@ on:
         description: "Version (empty = <Version> from SimrsKhanza.UI.csproj)"
         required: false
   push:
-    # The 0.1.5 and 0.2.0 alpha series use locally built Windows x64 binaries.
-    tags: ["v*", "!v0.1.5-alpha.*", "!v0.2.0-alpha.*"]
+    # The 0.1.5, 0.2.0 and 0.2.5 alpha series use locally built Windows x64 binaries.
+    tags: ["v*", "!v0.1.5-alpha.*", "!v0.2.0-alpha.*", "!v0.2.5-alpha.*"]
 
 permissions:
   contents: write

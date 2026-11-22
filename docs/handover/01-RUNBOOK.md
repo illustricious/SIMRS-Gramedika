@@ -25,7 +25,7 @@ dotnet test
 ## Exe tunggal lokal (portabel)
 
 ```powershell
-$v = "0.2.0-alpha.$(Get-Date -Format yyyyMMddHHmm)"
+$v = "0.2.5-alpha.$(Get-Date -Format yyyyMMddHHmm)"
 dotnet publish src\SimrsKhanza.UI -c Release -r win-x64 --self-contained true `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true `
   -p:DebugType=none -p:DebugSymbols=false -p:Version=$v -o dist\single-win-x64
@@ -39,9 +39,17 @@ Lihat `installer/README.md`. Windows lokal: `powershell -ExecutionPolicy Bypass 
 
 ## Versi dan release
 
-- Versi dasar di `src/SimrsKhanza.UI/SimrsKhanza.UI.csproj` (`<Version>0.2.0-alpha</Version>`). Build alpha menambah stempel waktu: `0.2.0-alpha.yyyyMMddHHmm`.
-- Seri alpha 0.1.5 dan 0.2.0 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
+- Versi dasar di `src/SimrsKhanza.UI/SimrsKhanza.UI.csproj` (`<Version>0.2.5-alpha</Version>`). Build alpha menambah stempel waktu: `0.2.5-alpha.yyyyMMddHHmm`.
+- Seri alpha 0.1.5, 0.2.0, dan 0.2.5 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*`, `v0.2.0-alpha.*`, dan `v0.2.5-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
 - Catatan rilis lama dan checksum disimpan lokal di `publish/release-tools/` (tidak di git).
+
+## Langkah rilis exe tunggal (ringkas)
+
+1. `dotnet build` dan `dotnet test` harus bersih. Matikan aplikasi yang berjalan.
+2. Naikkan `<Version>` di `SimrsKhanza.UI.csproj` bila seri berubah; tambahkan pola tag baru ke pengecualian `release.yml`.
+3. Publish (perintah di atas), salin ke `dist\SIMRS-Gramedika-<versi>-win-x64-single.exe`, hitung SHA-256, jalankan sebentar untuk memastikan tidak crash.
+4. Update README, handover, dan tracker; `node tools/tracker.mjs`; commit dan push (tanpa exe).
+5. `gh release create v<versi> <exe> --prerelease --target master --title "SIMRS Gramedika <versi>" --notes-file <catatan>`; catatan berbahasa Inggris dengan SHA-256. Hanya atas permintaan pemilik.
 
 ## Tracker fitur
 
