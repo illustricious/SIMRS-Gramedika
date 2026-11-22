@@ -96,8 +96,15 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
         return GetByPeriodeAsync(today, today, null, ct);
     }
 
-    public async Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(
+    public Task<IReadOnlyList<RegistrasiListItem>> GetByPeriodeAsync(
         DateOnly fromDate, DateOnly toDate, RegistrasiSearchFilter? filter = null, CancellationToken ct = default, string? kodePoli = null)
+        => GetVisitsAsync(fromDate, toDate, filter, ct, kodePoli, null);
+
+    public Task<IReadOnlyList<RegistrasiListItem>> GetPatientHistoryAsync(string noRekamMedis, CancellationToken ct = default)
+        => GetVisitsAsync(null, null, null, ct, null, noRekamMedis);
+
+    private async Task<IReadOnlyList<RegistrasiListItem>> GetVisitsAsync(
+        DateOnly? fromDate, DateOnly? toDate, RegistrasiSearchFilter? filter, CancellationToken ct, string? kodePoli, string? noRekamMedis)
     {
         var query =
             from r in db.RegPeriksaSet
@@ -108,7 +115,9 @@ public class RegistrasiRepository(SimrsKhanzaDbContext db) : IRegistrasiReposito
             from dok in dokJoin.DefaultIfEmpty()
             join pj in db.PenjabSet on r.KodePenjab equals pj.KodePenjab into pjJoin
             from pj in pjJoin.DefaultIfEmpty()
-            where r.TanggalRegistrasi >= fromDate && r.TanggalRegistrasi <= toDate
+            where (!fromDate.HasValue || r.TanggalRegistrasi >= fromDate)
+                  && (!toDate.HasValue || r.TanggalRegistrasi <= toDate)
+                  && (noRekamMedis == null || r.NoRekamMedis == noRekamMedis)
                   && (kodePoli == null || r.KodePoli == kodePoli)
             select new
             {

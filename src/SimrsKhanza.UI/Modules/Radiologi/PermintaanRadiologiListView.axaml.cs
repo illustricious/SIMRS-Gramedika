@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Radiologi;
 
@@ -44,6 +45,7 @@ public partial class PermintaanRadiologiListView : UserControl
     private RadiologiPermintaanRow? _pendingRow;
 
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
     public event EventHandler<RadiologiHasilRequest>? HasilRequested;
 
     /// <summary>Legacy lets only "Admin Utama" delete an already-sampled permintaan; the parent sets this from the logged-in user.</summary>
@@ -57,6 +59,11 @@ public partial class PermintaanRadiologiListView : UserControl
         BuildColumns(Data(RadiologiLokasi.RawatInap), HeaderRanap);
         BuildColumns(Items(RadiologiLokasi.RawatJalan), ItemHeader("Poli Registrasi"));
         BuildColumns(Items(RadiologiLokasi.RawatInap), ItemHeader("Kamar Terakhir"));
+        foreach (var lokasi in Enum.GetValues<RadiologiLokasi>())
+            foreach (var grid in new[] { Data(lokasi), Items(lokasi) })
+                PatientContextMenu.Attach<RowVm>(grid,
+                    row => row.Source is { } patient ? new(patient.NoRawat, patient.NoRm, patient.NamaPasien) : null,
+                    request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Diagnostic);
 
         this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;

@@ -7,7 +7,7 @@ It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses
 
 ## Status
 
-The dashboard follows the original Khanza menu categories A–U. As of 21 November 2026, **483 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
+The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **507 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
 
 | Menu | Area | Tiles with a screen |
 |------|------|--------|
@@ -20,12 +20,15 @@ The dashboard follows the original Khanza menu categories A–U. As of 21 Novemb
 | G | Assets, inventory, CSSD, facility maintenance, and environmental health | **28/28** |
 | H | Parking types, barcode cards, and vehicle check-in | **3/3** |
 | I | Billing, patient deposits, receivables, drug and procedure reports | 60/60 |
-| K, M, S | Shared master data, patient deposits, patient receivables, and patient records | 4 |
 | J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
+| K, M | Shared master data, patient deposits, patient receivables, and patient records | 3 |
+| S | Store, minimarket, and cooperative master data and transaction reports | **25/25** |
 | T | Philanthropy, CSR, zakat, infaq, and shodaqoh reference data | **16/16** |
 | U | Application settings, tariffs, queue displays, and account administration | **30/30 legacy tiles** + database backup |
 
 Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
+
+Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasien, or the lab and radiology lists to open its context menu. The menu targets the clicked row and enables available actions according to Khanza permissions.
 
 Kasir shows a read-only breakdown of recorded procedures, drugs, and medical supplies for open visits. Settlement for visits with these charges uses Kasir Khanza.
 
@@ -42,6 +45,8 @@ Menu I includes read-only reports for patient charges, discounts, receivables, b
 See [Menu U status](docs/audit/MENU_U_STATUS.md) for the settings screens and which workflows use those settings in Avalonia.
 
 See [Menu J status](docs/audit/MENU_J_STATUS.md) for available ICD masters, visit reports, diagnosis reports, and their scope.
+
+Menu S provides editable store masters and read-only purchasing, sales, returns, payments, and stock reports. Store transactions are entered in Khanza. See [Menu S status](docs/audit/MENU_S_STATUS.md) for the coverage of each tile.
 
 Pending tiles show a "not implemented" notice.
 

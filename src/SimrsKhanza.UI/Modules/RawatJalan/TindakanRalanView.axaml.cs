@@ -3,12 +3,14 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.RawatJalan;
 
 public partial class TindakanRalanView : UserControl
 {
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
     /// <summary>"Pemeriksaan" — opens the existing vitals/exam form (RawatJalanView).</summary>
     public event EventHandler? PemeriksaanRequested;
@@ -20,6 +22,11 @@ public partial class TindakanRalanView : UserControl
     public TindakanRalanView()
     {
         InitializeComponent();
+        foreach (var name in GridNames)
+            PatientContextMenu.Attach<TindakanRalanRow>(this.FindControl<DataGrid>(name)!,
+                row => new(row.NoRawat, row.NoRm, row.NamaPasien),
+                request => PatientMenuRequested?.Invoke(this, request));
+
         // Default = today only — same lesson as Registrasi: don't default to a wide range on big tables.
         this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;

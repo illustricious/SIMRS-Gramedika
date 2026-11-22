@@ -1,7 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Kepegawaian;
 using SimrsKhanza.UI.Modules.Kepegawaian;
 using SimrsKhanza.UI.Modules.Shared;
@@ -53,6 +57,8 @@ public class MenuCScreensTests
                         ? new SimrsKhanza.UI.Modules.Parkir.JenisParkirView()
                         : new MasterView(kv.Value)))))
                 .Append(("H_btnParkirMasuk", (PageView)new SimrsKhanza.UI.Modules.Parkir.ParkirMasukView()))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuSSpecs.Masters.Select(kv => ("S_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Inventaris.MenuSSpecs.Reports.Select(kv => ("S_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 
@@ -79,9 +85,70 @@ public class MenuCScreensTests
                 }
                 catch (Exception ex) { errors.Add($"{key}: {ex.GetType().Name}: {ex.Message}"); }
             }
+
+            try { VerifyPatientContextMenu(); }
+            catch (Exception ex) { errors.Add($"Patient context menu: {ex}"); }
         });
         thread.Start();
         thread.Join();
         Assert.True(errors.Count == 0, string.Join("\n", errors));
+    }
+
+    private static void VerifyPatientContextMenu()
+    {
+        var first = new PatientMenuTarget("RW-01", "RM-01", "Pasien A");
+        var second = new PatientMenuTarget("RW-02", "RM-02", "Pasien B");
+        var grid = Ui.Grid();
+        grid.Columns.Add(new DataGridTextColumn
+        {
+            Header = "Pasien",
+            Width = new DataGridLength(250),
+            Binding = new Avalonia.Data.Binding(nameof(PatientMenuTarget.NamaPasien)),
+        });
+        grid.ItemsSource = new[] { first, second };
+        PatientMenuRequest? openedFor = null;
+        var menu = PatientContextMenu.Attach<PatientMenuTarget>(grid, row => row, request => openedFor = request);
+        var window = new Window { Width = 640, Height = 480, Content = grid };
+        var oldUser = AppSession.CurrentUser;
+        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "pasien" } };
+        try
+        {
+            window.Show();
+            Dispatcher.UIThread.RunJobs();
+            grid.SelectedItem = first;
+            var secondRow = grid.GetVisualDescendants().OfType<DataGridRow>()
+                .Single(row => ReferenceEquals(row.DataContext, second));
+            var point = secondRow.TranslatePoint(new Point(30, secondRow.Bounds.Height / 2), window)!.Value;
+            window.MouseDown(point, MouseButton.Right);
+            window.MouseUp(point, MouseButton.Right);
+            Dispatcher.UIThread.RunJobs();
+            Assert.True(menu.IsOpen);
+            Assert.Same(second, grid.SelectedItem);
+
+            var record = Assert.IsType<MenuItem>(menu.Items[0]);
+            var identity = Assert.IsType<MenuItem>(record.Items[0]);
+            Assert.True(identity.IsEnabled);
+            var billing = menu.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Billing/Pembayaran Pasien"));
+            Assert.False(Assert.IsType<MenuItem>(billing.Items[1]).IsEnabled);
+            grid.SelectedItem = first;
+            identity.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(second.NoRekamMedis, openedFor?.NoRekamMedis);
+            menu.Close();
+
+            var empty = new Point(25, 300);
+            window.MouseDown(empty, MouseButton.Right);
+            window.MouseUp(empty, MouseButton.Right);
+            Dispatcher.UIThread.RunJobs();
+            Assert.False(menu.IsOpen);
+
+            grid.RaiseEvent(new ContextRequestedEventArgs { RoutedEvent = InputElement.ContextRequestedEvent });
+            Assert.True(menu.IsOpen);
+            menu.Close();
+        }
+        finally
+        {
+            window.Close();
+            AppSession.CurrentUser = oldUser;
+        }
     }
 }

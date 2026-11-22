@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Laboratorium;
 
@@ -53,6 +54,7 @@ public partial class PeriksaLabListView : UserControl
     private bool _petugasLoaded;
 
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
     /// <summary>"Periksa Baru" — arg is the selected/filtered no_rawat (or null) to prefill the entry form.</summary>
     public event EventHandler<string?>? InputRequested;
@@ -74,6 +76,13 @@ public partial class PeriksaLabListView : UserControl
         this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<DataGrid>("NestedGrid")!.LoadingRow += OnLoadingRow;
+        PatientContextMenu.Attach<LabDisplayRow>(this.FindControl<DataGrid>("NestedGrid")!,
+            row => row.Key is { } key && _groups.FirstOrDefault(g => g.Key == key) is { } patient
+                ? new(key.NoRawat, patient.NoRm, patient.NamaPasien) : null,
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Diagnostic);
+        PatientContextMenu.Attach<LabPeriksaPaRow>(this.FindControl<DataGrid>("PaGrid")!,
+            row => new(row.NoRawat, row.NoRm, row.NamaPasien),
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Diagnostic);
         _ready = true;
     }
 

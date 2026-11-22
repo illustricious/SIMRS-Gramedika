@@ -1,95 +1,125 @@
+using System.ComponentModel;
 using Avalonia.Controls;
+using Avalonia.Data;
+using Avalonia.Input;
+using Avalonia.VisualTree;
+using SimrsKhanza.Core.Auth;
+using SimrsKhanza.Data;
 
 namespace SimrsKhanza.UI.Modules.Shared;
 
-/// <summary>
-/// One item from the legacy right-click patient menu (user shared a
-/// screenshot: Data Rekam Medis / Permintaan / Kamar Inap / Tindakan &amp;
-/// Pemeriksaan / Obat / Billing-Pembayaran Pasien / Laporan / Grafik Analisa
-/// / Surat-Surat / Check List Kelengkapan Pendaftaran / Lembar Periksa
-/// Pasien / Label &amp; Barcode / Rujukan / Bridging / Input Data / Urutkan
-/// Data Berdasar / Hapus &amp; Ubah Data). Only a handful route to a real
-/// screen so far — the rest show "belum diimplementasikan", same convention
-/// as every other unbuilt menu item in this app. Add real screens over time
-/// and move items from NotImplemented to a real case in
-/// MainWindow.OnPatientMenuRequested as they're built — see HANDOVER.md.
-/// </summary>
-public enum PatientMenuAction
-{
-    DataRekamMedis,
-    Permintaan,
-    KamarInap,
-    TindakanDanPemeriksaan,
-    Obat,
-    BillingPembayaran,
-    Laporan,
-    GrafikAnalisa,
-    SuratSurat,
-    ChecklistKelengkapanPendaftaran,
-    LembarPeriksaPasien,
-    LabelBarcode,
-    Rujukan,
-    Bridging,
-    InputData,
-    UrutkanDataBerdasar,
-    HapusDanUbahData,
-}
+public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran }
+public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic }
 
-/// <summary>Context captured for whichever patient row was right-clicked.</summary>
 public record PatientMenuRequest(string NoRawat, string NoRekamMedis, string NamaPasien, PatientMenuAction Action);
+public record PatientMenuTarget(string NoRawat, string NoRekamMedis, string NamaPasien, bool IsInpatient = false);
 
-/// <summary>
-/// Builds the shared right-click menu for any DataGrid row representing a
-/// patient visit (Registrasi, IGD, Rawat Inap, Rawat Jalan all use this —
-/// one menu definition instead of 4 copies). `getSelected` reads whichever
-/// row is currently selected in the caller's grid at click time (v1: this is
-/// the grid's current SelectionChanged state, not literally "the row under
-/// the cursor" — right-click doesn't reselect first; acceptable since users
-/// normally select-then-right-click, documented as a known simplification).
-/// </summary>
 public static class PatientContextMenu
 {
-    public static ContextMenu Build(Func<(string NoRawat, string NoRekamMedis, string NamaPasien)?> getSelected, Action<PatientMenuRequest> onSelect)
+    public static ContextMenu Attach<T>(DataGrid grid, Func<T, PatientMenuTarget?> getPatient, Action<PatientMenuRequest> execute,
+        PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null) where T : class
     {
         var menu = new ContextMenu();
-        var items = new List<Control>();
-
-        void Add(PatientMenuAction action, string label)
+        grid.ContextRequested += (_, e) =>
         {
-            var item = new MenuItem { Header = label };
-            item.Click += (_, _) =>
+            var pointer = e.TryGetPosition(grid, out Avalonia.Point _);
+            var row = (e.Source as Avalonia.Visual)?.FindAncestorOfType<DataGridRow>(includeSelf: true);
+            var item = pointer ? row?.DataContext : grid.SelectedItem;
+            if (item is not T clicked) return;
+
+            var patient = getPatient(clicked);
+            if (patient is null || string.IsNullOrWhiteSpace(patient.NoRekamMedis)) return;
+            var source = grid.ItemsSource;
+            grid.SelectedItem = clicked;
+
+            void Run(Action action)
             {
-                var selected = getSelected();
-                if (selected is null) return;
-                onSelect(new PatientMenuRequest(selected.Value.NoRawat, selected.Value.NoRekamMedis, selected.Value.NamaPasien, action));
-            };
-            items.Add(item);
-        }
+                if (ReferenceEquals(source, grid.ItemsSource)) action();
+            }
 
-        void Sep() => items.Add(new Separator());
+            menu.Placement = pointer ? PlacementMode.Pointer : PlacementMode.Bottom;
+            var user = AppSession.CurrentUser;
+            bool Can(string permission) => user?.HasPermission(permission) == true;
+            var hasVisit = !string.IsNullOrWhiteSpace(patient.NoRawat);
+            MenuItem ActionItem(string text, PatientMenuAction action, bool allowed) =>
+                Entry(text, allowed ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, action))) : null);
 
-        Add(PatientMenuAction.DataRekamMedis, "📋 Data Rekam Medis");
-        Add(PatientMenuAction.Permintaan, "🧪 Permintaan");
-        Add(PatientMenuAction.KamarInap, "🛏 Kamar Inap");
-        Add(PatientMenuAction.TindakanDanPemeriksaan, "🩺 Tindakan & Pemeriksaan");
-        Add(PatientMenuAction.Obat, "💊 Obat");
-        Add(PatientMenuAction.BillingPembayaran, "💰 Billing/Pembayaran Pasien");
-        Sep();
-        Add(PatientMenuAction.Laporan, "📊 Laporan");
-        Add(PatientMenuAction.GrafikAnalisa, "📈 Grafik Analisa");
-        Add(PatientMenuAction.SuratSurat, "✉ Surat-Surat");
-        Add(PatientMenuAction.ChecklistKelengkapanPendaftaran, "☑ Check List Kelengkapan Pendaftaran");
-        Add(PatientMenuAction.LembarPeriksaPasien, "📄 Lembar Periksa Pasien");
-        Add(PatientMenuAction.LabelBarcode, "🏷 Label & Barcode");
-        Sep();
-        Add(PatientMenuAction.Rujukan, "↪ Rujukan");
-        Add(PatientMenuAction.Bridging, "🔗 Bridging");
-        Sep();
-        Add(PatientMenuAction.InputData, "⌨ Input Data");
-        Add(PatientMenuAction.UrutkanDataBerdasar, "↕ Urutkan Data Berdasar");
-        Add(PatientMenuAction.HapusDanUbahData, "🗑 Hapus & Ubah Data");
-
-        menu.ItemsSource = items;
+            var history = ActionItem("Riwayat Perawatan", PatientMenuAction.RiwayatPerawatan, Can("resume_pasien"));
+            var identity = ActionItem("Identitas Pasien", PatientMenuAction.DataRekamMedis, Can("pasien"));
+            menu.ItemsSource = kind == PatientMenuKind.Diagnostic
+                ? new Control[] { identity, history }
+                : kind == PatientMenuKind.Patient
+                ? (Control[])
+                [
+                    Group("Kartu Pasien", Entry("Cetak Kartu Pasien")),
+                    Group("Barcode", Entry("Barcode Pasien")),
+                    Group("Identitas Pasien", Entry("Cetak Identitas Pasien")),
+                    Entry("Kartu Status"), Group("BPJS", Entry("Cek Peserta")),
+                    Entry("Kelahiran Bayi"), Entry("Registrasi"), history, Entry("Catatan Pasien"), Entry("Gabung No. RM"),
+                ]
+                :
+                [
+                    Group("Data Rekam Medis", identity, Entry("Resume Pasien"), history),
+                    Group("Permintaan", Entry("Jadwal Operasi"), Entry("Permintaan Lab"),
+                        Entry("Permintaan Radiologi"), Entry("Permintaan Rawat Inap")),
+                    ActionItem("Kamar Inap", PatientMenuAction.KamarInap, hasVisit && !patient.IsInpatient && Can("kamar_inap")),
+                    Group("Tindakan & Pemeriksaan",
+                        ActionItem("Pemeriksaan Rawat Jalan", PatientMenuAction.TindakanDanPemeriksaan,
+                            hasVisit && !patient.IsInpatient && Can("tindakan_ralan")),
+                        Entry("Periksa Laboratorium"), Entry("Periksa Radiologi"), Entry("Operasi")),
+                    Group("Obat", Entry("Pemberian Obat"), Entry("No. Resep"), Entry("Resep Dokter"), Entry("Copy Resep")),
+                    Group("Billing/Pembayaran Pasien", Entry("Billing Parsial"),
+                        ActionItem("Billing Total", PatientMenuAction.BillingPembayaran, hasVisit &&
+                            (patient.IsInpatient ? Can("billing_ranap") : Can("kasir_ralan") || Can("billing_ralan")))),
+                    new Separator(),
+                    Entry("Laporan"), Entry("Grafik Analisa"), Entry("Surat-Surat"),
+                    .. (kind == PatientMenuKind.Emergency
+                        ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
+                        : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"), Entry("Label & Barcode") }),
+                    new Separator(),
+                    Entry("Rujukan"), Entry("Bridging"),
+                    Group("Input Data", Entry("Catatan Pasien"), Entry("Berkas Digital"), Entry("Insiden Keselamatan Pasien")),
+                    .. (kind == PatientMenuKind.Registration ? new[] { SortMenu(grid) } : Array.Empty<MenuItem>()),
+                    Group("Hapus & Ubah Data",
+                        Entry("Ubah Data Registrasi", edit is not null && Can("registrasi") ? () => Run(() =>
+                        {
+                            grid.SelectedItem = clicked;
+                            edit(clicked);
+                        }) : null),
+                        Entry("Hapus Data")),
+                ];
+            e.Handled = true;
+            menu.Open(pointer ? grid : row ?? (Control)grid);
+        };
         return menu;
+    }
+
+    private static MenuItem Entry(string label, Action? action = null)
+    {
+        var item = new MenuItem { Header = label, IsEnabled = action is not null };
+        if (action is not null) item.Click += (_, _) => action();
+        return item;
+    }
+
+    private static MenuItem Group(string label, params MenuItem[] items) => new() { Header = label, ItemsSource = items };
+
+    private static MenuItem SortMenu(DataGrid grid)
+    {
+        (string Label, string Property)[] columns =
+        [
+            ("No. Rawat", nameof(RegistrasiListItem.NoRawat)), ("Tanggal", nameof(RegistrasiListItem.TanggalRegistrasi)),
+            ("Dokter", nameof(RegistrasiListItem.NamaDokter)), ("Poli/Unit", nameof(RegistrasiListItem.NamaPoli)),
+            ("Cara Bayar", nameof(RegistrasiListItem.JenisBayar)), ("Status", nameof(RegistrasiListItem.Status)),
+            ("No. Reg.", nameof(RegistrasiListItem.NoReg)), ("No. RM.", nameof(RegistrasiListItem.NoRekamMedis)),
+        ];
+        return Group("Urutkan Data Berdasar", columns.SelectMany(field =>
+        {
+            var column = grid.Columns.OfType<DataGridBoundColumn>().FirstOrDefault(c => (c.Binding as Binding)?.Path == field.Property);
+            return new[]
+            {
+                Entry($"{field.Label} Descending", column is null ? null : () => column.Sort(ListSortDirection.Descending)),
+                Entry($"{field.Label} Ascending", column is null ? null : () => column.Sort(ListSortDirection.Ascending)),
+            };
+        }).ToArray());
     }
 }

@@ -5,6 +5,7 @@ using Avalonia.Media;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
 using SimrsKhanza.UI.Modules.Laboratorium;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Radiologi;
 
@@ -34,6 +35,7 @@ public partial class PeriksaRadiologiListView : UserControl
     private IReadOnlyList<LabPick> _petugas = Array.Empty<LabPick>();
 
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
     /// <summary>"Periksa Baru" — arg is the selected/filtered no_rawat (or null) to prefill the entry form.</summary>
     public event EventHandler<string?>? InputRequested;
@@ -50,6 +52,10 @@ public partial class PeriksaRadiologiListView : UserControl
         this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<CalendarDatePicker>("ToPicker")!.SelectedDate = DateTime.Today;
         this.FindControl<DataGrid>("NestedGrid")!.LoadingRow += OnLoadingRow;
+        PatientContextMenu.Attach<RadDisplayRow>(this.FindControl<DataGrid>("NestedGrid")!,
+            row => row.Key is { } key && _groups.FirstOrDefault(g => g.Key == key) is { } patient
+                ? new(key.NoRawat, patient.NoRm, patient.NamaPasien) : null,
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Diagnostic);
         _ready = true;
     }
 

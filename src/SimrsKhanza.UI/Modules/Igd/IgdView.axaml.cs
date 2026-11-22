@@ -26,9 +26,9 @@ public partial class IgdView : UserControl
         InitializeComponent();
 
         var grid = this.FindControl<DataGrid>("IgdGrid")!;
-        grid.ContextMenu = PatientContextMenu.Build(
-            () => grid.SelectedItem is RegistrasiListItem i ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
-            request => PatientMenuRequested?.Invoke(this, request));
+        PatientContextMenu.Attach<RegistrasiListItem>(grid,
+            row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Emergency);
 
         // Default period = today ("Registrasi IGD Hari Ini").
         this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate = DateTime.Today;

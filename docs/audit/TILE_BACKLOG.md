@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 21 November 2026, 381 dari 1224 tile katalog sudah memiliki rute layar di branch `master`. Daftar ini mencatat 843 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 507 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 717 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -8,10 +8,10 @@ Per 21 November 2026, 381 dari 1224 tile katalog sudah memiliki rute layar di br
 | B | Tindakan & Obat & BHP Via Barcode, Lab Kesehatan Lingkungan | 16/16 | 0 |
 | C | Presensi, Manajemen & Penggajian Pegawai Rumah Sakit | 61/61 | 0 |
 | D | Transaksi Inventory Obat, BHP Medis, Alat Kesehatan Pasien | 75/75 | 0 |
-| E | Transaksi Inventory Barang Non Medis, Penunjang ( Lab & RO ) | 2/33 | 31 |
-| F | Transaksi Inventory Barang Dapur Kering & Basah | 2/27 | 25 |
-| G | Aset, Inventaris Barang & Instalasi Kesehatan Lingkungan | 1/28 | 27 |
-| H | Menejemen Parkir Kendaraan Pasien & Karyawan | 0/3 | 3 |
+| E | Transaksi Inventory Barang Non Medis, Penunjang ( Lab & RO ) | 33/33 | 0 |
+| F | Transaksi Inventory Barang Dapur Kering & Basah | 27/27 | 0 |
+| G | Aset, Inventaris Barang & Instalasi Kesehatan Lingkungan | 28/28 | 0 |
+| H | Menejemen Parkir Kendaraan Pasien & Karyawan | 3/3 | 0 |
 | I | Olah Data Tagihan Rawat Inap & Rawat Jalan | 60/60 | 0 |
 | J | Olah Data Penyakit, Laporan DKK, Laporal RL & Laporan Internal | 96/96 | 0 |
 | K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 2/87 | 85 |
@@ -22,107 +22,9 @@ Per 21 November 2026, 381 dari 1224 tile katalog sudah memiliki rute layar di br
 | P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 0/45 | 45 |
 | Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 0/16 | 16 |
 | R | Pre-Construction & Infection Control Risk Assessment | 0/10 | 10 |
-| S | Toko / Minimarket / Koperasi | 1/25 | 24 |
-| T | Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh | 0/16 | 16 |
+| S | Toko / Minimarket / Koperasi | 25/25 | 0 |
+| T | Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh | 16/16 | 0 |
 | U | Pengaturan Program Aplikasi HMS | 30/30 | 0 |
-
-## E · Transaksi Inventory Barang Non Medis, Penunjang ( Lab & RO )
-
-- Jenis Barang Non Medis (`btnJenisIpsrs`)
-- Barang Non Medis (`btnBarangIpsrs`)
-- Suplier Non Medis (`btnSuplierIPSRS`)
-- Permintaan Barang Non Medis (`btnPermintaanNonMedis`)
-- Ringkasan Permintaan Barang Non Medis (`btnRekapPermintaanNonMedis`)
-- Pengajuan Barang Non Medis (`btnPengajuanBarangNonMedis`)
-- Ringkasan Pengajuan Non Medis (`btnRingkasanPengajuanNonMedis`)
-- Surat Pemesanan Barang Non Medis (`btnSuratPemesananNonMedis`)
-- Ringkasan Pemesanan Non Medis (`btnRingkasanPemesananNonMedis`)
-- Pengadaan Barang Non Medis (`btnPembelianIpsrs`)
-- Ringkasan Pengadaan Non Medis (`btnRingkasanPengadaanNonMedis`)
-- Penerimaan Barang Non Medis (`btnPenerimaanNonMedis`)
-- Ringkasan Penerimaan Non Medis (`btnRingkasanPenerimaanNonMedis`)
-- Hibah Non Medis (`btnHibahNonMedis`)
-- Stok Keluar Non Medis (`btnPengeluaranIpsrs`)
-- Ringkasan Stok Keluar Non Medis (`btnRingkasanStokKeluarNonMedis`)
-- Retur Ke Suplier Non Medis (`btnReturBarangNonMedis`)
-- Ringkasan Retur Suplier Non Medis (`btnRingkasanReturSuplierNonMedis`)
-- Riwayat Barang Non Medis (`btnRiwayatBarangNonMedis`)
-- Biaya Pengadaan Non Medis (`btnRBiayaIpsrs`)
-- Rekap Pengadaan Non Medis (`btnRHMasukIpsrs`)
-- Rekap Stok Keluar Non Medis (`btnRHKeluarIpsrs`)
-- Pengambilan UTD (`btnPengambilanPenunjangUTD`)
-- Pengadaan Non Medis Per Tanggal (`btnPengadaanIPSRSPerTanggal`)
-- Stok Keluar Non Medis Per Tanggal (`btnStokKeluarIPSRSPerTanggal`)
-- Rekap Penerimaan Non Medis (`btnRekapPenerimaanNonMedis`)
-- Stok Opname Non Medis (`btnOpnameIPSRS`)
-- Sirkulasi Non Medis (`btnSirkulasiNonMedis`)
-- Sirkulasi Non Medis 2 (`btnSirkulasiNonMedis2`)
-- Verifikasi Penerimaan Non Medis (`btnVerifikasiPenerimaanLogistik`)
-- Nilai Penerimaan Vendor Non Medis Per Bulan (`btnNilaiPenerimaanVendorNonMedisPerBulan`)
-
-## F · Transaksi Inventory Barang Dapur Kering & Basah
-
-- Barang Dapur (`btnBarangDapur`)
-- Stok Opname Barang Dapur (`btnOpnameDapur`)
-- Suplier Dapur (`btnSuplierDapur`)
-- Pengajuan Barang Dapur (`btnPengajuanBarangDapur`)
-- Ringkasan Pengajuan Dapur (`btnRingkasanPengajuanDapur`)
-- Surat Pemesanan Barang Dapur (`btnSuratPemesananDapur`)
-- Ringkasan Pemesanan Dapur (`btnRingkasanPemesananDapur`)
-- Pengadaan Barang Dapur (`btnPembelianDapur`)
-- Ringkasan Pengadaan Dapur (`btnRingkasanPengadaanDapur`)
-- Penerimaan Barang Dapur (`btnPenerimaanBarangDapur`)
-- Ringkasan Penerimaan Dapur (`btnRingkasanPenerimaanDapur`)
-- Hibah Barang Dapur (`btnHibahDapur`)
-- Stok Keluar Dapur (`btnPengeluaranDapur`)
-- Ringkasan Stok Keluar Dapur (`btnRingkasanStokKeluarDapur`)
-- Retur Ke Suplier Dapur (`btnReturBarangDapur`)
-- Ringkasan Retur Suplier Dapur (`btnRingkasanReturBeliDapur`)
-- Riwayat Barang Dapur (`btnRiwayatBarangDapur`)
-- Permintaan Barang Dapur (`btnPermintaanDapur`)
-- Biaya Pengadaan Dapur (`btnRBiayaDapur`)
-- Rekap Pengadaan Dapur (`btnRekapPengadaanDapur`)
-- Stok Keluar Dapur Per Tanggal (`btnStokKeluarDapurPerTanggal`)
-- Sirkulasi Barang Dapur (`btnSirkulasiDapur`)
-- Sirkulasi Barang Dapur 2 (`btnSirkulasiDapur2`)
-- Verifikasi Penerimaan Dapur (`btnVerifikasiPenerimaanDapur`)
-- Nilai Penerimaan Vendor Dapur Per Bulan (`btnNilaiPenerimaanVendorDapurPerBulan`)
-
-## G · Aset, Inventaris Barang & Instalasi Kesehatan Lingkungan
-
-- Jenis Inventaris (`btnJenisInventaris`)
-- Kategori Inventaris (`btnKategoriInventaris`)
-- Merk Inventaris (`btnMerkInventaris`)
-- Ruang Inventaris (`btnRuangInventaris`)
-- Produsen Inventaris (`btnProdusenInventaris`)
-- Koleksi Inventaris (`btnBarangInventaris`)
-- Data Inventaris (`btnInventaris`)
-- Sirkulasi Inventaris (`btnSirkulasiInventaris`)
-- Permintaan Perbaikan Inventaris (`btnPermintaanPerbaikanInventaris`)
-- Perbaikan Inventaris (`btnPerbaikanInventaris`)
-- Pemeliharaan Inventaris (`btnPemeliharaanInventaris`)
-- Pengajuan Aset/Inventaris (`btnPengajuanAsetInventaris`)
-- Rekap Pengajuan Aset Departemen (`btnRekapPengajuanAsetDepartemen`)
-- Suplier Aset/Inventaris (`btnSuplierInventaris`)
-- Pengadaan Aset/Inventaris (`btnPengadaanAset`)
-- Penerimaan Aset/Inventaris (`btnPenerimaanAset`)
-- Hibah Aset/Inventaris (`btnHibahAsetInventaris`)
-- Pemeliharaan Gedung (`btnPemeliharaanGedung`)
-- Barang CSSD (`btnBarangCSSD`)
-- Sirkulasi CSSD (`btnSirkulasiInventarisCSSD`)
-- Pemakaian Air PDAM (`btnPemakaianAirPDAM`)
-- Pemakaian Air Tanah (`btnPemakaianAirTanah`)
-- Limbah Padat B3 Medis (`btnLimbahB3Medis`)
-- Limbah Cair B3 Medis (`btnLimbahB3MedisCair`)
-- Limbah Padat Domestik (`btnLimbahDomestik`)
-- Mutu Air Limbah (`btnMutuAirLimbah`)
-- Pest Control (`btnPestControl`)
-
-## H · Menejemen Parkir Kendaraan Pasien & Karyawan
-
-- Jenis Parkir (`btnJenisParkir`)
-- Barcode Parkir (`btnBarcodeParkir`)
-- Parkir Masuk (`btnParkirMasuk`)
 
 ## K · Tarif Pelayanan, Menejemen Keuangan & Akuntansi
 
@@ -864,49 +766,3 @@ Per 21 November 2026, 381 dari 1224 tile katalog sudah memiliki rute layar di br
 - Identifikasi Risiko Utilitas PCRA (`btnPCRAICRAIdentifikasiRisikoUtilitas`)
 - Persyaratan Harus Dipenuhi PCRA (`btnPCRAICRAPersyaratanHarusDipenuhi`)
 - Pengkajian Risiko Pra Konstruksi/PCRA (`btnPCRAICRAPengkajianRisikoPraKonstruksi`)
-
-## S · Toko / Minimarket / Koperasi
-
-- Suplier Toko (`btnSuplierToko`)
-- Jenis Barang Toko (`btnJenisToko`)
-- Barang Toko (`btnBarangToko`)
-- Stok Opname Toko (`btnStokOpnameToko`)
-- Riwayat Barang Toko (`btnRiwayatBarangToko`)
-- Pengajuan Barang Toko (`btnPengajuanBarangToko`)
-- Surat Pemesanan Toko (`btnSuratPemesananToko`)
-- Penerimaan Barang Toko (`btnPenerimaanBarangToko`)
-- Pengadaan Barang Toko (`btnPengadaanBarangToko`)
-- Member Toko (`btnMemberToko`)
-- Penjualan Toko (`btnPenjualanToko`)
-- Piutang Toko (`btnPiutangToko`)
-- Retur Ke Suplier Toko (`btnReturKeSuplierToko`)
-- Retur Jual Toko (`btnReturJualToko`)
-- Retur Piutang Toko (`btnReturPiutangToko`)
-- Hutang Toko (`btnHutangToko`)
-- Bayar Pesan Toko (`btnBayarPesanToko`)
-- Pendapatan Harian Toko (`btnPendapatanHarianToko`)
-- Penjualan Harian Toko (`btnPenjualanHarianToko`)
-- Piutang Harian Toko (`btnPiutangHarianToko`)
-- Keuntungan Barang Toko (`btnKeuntunganBarangToko`)
-- Bayar Piutang Toko (`btnBayarPiutangToko`)
-- Sirkulasi Barang Toko (`btnSirkulasiBarangToko`)
-- Sirkulasi Barang Toko 2 (`btnSirkulasiBarangToko2`)
-
-## T · Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh
-
-- Ket Pengeluaran Penerima Dankes (`btnZISPengeluaranPenerimaDankes`)
-- Ket Penghasilan Penerima Dankes (`btnZISPenghasilanPenerimaDankes`)
-- Ukuran Rumah Penerima Dankes (`btnZISUkuranRumahPenerimaDankes`)
-- Dinding Rumah Penerima Dankes (`btnZISDindingRumahPenerimaDankes`)
-- Lantai Rumah Penerima Dankes (`btnZISLantaiRumahPenerimaDankes`)
-- Atap Rumah Penerima Dankes (`btnZISAtapRumahPenerimaDankes`)
-- Kepemilikan Rumah Penerima Dankes (`btnZISKepemilikanRumahPenerimaDankes`)
-- Kamar Mandi Penerima Dankes (`btnZISKamarMandiPenerimaDankes`)
-- Dapur Rumah Penerima Dankes (`btnZISDapurRumahPenerimaDankes`)
-- Kursi Rumah Penerima Dankes (`btnZISKursiRumahPenerimaDankes`)
-- Kategori PHBS Penerima Dankes (`btnZISKategoriPHBSPenerimaDankes`)
-- Elektronik Penerima Dankes (`btnZISElektronikPenerimaDankes`)
-- Ternak Penerima Dankes (`btnZISTernakPenerimaDankes`)
-- Jenis Simpanan Penerima Dankes (`btnZISJenisSimpananPenerimaDankes`)
-- Kategori Asnaf Penerima Dankes (`btnZISKategoriAsnafPenerimaDankes`)
-- Patologis Penerima Dankes (`btnZISPatologisPenerimaDankes`)

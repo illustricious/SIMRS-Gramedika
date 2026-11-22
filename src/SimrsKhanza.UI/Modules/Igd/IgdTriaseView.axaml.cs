@@ -21,10 +21,9 @@ public partial class IgdTriaseView : UserControl
     {
         InitializeComponent();
 
-        this.FindControl<DataGrid>("AntrianGrid")!.ContextMenu = PatientContextMenu.Build(
-            () => this.FindControl<DataGrid>("AntrianGrid")!.SelectedItem is IgdAntrianItem i
-                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
-            request => PatientMenuRequested?.Invoke(this, request));
+        PatientContextMenu.Attach<IgdAntrianItem>(this.FindControl<DataGrid>("AntrianGrid")!,
+            row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien),
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Emergency);
 
         this.FindControl<ComboBox>("CaraMasukCombo")!.ItemsSource = Enum.GetValues<CaraMasukIgd>();
         this.FindControl<ComboBox>("CaraMasukCombo")!.SelectedItem = CaraMasukIgd.Jalan;

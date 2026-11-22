@@ -24,10 +24,9 @@ public partial class RegistrasiView : UserControl
     {
         InitializeComponent();
 
-        this.FindControl<DataGrid>("RegistrasiGrid")!.ContextMenu = PatientContextMenu.Build(
-            () => this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem is RegistrasiListItem i
-                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
-            request => PatientMenuRequested?.Invoke(this, request));
+        PatientContextMenu.Attach<RegistrasiListItem>(this.FindControl<DataGrid>("RegistrasiGrid")!,
+            row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput);
 
         // Periode defaults to "today" (matches the legacy app's "Registrasi
         // Periksa Hari Ini" screen). An earlier revision defaulted to "all
@@ -187,6 +186,12 @@ public partial class RegistrasiView : UserControl
     }
 
     private bool IsInputOpen => this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked == true;
+
+    private async void OpenSelectedInput(RegistrasiListItem row)
+    {
+        this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = true;
+        await LoadVisitDetailsAsync(row);
+    }
 
     private async void OnInputDataClick(object? sender, RoutedEventArgs e)
     {

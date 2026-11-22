@@ -37,8 +37,8 @@ public partial class RawatInapView : UserControl
 
         var grid = Grid();
         this.FindControl<Button>("BillingButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("billing_ranap") == true;
-        grid.ContextMenu = PatientContextMenu.Build(
-            () => grid.SelectedItem is RawatInapListItem i ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
+        PatientContextMenu.Attach<RawatInapListItem>(grid,
+            row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, IsInpatient: true),
             request => PatientMenuRequested?.Invoke(this, request));
 
         var statusBayar = this.FindControl<ComboBox>("StatusBayarCombo")!;

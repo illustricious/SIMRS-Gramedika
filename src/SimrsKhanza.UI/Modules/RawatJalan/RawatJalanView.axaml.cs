@@ -29,9 +29,8 @@ public partial class RawatJalanView : UserControl
     {
         InitializeComponent();
 
-        this.FindControl<DataGrid>("QueueGrid")!.ContextMenu = PatientContextMenu.Build(
-            () => this.FindControl<DataGrid>("QueueGrid")!.SelectedItem is RawatJalanQueueItem i
-                ? (i.NoRawat, i.NoRekamMedis, i.NamaPasien) : null,
+        PatientContextMenu.Attach<RawatJalanQueueItem>(this.FindControl<DataGrid>("QueueGrid")!,
+            row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien),
             request => PatientMenuRequested?.Invoke(this, request));
 
         var kesadaran = this.FindControl<ComboBox>("KesadaranCombo")!;
@@ -40,6 +39,29 @@ public partial class RawatJalanView : UserControl
     }
 
     public async System.Threading.Tasks.Task ReloadAsync() => await LoadQueueAsync();
+
+    public async Task SelectVisitAsync(string noRawat)
+    {
+        var grid = this.FindControl<DataGrid>("QueueGrid")!;
+        var status = this.FindControl<TextBlock>("SaveStatusText")!;
+        try
+        {
+            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            var visit = await new RawatJalanRepository(db).GetUnexaminedVisitAsync(noRawat);
+            grid.ItemsSource = visit is null ? Array.Empty<RawatJalanQueueItem>() : new[] { visit };
+            grid.SelectedItem = visit;
+            if (visit is null)
+            {
+                status.Text = "Kunjungan ini tidak ada dalam antrian pemeriksaan rawat jalan.";
+                status.IsVisible = true;
+            }
+        }
+        catch (Exception)
+        {
+            status.Text = "Kunjungan tidak dapat dimuat.";
+            status.IsVisible = true;
+        }
+    }
 
     private async System.Threading.Tasks.Task LoadQueueAsync()
     {

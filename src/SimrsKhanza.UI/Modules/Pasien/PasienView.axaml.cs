@@ -4,16 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using SimrsKhanza.Config;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Pasien;
 
 public partial class PasienView : UserControl
 {
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
     public PasienView()
     {
         InitializeComponent();
+        PatientContextMenu.Attach<Core.Entities.Pasien>(this.FindControl<DataGrid>("PasienGrid")!,
+            row => new("", row.NoRekamMedis, row.NamaPasien),
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Patient);
 
         this.FindControl<ComboBox>("GolDarahCombo")!.ItemsSource = Enum.GetValues<GolonganDarah>();
         this.FindControl<ComboBox>("StatusNikahCombo")!.ItemsSource = Enum.GetValues<StatusPernikahan>();
@@ -27,11 +32,24 @@ public partial class PasienView : UserControl
         await SearchAsync(string.Empty);
     }
 
-    /// <summary>Called from the right-click "Data Rekam Medis" patient menu (Modules/Shared/PatientContextMenu) — searches straight to that patient instead of clearing/listing everything.</summary>
-    public async System.Threading.Tasks.Task SearchForAsync(string keyword)
+    public async Task SearchForAsync(string noRekamMedis)
     {
-        this.FindControl<TextBox>("KeyWordBox")!.Text = keyword;
-        await SearchAsync(keyword);
+        this.FindControl<TextBox>("KeyWordBox")!.Text = noRekamMedis;
+        var grid = this.FindControl<DataGrid>("PasienGrid")!;
+        try
+        {
+            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
+            var patient = await db.PasienSet.AsNoTracking().SingleOrDefaultAsync(p => p.NoRekamMedis == noRekamMedis);
+            grid.ItemsSource = patient is null ? Array.Empty<Core.Entities.Pasien>() : new[] { patient };
+            grid.SelectedItem = patient;
+        }
+        catch (Exception)
+        {
+            grid.ItemsSource = Array.Empty<Core.Entities.Pasien>();
+            var status = this.FindControl<TextBlock>("SaveStatusText")!;
+            Ui.Err(status, "Identitas pasien tidak dapat dimuat.");
+            status.IsVisible = true;
+        }
     }
 
     private async System.Threading.Tasks.Task SearchAsync(string keyword)

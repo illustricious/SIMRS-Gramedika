@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
 using SimrsKhanza.Data;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Laboratorium;
 
@@ -30,6 +31,7 @@ public partial class PermintaanLabListView : UserControl
     private readonly string[] _detailHeader;
 
     public event EventHandler? BackRequested;
+    public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
     public event EventHandler<LabHasilRequest>? HasilRequested;
 
     /// <summary>Legacy lets only "Admin Utama" delete an already-sampled permintaan; the parent sets this from the logged-in user.</summary>
@@ -75,6 +77,11 @@ public partial class PermintaanLabListView : UserControl
         BuildColumns(Data(LabLokasi.RawatInap), _headerRanap);
         BuildColumns(Detail(LabLokasi.RawatJalan), _detailHeader);
         BuildColumns(Detail(LabLokasi.RawatInap), _detailHeader);
+        foreach (var lokasi in Enum.GetValues<LabLokasi>())
+            foreach (var grid in new[] { Data(lokasi), Detail(lokasi) })
+                PatientContextMenu.Attach<RowVm>(grid,
+                    row => row.Source is { } patient ? new(patient.NoRawat, patient.NoRm, patient.NamaPasien) : null,
+                    request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Diagnostic);
 
         FromPickerDefaults();
         _ready = true;

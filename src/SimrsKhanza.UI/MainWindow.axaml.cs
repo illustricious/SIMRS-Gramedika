@@ -451,6 +451,17 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (SimrsKhanza.Data.Inventaris.MenuSSpecs.Masters.TryGetValue(key, out var masterS))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterS));
+            return;
+        }
+        if (SimrsKhanza.Data.Inventaris.MenuSSpecs.Reports.TryGetValue(key, out var reportS))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportS));
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
     }
 
@@ -584,6 +595,7 @@ public partial class MainWindow : Window
         {
             view = new Modules.Pasien.PasienView();
             view.BackRequested += (_, _) => ShowPage(Page.Menu);
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             pageHost.Content = view;
         }
 
@@ -772,6 +784,7 @@ public partial class MainWindow : Window
             IsAdminUtama = _user?.IsAdminUtama == true,
         };
         view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
         view.HasilRequested += async (_, req) =>
             await OpenPeriksaLabFormAsync(req.Category, req.NoRawat, req.NoOrder, () => OpenPermintaanLabAsync(req.Category));
 
@@ -784,6 +797,7 @@ public partial class MainWindow : Window
     {
         var view = new Modules.Laboratorium.PeriksaLabListView(category);
         view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
         view.InputRequested += async (_, noRawat) =>
             await OpenPeriksaLabFormAsync(category, noRawat, null, () => OpenPeriksaLabAsync(category));
 
@@ -833,6 +847,7 @@ public partial class MainWindow : Window
             IsAdminUtama = _user?.IsAdminUtama == true,
         };
         view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
         view.HasilRequested += async (_, req) =>
             await OpenPeriksaRadiologiFormAsync(req.NoRawat, req.NoOrder, OpenPermintaanRadiologiAsync);
 
@@ -845,6 +860,7 @@ public partial class MainWindow : Window
     {
         var view = new Modules.Radiologi.PeriksaRadiologiListView();
         view.BackRequested += (_, _) => ShowPage(Page.Menu);
+        view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
         view.InputRequested += async (_, noRawat) =>
             await OpenPeriksaRadiologiFormAsync(noRawat, null, OpenPeriksaRadiologiAsync);
 
@@ -937,6 +953,7 @@ public partial class MainWindow : Window
         {
             view = new Modules.RawatJalan.TindakanRalanView();
             view.BackRequested += (_, _) => ShowPage(Page.Menu);
+            view.PatientMenuRequested += async (_, request) => await HandlePatientMenuAsync(request);
             view.PemeriksaanRequested += async (_, _) => { _pemeriksaanFromTindakan = true; await OpenRawatJalanAsync(); };
             pageHost.Content = view;
         }
@@ -1163,42 +1180,53 @@ public partial class MainWindow : Window
     }
 
 
-    /// <summary>
-    /// Handles the right-click patient menu shared by Registrasi/IGD/Rawat
-    /// Inap/Rawat Jalan (Modules/Shared/PatientContextMenu) — a handful of
-    /// items route to a real screen (prefilled with that patient's
-    /// No.Rawat/No.RM), the rest are still "belum diimplementasikan" like
-    /// every other unbuilt menu item in this app. Add real cases here as
-    /// more screens are built — see docs/audit/HANDOVER.md.
-    /// </summary>
-    private async System.Threading.Tasks.Task HandlePatientMenuAsync(Modules.Shared.PatientMenuRequest request)
+    private async Task HandlePatientMenuAsync(PatientMenuRequest request)
     {
-        switch (request.Action)
+        var host = this.FindControl<ContentControl>("PageHost")!;
+        var source = host.Content;
+        void Back(object? sender, EventArgs e)
         {
-            case Modules.Shared.PatientMenuAction.DataRekamMedis:
-                await OpenPasienAsync();
-                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.Pasien.PasienView pasienView)
-                    await pasienView.SearchForAsync(request.NoRekamMedis);
-                return;
-
-            case Modules.Shared.PatientMenuAction.KamarInap:
-                await OpenRawatInapAsync();
-                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.RawatInap.RawatInapView rawatInapView)
-                    await rawatInapView.PrefillAdmitAsync(request.NoRawat);
-                return;
-
-            case Modules.Shared.PatientMenuAction.TindakanDanPemeriksaan:
-                await OpenRawatJalanAsync();
-                return;
-
-            case Modules.Shared.PatientMenuAction.BillingPembayaran:
-                await OpenKasirAsync();
-                if (this.FindControl<ContentControl>("PageHost")!.Content is Modules.Kasir.KasirView kasirView)
-                    await kasirView.SearchForAsync(request.NoRawat);
-                return;
+            host.Content = source;
+            ShowPage(Page.Feature);
         }
 
-        await ShowNotImplementedAsync($"\"{request.Action}\" untuk {request.NamaPasien}");
+        switch (request.Action)
+        {
+            case PatientMenuAction.DataRekamMedis when _user?.HasPermission("pasien") == true:
+                var pasien = new Modules.Pasien.PasienView();
+                pasien.BackRequested += Back;
+                pasien.PatientMenuRequested += async (_, next) => await HandlePatientMenuAsync(next);
+                await OpenFeatureAsync(pasien, () => pasien.SearchForAsync(request.NoRekamMedis));
+                return;
+
+            case PatientMenuAction.RiwayatPerawatan when _user?.HasPermission("resume_pasien") == true:
+                await new Modules.Pasien.PatientHistoryWindow(request).ShowDialog(this);
+                return;
+
+            case PatientMenuAction.KamarInap when _user?.HasPermission("kamar_inap") == true:
+                var ranap = new Modules.RawatInap.RawatInapView();
+                ranap.BackRequested += Back;
+                ranap.PatientMenuRequested += async (_, next) => await HandlePatientMenuAsync(next);
+                await OpenFeatureAsync(ranap, async () =>
+                {
+                    await ranap.PrefillAdmitAsync(request.NoRawat);
+                    await ranap.ReloadAsync();
+                });
+                return;
+
+            case PatientMenuAction.TindakanDanPemeriksaan when _user?.HasPermission("tindakan_ralan") == true:
+                var ralan = new Modules.RawatJalan.RawatJalanView();
+                ralan.BackRequested += Back;
+                ralan.PatientMenuRequested += async (_, next) => await HandlePatientMenuAsync(next);
+                await OpenFeatureAsync(ralan, () => ralan.SelectVisitAsync(request.NoRawat));
+                return;
+
+            case PatientMenuAction.BillingPembayaran:
+                var kasir = new Modules.Kasir.KasirView();
+                kasir.BackRequested += Back;
+                await OpenFeatureAsync(kasir, () => kasir.SearchForAsync(request.NoRawat));
+                return;
+        }
     }
 
     private async System.Threading.Tasks.Task ShowNotImplementedAsync(string label)

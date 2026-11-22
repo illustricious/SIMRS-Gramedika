@@ -31,16 +31,23 @@ public interface IRawatJalanRepository
 public class RawatJalanRepository(SimrsKhanzaDbContext db) : IRawatJalanRepository
 {
     public async Task<IReadOnlyList<RawatJalanQueueItem>> GetQueueAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default)
+        => await UnexaminedVisits(db.RegPeriksaSet.Where(row => row.TanggalRegistrasi >= fromDate
+            && row.TanggalRegistrasi <= toDate)).ToListAsync(ct);
+
+    public Task<RawatJalanQueueItem?> GetUnexaminedVisitAsync(string noRawat, CancellationToken ct = default)
+        => UnexaminedVisits(db.RegPeriksaSet.Where(row => row.NoRawat == noRawat
+            && row.StatusLanjut == StatusLanjut.RawatJalan)).SingleOrDefaultAsync(ct);
+
+    private IQueryable<RawatJalanQueueItem> UnexaminedVisits(IQueryable<RegPeriksa> visits)
     {
         var examinedNoRawat = db.PemeriksaanRalanSet.Select(p => p.NoRawat);
 
-        var query =
-            from r in db.RegPeriksaSet
+        return
+            from r in visits
             join p in db.PasienSet on r.NoRekamMedis equals p.NoRekamMedis
             join poli in db.PoliklinikSet on r.KodePoli equals poli.KodePoli into poliJoin
             from poli in poliJoin.DefaultIfEmpty()
-            where r.TanggalRegistrasi >= fromDate && r.TanggalRegistrasi <= toDate
-                  && !examinedNoRawat.Contains(r.NoRawat)
+            where !examinedNoRawat.Contains(r.NoRawat)
             orderby r.NoRawat
             select new RawatJalanQueueItem(
                 r.NoRawat,
@@ -49,8 +56,6 @@ public class RawatJalanRepository(SimrsKhanzaDbContext db) : IRawatJalanReposito
                 r.TanggalRegistrasi,
                 r.JamRegistrasi,
                 poli != null ? poli.NamaPoli : null);
-
-        return await query.ToListAsync(ct);
     }
 
     public async Task SaveExaminationAsync(PemeriksaanRalan examination, CancellationToken ct = default)
