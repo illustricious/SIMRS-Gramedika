@@ -25,7 +25,7 @@ public class IgdRepository(SimrsKhanzaDbContext db) : IIgdRepository
     /// Khanza's "IGD" isn't a separate patient-type flag — it's just a
     /// poliklinik like any other (kd_poli). These are the codes whose
     /// nm_poli matched "IGD"/"UGD"/"GAWAT" on the real DB when this was
-    /// written (see docs/audit/HANDOVER.md) — hardcoded rather than a
+    /// written (see docs/handover/04-HISTORY.md) — hardcoded rather than a
     /// nm_poli LIKE query so this stays stable if someone renames a poli.
     /// </summary>
     private static readonly string[] IgdKodePoli = ["IGD", "U0020", "IGD2", "IGD3", "IGDK"];

@@ -11,7 +11,7 @@ namespace SimrsKhanza.UI.Modules.Registrasi;
 /// legacy's 1,313 JasperReports .jrxml templates for this one screen. This
 /// establishes the pattern (build a Document, save to a temp file, open with
 /// the OS default PDF viewer) that the rest of the .jrxml backlog can follow
-/// — see docs/audit/HANDOVER.md for the full list still to port.
+/// — see docs/handover/04-HISTORY.md for the full list still to port.
 ///
 /// Licensing note: QuestPDF's Community license is free only for
 /// organizations under a revenue threshold (see questpdf.com/license) —

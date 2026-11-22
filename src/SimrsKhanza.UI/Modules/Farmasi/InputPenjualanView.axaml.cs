@@ -9,7 +9,7 @@ public partial class InputPenjualanView : UserControl
 {
     public event EventHandler? BackRequested;
 
-    /// <summary>Same placeholder-NIP situation as RawatJalanView — dev auth doesn't carry a linked pegawai record yet (see docs/audit/HANDOVER.md, LegacyUserRepository section).</summary>
+    /// <summary>Same placeholder-NIP situation as RawatJalanView — dev auth doesn't carry a linked pegawai record yet (see docs/handover/04-HISTORY.md, LegacyUserRepository section).</summary>
     private const string PlaceholderPetugasNip = "D0000099";
 
     private List<PenjualanLine> _all = new();

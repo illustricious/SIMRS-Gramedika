@@ -15,7 +15,7 @@
         Pasien, Penggunaan Kamar Inap, Ketersediaan Stok Darah UTD, Tarif
         per-modul, Dashboard, Koleksi Penelitian, Cari Koleksi Ebook, Cari
         Inventaris Perpustakaan), only the 4 backed by data this app already
-        models are implemented. See docs/audit/HANDOVER.md.
+        models are implemented. See docs/handover/04-HISTORY.md.
     -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
         <Border Classes="tegasHeading" Margin="0,0,0,6">

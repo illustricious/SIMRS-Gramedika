@@ -772,7 +772,7 @@ public partial class MainWindow : Window
             }
             default:
                 // "Data Penyerahan Darah" / "No. Resep" — deliberately deferred, see
-                // FarmasiMenuView.axaml's doc comment and docs/audit/HANDOVER.md.
+                // FarmasiMenuView.axaml's doc comment and docs/handover/04-HISTORY.md.
                 await ShowNotImplementedAsync(action == Modules.Farmasi.FarmasiAction.DataPenyerahanDarah
                     ? "Data Penyerahan Darah" : "No. Resep");
                 return;

@@ -61,7 +61,7 @@
                     <Run FontFamily="Consolas">wallpaper.jpg</Run> (aset tampilan),
                     <Run FontFamily="Consolas">modem.xml</Run> (gateway SMS), dan konfigurasi
                     perangkat fingerprint presensi. Belum ada UI untuk mengganti aset/konfigurasi ini di tahap scaffold —
-                    dicatat di docs/audit/HANDOVER.md sebagai pekerjaan lanjutan.
+                    dicatat di docs/handover/04-HISTORY.md sebagai pekerjaan lanjutan.
                 </TextBlock>
             </StackPanel>
         </ScrollViewer>

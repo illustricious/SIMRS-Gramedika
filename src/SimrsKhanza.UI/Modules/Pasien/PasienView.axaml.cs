@@ -75,7 +75,7 @@ public partial class PasienView : UserControl
     {
         // Legacy behavior: picking a row from the list loads it for viewing.
         // Editing an existing patient (Ganti) is out of scope for v1 — this
-        // view only creates new patients; see docs/audit/HANDOVER.md.
+        // view only creates new patients; see docs/handover/04-HISTORY.md.
         if (this.FindControl<DataGrid>("PasienGrid")!.SelectedItem is not Core.Entities.Pasien p) return;
 
         this.FindControl<TextBox>("NoRmBox")!.Text = p.NoRekamMedis;

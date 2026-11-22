@@ -7,7 +7,7 @@ namespace SimrsKhanza.Tests;
 /// <summary>
 /// Real MySQL/MariaDB integration test for the first non-read-only feature in
 /// the scaffold: saving an outpatient examination. Needs SIMRS_DB_* pointing
-/// at a reachable server with the seed data from docs/audit/HANDOVER.md
+/// at a reachable server with the seed data from docs/handover/04-HISTORY.md
 /// (specifically registration "2026/11/03/000002" and pegawai "D0000099").
 /// Skips itself when no server is reachable.
 /// </summary>

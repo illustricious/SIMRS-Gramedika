@@ -41,7 +41,7 @@ public class MasterTriaseKasus
 /// record (how the patient arrived + initial vitals + case category). v1
 /// deliberately stops here: the 5 `data_triase_igddetail_skala*` tables (the
 /// actual ATS-style severity scoring criteria) are NOT implemented — see
-/// docs/audit/HANDOVER.md. After triage, the doctor's exam itself reuses the
+/// docs/handover/04-HISTORY.md. After triage, the doctor's exam itself reuses the
 /// existing Rawat Jalan screen (its queue already includes IGD visits, since
 /// it queries reg_periksa without filtering by poliklinik).
 /// </summary>

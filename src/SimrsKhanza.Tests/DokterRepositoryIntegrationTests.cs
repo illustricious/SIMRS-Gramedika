@@ -5,7 +5,7 @@ namespace SimrsKhanza.Tests;
 
 /// <summary>
 /// Real MySQL/MariaDB integration test — needs SIMRS_DB_* environment variables
-/// pointing at a reachable server (see docs/audit/HANDOVER.md for local setup).
+/// pointing at a reachable server (see docs/handover/04-HISTORY.md for local setup).
 /// Skips itself (does not fail the suite) when no server is reachable, so CI/dev
 /// machines without a database still get a clean test run.
 /// </summary>

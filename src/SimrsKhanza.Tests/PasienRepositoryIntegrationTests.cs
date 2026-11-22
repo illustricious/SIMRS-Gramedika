@@ -8,7 +8,7 @@ namespace SimrsKhanza.Tests;
 /// Real MySQL/MariaDB integration test for PasienView's Simpan path — the
 /// riskiest insert built so far (enum conversions for jk/gol_darah/
 /// stts_nikah/keluarga, plus several NOT NULL FK columns to the lookup
-/// tables seeded per docs/audit/HANDOVER.md). Skips itself when no server
+/// tables seeded per docs/handover/04-HISTORY.md). Skips itself when no server
 /// is reachable.
 /// </summary>
 public class PasienRepositoryIntegrationTests

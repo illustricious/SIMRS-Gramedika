@@ -36,7 +36,7 @@ public enum KategoriLab
 /// Maps to legacy table `permintaan_lab` (PK: noorder) — a doctor's order for
 /// a lab test on a visit. v1 deliberately skips the "ambil sampel" workflow
 /// (tgl_sampel/jam_sampel are stamped at request time, not tracked as a
-/// separate step) — see docs/audit/HANDOVER.md for what's deferred.
+/// separate step) — see docs/handover/04-HISTORY.md for what's deferred.
 /// </summary>
 public class PermintaanLab
 {
@@ -78,7 +78,7 @@ public class PermintaanRadiologi
 /// — used here as the v1 lab "hasil" (narrative impression/suggestion),
 /// deliberately simpler than the fully structured per-parameter
 /// `detail_periksa_lab` (one row per test parameter with nilai/nilai_rujukan)
-/// which is deferred — see docs/audit/HANDOVER.md.
+/// which is deferred — see docs/handover/04-HISTORY.md.
 /// </summary>
 public class HasilLab
 {

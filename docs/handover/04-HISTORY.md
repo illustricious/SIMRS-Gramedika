@@ -1,3 +1,5 @@
+> **ARSIP (log kronologis, 3–21 Nov 2026).** Berisi alasan keputusan dan bug yang pernah ditemukan. Jalur `B:\...`, "belum ada remote", dan hitungan tile/tes di bawah sudah usang. Untuk keadaan sekarang baca [README.md](README.md) dan file 01–03 di folder ini.
+
 # Handover — Audit Repo SIMRS Khanza (menuju rewrite C# Avalonia)
 
 Dokumen ini diupdate setiap ada progres. Jangan dihapus — ini adalah log kerja agar sesi berikutnya (termasuk AI/sesi chat lain) bisa lanjut tanpa mengulang dari awal.

@@ -10,7 +10,7 @@
         also bundles BPJS/Dukcapil/SatuSehat web lookups, ~15 print-letter
         shortcuts, a TNI/POLRI sub-panel, and cascading kelurahan/kecamatan/
         kabupaten/propinsi pickers — all deferred for v1 (see
-        docs/audit/HANDOVER.md). Same PageHost / Simpan-Baru-Cari-Keluar
+        docs/handover/04-HISTORY.md). Same PageHost / Simpan-Baru-Cari-Keluar
         pattern as Registrasi and Rawat Jalan.
     -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="12">

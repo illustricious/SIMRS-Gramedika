@@ -11,7 +11,7 @@ public interface IDokterRepository
 /// <summary>
 /// Real MySQL-backed implementation, querying the legacy `dokter` table through
 /// SimrsKhanzaDbContext. Requires a reachable `sik` MySQL server — see
-/// docs/audit/HANDOVER.md for why that could not be verified end-to-end in this
+/// docs/handover/04-HISTORY.md for why that could not be verified end-to-end in this
 /// environment (no local MySQL/Docker available).
 /// </summary>
 public class DokterRepository(SimrsKhanzaDbContext db) : IDokterRepository

@@ -9,7 +9,7 @@
         Penjualan Obat & BHP, Data Penyerahan Darah, Daftar Resep Dokter,
         No. Resep). Tiles shown 1:1 with that screenshot; 3 are wired to real
         screens (Input/Data Penjualan, Daftar Resep Dokter), 2 are deliberate
-        placeholders — see docs/audit/HANDOVER.md for the scope call (blood
+        placeholders — see docs/handover/04-HISTORY.md for the scope call (blood
         bank / UTD is its own large subsystem, "No. Resep" purpose unclear
         without more legacy context).
     -->

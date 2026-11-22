@@ -83,7 +83,7 @@ public class ResepDokterItem
 /// issuance header. Used here as the v1 "Input/Data Penjualan Obat & BHP"
 /// screen's backing table: closest real table to a dispense-to-patient
 /// transaction without building a full POS/billing flow for pharmacy (which
-/// doesn't exist yet) — see docs/audit/HANDOVER.md for the scope call.
+/// doesn't exist yet) — see docs/handover/04-HISTORY.md for the scope call.
 /// </summary>
 public class PengeluaranObatBhp
 {

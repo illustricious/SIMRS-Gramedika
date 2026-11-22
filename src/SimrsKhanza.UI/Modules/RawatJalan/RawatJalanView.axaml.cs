@@ -17,7 +17,7 @@ public partial class RawatJalanView : UserControl
 
     /// <summary>
     /// Placeholder for "the logged-in user's linked employee record" — the
-    /// in-memory dev auth doesn't carry a NIP yet (see docs/audit/HANDOVER.md,
+    /// in-memory dev auth doesn't carry a NIP yet (see docs/handover/04-HISTORY.md,
     /// LegacyUserRepository section), so examinations saved from this
     /// dev build are attributed to the one seeded pegawai row.
     /// </summary>

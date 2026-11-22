@@ -21,7 +21,8 @@ The dashboard follows the original Khanza menu categories A–U. As of 22 Novemb
 | H | Parking types, barcode cards, and vehicle check-in | **3/3** |
 | I | Billing, patient deposits, receivables, drug and procedure reports | 60/60 |
 | J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
-| K, M | Shared master data, patient deposits, patient receivables, and patient records | 3 |
+| K | Tariffs, finance masters, payables and receivables, bank feeds, journals, manual journal posting | **87/87** |
+| M | Patient records (shared tiles only) | 1/255 |
 | S | Store, minimarket, and cooperative master data and transaction reports | **25/25** |
 | T | Philanthropy, CSR, zakat, infaq, and shodaqoh reference data | **16/16** |
 | U | Application settings, tariffs, queue displays, and account administration | **30/30 legacy tiles** + database backup |
@@ -48,7 +49,11 @@ See [Menu J status](docs/audit/MENU_J_STATUS.md) for available ICD masters, visi
 
 Menu S provides editable store masters and read-only purchasing, sales, returns, payments, and stock reports. Store transactions are entered in Khanza. See [Menu S status](docs/audit/MENU_S_STATUS.md) for the coverage of each tile.
 
+Menu K provides editable tariffs (outpatient, inpatient, lab, radiology, UTD, surgery) with automatic totals, editable account masters, and read-only payables, receivables, bank payment, journal, cash flow and profit-and-loss views, plus a manual balanced journal screen. See [Menu K status](docs/audit/MENU_K_STATUS.md).
+
 Pending tiles show a "not implemented" notice.
+
+Project handover notes for developers are in [docs/handover](docs/handover/README.md).
 
 Menu T supports search, creation, editing, and deletion for all 16 Dankes reference lists. The legacy Kepemilikan Rumah tile opens the Atap Rumah screen. Avalonia stores ownership categories independently. Apply the [Kepemilikan Rumah SQL script](docs/audit/menu_t_kepemilikan_rumah.sql) to the configured SIMRS database before using that reference list.
 
