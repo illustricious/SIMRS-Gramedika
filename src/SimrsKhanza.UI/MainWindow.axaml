@@ -136,9 +136,10 @@
                         <TextBlock Text="Pilih kategori untuk membuka menu" Classes="pageSubtitle" />
                     </StackPanel>
                     <TextBox Grid.Column="1" Name="MenuSearchBox" PlaceholderText="Cari menu di semua kategori"
-                             Width="296" MinHeight="36" AutomationProperties.Name="Cari menu di semua kategori" />
+                             Width="296" Height="36" VerticalAlignment="Top" Margin="0,2,10,0"
+                             AutomationProperties.Name="Cari menu di semua kategori" />
                 </Grid>
-                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,12">
+                <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto" Margin="0,0,10,12">
                     <TextBlock Text="Kategori" Classes="pageSubtitle menuSectionLabel" VerticalAlignment="Center" Margin="0,0,12,0" />
                     <ComboBox Grid.Column="1" Name="MenuCategoryCombo" HorizontalAlignment="Stretch"
                               MaxDropDownHeight="520" AutomationProperties.Name="Kategori menu" />
@@ -235,7 +236,7 @@
         </Style>
         <Style Selector="Button.menuTile">
             <Setter Property="Margin" Value="0,0,10,10" />
-            <Setter Property="Padding" Value="12" />
+            <Setter Property="Padding" Value="0" />
             <Setter Property="MinHeight" Value="116" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -252,6 +253,11 @@
         <Style Selector="Button.menuTile:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="Border.menuTileTopRule">
+            <Setter Property="Height" Value="3" />
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="CornerRadius" Value="7,7,0,0" />
         </Style>
         <Style Selector="Button.menuTile:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />

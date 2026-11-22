@@ -212,15 +212,16 @@
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="5" />
-            <Setter Property="CornerRadius" Value="9" />
-            <Setter Property="MinWidth" Value="224" />
-            <Setter Property="MaxHeight" Value="680" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="MinWidth" Value="204" />
+            <Setter Property="MaxHeight" Value="620" />
         </Style>
         <Style Selector="MenuItem">
-            <Setter Property="MinHeight" Value="34" />
-            <Setter Property="Padding" Value="10,6" />
-            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         </Style>
@@ -238,7 +239,8 @@
         <Style Selector="MenuItem /template/ Popup#PART_Popup > Border">
             <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
-            <Setter Property="CornerRadius" Value="9" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="CornerRadius" Value="8" />
         </Style>
         <Style Selector="Separator">
             <Setter Property="Height" Value="1" />

@@ -160,11 +160,21 @@ public partial class MainWindow : Window
             {
                 Text = label, TextWrapping = TextWrapping.Wrap,
             };
+            var tileBody = new StackPanel
+            {
+                Spacing = 8,
+                Margin = new Thickness(12),
+                Children = { icon, caption },
+            };
+            var tileContent = new Grid { RowDefinitions = new RowDefinitions("3,*") };
+            tileContent.Children.Add(new Border { Classes = { "menuTileTopRule" } });
+            Grid.SetRow(tileBody, 1);
+            tileContent.Children.Add(tileBody);
 
             var button = new Button
             {
                 Classes = { "menuTile" },
-                Content = new StackPanel { Spacing = 8, Children = { icon, caption } },
+                Content = tileContent,
             };
             Avalonia.Automation.AutomationProperties.SetName(button, label);
             button.Click += (_, _) => OnLegacyTileClick(key, label);
