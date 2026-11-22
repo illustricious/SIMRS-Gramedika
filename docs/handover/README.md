@@ -22,12 +22,12 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 
 ## Status
 
-- **592 dari 1.224 tile** dashboard membuka layar. 632 sisanya belum.
-- Selesai penuh (100% berlayar): A, B, C, D, E, F, G, H, I, J, K, S, T, U.
-- Belum: L (183), M (254 dari 255), N (11), O (113), P (45), Q (16), R (10). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
-- Build bersih, **113 tes lolos, 1 dilewati** (tes billing ranap butuh DB nyata).
+- **613 dari 1.224 tile** dashboard membuka layar. 611 sisanya belum.
+- Selesai penuh (100% berlayar): A, B, C, D, E, F, G, H, I, J, K, N, R, S, T, U.
+- Belum: L (183), M (254 dari 255), O (113), P (45), Q (16). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
+- Build bersih, **117 tes lolos, 1 dilewati** (tes billing ranap butuh DB nyata).
 - "Berlayar" artinya tile membuka layar, bukan berarti setara fungsi Khanza. Keterbatasan tiap menu ada di `docs/audit/MENU_*_STATUS.md`.
-- **Belum pernah diuji ke database produksi.** Layar Menu K, S, dan kebanyakan menu lain baru lolos build, tes struktur (layar bisa dibangun), dan pencocokan nama tabel/kolom dengan `schema_sik.sql`. Kesalahan nama kolom atau perilaku data nyata baru terlihat saat dibuka dengan data.
+- **Belum pernah diuji ke database produksi.** Layar Menu K, N, R, S, dan kebanyakan menu lain baru lolos build, tes struktur (layar bisa dibangun), dan pencocokan nama tabel/kolom dengan `schema_sik.sql`. Kesalahan nama kolom atau perilaku data nyata baru terlihat saat dibuka dengan data.
 
 ## Keputusan yang perlu diingat
 
@@ -40,13 +40,12 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 
 ## Langkah berikutnya yang disarankan
 
-1. **Uji ke salinan database nyata** (bukan produksi): buka tiap layar Menu K, S, J, I, dan perbaiki kolom yang salah. Ini risiko terbesar saat ini.
-2. **Menu N (11) dan R (10)**: kecil dan cepat, pola master/laporan yang sama.
-3. **Menu P (45) dan Q (16)**: surat dan perpustakaan, kebanyakan master dan daftar.
-4. **Menu O (113)**: dashboard dan analisa dari tabel yang sudah dipakai laporan I/J.
-5. **Menu M (254)**: rekam medis, sebagian besar formulir `penilaian*`/`skrining*`/`surat*`. Perlu keputusan "formulir dinamis" di `PLANNING_APLIKASI.md` sebelum mulai.
-6. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
-7. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.1.5 dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*`.
+1. **Uji ke salinan database nyata** (bukan produksi): buka tiap layar Menu K, N, R, S, J, I, dan perbaiki kolom yang salah. Ini risiko terbesar saat ini.
+2. **Menu Q (16)** lalu **P (45)**: perpustakaan dan surat, kebanyakan master dan daftar.
+3. **Menu O (113)**: dashboard dan analisa dari tabel yang sudah dipakai laporan I/J.
+4. **Menu M (254)**: rekam medis, sebagian besar formulir `penilaian*`/`skrining*`/`surat*`. Perlu keputusan "formulir dinamis" di `PLANNING_APLIKASI.md` sebelum mulai.
+5. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
+6. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.1.5 dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*`.
 
 ## Aturan kerja dengan pemilik proyek
 

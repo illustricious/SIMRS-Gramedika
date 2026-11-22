@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 592 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 632 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 613 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 611 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -17,11 +17,11 @@ Per 22 November 2026, 592 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 | K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 87/87 | 0 |
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes & Pihak Ke 3 | 0/183 | 183 |
 | M | Olah Data Rekam Medis Pasien | 1/255 | 254 |
-| N | Unit Pelayanan Tranfusi Darah | 0/11 | 11 |
+| N | Unit Pelayanan Tranfusi Darah | 11/11 | 0 |
 | O | Analisa, Dashboard & Info Grafik | 0/113 | 113 |
 | P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 0/45 | 45 |
 | Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 0/16 | 16 |
-| R | Pre-Construction & Infection Control Risk Assessment | 0/10 | 10 |
+| R | Pre-Construction & Infection Control Risk Assessment | 10/10 | 0 |
 | S | Toko / Minimarket / Koperasi | 25/25 | 0 |
 | T | Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh | 16/16 | 0 |
 | U | Pengaturan Program Aplikasi HMS | 30/30 | 0 |
@@ -475,17 +475,7 @@ Semua 87 tile sudah membuka layar. Lihat `MENU_K_STATUS.md`.
 
 ## N · Unit Pelayanan Tranfusi Darah
 
-- Pengambilan BHP Medis (`btnPengambilanUTD2`)
-- BHP Medis Rusak (`btnUTDMedisRusak`)
-- Pengambilan BHP Non Medis (`btnPengambilanPenunjangUTD2`)
-- BHP Non Medis Rusak (`btnUTDPenunjangRusak`)
-- Komponen Darah (`btnUTDKomponenDarah`)
-- Pendonor Darah (`btnPendonorDarah`)
-- Donor Darah (`btnUTDDonorDarah`)
-- Pencekalan Darah (`btnUTDCekalDarah`)
-- Pemisahan Darah (`btnUTDPemisahanDarah`)
-- Stok Darah (`btnUTDStokDarah`)
-- Penyerahan Darah (`btnUTDPenyerahanDarah`)
+Semua tile sudah membuka layar. Lihat `MENU_NR_STATUS.md`.
 
 ## O · Analisa, Dashboard & Info Grafik
 
@@ -672,13 +662,5 @@ Semua 87 tile sudah membuka layar. Lihat `MENU_K_STATUS.md`.
 
 ## R · Pre-Construction & Infection Control Risk Assessment
 
-- Jenis Aktivitas Proyek PCRA (`btnPCRAICRAJenisAktivitasProyek`)
-- Lokasi & Kelompok Risiko Area PCRA (`btnPCRAICRALokasiKelompokRisiko`)
-- Kelas Risiko/Kelas Pencegahan PCRA (`btnPCRAICRAKelasRisikoPencegahan`)
-- Tindakan Pengendalian PCRA (`btnPCRAICRATindakanPengendalian`)
-- Identifikasi Risiko Infeksi PCRA (`btnPCRAICRAIdentifikasiRisikoInfeksi`)
-- Identifikasi Risiko Keselamatan PCRA (`btnPCRAICRAIdentifikasiRisikoKeselamatan`)
-- Identifikasi Risiko Kebakaran PCRA (`btnPCRAICRAIdentifikasiRisikoKebakaran`)
-- Identifikasi Risiko Utilitas PCRA (`btnPCRAICRAIdentifikasiRisikoUtilitas`)
-- Persyaratan Harus Dipenuhi PCRA (`btnPCRAICRAPersyaratanHarusDipenuhi`)
-- Pengkajian Risiko Pra Konstruksi/PCRA (`btnPCRAICRAPengkajianRisikoPraKonstruksi`)
+Semua tile sudah membuka layar. Lihat `MENU_NR_STATUS.md`.
+

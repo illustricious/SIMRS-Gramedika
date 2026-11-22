@@ -65,6 +65,8 @@ public class MenuCScreensTests
                 .Concat(SimrsKhanza.Data.Master.MenuKPayablesSpecs.Reports.Select(kv => ("K2_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Master.MenuKFinanceSpecs.Reports.Select(kv => ("K3_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Append(("K3_btnPostingJurnal", (PageView)new SimrsKhanza.UI.Modules.Keuangan.PostingJurnalView()))
+                .Concat(SimrsKhanza.Data.Master.MenuNRSpecs.Masters.Select(kv => ("NR_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuNRSpecs.Reports.Select(kv => ("NR_" + kv.Key, (PageView)new ReportView(kv.Value))))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 

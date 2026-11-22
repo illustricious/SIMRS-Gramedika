@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026: **592 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 22 November 2026: **613 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -19,6 +19,8 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 | I | Olah data tagihan | 60 | Baca | [MENU_BELUM_DAN_PELAJARAN_I](../audit/MENU_BELUM_DAN_PELAJARAN_I.md). Laporan jasa harian/bulanan hanya ralan dan ranap, tanpa lab, radiologi, operasi |
 | J | Penyakit, DKK, RL, internal | 96 | Edit + Baca | [MENU_J_STATUS](../audit/MENU_J_STATUS.md). Master ICD, laporan kunjungan dan diagnosis |
 | K | Tarif, keuangan, akuntansi | 87 | Edit + Baca + Khusus | [MENU_K_STATUS](../audit/MENU_K_STATUS.md). Tarif (total otomatis), master akun, hutang/piutang, bank, jurnal, Posting Jurnal manual |
+| N | Unit transfusi darah (UTD) | 11 | Edit + Baca | [MENU_NR_STATUS](../audit/MENU_NR_STATUS.md). Komponen darah dan pendonor bisa diedit. Donor, stok, penyerahan, dan BHP hanya-baca |
+| R | PCRA/ICRA | 10 | Edit + Baca | [MENU_NR_STATUS](../audit/MENU_NR_STATUS.md). 9 referensi bisa diedit, pengkajian proyek hanya-baca |
 | S | Toko, minimarket, koperasi | 25 | Edit + Baca | [MENU_S_STATUS](../audit/MENU_S_STATUS.md). Transaksi toko dicatat di Khanza |
 | T | Filantropi, CSR, zakat | 16 | Edit | 16 daftar referensi Dankes. Kepemilikan Rumah butuh `docs/audit/menu_t_kepemilikan_rumah.sql` |
 | U | Pengaturan program | 30 (+1 backup) | Edit + Khusus | [MENU_U_STATUS](../audit/MENU_U_STATUS.md). Tile Backup Database ditambah Avalonia untuk semua akun login |
@@ -31,11 +33,9 @@ Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaa
 |---|---|---:|---|
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes, pihak ke-3 | 0/183 | Butuh kredensial dan API eksternal. Lihat [BRIDGING_RECON](../audit/BRIDGING_RECON.md). Kerjakan terakhir |
 | M | Rekam medis | 1/255 | Hampir semua formulir `penilaian*`, `skrining*`, `surat*`, `hasil*`. Putuskan pendekatan "formulir dinamis" dulu ([PLANNING_APLIKASI](../audit/PLANNING_APLIKASI.md)) |
-| N | Unit transfusi darah (UTD) | 0/11 | Tabel `utd_*` sudah dikenal dari Menu K (tarif UTD) |
 | O | Analisa, dashboard, infografik | 0/113 | Agregasi dari tabel yang sudah dipakai laporan I/J |
 | P | Surat masuk/keluar, pengumuman e-pasien | 0/45 | Tabel `surat*`. Master dan daftar |
 | Q | Perpustakaan | 0/16 | Tabel `perpustakaan_*` |
-| R | PCRA/ICRA | 0/10 | Tabel `pcra_icra_*` |
 
 ## Keterbatasan lintas menu
 
