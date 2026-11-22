@@ -1526,5 +1526,113 @@
   "popup|simrskhanza/DlgRawatJalan.java|PopupPemeriksaan|MnPasteSOAP": {
     "status": "kurang",
     "bukti": "docs/tracker/AUDIT_CABANG.md — perintah popup salin/tempel enam bidang belum tersedia di editor layanan terkait."
+  },
+  "jendela|simrskhanza/DlgReg.java|DlgReg": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs: daftar per periode, filter dokter/poli, cari, ubah registrasi, cetak PDF, klik kanan pasien. Belum ada registrasi baru, hapus, pilih pasien, tab Rujukan Internal Poli, dan daftar Avalonia tidak mengecualikan poli IGDK seperti Java."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnSimpan": {
+    "status": "kurang",
+    "bukti": "Simpan di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (OnInputSimpanClick) hanya UpdateAsync pada registrasi terpilih. Registrasi baru hanya lewat IgdView (src/SimrsKhanza.Data/RegistrasiRepository.cs CreateAsync) tanpa cek Java: pasien sedang rawat inap, kuota dokter, status daftar Baru/Lama, biaya sesuai status, no. reg/rawat bisa diubah."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnBatal": {
+    "status": "kurang",
+    "bukti": "Tidak ada tombol Baru/kosongkan form di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs; form hanya terisi dari baris terpilih."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnInputSimpanClick memanggil src/SimrsKhanza.Data/RegistrasiRepository.cs UpdateAsync: dokter, poli, jenis bayar, penanggung jawab, alamat, hubungan. Belum ada penolakan bila tagihan terverifikasi (Sequel.cariRegistrasi), batas 48 jam atau hak edit_registrasi, dan biaya/tanggal tidak bisa diubah."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnHapus": {
+    "status": "kurang",
+    "bukti": "Tombol Hapus di RegistrasiView.axaml memakai OnPlaceholderClick (src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs); tidak menghapus reg_periksa."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnCetakClick membuat PDF dari RegistrasiReport (QuestPDF) untuk baris di grid. Java memakai rptReg.jasper berkop RS dan mengecualikan IGDK; kop dan kolom belum disamakan."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnAll": {
+    "status": "selesai",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnSemuaClick mengosongkan filter dokter, poli, kata kunci lalu memuat ulang, sama dengan BtnAllActionPerformed (periode tidak direset di keduanya)."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync memfilter nama pasien, no. RM, no. rawat, no. reg setelah periode. Java juga mencari tanggal, status daftar, poli, dokter, penanggung jawab, alamat PJ, jenis bayar, hubungan PJ."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnKeluar": {
+    "status": "selesai",
+    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnBackClick (Kembali ke Menu)."
+  },
+  "aksi|simrskhanza/DlgReg.java|ChkInput": {
+    "status": "selesai",
+    "bukti": "InputDataToggle di RegistrasiView.axaml membuka/menutup panel Input Data (ReloadAsync menutupnya, buka via klik kanan: OpenSelectedInput)."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnSeek3": {
+    "status": "sebagian",
+    "bukti": "FilterDokterCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (LoadInputLookupsAsync) memilih dokter dari daftar; tidak ada dialog cari dokter."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnSeek4": {
+    "status": "sebagian",
+    "bukti": "FilterPoliCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs memilih poli dari daftar; tidak ada dialog cari poli."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnDokter": {
+    "status": "sebagian",
+    "bukti": "InputDokterCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetDokterAsync; tidak ada dialog cari dan tidak ada cek jadwal/kuota dokter."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnUnit": {
+    "status": "sebagian",
+    "bukti": "InputPoliCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPoliklinikAsync; Java memakai DlgCariPoli dan jadwal aktif, belum ada."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnPenjab": {
+    "status": "sebagian",
+    "bukti": "InputPenjabCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPenjabAsync; tidak ada dialog cari penjab."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnPasien": {
+    "status": "kurang",
+    "bukti": "Tidak ada pemilih/pendaftar pasien di RegistrasiView; pasien hanya dari baris tabel. Pasien baru lewat layar Pasien, bukan dari registrasi."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnPenjab1": {
+    "status": "kurang",
+    "bukti": "Asal rujukan hanya dibaca (GetInputDetailsAsync, InputAsalRujukanBox); dialog DlgRujukMasuk untuk memilih perujuk belum ada."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnCekBridging": {
+    "status": "ditunda",
+    "bukti": "Cek kepesertaan lewat PilihanBridgingAsuransi termasuk bridging Menu L (VClaim/PCare), ditunda bersama Menu L."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnSeek5": {
+    "status": "kurang",
+    "bukti": "Pilih dokter untuk tab Rujukan Internal Poli; tab itu belum ada (RegistrasiView.axaml, komentar \"deferred\")."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnPrint3": {
+    "status": "kurang",
+    "bukti": "Grafik registrasi dari dialog Registrasi belum ada. Tabel agregat setara ada di Menu O (MenuOSpecs, btnGrafikKunjungan*), grafik belum digambar."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnKeluar3": {
+    "status": "kurang",
+    "bukti": "Dialog grafik registrasi tidak ada di RegistrasiView."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnKel": {
+    "status": "kurang",
+    "bukti": "Dialog Demografi (pilih kelurahan) tidak ada di RegistrasiView. Tabel demografi tersedia di Menu O btnGrafikDemografiRegistrasi."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnKec": {
+    "status": "kurang",
+    "bukti": "Dialog Demografi (pilih kecamatan) tidak ada di RegistrasiView. Lihat Menu O btnGrafikDemografiRegistrasi."
+  },
+  "aksi|simrskhanza/DlgReg.java|btnKab": {
+    "status": "kurang",
+    "bukti": "Dialog Demografi (pilih kabupaten) tidak ada di RegistrasiView. Lihat Menu O btnGrafikDemografiRegistrasi."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnPrint4": {
+    "status": "kurang",
+    "bukti": "Cetak demografi per area dari dialog Registrasi belum ada; Menu O hanya menampilkan tabel."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnKeluar4": {
+    "status": "kurang",
+    "bukti": "Dialog Demografi tidak ada di RegistrasiView."
+  },
+  "aksi|simrskhanza/DlgReg.java|BtnPrint5": {
+    "status": "kurang",
+    "bukti": "Cetak untuk pasien terpilih (BtnPrint5ActionPerformed) belum ada; hanya cetak daftar."
   }
 }

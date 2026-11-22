@@ -3,8 +3,8 @@
 | Jenis | belum diaudit | layar tersedia | kurang | sebagian | selesai | ditunda | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | popup | 2270 | 0 | 302 | 80 | 0 | 0 | 2652 |
-| aksi | 10673 | 0 | 0 | 0 | 0 | 0 | 10673 |
-| jendela | 1294 | 0 | 0 | 0 | 0 | 0 | 1294 |
+| aksi | 10647 | 0 | 14 | 8 | 3 | 1 | 10673 |
+| jendela | 1293 | 0 | 0 | 1 | 0 | 0 | 1294 |
 | tile | 0 | 1041 | 0 | 0 | 0 | 183 | 1224 |
 
 ## Cakupan layar per menu dashboard

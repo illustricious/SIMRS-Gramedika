@@ -12948,33 +12948,33 @@ popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutStatusAsc1	popup	jPopupM
 popup|simrskhanza/DlgReg.java|jPopupMenu2|ppRiwayat1	popup	jPopupMenu2 > Riwayat Perawatan	simrskhanza/DlgReg.java:5938	kurang	DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia.
 popup|simrskhanza/DlgReg.java|jPopupMenu2|MnHapusRujukan	popup	jPopupMenu2 > Hapus Rujukan Poli Internal	simrskhanza/DlgReg.java:5954	kurang	DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia.
 popup|simrskhanza/DlgReg.java|jPopupMenu2|MnDataKonsultasiMedik	popup	jPopupMenu2 > Data Konsultasi Medik	simrskhanza/DlgReg.java:19771	kurang	DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia.
-aksi|simrskhanza/DlgReg.java|BtnPrint3	aksi	Grafik	simrskhanza/DlgReg.java:5143	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnKeluar3	aksi	Tutup	simrskhanza/DlgReg.java:5162	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnKel	aksi	btnKel	simrskhanza/DlgReg.java:5189	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnKec	aksi	btnKec	simrskhanza/DlgReg.java:5211	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnKab	aksi	btnKab	simrskhanza/DlgReg.java:5233	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnPrint4	aksi	Cetak	simrskhanza/DlgReg.java:5262	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnPrint5	aksi	Cetak	simrskhanza/DlgReg.java:5302	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnKeluar4	aksi	Tutup	simrskhanza/DlgReg.java:5316	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnSeek5	aksi	BtnSeek5	simrskhanza/DlgReg.java:5334	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgReg.java:6030	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnBatal	aksi	Baru	simrskhanza/DlgReg.java:6048	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnEdit	aksi	Ganti	simrskhanza/DlgReg.java:6066	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnHapus	aksi	Hapus	simrskhanza/DlgReg.java:6084	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnPrint	aksi	Cetak	simrskhanza/DlgReg.java:6102	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnAll	aksi	Semua	simrskhanza/DlgReg.java:6120	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnKeluar	aksi	Keluar	simrskhanza/DlgReg.java:6149	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnCari	aksi	BtnCari	simrskhanza/DlgReg.java:6211	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnSeek3	aksi	BtnSeek3	simrskhanza/DlgReg.java:6244	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnSeek4	aksi	BtnSeek4	simrskhanza/DlgReg.java:6266	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnPasien	aksi	BtnPasien	simrskhanza/DlgReg.java:6431	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnDokter	aksi	BtnDokter	simrskhanza/DlgReg.java:6502	belum diaudit	
-aksi|simrskhanza/DlgReg.java|BtnUnit	aksi	BtnUnit	simrskhanza/DlgReg.java:6524	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnPenjab	aksi	btnPenjab	simrskhanza/DlgReg.java:6557	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnPenjab1	aksi	btnPenjab1	simrskhanza/DlgReg.java:6583	belum diaudit	
-aksi|simrskhanza/DlgReg.java|btnCekBridging	aksi	btnCekBridging	simrskhanza/DlgReg.java:6618	belum diaudit	
-aksi|simrskhanza/DlgReg.java|ChkInput	aksi	.: Input Data	simrskhanza/DlgReg.java:6642	belum diaudit	
-jendela|simrskhanza/DlgReg.java|DlgReg	jendela	DlgReg	simrskhanza/DlgReg.java:1	belum diaudit	
+aksi|simrskhanza/DlgReg.java|BtnPrint3	aksi	Grafik	simrskhanza/DlgReg.java:5143	kurang	Grafik registrasi dari dialog Registrasi belum ada. Tabel agregat setara ada di Menu O (MenuOSpecs, btnGrafikKunjungan*), grafik belum digambar.
+aksi|simrskhanza/DlgReg.java|BtnKeluar3	aksi	Tutup	simrskhanza/DlgReg.java:5162	kurang	Dialog grafik registrasi tidak ada di RegistrasiView.
+aksi|simrskhanza/DlgReg.java|btnKel	aksi	btnKel	simrskhanza/DlgReg.java:5189	kurang	Dialog Demografi (pilih kelurahan) tidak ada di RegistrasiView. Tabel demografi tersedia di Menu O btnGrafikDemografiRegistrasi.
+aksi|simrskhanza/DlgReg.java|btnKec	aksi	btnKec	simrskhanza/DlgReg.java:5211	kurang	Dialog Demografi (pilih kecamatan) tidak ada di RegistrasiView. Lihat Menu O btnGrafikDemografiRegistrasi.
+aksi|simrskhanza/DlgReg.java|btnKab	aksi	btnKab	simrskhanza/DlgReg.java:5233	kurang	Dialog Demografi (pilih kabupaten) tidak ada di RegistrasiView. Lihat Menu O btnGrafikDemografiRegistrasi.
+aksi|simrskhanza/DlgReg.java|BtnPrint4	aksi	Cetak	simrskhanza/DlgReg.java:5262	kurang	Cetak demografi per area dari dialog Registrasi belum ada; Menu O hanya menampilkan tabel.
+aksi|simrskhanza/DlgReg.java|BtnPrint5	aksi	Cetak	simrskhanza/DlgReg.java:5302	kurang	Cetak untuk pasien terpilih (BtnPrint5ActionPerformed) belum ada; hanya cetak daftar.
+aksi|simrskhanza/DlgReg.java|BtnKeluar4	aksi	Tutup	simrskhanza/DlgReg.java:5316	kurang	Dialog Demografi tidak ada di RegistrasiView.
+aksi|simrskhanza/DlgReg.java|BtnSeek5	aksi	BtnSeek5	simrskhanza/DlgReg.java:5334	kurang	Pilih dokter untuk tab Rujukan Internal Poli; tab itu belum ada (RegistrasiView.axaml, komentar "deferred").
+aksi|simrskhanza/DlgReg.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgReg.java:6030	kurang	Simpan di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (OnInputSimpanClick) hanya UpdateAsync pada registrasi terpilih. Registrasi baru hanya lewat IgdView (src/SimrsKhanza.Data/RegistrasiRepository.cs CreateAsync) tanpa cek Java: pasien sedang rawat inap, kuota dokter, status daftar Baru/Lama, biaya sesuai status, no. reg/rawat bisa diubah.
+aksi|simrskhanza/DlgReg.java|BtnBatal	aksi	Baru	simrskhanza/DlgReg.java:6048	kurang	Tidak ada tombol Baru/kosongkan form di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs; form hanya terisi dari baris terpilih.
+aksi|simrskhanza/DlgReg.java|BtnEdit	aksi	Ganti	simrskhanza/DlgReg.java:6066	sebagian	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnInputSimpanClick memanggil src/SimrsKhanza.Data/RegistrasiRepository.cs UpdateAsync: dokter, poli, jenis bayar, penanggung jawab, alamat, hubungan. Belum ada penolakan bila tagihan terverifikasi (Sequel.cariRegistrasi), batas 48 jam atau hak edit_registrasi, dan biaya/tanggal tidak bisa diubah.
+aksi|simrskhanza/DlgReg.java|BtnHapus	aksi	Hapus	simrskhanza/DlgReg.java:6084	kurang	Tombol Hapus di RegistrasiView.axaml memakai OnPlaceholderClick (src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs); tidak menghapus reg_periksa.
+aksi|simrskhanza/DlgReg.java|BtnPrint	aksi	Cetak	simrskhanza/DlgReg.java:6102	sebagian	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnCetakClick membuat PDF dari RegistrasiReport (QuestPDF) untuk baris di grid. Java memakai rptReg.jasper berkop RS dan mengecualikan IGDK; kop dan kolom belum disamakan.
+aksi|simrskhanza/DlgReg.java|BtnAll	aksi	Semua	simrskhanza/DlgReg.java:6120	selesai	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnSemuaClick mengosongkan filter dokter, poli, kata kunci lalu memuat ulang, sama dengan BtnAllActionPerformed (periode tidak direset di keduanya).
+aksi|simrskhanza/DlgReg.java|BtnKeluar	aksi	Keluar	simrskhanza/DlgReg.java:6149	selesai	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnBackClick (Kembali ke Menu).
+aksi|simrskhanza/DlgReg.java|BtnCari	aksi	BtnCari	simrskhanza/DlgReg.java:6211	sebagian	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync memfilter nama pasien, no. RM, no. rawat, no. reg setelah periode. Java juga mencari tanggal, status daftar, poli, dokter, penanggung jawab, alamat PJ, jenis bayar, hubungan PJ.
+aksi|simrskhanza/DlgReg.java|BtnSeek3	aksi	BtnSeek3	simrskhanza/DlgReg.java:6244	sebagian	FilterDokterCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (LoadInputLookupsAsync) memilih dokter dari daftar; tidak ada dialog cari dokter.
+aksi|simrskhanza/DlgReg.java|BtnSeek4	aksi	BtnSeek4	simrskhanza/DlgReg.java:6266	sebagian	FilterPoliCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs memilih poli dari daftar; tidak ada dialog cari poli.
+aksi|simrskhanza/DlgReg.java|BtnPasien	aksi	BtnPasien	simrskhanza/DlgReg.java:6431	kurang	Tidak ada pemilih/pendaftar pasien di RegistrasiView; pasien hanya dari baris tabel. Pasien baru lewat layar Pasien, bukan dari registrasi.
+aksi|simrskhanza/DlgReg.java|BtnDokter	aksi	BtnDokter	simrskhanza/DlgReg.java:6502	sebagian	InputDokterCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetDokterAsync; tidak ada dialog cari dan tidak ada cek jadwal/kuota dokter.
+aksi|simrskhanza/DlgReg.java|BtnUnit	aksi	BtnUnit	simrskhanza/DlgReg.java:6524	sebagian	InputPoliCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPoliklinikAsync; Java memakai DlgCariPoli dan jadwal aktif, belum ada.
+aksi|simrskhanza/DlgReg.java|btnPenjab	aksi	btnPenjab	simrskhanza/DlgReg.java:6557	sebagian	InputPenjabCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPenjabAsync; tidak ada dialog cari penjab.
+aksi|simrskhanza/DlgReg.java|btnPenjab1	aksi	btnPenjab1	simrskhanza/DlgReg.java:6583	kurang	Asal rujukan hanya dibaca (GetInputDetailsAsync, InputAsalRujukanBox); dialog DlgRujukMasuk untuk memilih perujuk belum ada.
+aksi|simrskhanza/DlgReg.java|btnCekBridging	aksi	btnCekBridging	simrskhanza/DlgReg.java:6618	ditunda	Cek kepesertaan lewat PilihanBridgingAsuransi termasuk bridging Menu L (VClaim/PCare), ditunda bersama Menu L.
+aksi|simrskhanza/DlgReg.java|ChkInput	aksi	.: Input Data	simrskhanza/DlgReg.java:6642	selesai	InputDataToggle di RegistrasiView.axaml membuka/menutup panel Input Data (ReloadAsync menutupnya, buka via klik kanan: OpenSelectedInput).
+jendela|simrskhanza/DlgReg.java|DlgReg	jendela	DlgReg	simrskhanza/DlgReg.java:1	sebagian	src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs: daftar per periode, filter dokter/poli, cari, ubah registrasi, cetak PDF, klik kanan pasien. Belum ada registrasi baru, hapus, pilih pasien, tab Rujukan Internal Poli, dan daftar Avalonia tidak mengecualikan poli IGDK seperti Java.
 popup|simrskhanza/DlgRujuk.java|jPopupMenu1|MnSuratRujukan	popup	jPopupMenu1 > Surat Rujukan	simrskhanza/DlgRujuk.java:215	belum diaudit	
 aksi|simrskhanza/DlgRujuk.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgRujuk.java:268	belum diaudit	
 aksi|simrskhanza/DlgRujuk.java|BtnBatal	aksi	Baru	simrskhanza/DlgRujuk.java:286	belum diaudit	
