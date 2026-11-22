@@ -59,6 +59,12 @@ public class MenuCScreensTests
                 .Append(("H_btnParkirMasuk", (PageView)new SimrsKhanza.UI.Modules.Parkir.ParkirMasukView()))
                 .Concat(SimrsKhanza.Data.Inventaris.MenuSSpecs.Masters.Select(kv => ("S_" + kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(SimrsKhanza.Data.Inventaris.MenuSSpecs.Reports.Select(kv => ("S_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuKSpecs.Masters.Select(kv => ("K_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuKSpecs.Reports.Select(kv => ("K_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuKExtraSpecs.Masters.Select(kv => ("K2_" + kv.Key, (PageView)new MasterView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuKPayablesSpecs.Reports.Select(kv => ("K2_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Concat(SimrsKhanza.Data.Master.MenuKFinanceSpecs.Reports.Select(kv => ("K3_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Append(("K3_btnPostingJurnal", (PageView)new SimrsKhanza.UI.Modules.Keuangan.PostingJurnalView()))
                 .Concat(Enum.GetValues<SimrsKhanza.Data.Farmasi.StokMode>()
                     .Select(m => ("D_" + m, (PageView)new SimrsKhanza.UI.Modules.Farmasi.StokTransaksiView(m))));
 

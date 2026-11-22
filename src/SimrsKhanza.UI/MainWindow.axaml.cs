@@ -462,6 +462,39 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (SimrsKhanza.Data.Master.MenuKSpecs.Masters.TryGetValue(key, out var masterK))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterK));
+            return;
+        }
+        if (SimrsKhanza.Data.Master.MenuKSpecs.Reports.TryGetValue(key, out var reportK))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportK));
+            return;
+        }
+
+        if (SimrsKhanza.Data.Master.MenuKExtraSpecs.Masters.TryGetValue(key, out var masterK2))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterK2));
+            return;
+        }
+        if (SimrsKhanza.Data.Master.MenuKPayablesSpecs.Reports.TryGetValue(key, out var reportK2))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportK2));
+            return;
+        }
+
+        if (key == SimrsKhanza.Data.Master.MenuKFinanceSpecs.PostingJurnalKey)
+        {
+            await OpenPageAsync(new Modules.Keuangan.PostingJurnalView());
+            return;
+        }
+        if (SimrsKhanza.Data.Master.MenuKFinanceSpecs.Reports.TryGetValue(key, out var reportK3))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportK3));
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
     }
 

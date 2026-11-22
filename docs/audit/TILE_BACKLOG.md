@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 507 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 717 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 592 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 632 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -14,7 +14,7 @@ Per 22 November 2026, 507 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 | H | Menejemen Parkir Kendaraan Pasien & Karyawan | 3/3 | 0 |
 | I | Olah Data Tagihan Rawat Inap & Rawat Jalan | 60/60 | 0 |
 | J | Olah Data Penyakit, Laporan DKK, Laporal RL & Laporan Internal | 96/96 | 0 |
-| K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 2/87 | 85 |
+| K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 87/87 | 0 |
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes & Pihak Ke 3 | 0/183 | 183 |
 | M | Olah Data Rekam Medis Pasien | 1/255 | 254 |
 | N | Unit Pelayanan Tranfusi Darah | 0/11 | 11 |
@@ -28,91 +28,7 @@ Per 22 November 2026, 507 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 
 ## K · Tarif Pelayanan, Menejemen Keuangan & Akuntansi
 
-- Kamar (`btnKamar`)
-- Tarif Ralan (`btnTindakanRalan`)
-- Tarif Ranap (`btnTindakanRanap`)
-- Tarif Lab (`btnTarifLab`)
-- Tarif Radiologi (`btnTarifRadiologi`)
-- Tarif Operasi/VK (`btnPaketOperasi`)
-- Tarif UTD (`btnTarifUtd`)
-- Set Tarif Online (`btnSetTarifOnline`)
-- Asuransi/Askes/Jenis Bayar (`btnCaraBayar`)
-- Akun Rekening (`btnRekening`)
-- Rekening Tahun (`btnRekeningTahun`)
-- Saldo Akun Per Bulan (`btnSaldoAkunPerBulan`)
-- Akun Bayar (`btnakun_bayar`)
-- Akun Bayar Hutang (`btnAkunBayarHutang`)
-- Akun Piutang (`btnAkunPiutang`)
-- Akun Penagihan Piutang (`btnAkunPenagihanPiutang`)
-- Akun Jenis Aset/Inventaris (`btnAkunAsetInventaris`)
-- Pengaturan Rekening (`btnPengaturanRekening`)
-- Kategori Pengeluaran Harian (`btnKategoriPengeluaranHarian`)
-- Pengeluaran Harian (`btnPengeluaran`)
-- Kategori Pemasukan Lain-lain (`btnKategoriPemasukanLian`)
-- Pemasukan Lain-Lain (`btnPemasukanLain`)
-- Kategori Piutang Jasa Perusahaan (`btnKategoriPiutangJasaPerusahaan`)
-- Piutang Jasa Perusahaan (`btnPiutangJasaPerusahaan`)
-- Piutang Jasa Perusahaan Belum Lunas (`btnPiutangJasaPerusahaanBelumLunas`)
-- Bayar Piutang Jasa Perusahaan (`btnBayarPiutangJasaPerusahaan`)
-- Rincian Piutang Pasien (`btnRincianPiutangPasien`)
-- Piutang Belum Lunas (`btnPiutangBelumLunas`)
-- Piutang Obat & BHP Belum Lunas (`btnPiutangObatBelumLunas`)
-- Piutang Per Cara Bayar (`btnPiutangPerCaraBayar`)
-- Nilai Piutang Per Cara Bayar Per Bulan (`btnNilaiPiutangPerJenisBayarPerBulan`)
-- Ringkasan Piutang Per Cara Bayar (`btnRingkasanPiutangPerJenisBayar`)
-- Penagihan Piutang Pasien (`btnPenagihanPiutangPasien`)
-- Validasi Penagihan Piutang (`btnValidasiPenagihanPiutang`)
-- RVP Piutang BPJS (`btnRVPPiutangBPJS`)
-- Klaim Rawat Jalan (`btnKlaimRawatJalan`)
-- Bayar Piutang (`btnBayarPiutang`)
-- Penerimaan/Omset/Kas Masuk (`btnOmsetPenerimaan`)
-- Pengembalian Deposit Pasien (`btnPengembalianDepositPasien`)
-- Pendapatan Per Cara Bayar (`btnPendapatanPerCaraBayar`)
-- Pembayaran Bank Jateng (`btnPembayaranBankJateng`)
-- Pembayaran BRIVA (`btnPembayaranBRIVA`)
-- Pembayaran Bank Papua (`btnPembayaranBankPapua`)
-- Pembayaran Bank Jabar (`btnPembayaranBankJabar`)
-- Pembayaran Bank Mandiri (`btnPembayaranBankMandiri`)
-- Pembayaran Pihak Ke 3 Bank Mandiri (`btnPembayaranPihakKe3BankMandiri`)
-- Ringkasan Hutang Vendor Farmasi (`btnRingkasanHutangVendorFarmasi`)
-- Hutang Obat & BHP (`btnHutangObat`)
-- Titip Faktur/Tagihan Obat & BHP (`btnTagihanHutangObat`)
-- Validasi Titip Faktur/Tagihan Obat & BHP (`btnValidasiTagihanObatBHP`)
-- Bayar Pesan Obat/BHP (`btnbayar_pemesanan`)
-- Ringkasan Hutang Vendor Non Medis (`btnRingkasanHutangVendorBarangNonMedis`)
-- Hutang Non Medis (`btnHutangNonMedis`)
-- Titip Faktur/Tagihan Non Medis (`btnTagihanHutangNonMedis`)
-- Validasi Titip Faktur/Tagihan Non Medis (`btnValidasiTagihanNonMedis`)
-- Bayar Pesan Non Medis (`btnBayarPesanNonMedis`)
-- Hutang Aset/Inventaris (`btnHutangAsetInventaris`)
-- Titip Faktur/Tagihan Aset/Inventaris (`btnTagihanHutangAset`)
-- Validasi Titip Faktur/Tagihan Aset/Inventaris (`btnValidasiTagihanAset`)
-- Bayar Pesan Aset/Inventaris (`btnBayarPemesananInventaris`)
-- Ringkasan Hutang Vendor Aset/Inventaris (`btnRingkasanHutangVendorAsetInventaris`)
-- Ringkasan Hutang Vendor Dapur (`btnRingkasanHutangVendorBarangDapur`)
-- Hutang Barang Dapur (`btnHutangDapur`)
-- Titip Faktur/Tagihan Dapur (`btnTagihanHutangDapur`)
-- Validasi Titip Faktur/Tagihan Dapur (`btnValidasiTagihanDapur`)
-- Bayar Pesan Dapur (`btnBayarPesanDapur`)
-- Peminjam Piutang (`btnPeminjamPiutang`)
-- Piutang Peminjaman Uang (`btnPiutangLainLain`)
-- Piutang Peminjaman Uang Belum Lunas (`btnPiutangPeminjamanUangBelumLunas`)
-- Bayar Piutang Peminjaman Uang (`btnBayarPiutangLainLain`)
-- Pemberi Hutang Lain (`btnPemberiHutangLain`)
-- Beban Hutang Lain (`btnBebanHutangLain`)
-- Ringkasan Beban Hutang Lain (`btnRingkasanBebanHutangLain`)
-- Bayar Beban Hutang Lain (`btnBayarBebanHutangLain`)
-- Bayar JM Dokter (`btnBayarJMDokter`)
-- Pengajuan Biaya (`btnPengajuanBiayaKuangan`)
-- Persetujuan Pengajuan Biaya (`btnPersetujuanPengajuanBiaya`)
-- Validasi Persetujuan Pengajuan Biaya (`btnValidasiPersetujuanPengajuanBiaya`)
-- Rekap Pengajuan Biaya (`btnRekapPengajuanBiaya`)
-- Pengeluaran-pengeluaran/Kas Keluar (`btnPengeluaranPengeluaran`)
-- Posting Jurnal (`btnPostingJurnal`)
-- Jurnal Harian (`btnJurnalHarian`)
-- Buku Besar (`btnBubes`)
-- Cash Flow (`btnCashFlow`)
-- Keuangan (`btnLabaRugi`)
+Semua 87 tile sudah membuka layar. Lihat `MENU_K_STATUS.md`.
 
 ## L · Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes & Pihak Ke 3
 

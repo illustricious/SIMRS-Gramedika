@@ -7,7 +7,7 @@ It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses
 
 ## Status
 
-The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **507 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
+The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **592 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
 
 | Menu | Area | Tiles with a screen |
 |------|------|--------|
