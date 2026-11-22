@@ -35,4 +35,4 @@ Kode: `RawatJalanService.cs`, `RawatJalanView.axaml(.cs)`, tes `RawatJalanServic
 Belum diuji ke database nyata; tes hanya untuk aturan murni (isi minimal, hak milik sendiri, waktu registrasi, daftar kesadaran).
 
 ## Masih tertinggal
-Tab tindakan dokter/petugas/gabungan, obstetri, catatan pasien, template dan 5 SOAP terakhir, resep dan obat, permintaan lab/radiologi, jadwal operasi, rujukan, SKDP, triase, resume, sekitar 120 tombol formulir klinis, hapus banyak baris, cetak. Layar Farmasi `InputPenjualanView` masih memakai NIP placeholder yang sama (`D0000099`) dan perlu diperbaiki terpisah.
+Tab tindakan dokter/petugas/gabungan, obstetri, catatan pasien, template dan 5 SOAP terakhir, resep dan obat, permintaan lab/radiologi, jadwal operasi, rujukan, SKDP, triase, resume, sekitar 120 tombol formulir klinis, hapus banyak baris, cetak. Layar Farmasi `InputPenjualanView` memakai NIP placeholder yang sama; sudah diperbaiki: petugas dipilih dari tabel `petugas` aktif, akun biasa terkunci pada NIP sendiri (`PetugasPilihan.cs`), tidak ada lagi `D0000099` di kode produksi.

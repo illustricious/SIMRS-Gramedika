@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data;
+using SimrsKhanza.Data.Farmasi;
 
 namespace SimrsKhanza.UI.Modules.Farmasi;
 
@@ -9,16 +11,12 @@ public partial class InputPenjualanView : UserControl
 {
     public event EventHandler? BackRequested;
 
-    /// <summary>Same placeholder-NIP situation as RawatJalanView — dev auth doesn't carry a linked pegawai record yet (see docs/handover/04-HISTORY.md, LegacyUserRepository section).</summary>
-    private const string PlaceholderPetugasNip = "D0000099";
-
     private List<PenjualanLine> _all = new();
 
     public InputPenjualanView()
     {
         InitializeComponent();
 
-        this.FindControl<TextBox>("PetugasBox")!.Text = PlaceholderPetugasNip;
         this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
 
         var jenisCombo = this.FindControl<ComboBox>("JenisJualCombo")!;
@@ -31,8 +29,33 @@ public partial class InputPenjualanView : UserControl
         akunCombo.SelectedIndex = 0;
     }
 
+    private async System.Threading.Tasks.Task LoadPetugasAsync()
+    {
+        var combo = this.FindControl<ComboBox>("PetugasCombo")!;
+        try
+        {
+            var petugas = await new FarmasiStokRepository(DatabaseSettings.Load()).PetugasAsync();
+            var items = petugas.Select(p => new PetugasItem(p.Kode, p.Nama)).ToList();
+            combo.ItemsSource = items;
+            var user = AppSession.CurrentUser;
+            var (kode, terkunci) = PetugasPilihan.Tentukan(petugas, user?.IsAdminUtama == true, user?.UserId ?? "");
+            combo.SelectedItem = kode is null ? combo.SelectedItem : items.First(i => i.Kode == kode);
+            combo.IsEnabled = !terkunci;
+        }
+        catch (Exception)
+        {
+            // Tidak terhubung: Simpan akan menolak karena petugas belum dipilih.
+        }
+    }
+
+    private sealed record PetugasItem(string Kode, string Nama)
+    {
+        public override string ToString() => $"{Kode} - {Nama}";
+    }
+
     public async System.Threading.Tasks.Task ReloadAsync()
     {
+        await LoadPetugasAsync();
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
@@ -116,6 +139,14 @@ public partial class InputPenjualanView : UserControl
             return;
         }
 
+        if (this.FindControl<ComboBox>("PetugasCombo")!.SelectedItem is not PetugasItem petugas)
+        {
+            ShowStatus(AppSession.CurrentUser is { IsAdminUtama: false }
+                ? $"Akun {AppSession.CurrentUser.UserId} tidak terdaftar sebagai petugas aktif, transaksi tidak bisa disimpan."
+                : "Pilih petugas terlebih dahulu.", isError: true);
+            return;
+        }
+
         var catatan = this.FindControl<TextBox>("CatatanBox")!.Text?.Trim();
         if (string.IsNullOrWhiteSpace(catatan))
         {
@@ -132,7 +163,7 @@ public partial class InputPenjualanView : UserControl
             var inputs = lines.Select(l => new PenjualanLineInput(
                 l.KodeBarang, l.Jml, l.Harga, l.PtgRp, l.TmbRp + l.EmbRp + l.TslRp, l.NoBatch, l.NoFaktur)).ToList();
 
-            var noKeluar = await new FarmasiRepository(db).SimpanPenjualanAsync(inputs, keterangan, PlaceholderPetugasNip);
+            var noKeluar = await new FarmasiRepository(db).SimpanPenjualanAsync(inputs, keterangan, petugas.Kode);
 
             ShowStatus($"Transaksi {noKeluar} tersimpan — {lines.Count} jenis barang, total Rp {lines.Sum(l => l.Total):N0}.", isError: false);
 

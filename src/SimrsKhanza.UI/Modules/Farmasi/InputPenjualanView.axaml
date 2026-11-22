@@ -29,7 +29,7 @@
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Catatan :" VerticalAlignment="Center" />
                 <TextBox Grid.Row="1" Grid.Column="1" Name="CatatanBox" Margin="4,2" Text="Jual bebas" />
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="Petugas :" VerticalAlignment="Center" />
-                <TextBox Grid.Row="1" Grid.Column="4" Name="PetugasBox" IsReadOnly="True" Margin="4,2" />
+                <ComboBox Grid.Row="1" Grid.Column="4" Name="PetugasCombo" Margin="4,2" HorizontalAlignment="Stretch" AutomationProperties.Name="Petugas" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Tanggal :" VerticalAlignment="Center" />
                 <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,16,Auto,Auto" Margin="4,2" HorizontalAlignment="Left">
