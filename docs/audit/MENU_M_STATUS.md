@@ -1,6 +1,6 @@
 # Menu M — Olah Data Rekam Medis Pasien
 
-Per 22 November 2026, **89 dari 255 kemunculan tile** sudah membuka layar: tile Pasien yang sudah ada dan 88 tile pertama dari backlog. Sebanyak 166 tile masih belum memiliki rute. Screen coverage tidak berarti seluruh alur legacy sudah direplikasi.
+Per 22 November 2026, **255 dari 255 kemunculan tile** sudah membuka layar: tile Pasien dan seluruh 254 tile lainnya di Menu M. Tidak ada tile Menu M yang tersisa tanpa rute. Screen coverage tidak berarti seluruh alur legacy sudah direplikasi.
 
 ## Selesai pada batch pertama
 
@@ -40,6 +40,20 @@ Tile dihubungkan di `MainWindow` melalui `MenuMSpecs`. Master referensi memakai 
 
 **Daftar baca-saja:** Awal Medis IGD, IGD Psikiatri, Rawat Jalan Umum, Rawat Inap Umum, Rawat Inap Neonatus, dan Pengkajian Bayi Baru Lahir. Masing-masing mendukung pencarian pasien dan filter tanggal.
 
+## Batch kedelapan
+
+**Daftar baca-saja:** 20 pengkajian awal medis spesialis, 9 hasil USG/diagnostik/endoskopi, 11 pengkajian tambahan, dan 5 catatan observasi. Tiap daftar menampilkan kolom ringkasan yang sesuai form legacy serta mendukung pencarian dan rentang tanggal.
+
+## Batch kesembilan
+
+**Daftar baca-saja:** Catatan observasi bayi/CHBP/induksi/restrain/ventilator/hemodialisa, keseimbangan dan catatan cairan, Follow Up DBD, catatan keperawatan dan persalinan, reaksi transfusi, GRACE/BISHOP dan pemantauan PEWS/EWS/MEOWS, hemodialisa, fisioterapi/terapi wicara/okupasi/psikologi, 14 form perioperatif, serta 10 checklist kriteria HCU/NICU/PICU/ICU/isolasi. Layar menampilkan ringkasan kunjungan, hasil, dan status sesuai form serta mendukung pencarian dan rentang tanggal.
+
+## Batch kesepuluh
+
+**Master yang bisa dikelola:** Kesimpulan & Anjuran MCU. Penghapusan dinonaktifkan karena referensi dapat dipakai pada pengkajian MCU.
+
+**Daftar baca-saja:** Perencanaan pulang, enam pengkajian lanjutan risiko jatuh, skrining fungsional, penilaian/intervensi nyeri, risiko dekubitus, layanan rehabilitasi/KFR dan ESWL, pengkajian MCU, layanan informasi/konsultasi, transfer dan restrain, rekonsiliasi/GDS/fibrinolitik, alur MPP dan edukasi, skrining kesehatan masyarakat, instrumen mental, TOLAC, serta laporan tindakan. Layar menampilkan ringkasan kunjungan dengan pencarian dan rentang tanggal.
+
 ## Batasan yang diketahui
 
 - Data kelahiran, catatan pasien, diagnosis, HAIs, klasifikasi rawat inap, dan SOAP hanya ditampilkan. Form pencatatan klinis tidak dipindahkan ke layar ini.
@@ -47,11 +61,12 @@ Tile dihubungkan di `MainWindow` melalui `MenuMSpecs`. Master referensi memakai 
 - Resume dan catatan gizi batch ketiga baca-saja. Resume memakai tanggal registrasi kunjungan; catatan gizi memakai tanggal pada tabel masing-masing.
 - Template Pemeriksaan Dokter menampilkan dan mengelola data utama template; daftar diagnosa, tindakan, resep, dan permintaan penunjangnya tetap dikelola melalui alur template di Khanza.
 - Pengkajian awal batch kelima baca-saja; data lengkap tetap diakses dari formulir klinis legacy.
-- Pengkajian spesialis batch keenam juga baca-saja; laporan tidak menggantikan formulir penilaian klinis legacy.
+- Pengkajian spesialis, hasil diagnostik, skrining tambahan, observasi, pemantauan, layanan terapi, form perioperatif dan layanan klinis batch kesepuluh tetap baca-saja; laporan tidak menggantikan formulir klinis legacy.
+- Skrining Instrumen Mental Emosional Anak mengikuti implementasi legacy yang menggunakan tabel `skrining_instrumen_acrs`.
 - Form awal medis dan pengkajian bayi baru lahir batch ketujuh baca-saja; input klinis tetap dilakukan lewat formulir Khanza.
 - Peminjaman, retensi, mutasi, berkas digital, pengaduan, dan insiden ditampilkan baca-saja; pengelolaan alur dan file fisik tetap melalui prosedur Khanza/rumah sakit.
 - Daftar kematian, diagnosis, HAIs, klasifikasi rawat inap, dan SOAP menyediakan filter tanggal sesuai kolom tanggal pada schema.
 - Penomoran ID pada master dengan kolom `AUTO_INCREMENT` dihitung dari nilai maksimum saat membuka formulir; hindari penyimpanan bersamaan untuk master yang sama.
 - Kueri menggunakan `schema_sik.sql`; belum dicocokkan dengan data klinis produksi atau seluruh variasi skema instalasi.
 
-Daftar 166 tile yang belum terbuka ada di [TILE_BACKLOG.md](TILE_BACKLOG.md).
+Menu M sudah lengkap. Sisa 183 tile tanpa layar berada di Menu L dan tercatat di [TILE_BACKLOG.md](TILE_BACKLOG.md).

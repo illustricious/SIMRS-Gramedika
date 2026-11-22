@@ -7,7 +7,7 @@ It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses
 
 ## Status
 
-The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **875 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
+The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **1,041 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
 
 | Menu | Area | Tiles with a screen |
 |------|------|--------|
@@ -22,7 +22,7 @@ The dashboard follows the original Khanza menu categories A–U. As of 22 Novemb
 | I | Billing, patient deposits, receivables, drug and procedure reports | 60/60 |
 | J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
 | K | Tariffs, finance masters, payables and receivables, bank feeds, journals, manual journal posting | **87/87** |
-| M | Patient records | 89/255 |
+| M | Patient records | 255/255 |
 | S | Store, minimarket, and cooperative master data and transaction reports | **25/25** |
 | T | Philanthropy, CSR, zakat, infaq, and shodaqoh reference data | **16/16** |
 | U | Application settings, tariffs, queue displays, and account administration | **30/30 legacy tiles** + database backup |
@@ -51,7 +51,7 @@ Menu S provides editable store masters and read-only purchasing, sales, returns,
 
 Menu K provides editable tariffs (outpatient, inpatient, lab, radiology, UTD, surgery) with automatic totals, editable account masters, and read-only payables, receivables, bank payment, journal, cash flow and profit-and-loss views, plus a manual balanced journal screen. See [Menu K status](docs/audit/MENU_K_STATUS.md).
 
-Menu M now opens the first 88 pending tiles: patient reference masters, read-only clinical records, TNI/POLRI SOAP, record circulation, complaints, triage references, discharge summaries, nutrition records, clinical templates, nursing problem/plan masters, and initial nursing/medical assessments. Clinical records remain read-only here; enter or change them through the corresponding Khanza care workflows. See [Menu M status](docs/audit/MENU_M_STATUS.md).
+Menu M now covers all 255 tiles with patient reference masters, clinical records, TNI/POLRI SOAP, record circulation, complaints, triage, discharge summaries, nutrition, clinical templates, nursing and medical assessments, diagnostic results, patient monitoring, therapy, screening and perioperative workflows. Clinical records remain read-only here and are entered through the corresponding Khanza care workflows. See [Menu M status](docs/audit/MENU_M_STATUS.md).
 
 Pending tiles show a "not implemented" notice.
 
