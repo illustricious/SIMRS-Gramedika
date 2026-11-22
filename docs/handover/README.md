@@ -9,6 +9,7 @@ Keadaan per **22 November 2026**, rilis `v0.2.0-alpha.202611221622` di `master`.
 | [02-ARCHITECTURE.md](02-ARCHITECTURE.md) | Struktur solusi dan pola menambah layar baru |
 | [03-MENU-STATUS.md](03-MENU-STATUS.md) | Cakupan tile per menu, keterbatasan, dan sisa pekerjaan |
 | [04-HISTORY.md](04-HISTORY.md) | Arsip log kronologis lama (alasan keputusan, bug lama) |
+| [../tracker/README.md](../tracker/README.md) | Tracker kesetaraan fitur terhadap source Java (15.843 baris) dan cara memakainya |
 
 Dokumen terkait di `docs/audit/`: [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md) (daftar tile belum berlayar), `MENU_*_STATUS.md` (rincian per menu), [DB_SCHEMA.md](../audit/DB_SCHEMA.md) dan `schema_sik.sql` (skema tanpa data), [AUDIT_REPORT.md](../audit/AUDIT_REPORT.md) (audit repo Khanza lama), [PLANNING_APLIKASI.md](../audit/PLANNING_APLIKASI.md).
 
@@ -22,9 +23,9 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 
 ## Status
 
-- **787 dari 1.224 tile** dashboard membuka layar. 437 sisanya belum.
-- Selesai penuh (100% berlayar): A, B, C, D, E, F, G, H, I, J, K, N, O, P, Q, R, S, T, U.
-- Belum: L (183), M (254 dari 255). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
+- **1.041 dari 1.224 tile** dashboard membuka layar. 183 sisanya (Menu L) belum.
+- Selesai penuh (100% berlayar): A sampai K, M sampai U. Belum: hanya L (183, bridging). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
+- **Tracker fitur** (`docs/tracker`): mengukur kesetaraan fungsi, bukan sekadar layar. Belum ada baris berstatus "selesai"; 382 popup Registrasi sudah dinilai (302 kurang, 80 sebagian), sisanya "belum diaudit". Cakupan layar per menu dihitung otomatis di `RINGKASAN.md`.
 - Build bersih, **127 tes lolos, 1 dilewati** (tes billing ranap butuh DB nyata).
 - "Berlayar" artinya tile membuka layar, bukan berarti setara fungsi Khanza. Keterbatasan tiap menu ada di `docs/audit/MENU_*_STATUS.md`.
 - **Belum pernah diuji ke database produksi.** Layar Menu K, N, P, Q, R, S, dan kebanyakan menu lain baru lolos build, tes struktur (layar bisa dibangun), dan pencocokan nama tabel/kolom dengan `schema_sik.sql`. Kesalahan nama kolom atau perilaku data nyata baru terlihat saat dibuka dengan data.
@@ -41,10 +42,9 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 ## Langkah berikutnya yang disarankan
 
 1. **Uji ke salinan database nyata** (bukan produksi): buka tiap layar Menu K, N, P, Q, R, S, J, I, dan perbaiki kolom yang salah. Ini risiko terbesar saat ini.
-2. **Grafik Menu O**: 113 tile baru berupa tabel agregat, belum ada grafik batang/pai.
-3. **Menu M (254)**: rekam medis, sebagian besar formulir `penilaian*`/`skrining*`/`surat*`. Perlu keputusan "formulir dinamis" di `PLANNING_APLIKASI.md` sebelum mulai.
-4. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
-5. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.2.0 (rilis `v0.2.0-alpha.202611221622`, exe tunggal Windows x64) dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Build OS lain menunggu versi 1.
+2. **Audit fitur lewat tracker**: pilih satu alur (mis. Registrasi, Rawat Jalan), bandingkan dengan Java, isi `docs/tracker/status.json` dengan bukti, jalankan `node tools/tracker.mjs`. Menu M dan O sebagian besar hanya-baca, jadi input/ubah formulir (keputusan "formulir dinamis" di `PLANNING_APLIKASI.md`) dan grafik Menu O adalah celah terbesar.
+3. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
+4. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.2.0 (rilis `v0.2.0-alpha.202611221622`, exe tunggal Windows x64) dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Build OS lain menunggu versi 1.
 
 ## Aturan kerja dengan pemilik proyek
 

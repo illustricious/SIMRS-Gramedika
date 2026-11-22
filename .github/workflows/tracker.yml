@@ -1,0 +1,22 @@
+name: Tracker fitur
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/tracker.mjs
+      - run: cat docs/tracker/RINGKASAN.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tracker-fitur
+          path: |
+            docs/tracker/fitur.tsv
+            docs/tracker/RINGKASAN.md
+      - name: Pastikan laporan dalam commit sudah diperbarui
+        run: git diff --exit-code -- docs/tracker/fitur.tsv docs/tracker/RINGKASAN.md docs/tracker/POPUP_REGISTRASI.md

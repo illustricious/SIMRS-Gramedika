@@ -43,6 +43,14 @@ Lihat `installer/README.md`. Windows lokal: `powershell -ExecutionPolicy Bypass 
 - Seri alpha 0.1.5 dan 0.2.0 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
 - Catatan rilis lama dan checksum disimpan lokal di `publish/release-tools/` (tidak di git).
 
+## Tracker fitur
+
+Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) membaca `LegacyMenuCatalog.cs`, snapshot source Java (`java.jsonl`), kode produksi, dan `status.json`, lalu menulis ulang `fitur.tsv`, `RINGKASAN.md`, dan `POPUP_REGISTRASI.md`. Commit ketiganya bersama `status.json`; CI (`.github/workflows/tracker.yml`) gagal bila laporan kedaluwarsa.
+
+- Tile berstatus otomatis **layar tersedia** bila kuncinya (`btnXxx`, tanpa membedakan huruf besar/kecil) dirutekan di kode produksi (selain katalog, peta hak akses, `DashboardIcons.cs`, dan tes). Tile Menu L otomatis **ditunda**.
+- **selesai/sebagian/kurang** hanya lewat `status.json` dengan bukti (path implementasi atau tes). Layar baca-saja untuk alur yang di Java menyimpan data = sebagian.
+- Snapshot Java baru: `node tools/tracker.mjs --java ..\simrs-khanza\src`.
+
 ## Jebakan lingkungan
 
 1. **Perintah shell terlalu panjang** (`ENAMETOOLONG`) pada Windows: jangan kirim file besar lewat heredoc. Tulis lewat editor.
