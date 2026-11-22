@@ -20,7 +20,7 @@ Requirements: .NET SDK 10 and Inno Setup 6 (`winget install JRSoftware.InnoSetup
 ```powershell
 powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1                 # everything, x64 + arm64
 powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Only win -Arch x64
-powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Only win -Arch x64 -WindowsSetupOnly -FileVersion 0.1.5
+powershell -ExecutionPolicy Bypass -File installer\build-installers.ps1 -Only win -Arch x64 -WindowsSetupOnly -FileVersion 0.2.0
 ```
 
 Output goes to `dist\` (git-ignored).

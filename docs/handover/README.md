@@ -1,6 +1,6 @@
 # Handover SIMRS Gramedika (rewrite SIMRS Khanza ke C# Avalonia)
 
-Keadaan per **22 November 2026**, commit `e9c6a6d` dan sesudahnya di `master`. Mulai dari file ini, lalu buka file yang relevan.
+Keadaan per **22 November 2026**, rilis `v0.2.0-alpha.202611221622` di `master`. Mulai dari file ini, lalu buka file yang relevan.
 
 | File | Isi |
 |---|---|
@@ -44,7 +44,7 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 2. **Grafik Menu O**: 113 tile baru berupa tabel agregat, belum ada grafik batang/pai.
 3. **Menu M (254)**: rekam medis, sebagian besar formulir `penilaian*`/`skrining*`/`surat*`. Perlu keputusan "formulir dinamis" di `PLANNING_APLIKASI.md` sebelum mulai.
 4. **Menu L (183)**: bridging BPJS/PCare/INACBG/Kemenkes. Butuh kredensial dan API eksternal, kerjakan paling akhir.
-5. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.1.5 dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*`.
+5. Rilis: lihat [01-RUNBOOK.md](01-RUNBOOK.md) bagian Release. Alpha 0.2.0 (rilis `v0.2.0-alpha.202611221622`, exe tunggal Windows x64) dibuild lokal, CI tidak jalan untuk tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Build OS lain menunggu versi 1.
 
 ## Aturan kerja dengan pemilik proyek
 

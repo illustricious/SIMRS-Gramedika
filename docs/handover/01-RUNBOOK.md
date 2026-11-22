@@ -25,13 +25,13 @@ dotnet test
 ## Exe tunggal lokal (portabel)
 
 ```powershell
-$v = "0.1.5-alpha.$(Get-Date -Format yyyyMMddHHmm)"
+$v = "0.2.0-alpha.$(Get-Date -Format yyyyMMddHHmm)"
 dotnet publish src\SimrsKhanza.UI -c Release -r win-x64 --self-contained true `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true `
   -p:DebugType=none -p:DebugSymbols=false -p:Version=$v -o dist\single-win-x64
 ```
 
-Hasilnya `SimrsKhanza.UI.exe` (sekitar 59 MB, .NET sudah termasuk) dan satu folder `LatoFont`. Exe berjalan sendiri tanpa folder itu. Ganti nama menjadi `SIMRS-Gramedika-<versi>-win-x64-single.exe`. Folder `dist/` di-gitignore. **Jangan push exe ke GitHub.**
+Hasilnya `SimrsKhanza.UI.exe` (sekitar 59 MB, .NET sudah termasuk) dan satu folder `LatoFont`. Exe berjalan sendiri tanpa folder itu. Ganti nama menjadi `SIMRS-Gramedika-<versi>-win-x64-single.exe`. Folder `dist/` di-gitignore. Exe hanya diunggah sebagai aset Release GitHub bila pemilik proyek memintanya (`gh release create ... --prerelease`), tidak pernah di-commit ke repo.
 
 ## Installer (Windows/Linux/macOS)
 
@@ -39,8 +39,8 @@ Lihat `installer/README.md`. Windows lokal: `powershell -ExecutionPolicy Bypass 
 
 ## Versi dan release
 
-- Versi dasar di `src/SimrsKhanza.UI/SimrsKhanza.UI.csproj` (`<Version>0.1.5-alpha</Version>`). Build alpha menambah stempel waktu: `0.1.5-alpha.yyyyMMddHHmm`.
-- Seri alpha 0.1.5 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
+- Versi dasar di `src/SimrsKhanza.UI/SimrsKhanza.UI.csproj` (`<Version>0.2.0-alpha</Version>`). Build alpha menambah stempel waktu: `0.2.0-alpha.yyyyMMddHHmm`.
+- Seri alpha 0.1.5 dan 0.2.0 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*` dan `v0.2.0-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
 - Catatan rilis lama dan checksum disimpan lokal di `publish/release-tools/` (tidak di git).
 
 ## Jebakan lingkungan

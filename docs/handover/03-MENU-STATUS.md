@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026: **787 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 22 November 2026 (rilis 0.2.0-alpha): **787 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
