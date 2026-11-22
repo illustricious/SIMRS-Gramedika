@@ -4,9 +4,9 @@
     <DrawingImage x:Key="GramedikaMark">
         <DrawingImage.Drawing>
             <DrawingGroup>
-                <GeometryDrawing Brush="#142D68" Geometry="M16,2 H48 Q62,2 62,16 V48 Q62,62 48,62 H16 Q2,62 2,48 V16 Q2,2 16,2 Z" />
+                <GeometryDrawing Brush="#031C6D" Geometry="M16,2 H48 Q62,2 62,16 V48 Q62,62 48,62 H16 Q2,62 2,48 V16 Q2,2 16,2 Z" />
                 <GeometryDrawing Brush="#FFFFFF" Geometry="M17,17 H38 V21 H17 Q15,21 15,23 V38 Q15,40 17,40 H47 Q49,40 49,38 V31 H53 V38 Q53,44 47,44 H35 V48 H42 V52 H22 V48 H29 V44 H17 Q11,44 11,38 V23 Q11,17 17,17 Z" />
-                <GeometryDrawing Brush="#F05255" Geometry="M44,12 H51 Q55,12 55,16 V24 Q55,28 51,28 H44 Q40,28 40,24 V16 Q40,12 44,12 Z" />
+                <GeometryDrawing Brush="#E50108" Geometry="M44,12 H51 Q55,12 55,16 V24 Q55,28 51,28 H44 Q40,28 40,24 V16 Q40,12 44,12 Z" />
                 <GeometryDrawing Brush="#FFFFFF" Geometry="M46,15 H49 V18.5 H52.5 V21.5 H49 V25 H46 V21.5 H42.5 V18.5 H46 Z" />
                 <GeometryDrawing Brush="#79AEFF" Geometry="M18,33 H22 L25,27 L29,35 L32,30 H38 V33 H34 L29,40 L25,33 L24,36 H18 Z" />
             </DrawingGroup>

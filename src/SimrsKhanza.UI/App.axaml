@@ -6,71 +6,64 @@
                   toggled to Dark at runtime from MainWindow's theme switch. -->
 
     <Application.Resources>
-        <!--
-            Color palette sampled from https://www.rsugramedika10.com/ (the user's
-            reference for "how it should look"): deep blue primary (#1E3A8A),
-            red accent (#DC2626), white background, slate neutrals. Dark variant
-            uses the same blue/red accents on a comfortable (not black) gray.
-            See docs/audit/PLANNING_APLIKASI.md for why the shell mirrors the
-            legacy frmUtama layout (two-row shortcut toolbar + status bar).
-        -->
+        <!-- Gramedika palette sampled from the supplied logo: brand blue #031C6D,
+             logo red #E50108, with restrained blue tints and neutral surfaces. -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://SimrsKhanza.UI/Styles/AppMark.axaml" />
             </ResourceDictionary.MergedDictionaries>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="TegasPageBrush">#E8F0FB</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#E0EEF2</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#F2E9EE</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#EAEAF8</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasHeadingBrush">#D9E8FA</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#244F92</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasRowAltBrush">#EFF5FD</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasNavigationBrush">#16335C</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#193C73</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasActionBrush">#245797</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryBrush">#1E3A8A</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#172B66</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#3B82F6</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeAccentBrush">#DC2626</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#F7F9FC</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#F1F5F9</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPageBrush">#EAF1FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#E6F2F4</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#FCEBEC</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#EFEEFA</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingBrush">#DEE9FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#031C6D</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasRowAltBrush">#F2F6FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasNavigationBrush">#031C6D</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#113578</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasActionBrush">#244B91</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#031C6D</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#02144E</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#3868C0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#E50108</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#F6F8FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#EEF2F8</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePanelBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#EAF0F8</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeIconBrush">#244795</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#EAF0FC</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#DCE4EF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextBrush">#1E293B</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#54647C</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#E8EEF7</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBrush">#123F8D</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#E8F0FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#D9E1EE</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#1B2638</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#5D697B</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
-                    <!-- Subtle zebra striping for DataGrid rows (odd = white/background, even = this) -->
-                    <SolidColorBrush x:Key="ThemeRowAltBrush">#F6F8FC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#F6F8FB</SolidColorBrush>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="TegasPageBrush">#1A2334</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#1A2B35</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#30232D</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#242840</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPageBrush">#1B2941</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#1A303A</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#35242E</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#262A45</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingBrush">#273C5B</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#80B1FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#8CB0FF</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasRowAltBrush">#263348</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasNavigationBrush">#192E4C</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasNavigationBrush">#0D1B42</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasTableHeaderBrush">#203F6A</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasActionBrush">#3565A7</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryBrush">#2E4F9E</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#223B78</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#60A5FA</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeAccentBrush">#F87171</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#181F2B</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#272F40</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePanelBrush">#212939</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#2D3A52</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeIconBrush">#AFC9FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#2C3C5D</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#3C485A</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextBrush">#E2E8F0</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#AFBDD0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#3157A1</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#07143B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryLightBrush">#8FB4FF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#FF7378</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#171D29</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#242C3B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePanelBrush">#1D2533</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#29364A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBrush">#ABC5FF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#293857</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#39465A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#E5EAF3</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#AFBCD0</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeRowAltBrush">#242F42</SolidColorBrush>
                 </ResourceDictionary>
@@ -141,12 +134,116 @@
             <Setter Property="IsTodayHighlighted" Value="True" />
             <Setter Property="SelectedDateFormat" Value="Custom" />
             <Setter Property="CustomDateFormatString" Value="dd/MM/yyyy" />
-            <Setter Property="MinWidth" Value="135" />
+            <Setter Property="MinWidth" Value="150" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="Padding" Value="9,4" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="CalendarDatePicker /template/ Button#PART_Button">
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+        <Style Selector="CalendarDatePicker /template/ Button#PART_Button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
         </Style>
         <Style Selector="Calendar">
             <Setter Property="FontSize" Value="13" />
-            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="6" />
+        </Style>
+        <Style Selector="CalendarDayButton">
+            <Setter Property="MinWidth" Value="36" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="7" />
+        </Style>
+        <Style Selector="CalendarDayButton:pointerover /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="7" />
+        </Style>
+        <Style Selector="CalendarDayButton /template/ Border#Root, CalendarDayButton /template/ Border#Border">
+            <Setter Property="CornerRadius" Value="7" />
+        </Style>
+        <Style Selector="CalendarDayButton:today /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+        </Style>
+        <Style Selector="CalendarDayButton:today /template/ Border#Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="CalendarDayButton:today /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="CalendarDayButton:selected /template/ Border#Root">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="CalendarDayButton:selected /template/ Border#Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="CalendarDayButton:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="CalendarButton">
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="CalendarButton:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+        </Style>
+        <Style Selector="ContextMenu, MenuFlyoutPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="CornerRadius" Value="9" />
+            <Setter Property="MinWidth" Value="224" />
+            <Setter Property="MaxHeight" Value="680" />
+        </Style>
+        <Style Selector="MenuItem">
+            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        <Style Selector="MenuItem:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="MenuItem:pressed">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+        </Style>
+        <Style Selector="MenuItem:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}" />
+        </Style>
+        <Style Selector="MenuItem /template/ Popup#PART_Popup > Border">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="CornerRadius" Value="9" />
+        </Style>
+        <Style Selector="Separator">
+            <Setter Property="Height" Value="1" />
+            <Setter Property="Margin" Value="8,4" />
+            <Setter Property="Background" Value="{DynamicResource ThemeBorderBrush}" />
         </Style>
         <Style Selector="ScrollBar:horizontal">
             <Setter Property="Height" Value="22" />
