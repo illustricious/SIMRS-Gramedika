@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 613 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 611 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 629 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 595 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -20,7 +20,7 @@ Per 22 November 2026, 613 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 | N | Unit Pelayanan Tranfusi Darah | 11/11 | 0 |
 | O | Analisa, Dashboard & Info Grafik | 0/113 | 113 |
 | P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 0/45 | 45 |
-| Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 0/16 | 16 |
+| Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 16/16 | 0 |
 | R | Pre-Construction & Infection Control Risk Assessment | 10/10 | 0 |
 | S | Toko / Minimarket / Koperasi | 25/25 | 0 |
 | T | Pengelolaan Data Filantropi, CSR, Zakat, Infaq & Shodaqoh | 16/16 | 0 |
@@ -643,22 +643,7 @@ Semua tile sudah membuka layar. Lihat `MENU_NR_STATUS.md`.
 
 ## Q · Manajemen Perpustakaan & Koleksi Pustaka Digital
 
-- Ruang Perpustakaan (`btnRuangPerpustakaan`)
-- Kategori Koleksi (`btnKategoriPerpustakaan`)
-- Jenis Koleksi (`btnJenisPerpustakaan`)
-- Pengarang/Penulis (`btnPengarangPerpustakaan`)
-- Penerbit Koleksi (`btnPenerbitPerpustakaan`)
-- Koleksi Perpustakaan (`btnKoleksiPerpustakaan`)
-- Inventaris Perpustakaan (`btnInventarisPerpustakaan`)
-- Pengaturan Peminjaman (`btnPengaturanPeminjamanPerpustakaan`)
-- Denda Perpustakaan (`btnDendaPerpustakaan`)
-- Anggota Perpustakaan (`btnAnggotaPerpustakaan`)
-- Peminjaman Koleksi Perpustakaan (`btnPeminjamanPerpustakaan`)
-- Bayar Denda Perpustakaan (`btnBayarDendaPerpustakaan`)
-- Data Koleksi Ebook (`btnEbookPerpustakaan`)
-- Koleksi Penelitian (`btnPenelitianPerpustakaan`)
-- Cari Koleksi Ebook (`btnCariEbook`)
-- Cari Inventaris Perpustakaan (`btnCariInventarisPerpustakaan`)
+Semua tile sudah membuka layar. Lihat `MENU_Q_STATUS.md`.
 
 ## R · Pre-Construction & Infection Control Risk Assessment
 

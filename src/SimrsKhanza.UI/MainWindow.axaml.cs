@@ -506,6 +506,17 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (SimrsKhanza.Data.Master.MenuQSpecs.Masters.TryGetValue(key, out var masterQ))
+        {
+            await OpenPageAsync(new Modules.Shared.MasterView(masterQ));
+            return;
+        }
+        if (SimrsKhanza.Data.Master.MenuQSpecs.Reports.TryGetValue(key, out var reportQ))
+        {
+            await OpenPageAsync(new Modules.Shared.ReportView(reportQ));
+            return;
+        }
+
         await ShowNotImplementedAsync(label);
     }
 
