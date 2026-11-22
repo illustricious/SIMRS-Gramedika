@@ -2,7 +2,7 @@
 
 Diaudit 22 November 2026. Sumber: `simrskhanza/DlgReg.java` (handler tombol, baris 6794-7017 dan sekitarnya). Avalonia: `RegistrasiView.axaml(.cs)` dan `RegistrasiRepository`. Status per ID ada di [fitur.tsv](fitur.tsv); 348 popup klik kanan sudah dinilai sebelumnya, 27 tombol dan jendela dinilai di audit ini.
 
-Hasil tombol/jendela setelah perbaikan A-D: 4 selesai, 6 sebagian, 13 kurang, 1 ditunda, jendela sebagian. (Sebelum perbaikan: 3 selesai, 8 sebagian, 14 kurang.)
+Hasil tombol setelah perbaikan A-D: 4 selesai, 10 sebagian, 11 kurang, 1 ditunda; jendela sebagian. (Sebelum perbaikan: 3 selesai, 8 sebagian, 14 kurang, 1 ditunda.)
 
 ## Selisih terpenting (urut dampak)
 
