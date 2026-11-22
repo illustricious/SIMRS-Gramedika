@@ -1,6 +1,6 @@
 # Tile yang belum membuka layar
 
-Per 22 November 2026, 787 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 437 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
+Per 22 November 2026, 875 dari 1.224 tile katalog sudah memiliki rute layar. Daftar ini mencatat 349 kemunculan tile tanpa rute layar. Tile yang muncul pada beberapa menu dihitung di setiap menu. Cakupan layar diperiksa dari katalog dan rute di kode. Kesetaraan fungsi dan hasil query memerlukan verifikasi terpisah.
 
 | Menu | Area | Dengan layar | Belum |
 |---|---|---:|---:|
@@ -16,9 +16,9 @@ Per 22 November 2026, 787 dari 1.224 tile katalog sudah memiliki rute layar. Daf
 | J | Olah Data Penyakit, Laporan DKK, Laporal RL & Laporan Internal | 96/96 | 0 |
 | K | Tarif Pelayanan, Menejemen Keuangan & Akuntansi | 87/87 | 0 |
 | L | Bridging VClaim, Aplicare, PCare, INACBG, Kemenkes & Pihak Ke 3 | 0/183 | 183 |
-| M | Olah Data Rekam Medis Pasien | 1/255 | 254 |
+| M | Olah Data Rekam Medis Pasien | 89/255 | 166 |
 | N | Unit Pelayanan Tranfusi Darah | 11/11 | 0 |
-| O | Analisa, Dashboard & Info Grafik | 0/113 | 113 |
+| O | Analisa, Dashboard & Info Grafik | 113/113 | 0 |
 | P | Manajemen Surat Masuk & Keluar, Pengumuman E-Pasien | 45/45 | 0 |
 | Q | Manajemen Perpustakaan & Koleksi Pustaka Digital | 16/16 | 0 |
 | R | Pre-Construction & Infection Control Risk Assessment | 10/10 | 0 |
@@ -218,94 +218,6 @@ Semua 87 tile sudah membuka layar. Lihat `MENU_K_STATUS.md`.
 
 ## M · Olah Data Rekam Medis Pasien
 
-- Instansi/Perusahaan Pasien (`btnPerusahaan`)
-- Suku/Bangsa Pasien (`btnSuku`)
-- Bahasa Pasien (`btnBahasa`)
-- Golongan TNI (`btnGolonganTNI`)
-- Satuan TNI (`btnSatuanTNI`)
-- Jabatan TNI (`btnJabatanTNI`)
-- Pangkat TNI (`btnPangkatTNI`)
-- Golongan POLRI (`btnGolonganPolri`)
-- Satuan POLRI (`btnSatuanPolri`)
-- Jabatan POLRI (`btnJabatanPolri`)
-- Pangkat POLRI (`btnPangkatPolri`)
-- Cacat Fisik (`btnCacatFisik`)
-- Kelahiran Bayi (`btnLahir`)
-- Catatan Pasien (`btnCatatanPasien`)
-- Pasien Meninggal (`btnPasienMati`)
-- Diagnosa Pasien (`btnDiagnosa`)
-- Insiden Keselamatan (`btnInsidenKeselamatan`)
-- Data HAIs (`btnDataHAIs`)
-- Klasifikasi Pasien Ranap (`btnKlasifikasiPasienRanap`)
-- SOAP Perawatan (`btnSOAPPerawatan`)
-- SOAP Ralan Anggota POLRI (`btnSOAPRalanAnggotaPolri`)
-- SOAP Ranap Anggota POLRI (`btnSOAPRanapAnggotaPolri`)
-- SOAP Ralan Anggota TNI (`btnSOAPRalanAnggotaTNI`)
-- SOAP Ranap Anggota TNI (`btnSOAPRanapAnggotaTNI`)
-- Riwayat Kamar Pasien (`btnRiwayatKamarPasien`)
-- Data Insiden Keselamatan (`btnInsidenKeselamatanPasien`)
-- Peminjaman Berkas RM (`btnSirkulasiBerkas`)
-- Riwayat Perawatan (`btnResume`)
-- Retensi Berkas R.M. (`btnRetensiRM`)
-- Mutasi Berkas RM (`btnMutasiBerkas`)
-- Berkas Digital Perawatan (`btnBerkasDigitalPerawatan`)
-- Pengaduan/Chat (`btnPengaduan`)
-- Master Triase Pemeriksaan (`btnMasterTriasePemeriksaan`)
-- Master Triase Macam Kasus (`btnMasterTriaseMacamKasus`)
-- Master Triase Skala 1 (`btnMasterTriaseSkala1`)
-- Master Triase Skala 2 (`btnMasterTriaseSkala2`)
-- Master Triase Skala 3 (`btnMasterTriaseSkala3`)
-- Master Triase Skala 4 (`btnMasterTriaseSkala4`)
-- Master Triase Skala 5 (`btnMasterTriaseSkala5`)
-- Data Triase IGD (`btnDataTriaseIGD`)
-- Resume Pasien Ralan (`btnResumePasien`)
-- Resume Pasien Ranap (`btnResumePasienRanap`)
-- Skrining Gizi Lanjut (`btnSkriningGiziLanjut`)
-- Asuhan Gizi (`btnAsuhanGizi`)
-- Monitoring Asuhan Gizi (`btnMonitoringAsuhanGizi`)
-- Catatan ADIME Gizi (`btnCatatanADIMEGizi`)
-- Skrining Nutrisi Pasien Dewasa (`btnSkriningNutrisiDewasa`)
-- Skrining Nutrisi Pasien Lansia (`btnSkriningNutrisiLansia`)
-- Skrining Nutrisi Pasien Anak (`btnSkriningNutrisiAnak`)
-- Skrining Gizi Kehamilan (`btnSkriningGiziKehamilan`)
-- Master Template Hasil Radiologi (`btnMasterTemplateHasilRadiologi`)
-- Master Template Laporan Operasi (`btnMasterTemplateLaporanOperasi`)
-- Master Template Pemeriksaan (`btnMasterTemplatePemeriksaanDokter`)
-- Master Template Informasi & Edukasi (`btnMasterTemplateInformasiEdukasi`)
-- Master Masalah Keperawatan (`btnMasterMasalahKeperawatan`)
-- Master Rencana Keperawatan (`btnMasterRencanaKeperawatan`)
-- Master Masalah Keperawatan Gigi (`btnMasterMasalahKeperawatanGigi`)
-- Master Rencana Keperawatan Gigi (`btnMasterRencanaKeperawatanGigi`)
-- Master Masalah Keperawatan Bayi/Anak (`btnMasterMasalahKeperawatanAnak`)
-- Master Rencana Keperawatan Bayi/Anak (`btnMasterRencanaKeperawatanAnak`)
-- Master Masalah Keperawatan Mata (`btnMasterMasalahKeperawatanMata`)
-- Master Rencana Keperawatan Mata (`btnMasterRencanaKeperawatanMata`)
-- Master Masalah Keperawatan IGD (`btnMasterMasalahKeperawatanIGD`)
-- Master Rencana Keperawatan IGD (`btnMasterRencanaKeperawatanIGD`)
-- Master Masalah Keperawatan Psikiatri (`btnMasterMasalahKeperawatanPsikiatri`)
-- Master Rencana Keperawatan Psikiatri (`btnMasterRencanaKeperawatanPsikiatri`)
-- Master Masalah Keperawatan Geriatri (`btnMasterMasalahKeperawatanGeriatri`)
-- Master Rencana Keperawatan Geriatri (`btnMasterRencanaKeperawatanGeriatri`)
-- Master Masalah Keperawatan Neonatus (`btnMasterMasalahKeperawatanNeonatus`)
-- Master Rencana Keperawatan Neonatus (`btnMasterRencanaKeperawatanNeonatus`)
-- Master Imunisasi (`btnMasterImunisasi`)
-- Awal Keperawatan Ralan Umum (`btnPenilaianAwalKeperawatanRalan`)
-- Awal Keperawatan Ranap Umum (`btnPenilaianAwalKeperawatanRanap`)
-- Awal Keperawatan IGD (`btnPenilaianAwalKeperawatanIGD`)
-- Awal Keperawatan Gigi (`btnPenilaianAwalKeperawatanGigi`)
-- Awal Keperawatan Ralan Kebidanan (`btnPenilaianAwalKeperawatanKebidanan`)
-- Awal Keperawatan Ranap Kebidanan (`btnPenilaianAwalKeperawatanKebidananRanap`)
-- Awal Keperawatan Ralan Bayi/Anak (`btnPenilaianAwalRalanBayi`)
-- Awal Keperawatan Ranap Bayi/Anak (`btnPenilaianAwalKeperawatanRanapBayiAnak`)
-- Awal Keperawatan Ralan Psikiatri (`btnPenilaianAwalKeperawatanRalanPsikiatri`)
-- Awal Keperawatan Ralan Geriatri (`btnPenilaianAwalKeperawatanRalanGeriatri`)
-- Awal Keperawatan Ranap Neonatus (`btnPenilaianAwalKeperawatanRanapNeonatus`)
-- Awal Medis IGD (`btnPenilaianAwalMedisIGD`)
-- Awal Medis IGD Psikiatri (`btnPenilaianAwalMedisRalanIGDPsikiatri`)
-- Awal Medis Ralan Umum (`btnPenilaianAwalMedisRalan`)
-- Awal Medis Ranap Umum (`btnPenilaianAwalMedisRanap`)
-- Awal Medis Ranap Neonatus (`btnPenilaianAwalMedisRanapNeonatus`)
-- Pengkajian Bayi Baru Lahir (`btnPenilaianBayiBaruLahir`)
 - Awal Medis Ralan Bayi/Anak (`btnPenilaianAwalMedisRalanBayi`)
 - Awal Medis Ralan Kandungan (`btnPenilaianAwalMedisRalanKandungan`)
 - Awal Medis Ranap Kandungan (`btnPenilaianAwalMedisRanapKandungan`)
