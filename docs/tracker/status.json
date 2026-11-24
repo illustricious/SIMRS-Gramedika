@@ -649,7 +649,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|ppRiwayat": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji."
+    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|ppDeteksiDIniCorona": {
     "status": "kurang",
@@ -685,7 +685,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnKamarInap": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji."
+    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnRawatJalan": {
     "status": "sebagian",
@@ -737,7 +737,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPilihBilling|MnBilling": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji."
+    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganPoli": {
     "status": "kurang",

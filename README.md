@@ -35,7 +35,7 @@ The dashboard follows the original Khanza menu categories A–U. As of 22 Novemb
 
 Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
 
-Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasien, or the lab and radiology lists to open its context menu. The menu targets the clicked row and enables available actions according to Khanza permissions.
+Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasien, or the lab and radiology lists to open its context menu. The menu targets the clicked row and enables available actions according to Khanza permissions. The compact menu and its submenus follow the active light or dark theme.
 
 Kasir shows a read-only breakdown of recorded procedures, drugs, and medical supplies for open visits. Settlement for visits with these charges uses Kasir Khanza.
 

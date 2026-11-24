@@ -30,3 +30,7 @@ Belum diuji ke database nyata: tes hanya untuk aturan murni (batas 48 jam, umur,
 
 ## Masih tertinggal
 Pemilih pasien lewat dialog, dialog perujuk dan asal rujukan, tab Rujukan Internal Poli, grafik/demografi dari layar ini, tanggal-jam mundur, mode urut no. reg poli atau dokter+poli, closing kasir, catatan pasien, cetak berkop RS, hapus banyak baris.
+
+## Tampilan menu klik kanan (24 November 2026)
+
+Menu pasien memakai palet Gramedika pada panel, sorotan, teks dan penanda submenu di tema terang dan gelap. Tinggi minimum baris turun dari 30 ke 25 piksel logis. Jarak tepi panel dan pemisah dirapatkan. Tes headless di `MenuCScreensTests.cs` memeriksa tinggi baris, warna panel utama dan submenu, sorotan, serta chevron pada kedua tema. Bukti ditambahkan ke entri popup terkait di tracker.

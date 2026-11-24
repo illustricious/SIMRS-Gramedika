@@ -10,6 +10,7 @@ Keadaan per **22 November 2026**, rilis `v0.2.5-alpha.202611222238` di `master`.
 | [03-MENU-STATUS.md](03-MENU-STATUS.md) | Cakupan tile per menu, keterbatasan, dan sisa pekerjaan |
 | [04-HISTORY.md](04-HISTORY.md) | Arsip log kronologis lama (alasan keputusan, bug lama) |
 | [05-SESSION-2026-11-22.md](05-SESSION-2026-11-22.md) | Log rinci sesi 22 November 2026: apa yang dikerjakan, commit, keputusan, jebakan, risiko, cara melanjutkan |
+| [08-SESSION-2026-11-24.md](08-SESSION-2026-11-24.md) | Tema terang/gelap dan tampilan ringkas untuk menu klik kanan |
 | [../tracker/README.md](../tracker/README.md) | Tracker kesetaraan fitur terhadap source Java (15.843 baris) dan cara memakainya |
 
 Dokumen terkait di `docs/audit/`: [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md) (daftar tile belum berlayar), `MENU_*_STATUS.md` (rincian per menu), [DB_SCHEMA.md](../audit/DB_SCHEMA.md) dan `schema_sik.sql` (skema tanpa data), [AUDIT_REPORT.md](../audit/AUDIT_REPORT.md) (audit repo Khanza lama), [PLANNING_APLIKASI.md](../audit/PLANNING_APLIKASI.md).

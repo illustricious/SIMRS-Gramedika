@@ -22,6 +22,8 @@ Kesetaraan fungsi perlu diperiksa per alur. Handler keyboard/mouse tanpa ActionL
 
 Hasil audit per layar: [Registrasi](AUDIT_REGISTRASI.md), [Rawat Jalan](AUDIT_RAWAT_JALAN.md).
 
+Pembaruan visual menu klik kanan, termasuk tema terang/gelap dan jarak antarpilihan, dicatat di [audit Registrasi](AUDIT_REGISTRASI.md#tampilan-menu-klik-kanan-24-november-2026). Status fitur mengikuti cakupan alur masing-masing.
+
 Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [audit cabang pelayanan](AUDIT_CABANG.md).
 
 ## Status audit per alur (22 November 2026)

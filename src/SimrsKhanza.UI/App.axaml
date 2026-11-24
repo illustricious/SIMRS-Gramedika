@@ -9,6 +9,7 @@
         <!-- Gramedika palette sampled from the supplied logo: brand blue #031C6D,
              logo red #E50108, with restrained blue tints and neutral surfaces. -->
         <ResourceDictionary>
+            <Thickness x:Key="MenuFlyoutPresenterThemePadding">3</Thickness>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://SimrsKhanza.UI/Styles/AppMark.axaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -39,6 +40,13 @@
                     <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#5D697B</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeRowAltBrush">#F6F8FB</SolidColorBrush>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="ThemePanelBrush" />
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="ThemeBorderBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevron" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronPointerOver" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronSubMenuOpened" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronPressed" ResourceKey="ThemeOnPrimaryBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronDisabled" ResourceKey="ThemeTextSecondaryBrush" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="TegasPageBrush">#1B2941</SolidColorBrush>
@@ -66,6 +74,13 @@
                     <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#AFBCD0</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeRowAltBrush">#242F42</SolidColorBrush>
+                    <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="ThemePanelBrush" />
+                    <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="ThemeBorderBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevron" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronPointerOver" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronSubMenuOpened" ResourceKey="ThemeIconBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronPressed" ResourceKey="ThemeOnPrimaryBrush" />
+                    <StaticResource x:Key="MenuFlyoutSubItemChevronDisabled" ResourceKey="ThemeTextSecondaryBrush" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -212,40 +227,47 @@
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="MinWidth" Value="204" />
-            <Setter Property="MaxHeight" Value="620" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="CornerRadius" Value="7" />
+            <Setter Property="MinWidth" Value="184" />
+            <Setter Property="MaxHeight" Value="520" />
         </Style>
         <Style Selector="MenuItem">
-            <Setter Property="MinHeight" Value="30" />
-            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="MinHeight" Value="25" />
+            <Setter Property="Padding" Value="9,3" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
         </Style>
-        <Style Selector="MenuItem:pointerover, MenuItem:selected">
+        <!-- Fluent applies interaction colors to the template parts, including for keyboard selection. -->
+        <Style Selector="MenuItem:selected /template/ Border#PART_LayoutRoot, MenuItem:open /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+        </Style>
+        <Style Selector="MenuItem:selected /template/ ContentPresenter#PART_HeaderPresenter, MenuItem:open /template/ ContentPresenter#PART_HeaderPresenter">
             <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
         </Style>
-        <Style Selector="MenuItem:pressed">
+        <Style Selector="MenuItem:pressed /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+        </Style>
+        <Style Selector="MenuItem:pressed /template/ ContentPresenter#PART_HeaderPresenter">
             <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
         </Style>
-        <Style Selector="MenuItem:disabled">
+        <Style Selector="MenuItem:disabled /template/ ContentPresenter#PART_HeaderPresenter">
             <Setter Property="Foreground" Value="{DynamicResource ThemeTextSecondaryBrush}" />
         </Style>
-        <Style Selector="MenuItem /template/ Popup#PART_Popup > Border">
-            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="CornerRadius" Value="8" />
+        <Style Selector="MenuItem /template/ Path#PART_ChevronPath">
+            <Setter Property="Width" Value="6" />
+            <Setter Property="Height" Value="11" />
+            <Setter Property="Margin" Value="8,0,0,0" />
         </Style>
         <Style Selector="Separator">
             <Setter Property="Height" Value="1" />
             <Setter Property="Margin" Value="8,4" />
             <Setter Property="Background" Value="{DynamicResource ThemeBorderBrush}" />
+        </Style>
+        <Style Selector="ContextMenu Separator, MenuFlyoutPresenter Separator, MenuItem Separator">
+            <Setter Property="Margin" Value="7,2" />
         </Style>
         <!-- Keep Fluent's scroll interaction but show a stable, visible track and thumb. -->
         <Style Selector="ScrollViewer">

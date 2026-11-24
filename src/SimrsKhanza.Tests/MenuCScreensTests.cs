@@ -107,6 +107,34 @@ public class MenuCScreensTests
         Assert.True(errors.Count == 0, string.Join("\n", errors));
     }
 
+    private static void VerifyPopupStyle(ContextMenu menu, MenuItem group, string surface, string highlight, string ink)
+    {
+        static void Color(Avalonia.Media.IBrush? brush, string expected) =>
+            Assert.Equal(Avalonia.Media.Color.Parse(expected), Assert.IsAssignableFrom<Avalonia.Media.ISolidColorBrush>(brush).Color);
+
+        Color(menu.Background, surface);
+        Assert.InRange(group.Bounds.Height, 25d, 28d);
+        group.IsSubMenuOpen = true;
+        Dispatcher.UIThread.RunJobs();
+        try
+        {
+            var popup = group.GetVisualDescendants().OfType<Avalonia.Controls.Primitives.Popup>()
+                .Single(p => p.Name == "PART_Popup");
+            var submenu = Assert.IsType<Border>(popup.Child);
+            Color(submenu.Background, surface);
+            Assert.Equal(new Thickness(3), submenu.Padding);
+            var row = group.GetVisualDescendants().OfType<Border>().Single(b => b.Name == "PART_LayoutRoot");
+            Color(row.Background, highlight);
+            var chevron = group.GetVisualDescendants().OfType<Avalonia.Controls.Shapes.Path>().Single(p => p.Name == "PART_ChevronPath");
+            Color(chevron.Fill, ink);
+        }
+        finally
+        {
+            group.IsSubMenuOpen = false;
+        }
+    }
+
+
     private static void VerifyPatientContextMenu()
     {
         var first = new PatientMenuTarget("RW-01", "RM-01", "Pasien A");
@@ -139,6 +167,7 @@ public class MenuCScreensTests
             Assert.Same(second, grid.SelectedItem);
 
             var record = Assert.IsType<MenuItem>(menu.Items[0]);
+            VerifyPopupStyle(menu, record, "#FFFFFF", "#E8F0FC", "#123F8D");
             var identity = Assert.IsType<MenuItem>(record.Items[0]);
             Assert.True(identity.IsEnabled);
             var billing = menu.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Billing/Pembayaran Pasien"));
@@ -154,8 +183,11 @@ public class MenuCScreensTests
             Dispatcher.UIThread.RunJobs();
             Assert.False(menu.IsOpen);
 
+            window.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Dark;
             grid.RaiseEvent(new ContextRequestedEventArgs { RoutedEvent = InputElement.ContextRequestedEvent });
+            Dispatcher.UIThread.RunJobs();
             Assert.True(menu.IsOpen);
+            VerifyPopupStyle(menu, Assert.IsType<MenuItem>(menu.Items[0]), "#1D2533", "#293857", "#ABC5FF");
             menu.Close();
         }
         finally
