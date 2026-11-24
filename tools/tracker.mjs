@@ -95,6 +95,14 @@ for (const row of rows) {
   output.push([row.id,row.kind,row.route,row.file+(row.line ? ':'+row.line : ''),state,review?.bukti||(!review && row.screen && !row.deferred ? 'Rute layar di '+row.screen+'. Kesetaraan fungsi belum diaudit.' : '')].map(v=>v.replace(/[\t\r\n]+/g,' ')).join('\t'));
 }
 fs.writeFileSync(path.join(dir,'fitur.tsv'),output.join('\n')+'\n');
+// JavaScript data file works when the dashboard is opened directly with file://.
+// JSON escaping also makes the data safe if it is ever embedded in an HTML script.
+const grafik = rows.map(row => ({
+  kind: row.kind, route: row.route, file: row.file, line: row.line || 0,
+  state: status[row.id]?.status ?? (row.deferred ? 'ditunda' : row.screen ? 'layar tersedia' : 'belum diaudit'),
+  evidence: status[row.id]?.bukti || (!status[row.id] && row.screen && !row.deferred ? 'Rute layar di '+row.screen+'. Kesetaraan fungsi belum diaudit.' : '')
+}));
+fs.writeFileSync(path.join(dir,'grafik-data.js'), 'window.TRACKER_DATA='+JSON.stringify(grafik).replaceAll('<','\\u003c')+';\n');
 const table = ['| Jenis | '+states.join(' | ')+' | Total |','|---|---:|---:|---:|---:|---:|---:|---:|'];
 for (const [kind, counts] of totals) table.push('| '+[kind,...counts,counts.reduce((a,b)=>a+b)].join(' | ')+' |');
 const menus = ['| Menu | Tile | Punya layar | Belum |', '|---|---:|---:|---:|'];

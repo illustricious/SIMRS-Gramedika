@@ -1,0 +1,16 @@
+#!/bin/sh
+# Perbarui laporan tracker (fitur.tsv, RINGKASAN.md, POPUP_REGISTRASI.md, grafik-data.js) pada setiap commit,
+# supaya GRAFIK.html selalu sesuai kode dan status.json. Aktifkan sekali per clone:
+#   git config core.hooksPath .githooks
+# CI (.github/workflows/tracker.yml) tetap gagal bila laporan di commit kedaluwarsa.
+cd "$(git rev-parse --show-toplevel)" || exit 0
+if ! command -v node >/dev/null 2>&1; then
+  echo "[tracker] node tidak ditemukan, pembaruan dilewati (CI akan memeriksa)."
+  exit 0
+fi
+if ! node tools/tracker.mjs >/dev/null; then
+  echo "[tracker] node tools/tracker.mjs gagal; commit dibatalkan. Periksa docs/tracker/status.json."
+  exit 1
+fi
+git add docs/tracker/fitur.tsv docs/tracker/RINGKASAN.md docs/tracker/POPUP_REGISTRASI.md docs/tracker/grafik-data.js
+exit 0

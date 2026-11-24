@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progres SIMRS Gramedika</title>
+<style>
+:root{color-scheme:light dark;--bg:#f4f6f9;--card:#fff;--line:#d5dce5;--text:#18212b;--muted:#566474;--belum:#9aa5b1;--layar:#3d87c6;--kurang:#d36452;--sebagian:#dca52f;--selesai:#2ba34a;--ditunda:#856daf}
+@media (prefers-color-scheme:dark){:root{--bg:#0c1016;--card:#161e27;--line:#34404b;--text:#e7ebf0;--muted:#adb8c5;--belum:#687480}}
+*{box-sizing:border-box}body{margin:0;padding:20px;max-width:1500px;margin:auto;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif}
+h1{margin:0 0 4px;font-size:24px}h2{font-size:16px;margin:22px 0 8px}p,.muted{color:var(--muted);line-height:1.5;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px}.card b{font-size:26px;display:block}.card span{font-size:13px;color:var(--muted)}
+.bar{display:flex;height:16px;border-radius:3px;overflow:hidden;background:var(--line);margin-top:6px}.bar i{display:block;height:100%}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);font-size:13px}th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}th{color:var(--muted);font-weight:600}td.barcell{width:34%;min-width:140px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0;font-size:13px}.sw{display:inline-block;width:12px;height:12px;margin-right:5px;vertical-align:middle;border-radius:2px}
+.belum{background:var(--belum)}.layar{background:var(--layar)}.kurang{background:var(--kurang)}.sebagian{background:var(--sebagian)}.selesai{background:var(--selesai)}.ditunda{background:var(--ditunda)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}.controls label{display:grid;gap:4px;font-size:13px;color:var(--muted)}
+input,select{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:8px;font:inherit;min-width:180px}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px}.group{background:var(--card);border:1px solid var(--line);padding:10px;border-radius:6px}.group h3{margin:0 0 4px;font-size:14px}.meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(13px,1fr));gap:2px}.cell{height:13px;min-width:0;border:0;padding:0;cursor:pointer;border-radius:2px}.cell:focus-visible{outline:2px solid var(--text)}
+#detail{position:sticky;bottom:0;background:var(--card);border:1px solid var(--muted);padding:12px;margin-top:16px;white-space:pre-wrap;max-height:35vh;overflow:auto;font-size:13px}#detail:empty{display:none}
+a{color:var(--layar)}
+</style>
+</head>
+<body>
+<h1>Progres SIMRS Gramedika</h1>
+<p>Dihitung otomatis oleh <code>node tools/tracker.mjs</code> dari katalog tile, source Java Khanza, kode produksi, dan <code>status.json</code>. Angka di bawah selalu mencakup seluruh data; filter hanya memengaruhi peta kotak.</p>
+<div class="legend" id="legend"></div>
+
+<h2>Ringkasan</h2>
+<div class="cards" id="cards"></div>
+
+<h2>Per jenis entri</h2>
+<table id="kinds"></table>
+
+<h2>Alur yang sudah diaudit</h2>
+<p class="muted">Satu baris per file Java yang punya minimal satu entri berstatus kurang, sebagian, atau selesai. "Dinilai" = kurang + sebagian + selesai.</p>
+<table id="flows"></table>
+
+<h2>Peta entri</h2>
+<div class="controls">
+<label>Lingkup<select id="scope"><option value="all" selected>Semua kelompok</option><option value="audited">Alur yang sudah diaudit</option><option value="tiles">Tile dashboard</option></select></label>
+<label>Jenis<select id="kind"><option value="">Semua jenis</option><option>aksi</option><option>popup</option><option>jendela</option><option>tile</option></select></label>
+<label>Status<select id="state"><option value="">Semua status</option><option>belum diaudit</option><option>layar tersedia</option><option>kurang</option><option>sebagian</option><option>selesai</option><option>ditunda</option></select></label>
+<label>Cari<input id="search" type="search" placeholder="Nama, jalur, atau file"></label>
+</div>
+<p class="muted" id="mapinfo"></p>
+<main class="groups" id="groups"></main>
+<div id="detail" aria-live="polite"></div>
+<p class="muted">Catatan: "selesai" berarti alur setara Java dengan bukti, bukan kesiapan produk. "Layar tersedia" berarti rute layar terdeteksi di kode, belum tentu alurnya benar. "Belum diaudit" tidak berarti belum dibuat.</p>
+
+<script src="grafik-data.js"></script>
+<script>
+(()=>{
+ const data=window.TRACKER_DATA;
+ const $=id=>document.getElementById(id);
+ if(!Array.isArray(data)){$('groups').textContent='Data tracker tidak ditemukan. Jalankan node tools/tracker.mjs.';return;}
+ const states=['belum diaudit','layar tersedia','kurang','sebagian','selesai','ditunda'];
+ const cls={'belum diaudit':'belum','layar tersedia':'layar','kurang':'kurang','sebagian':'sebagian','selesai':'selesai','ditunda':'ditunda'};
+ const pct=(n,d)=>d?(100*n/d).toFixed(1)+'%':'0%';
+ const num=n=>n.toLocaleString('id-ID');
+ const count=rows=>{const c=Object.fromEntries(states.map(s=>[s,0]));for(const r of rows)c[r.state]++;return c};
+ const barHtml=(c,total)=>'<div class="bar">'+states.filter(s=>c[s]).map(s=>'<i class="'+cls[s]+'" style="width:'+(100*c[s]/total)+'%" title="'+s+': '+c[s]+'"></i>').join('')+'</div>';
+ for(const s of states){$('legend').insertAdjacentHTML('beforeend','<span><i class="sw '+cls[s]+'"></i>'+s+'</span>')}
+
+ const tiles=data.filter(r=>r.kind==='tile'), tc=count(tiles);
+ const tilesNonL=tiles.filter(r=>r.state!=='ditunda'), withScreen=tc['layar tersedia'];
+ const detail=data.filter(r=>r.kind!=='tile'), dc=count(detail);
+ const audited=dc.kurang+dc.sebagian+dc.selesai;
+ const card=(big,label,extra)=>'<div class="card"><b>'+big+'</b><span>'+label+'</span>'+(extra||'')+'</div>';
+ $('cards').innerHTML=
+  card(num(withScreen)+' / '+num(tiles.length),'tile dashboard punya layar ('+pct(withScreen,tiles.length)+')',barHtml(tc,tiles.length))+
+  card(num(tc.ditunda),'tile ditunda (Menu L, bridging)')+
+  card(num(audited)+' / '+num(detail.length),'tombol, popup, jendela sudah dinilai ('+pct(audited,detail.length)+')',barHtml(dc,detail.length))+
+  card(num(dc.selesai)+' selesai · '+num(dc.sebagian)+' sebagian · '+num(dc.kurang)+' kurang','hasil penilaian ('+pct(dc.selesai,audited)+' selesai dari yang dinilai)');
+
+ let html='<tr><th>Jenis</th><th>Total</th>'+states.map(s=>'<th>'+s+'</th>').join('')+'<th>Dinilai</th></tr>';
+ for(const kind of ['tile','aksi','popup','jendela']){const rows=data.filter(r=>r.kind===kind),c=count(rows);
+  html+='<tr><td>'+kind+'</td><td>'+num(rows.length)+'</td>'+states.map(s=>'<td>'+num(c[s])+'</td>').join('')+'<td>'+pct(c.kurang+c.sebagian+c.selesai,rows.length)+'</td></tr>'}
+ $('kinds').innerHTML=html;
+
+ const byFile=new Map();for(const r of detail){if(!byFile.has(r.file))byFile.set(r.file,[]);byFile.get(r.file).push(r)}
+ const flows=[...byFile].map(([file,rows])=>({file,rows,c:count(rows)})).filter(f=>f.c.kurang+f.c.sebagian+f.c.selesai>0)
+   .sort((a,b)=>b.rows.length-a.rows.length);
+ html='<tr><th>File Java</th><th>Entri</th><th>Dinilai</th><th>Selesai</th><th>Sebagian</th><th>Kurang</th><th>Belum diaudit</th><th>Komposisi</th></tr>';
+ for(const f of flows){const d=f.c.kurang+f.c.sebagian+f.c.selesai;
+  html+='<tr><td>'+f.file.replace('simrskhanza/','')+'</td><td>'+num(f.rows.length)+'</td><td>'+pct(d,f.rows.length)+'</td><td>'+f.c.selesai+'</td><td>'+f.c.sebagian+'</td><td>'+f.c.kurang+'</td><td>'+f.c['belum diaudit']+'</td><td class="barcell">'+barHtml(f.c,f.rows.length)+'</td></tr>'}
+ $('flows').innerHTML=html;
+ const auditedFiles=new Set(flows.map(f=>f.file));
+
+ const category=r=>r.kind==='tile'?'Tile menu '+r.route.split(' > ')[0]:r.file.split('/').pop().replace('.java','')+' / '+r.kind;
+ function render(){
+  const scope=$('scope').value,kind=$('kind').value,state=$('state').value,q=$('search').value.trim().toLocaleLowerCase('id');
+  const rows=data.filter(r=>(scope==='all'||(scope==='tiles'&&r.kind==='tile')||(scope==='audited'&&auditedFiles.has(r.file)))&&(!kind||r.kind===kind)&&(!state||r.state===state)&&(!q||(r.route+' '+r.file+' '+r.evidence).toLocaleLowerCase('id').includes(q)));
+  $('mapinfo').textContent=num(rows.length)+' entri ditampilkan. Klik kotak untuk melihat rincian dan bukti.';
+  const map=new Map();for(const row of rows){const k=category(row);if(!map.has(k))map.set(k,[]);map.get(k).push(row)}
+  $('groups').replaceChildren();$('detail').textContent='';
+  const items=[...map].sort((a,b)=>b[1].length-a[1].length).slice(0,scope==='all'&&!kind&&!state&&!q?60:200);
+  for(const [name,list] of items){
+   const sec=document.createElement('section');sec.className='group';
+   const c=count(list);const counts=states.filter(s=>c[s]).map(s=>s+': '+c[s]).join(' · ');
+   sec.innerHTML='<h3></h3><div class="meta"></div><div class="cells"></div>';
+   sec.querySelector('h3').textContent=name;sec.querySelector('.meta').textContent=list.length+' entri • '+counts;
+   const cells=sec.querySelector('.cells');
+   for(const row of list){const b=document.createElement('button');b.type='button';b.className='cell '+cls[row.state];b.title=row.route+' — '+row.state;b.setAttribute('aria-label',row.route+' — '+row.state);
+    b.addEventListener('click',()=>{$('detail').textContent=row.route+'\nStatus: '+row.state+'\nSumber: '+row.file+(row.line?':'+row.line:'')+'\nBukti: '+(row.evidence||'Belum ada bukti audit.')});cells.append(b)}
+   $('groups').append(sec);
+  }
+  if(map.size>items.length)$('mapinfo').textContent+=' Hanya '+items.length+' kelompok terbesar yang digambar; persempit dengan filter.';
+  if(!rows.length)$('groups').textContent='Tidak ada entri yang cocok.';
+ }
+ for(const id of ['scope','kind','state','search'])$(id).addEventListener('input',render);
+ render();
+})();
+</script>
+</body>
+</html>

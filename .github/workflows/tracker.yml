@@ -18,5 +18,7 @@ jobs:
           path: |
             docs/tracker/fitur.tsv
             docs/tracker/RINGKASAN.md
+            docs/tracker/GRAFIK.html
+            docs/tracker/grafik-data.js
       - name: Pastikan laporan dalam commit sudah diperbarui
-        run: git diff --exit-code -- docs/tracker/fitur.tsv docs/tracker/RINGKASAN.md docs/tracker/POPUP_REGISTRASI.md
+        run: git diff --exit-code -- docs/tracker/fitur.tsv docs/tracker/RINGKASAN.md docs/tracker/POPUP_REGISTRASI.md docs/tracker/grafik-data.js

@@ -2,13 +2,13 @@
 
 Status otomatis: tile berstatus "layar tersedia" bila kuncinya dirutekan di kode (cakupan layar per menu ada di ringkasan); tile Menu L "ditunda". Status "selesai", "sebagian", dan "kurang" hanya dari status.json dengan bukti.
 
-Buka [prioritas pekerjaan](PRIORITAS.md), [ringkasan](RINGKASAN.md) atau filter [inventaris lengkap](fitur.tsv) menurut status, jenis, file Java, atau jalur submenu. Kolom ID menggunakan nama kontrol sehingga perubahan nomor baris tidak menghilangkan penilaian.
+Buka [grafik progres](GRAFIK.html) secara lokal di browser, [prioritas pekerjaan](PRIORITAS.md), [ringkasan](RINGKASAN.md), atau filter [inventaris lengkap](fitur.tsv) menurut status, jenis, file Java, atau jalur submenu. Grafik membutuhkan `grafik-data.js` di folder yang sama; file ini dibuat ulang oleh tracker. Kolom ID menggunakan nama kontrol sehingga perubahan nomor baris tidak menghilangkan penilaian.
 
 ## Saat mengerjakan fitur
 
 1. Cari ID di fitur.tsv. Untuk satu alur, periksa jendela, popup dan kontrol terkait pada masing-masing layar.
 2. Tambah atau ubah ID di status.json. Isi status dengan kurang, sebagian, selesai atau ditunda. Isi bukti dengan path implementasi atau tes serta hasil pemeriksaan. Tandai sebagian bila baru ada daftar baca-saja tetapi alur Java juga menyimpan perubahan.
-3. Jalankan node tools/tracker.mjs dari root repo. Sertakan status.json, fitur.tsv dan RINGKASAN.md dalam commit fitur. Push dan pull request menghitung ulang laporan, menerbitkan ringkasan dan artefak, serta mendeteksi laporan kedaluwarsa atau ID yang hilang.
+3. Jalankan node tools/tracker.mjs dari root repo. Sertakan status.json dan semua laporan yang berubah, termasuk grafik-data.js, dalam commit fitur. Push dan pull request menghitung ulang laporan, menerbitkan ringkasan dan artefak, serta mendeteksi laporan kedaluwarsa atau ID yang hilang.
 
 ## Saat sumber Java berubah
 
@@ -42,3 +42,12 @@ Audit per tombol Kasir, IGD, Laboratorium, Radiologi, Pasien, dan Farmasi masih 
 Snapshot 24 November: 15.843 entri mencakup 14.619 popup/aksi/jendela dan 1.224 tile. Dari popup/aksi/jendela, 13.803 belum diaudit; 508 kurang, 294 sebagian, 13 selesai dan 1 ditunda. Tile berlayar adalah deteksi rute statis, bukan tes bahwa seluruh operasi berjalan. Jangan menjumlahkan tile, jendela, popup dan aksi sebagai fitur unik atau menyebut persentasenya sebagai persentase kesiapan produk.
 
 Laporan dibuat ulang dari `java.jsonl`, kode routing, dan `status.json`; status manual hanya berubah melalui audit berbukti. Dokumen audit mencatat sejarah dan bagian terbaru mengoreksi temuan lama. Untuk status pekerjaan saat ini gunakan [prioritas](PRIORITAS.md) bersama [ringkasan](RINGKASAN.md).
+
+## Pembaruan otomatis tiap commit
+
+[GRAFIK.html](GRAFIK.html) membaca `grafik-data.js`, yang dibuat oleh `node tools/tracker.mjs`. Agar progres selalu sesuai setiap commit:
+
+1. **Sekali per clone**, aktifkan hook: `git config core.hooksPath .githooks`.
+2. Hook `.githooks/pre-commit` menjalankan `node tools/tracker.mjs` lalu menambahkan `fitur.tsv`, `RINGKASAN.md`, `POPUP_REGISTRASI.md`, dan `grafik-data.js` ke commit. Bila `status.json` tidak valid, commit dibatalkan.
+3. Jika Node tidak ada atau hook dilewati (`--no-verify`, sandbox), CI `tracker.yml` gagal pada laporan yang kedaluwarsa, jadi ketidaksesuaian tidak lolos ke master.
+4. Buka `GRAFIK.html` lewat server lokal (`python -m http.server` di folder ini) atau langsung dari file di browser biasa; angka di bagian atas selalu mencakup seluruh data.
