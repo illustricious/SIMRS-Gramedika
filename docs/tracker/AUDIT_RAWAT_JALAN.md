@@ -95,3 +95,22 @@ Build Release berhasil. Tes otomatis di luar sandbox: 154 lulus, 0 gagal, 2 fixt
 `TindakanRalanInputService` kini mendukung ubah dan hapus satu tindakan dokter, petugas atau gabungan dengan izin `tindakan_ralan`, batas 48 jam untuk non-admin, pemeriksaan billing dan snapshot, serta jurnal pembalik dalam transaksi yang sama. Ubah memilih satu tarif baru dan memposting nilai baru bersama pembalik. Fixture MariaDB 11.4.8 lulus untuk ketiga kategori, rekening hilang/rollback, billing dan perubahan data. Daftar tindakan di halaman kunjungan menyediakan tombol ubah dan hapus. Input parsial setelah billing, hapus massal, master tarif dan audit UI lengkap masih tertunda.
 
 Tes dua koneksi mencakup billing dikomit sebelum tindakan dan tindakan dikomit sebelum kasir. Yang kedua menjalankan `KasirRepository.MarkPaidAsync`. Keduanya menggunakan kunci kunjungan yang sama; kesesuaian terhadap klien Java yang berjalan bersamaan belum diuji.
+
+## Pemeriksaan awal diagnosa dan prosedur Rawat Jalan
+
+`laporan/PanelDiagnosa.java:1114` menyimpan ICD-10 ke `diagnosa_pasien` dan ICD-9 ke `prosedur_pasien`; keduanya memakai status `Ralan`, prioritas, dan kunci kunjungan. Diagnosis berstatus Lama bila kode yang sama pernah tercatat pada pasien tersebut, selain itu Baru. Java juga mengisi kode diagnosis dan prosedur pada `resume_pasien` untuk urutan tertentu. Handler hapus pada `PanelDiagnosa.java:1291` perlu dicocokkan dengan pembaruan resume dan penghapusan lintas status sebelum operasi tulis dibuka.
+
+Di Gramedika, tombol Diagnosa masih membuka laporan baca saja dan disaring dengan izin `diagnosa_pasien`. Implementasi input, penanganan prioritas dan duplikasi, sinkronisasi resume, pengujian hak akses dan transaksi database masih tertunda. Seluruh butir Rawat Jalan lain pada permintaan ini tetap terbuka sesuai [prioritas](PRIORITAS.md).
+
+
+Input awal ICD-10/ICD-9 tersedia melalui `DiagnosaRalanView` dan `DiagnosaRalanService`: cari, pilih dan tambah satu kode dengan izin `diagnosa_pasien`, prioritas dan pembaruan kode resume. Build dan tes penolakan izin lulus; query dan sinkronisasi resume belum diuji pada database sintetis. Ubah/hapus, audit perbandingan lengkap dan seluruh fitur lain pada permintaan masih tertunda.
+
+
+### Lanjutan diagnosa dan prosedur
+
+Tambah dan hapus satu kode ICD-10/ICD-9 dengan izin `diagnosa_pasien` telah diuji pada MariaDB sintetis. Penghapusan membersihkan kode resume hanya jika nilainya masih cocok. Tes mencakup prioritas, status baru/lama, duplikasi prioritas, jumlah, dan penolakan tanpa izin. Prioritas dibatasi lima diagnosis dan empat prosedur; ubah, hapus massal, teks resume, pencetakan, uji UI dan penggunaan bersamaan dengan Java masih tertunda.
+
+
+### Input awal obstetri dan ginekologi
+
+Form `ObgynRalanView` dan `PemeriksaanObgynService` menyediakan simpan, ubah, hapus satu pemeriksaan dan simpan PDF, dengan hak `tindakan_ralan`. Ubah/hapus memeriksa batas 48 jam untuk non-admin dan menolak data yang telah berubah. Fixture MariaDB sintetis memeriksa simpan, duplikat, ubah/hapus, konflik, izin, seluruh field pada panjang maksimum dan pilihan terakhir, serta penolakan nilai enum dan panjang yang tidak valid. Uji UI, verifikasi visual PDF, semua kombinasi pilihan, batas waktu 48 jam di database dan penggunaan bersamaan dengan Java masih tertunda.

@@ -49,7 +49,9 @@ public sealed class RawatJalanKunjunganView : UserControl
             Ui.Btn("Pemeriksaan / SOAPIE", async (_, _) => await BukaPemeriksaanAsync()),
             Ui.Btn("Obstetri", async (_, _) => await BukaLaporanAsync(RawatJalanVisitReports.Obstetri)),
             Ui.Btn("Ginekologi", async (_, _) => await BukaLaporanAsync(RawatJalanVisitReports.Ginekologi)),
-            Ui.Btn("Diagnosa", async (_, _) => await BukaLaporanAsync(RawatJalanVisitReports.Diagnosa), user.HasPermission("diagnosa_pasien")),
+            Ui.Btn("Input Obstetri", (_, _) => { if (_ready && _user.HasPermission("tindakan_ralan")) _panel.Content = new ObgynRalanView(_patient.NoRawat, _user, true); }, user.HasPermission("tindakan_ralan")),
+            Ui.Btn("Input Ginekologi", (_, _) => { if (_ready && _user.HasPermission("tindakan_ralan")) _panel.Content = new ObgynRalanView(_patient.NoRawat, _user, false); }, user.HasPermission("tindakan_ralan")),
+            Ui.Btn("Diagnosa", (_, _) => { if (_ready && _user.HasPermission("diagnosa_pasien")) _panel.Content = new DiagnosaRalanView(_patient.NoRawat, _user); }, user.HasPermission("diagnosa_pasien")),
             Ui.Btn("Catatan Dokter", (_, _) => BukaCatatanDokter(), user.HasPermission(CatatanDokterService.Izin)),
             Ui.Btn("Menu Kiri", (_, _) => ToggleMenu()));
 

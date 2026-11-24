@@ -1645,7 +1645,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "TindakanRalanInputService menyimpan tindakan dokter, petugas atau gabungan dan jurnal dalam satu transaksi dengan izin tindakan_ralan. TindakanRalanInputTests lulus di MariaDB sintetis. SOAPIE dan Catatan Dokter bisa disimpan. Obstetri, ginekologi dan diagnosa masih baca saja. Input parsial setelah billing belum tersedia."
+    "bukti": "TindakanRalanInputService menyimpan tindakan dokter, petugas atau gabungan dan jurnal dalam satu transaksi dengan izin tindakan_ralan. TindakanRalanInputTests lulus di MariaDB sintetis. SOAPIE dan Catatan Dokter bisa disimpan. Diagnosa serta obstetri/ginekologi tersedia sebagian. Input parsial setelah billing belum tersedia. DiagnosaRalanView dan DiagnosaRalanService menambahkan satu kode diagnosis/prosedur dengan izin, prioritas dan pembaruan kode resume; tes MariaDB sintetis lulus untuk simpan, prioritas, status baru/lama dan kode resume. PemeriksaanObgynService dan ObgynRalanView mendukung simpan, ubah, hapus satu pemeriksaan dan simpan PDF dengan izin tindakan_ralan. Fixture MariaDB sintetis menguji konflik, validasi field, simpan, ubah, hapus dan izin; UI dan PDF belum diverifikasi visual."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBatal": {
     "status": "sebagian",
@@ -1653,11 +1653,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHapus": {
     "status": "sebagian",
-    "bukti": "TindakanRalanInputService.HapusAsync menghapus satu tindakan dokter/petugas/gabungan dan memposting jurnal pembalik dalam transaksi dengan izin, guard billing, batas 48 jam dan konflik data; TindakanRalanInputTests diuji di MariaDB sintetis. SOAPIE dan Catatan Dokter mendukung hapus satu; hapus massal belum tersedia."
+    "bukti": "TindakanRalanInputService.HapusAsync menghapus satu tindakan dokter/petugas/gabungan dan memposting jurnal pembalik dalam transaksi dengan izin, guard billing, batas 48 jam dan konflik data; TindakanRalanInputTests diuji di MariaDB sintetis. SOAPIE dan Catatan Dokter mendukung hapus satu; hapus massal belum tersedia. DiagnosaRalanService menghapus satu diagnosis atau prosedur dan membersihkan kode resume yang masih cocok; fixture MariaDB sintetis lulus."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnEdit": {
     "status": "sebagian",
-    "bukti": "TindakanRalanInputService.UbahAsync mengubah satu tindakan dokter/petugas/gabungan serta memposting pembalik dan jurnal baru dalam satu transaksi, dengan izin dan guard billing. Fixture MariaDB menguji ketiga jenis, rekening hilang dan konflik. SOAPIE dan Catatan Dokter mendukung ubah; obstetri, ginekologi dan diagnosa belum tersedia."
+    "bukti": "TindakanRalanInputService.UbahAsync mengubah satu tindakan dokter/petugas/gabungan serta memposting pembalik dan jurnal baru dalam satu transaksi, dengan izin dan guard billing. Fixture MariaDB menguji ketiga jenis, rekening hilang dan konflik. SOAPIE dan Catatan Dokter mendukung ubah; obstetri dan ginekologi mendukung ubah dengan batas 48 jam serta deteksi konflik; ubah diagnosa belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPrint": {
     "status": "kurang",
