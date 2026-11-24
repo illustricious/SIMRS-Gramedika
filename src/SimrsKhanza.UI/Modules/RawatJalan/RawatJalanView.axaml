@@ -12,9 +12,9 @@
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
 
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan — Pemeriksaan Dokter" Margin="0,0,0,8" />
+        <TextBlock Name="PageHeading" Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan - Pemeriksaan Dokter" Margin="0,0,0,8" />
 
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8" Margin="0,0,0,8">
+        <Grid Name="QueueFilters" Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8" Margin="0,0,0,8">
             <TextBlock Text="Periode" VerticalAlignment="Center" />
             <CalendarDatePicker Grid.Column="1" Name="DariPicker" AutomationProperties.Name="Dari tanggal" />
             <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" />
@@ -26,9 +26,9 @@
             <Button Grid.Column="7" Content="Semua" Click="OnSemuaClick" />
         </Grid>
 
-        <Grid Grid.Row="2" ColumnDefinitions="2*,16,3*">
+        <Grid Name="WorkArea" Grid.Row="2" ColumnDefinitions="2*,16,3*">
 
-            <Grid Grid.Column="0" RowDefinitions="Auto,*">
+            <Grid Name="QueueArea" Grid.Column="0" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Name="QueueCountText" Text="Kunjungan Rawat Jalan" FontWeight="Medium" Margin="0,0,0,4"
                            Foreground="{DynamicResource ThemeTextBrush}" />
                 <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
@@ -132,6 +132,8 @@
 
                     <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4" Margin="0,8,0,0">
                         <Button Content="Baru" Click="OnBaruClick" />
+                        <Button Content="5 SOAPIE Ralan" Click="OnLimaTerakhirClick" />
+                        <Button Content="5 SOAPIE Ranap" Tag="Ranap" Click="OnLimaTerakhirClick" />
                         <Button Name="SimpanButton" Content="Simpan" Classes="accent" Click="OnSimpanClick" IsEnabled="False" />
                         <Button Name="UbahButton" Content="Ganti" Click="OnUbahClick" IsEnabled="False" />
                         <Button Name="HapusButton" Content="Hapus" Click="OnHapusClick" IsEnabled="False" />
@@ -140,7 +142,7 @@
             </ScrollViewer>
         </Grid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+        <StackPanel Name="PageFooter" Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
             <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
         </StackPanel>
     </Grid>

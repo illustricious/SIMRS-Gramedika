@@ -1310,6 +1310,12 @@ public partial class MainWindow : Window
                 });
                 return;
 
+            case PatientMenuAction.TindakanRawatJalan when _user is { } user && user.HasPermission("tindakan_ralan"):
+                var klinis = new Modules.RawatJalan.RawatJalanKunjunganView(request, user);
+                klinis.BackRequested += Back;
+                await OpenFeatureAsync(klinis, klinis.LoadAsync);
+                return;
+
             case PatientMenuAction.TindakanDanPemeriksaan when _user?.HasPermission("tindakan_ralan") == true:
                 var ralan = new Modules.RawatJalan.RawatJalanView();
                 ralan.BackRequested += Back;

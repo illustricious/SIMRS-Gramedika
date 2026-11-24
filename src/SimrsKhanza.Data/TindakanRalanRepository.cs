@@ -36,7 +36,7 @@ public interface ITindakanRalanRepository
 {
     /// <summary>Read-only list of treatments given, same joins/filters as legacy DlgRawatJalan.tampilDr/Pr/DrPr (capped at 1000 rows).</summary>
     Task<IReadOnlyList<TindakanRalanRow>> GetAsync(
-        TindakanRalanJenis jenis, DateOnly from, DateOnly to, string? noRm, string? keyword, CancellationToken ct = default);
+        TindakanRalanJenis jenis, DateOnly from, DateOnly to, string? noRm, string? keyword, CancellationToken ct = default, string? noRawat = null);
 }
 
 public class TindakanRalanRepository(SimrsKhanzaDbContext db) : ITindakanRalanRepository
@@ -52,7 +52,7 @@ public class TindakanRalanRepository(SimrsKhanzaDbContext db) : ITindakanRalanRe
         cast(d.bhp AS char) AS Bhp, cast(d.menejemen AS char) AS Menejemen";
 
     public async Task<IReadOnlyList<TindakanRalanRow>> GetAsync(
-        TindakanRalanJenis jenis, DateOnly from, DateOnly to, string? noRm, string? keyword, CancellationToken ct = default)
+        TindakanRalanJenis jenis, DateOnly from, DateOnly to, string? noRm, string? keyword, CancellationToken ct = default, string? noRawat = null)
     {
         var kw = "%" + (keyword?.Trim() ?? "") + "%";
         var rm = "%" + (noRm?.Trim() ?? "") + "%";
@@ -87,13 +87,14 @@ public class TindakanRalanRepository(SimrsKhanzaDbContext db) : ITindakanRalanRe
             inner join pasien p on p.no_rkm_medis=r.no_rkm_medis
             inner join jns_perawatan j on d.kd_jenis_prw=j.kd_jenis_prw
             {joins}
-            where d.tgl_perawatan between {{0}} and {{1}} and r.no_rkm_medis like {{2}}
+            where (({{4}}='' and d.tgl_perawatan between {{0}} and {{1}}) or ({{4}}<>'' and d.no_rawat={{4}}))
+              and r.no_rkm_medis like {{2}}
               and (d.no_rawat like {{3}} or r.no_rkm_medis like {{3}} or p.nm_pasien like {{3}} or j.nm_perawatan like {{3}} or {kwCond})
             order by d.no_rawat, d.tgl_perawatan, d.jam_rawat desc
             limit 1000";
 
         var rows = await db.Database
-            .SqlQueryRaw<TindakanRalanRow>(sql, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), rm, kw)
+            .SqlQueryRaw<TindakanRalanRow>(sql, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), rm, kw, noRawat ?? "")
             .ToListAsync(ct);
 
         foreach (var r in rows)

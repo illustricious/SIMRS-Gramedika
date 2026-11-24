@@ -28,8 +28,9 @@ public partial class RawatInapView : UserControl
     private static readonly string[] StatusBayarOptions = ["Semua", "Sudah Bayar", "Belum Bayar"];
 
     private ActionMode _mode = ActionMode.None;
+    private RawatInapListItem? _actionPatient;
+    private bool _saving;
     private bool _ready;
-    private IReadOnlyList<Penjab> _penjab = Array.Empty<Penjab>();
 
     public RawatInapView()
     {
@@ -37,6 +38,8 @@ public partial class RawatInapView : UserControl
 
         var grid = Grid();
         this.FindControl<Button>("BillingButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("billing_ranap") == true;
+        this.FindControl<Button>("PemeriksaanButton")!.IsVisible =
+            AppSession.CurrentUser?.HasPermission(PemeriksaanRanapService.Izin) == true;
         PatientContextMenu.Attach<RawatInapListItem>(grid,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, IsInpatient: true),
             request => PatientMenuRequested?.Invoke(this, request));
@@ -62,6 +65,7 @@ public partial class RawatInapView : UserControl
     /// <summary>Called from the right-click "Kamar Inap" patient menu — opens the Masuk panel with No.Rawat prefilled.</summary>
     public async Task PrefillAdmitAsync(string noRawat)
     {
+        if (_saving) return;
         ShowAction(ActionMode.Masuk);
         this.FindControl<TextBox>("AdmitNoRawatBox")!.Text = noRawat;
         await LoadKamarKosongAsync("KamarCombo", noRawat);
@@ -141,9 +145,10 @@ public partial class RawatInapView : UserControl
 
     // ---- action panel (Masuk / Pulang / Pindah / Ganti) ----
 
-    private void ShowAction(ActionMode mode)
+    private void ShowAction(ActionMode mode, RawatInapListItem? patient = null)
     {
         _mode = mode;
+        _actionPatient = patient;
         HideStatus();
         this.FindControl<Border>("ActionPanel")!.IsVisible = mode != ActionMode.None;
         this.FindControl<StackPanel>("MasukFields")!.IsVisible = mode == ActionMode.Masuk;
@@ -154,7 +159,7 @@ public partial class RawatInapView : UserControl
         var title = this.FindControl<TextBlock>("ActionTitle")!;
         var subtitle = this.FindControl<TextBlock>("ActionSubtitle")!;
         var ok = this.FindControl<Button>("ActionOkButton")!;
-        var s = Selected;
+        var s = patient;
         var who = s is null ? "" : $"{s.NamaPasien} — No. Rawat {s.NoRawat} — Kamar {s.Kamar}";
 
         switch (mode)
@@ -184,6 +189,7 @@ public partial class RawatInapView : UserControl
 
     private async void OnMasukClick(object? sender, RoutedEventArgs e)
     {
+        if (_saving) return;
         ShowAction(ActionMode.Masuk);
         if (Text("AdmitNoRawatBox") is { } noRawat)
             await LoadKamarKosongAsync("KamarCombo", noRawat);
@@ -191,16 +197,18 @@ public partial class RawatInapView : UserControl
 
     private void OnPulangClick(object? sender, RoutedEventArgs e)
     {
-        if (!RequireSelected(mustBeActive: true)) return;
-        ShowAction(ActionMode.Pulang);
-        this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = Selected!.DiagnosaAkhir;
+        if (_saving || !RequireSelected(mustBeActive: true)) return;
+        var patient = Selected!;
+        ShowAction(ActionMode.Pulang, patient);
+        this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = patient.DiagnosaAkhir;
     }
 
     private async void OnPindahClick(object? sender, RoutedEventArgs e)
     {
-        if (!RequireSelected(mustBeActive: true)) return;
-        ShowAction(ActionMode.Pindah);
-        await LoadKamarKosongAsync("PindahKamarCombo", Selected!.NoRawat);
+        if (_saving || !RequireSelected(mustBeActive: true)) return;
+        var patient = Selected!;
+        ShowAction(ActionMode.Pindah, patient);
+        await LoadKamarKosongAsync("PindahKamarCombo", patient.NoRawat, patient);
     }
 
     private async void OnCariKamarClick(object? sender, RoutedEventArgs e)
@@ -232,25 +240,38 @@ public partial class RawatInapView : UserControl
         PatientMenuRequested?.Invoke(this, new(s.NoRawat, s.NoRekamMedis, s.NamaPasien, PatientMenuAction.BillingPembayaran));
     }
 
+    private async void OnPemeriksaanClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(PemeriksaanRanapService.Izin))
+            return;
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+            return;
+        await new PemeriksaanRanapWindow(visit, user).ShowDialog(owner);
+    }
+
     private async void OnGantiClick(object? sender, RoutedEventArgs e)
     {
-        if (!RequireSelected(mustBeActive: false)) return;
-        ShowAction(ActionMode.Ganti);
+        if (_saving || !RequireSelected(mustBeActive: false)) return;
         var s = Selected!;
+        ShowAction(ActionMode.Ganti, s);
         this.FindControl<TextBox>("GantiDiagnosaAwalBox")!.Text = s.DiagnosaAwal;
         this.FindControl<TextBox>("GantiDiagnosaAkhirBox")!.Text = s.DiagnosaAkhir;
 
         var combo = this.FindControl<ComboBox>("GantiPenjabCombo")!;
+        combo.ItemsSource = null;
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
-            _penjab = await new RegistrasiRepository(db).GetPenjabAsync();
-            combo.ItemsSource = _penjab.Select(p => p.NamaPenanggungJawab).ToList();
-            combo.SelectedItem = _penjab.FirstOrDefault(p => p.KodePenjab == s.KodePenjab)?.NamaPenanggungJawab;
+            var penjab = await new RegistrasiRepository(db).GetPenjabAsync();
+            if (_mode != ActionMode.Ganti || !ReferenceEquals(_actionPatient, s)) return;
+            combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(Penjab.NamaPenanggungJawab));
+            combo.ItemsSource = penjab;
+            combo.SelectedItem = penjab.FirstOrDefault(p => p.KodePenjab == s.KodePenjab);
         }
         catch (Exception ex)
         {
-            ShowStatus($"Gagal memuat jenis bayar: {ex.Message}", isError: true);
+            if (_mode == ActionMode.Ganti && ReferenceEquals(_actionPatient, s))
+                ShowStatus($"Gagal memuat jenis bayar: {ex.Message}", isError: true);
         }
     }
 
@@ -270,24 +291,27 @@ public partial class RawatInapView : UserControl
         return true;
     }
 
-    private async System.Threading.Tasks.Task LoadKamarKosongAsync(string comboName, string? noRawat = null)
+    private async Task LoadKamarKosongAsync(string comboName, string noRawat, RawatInapListItem? patient = null)
     {
         var combo = this.FindControl<ComboBox>(comboName)!;
+        combo.ItemsSource = null;
+        bool IsCurrent() => patient is null
+            ? _mode == ActionMode.Masuk && noRawat == Text("AdmitNoRawatBox")
+            : _mode == ActionMode.Pindah && ReferenceEquals(_actionPatient, patient);
+
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var repo = new RawatInapRepository(db);
-            var kamar = noRawat is null ? await repo.GetAvailableKamarAsync()
-                : await repo.GetAvailableKamarForVisitAsync(noRawat);
-            if (comboName == "KamarCombo" && noRawat != Text("AdmitNoRawatBox")) return;
+            var kamar = await repo.GetAvailableKamarForVisitAsync(noRawat, includeBooking: patient is null);
+            if (!IsCurrent()) return;
             combo.ItemsSource = kamar;
             combo.DisplayMemberBinding = new Avalonia.Data.Binding(nameof(KamarTersediaItem.Label));
             if (kamar.Count > 0) combo.SelectedIndex = 0;
         }
         catch (Exception ex)
         {
-            combo.ItemsSource = new List<KamarTersediaItem>();
-            ShowStatus($"Gagal memuat kamar kosong: {ex.Message}", isError: true);
+            if (IsCurrent()) ShowStatus($"Gagal memuat kamar kosong: {ex.Message}", isError: true);
         }
     }
 
@@ -295,6 +319,10 @@ public partial class RawatInapView : UserControl
 
     private async void OnActionOkClick(object? sender, RoutedEventArgs e)
     {
+        if (_saving) return;
+        var panel = this.FindControl<Border>("ActionPanel")!;
+        _saving = true;
+        panel.IsEnabled = false;
         try
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
@@ -320,7 +348,7 @@ public partial class RawatInapView : UserControl
                 }
                 case ActionMode.Pulang:
                 {
-                    var s = Selected!;
+                    var s = _actionPatient!;
                     var idx = this.FindControl<ComboBox>("StatusPulangCombo")!.SelectedIndex;
                     var total = await repo.DischargeAsync(s.Key, DischargeOptions[Math.Max(0, idx)], Text("DiagnosaAkhirBox"));
                     message = $"{s.NamaPasien} dipulangkan. Biaya kamar: Rp {total:N0} (lihat Kasir untuk total tagihan).";
@@ -328,7 +356,7 @@ public partial class RawatInapView : UserControl
                 }
                 case ActionMode.Pindah:
                 {
-                    var s = Selected!;
+                    var s = _actionPatient!;
                     var kamar = this.FindControl<ComboBox>("PindahKamarCombo")!.SelectedItem as KamarTersediaItem;
                     if (kamar is null)
                     {
@@ -341,12 +369,10 @@ public partial class RawatInapView : UserControl
                 }
                 case ActionMode.Ganti:
                 {
-                    var s = Selected!;
-                    var penjabName = this.FindControl<ComboBox>("GantiPenjabCombo")!.SelectedItem as string;
-                    var penjab = _penjab.FirstOrDefault(p => p.NamaPenanggungJawab == penjabName);
-                    if (penjab is not null && penjab.KodePenjab != s.KodePenjab)
-                        await repo.GantiJenisBayarAsync(s.NoRawat, penjab.KodePenjab);
-                    await repo.GantiDiagnosaAsync(s.Key, Text("GantiDiagnosaAwalBox"), Text("GantiDiagnosaAkhirBox"));
+                    var s = _actionPatient!;
+                    var penjab = this.FindControl<ComboBox>("GantiPenjabCombo")!.SelectedItem as Penjab;
+                    await repo.GantiDataKamarAsync(s, penjab?.KodePenjab ?? s.KodePenjab,
+                        Text("GantiDiagnosaAwalBox"), Text("GantiDiagnosaAkhirBox"));
                     message = $"Data {s.NamaPasien} diperbarui.";
                     break;
                 }
@@ -361,6 +387,11 @@ public partial class RawatInapView : UserControl
         catch (Exception ex)
         {
             ShowStatus($"Gagal: {ex.Message}", isError: true);
+        }
+        finally
+        {
+            _saving = false;
+            panel.IsEnabled = true;
         }
     }
 

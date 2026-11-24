@@ -132,6 +132,7 @@
             <Button Name="PulangButton" Content="🚪 Pulang" Click="OnPulangClick" />
             <Button Name="PindahButton" Content="🔀 Pindah" Click="OnPindahClick" />
             <Button Name="BillingButton" Content="Billing / Kasir" Click="OnBillingClick" />
+            <Button Name="PemeriksaanButton" Content="SOAPIE" Click="OnPemeriksaanClick" />
             <Button Name="GantiButton" Content="✏ Ganti" Click="OnGantiClick" />
             <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="24,0,24,0"
                        Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold" />

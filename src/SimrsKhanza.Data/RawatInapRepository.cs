@@ -39,7 +39,8 @@ public record RawatInapFilter(
 public interface IRawatInapRepository
 {
     Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarAsync(CancellationToken ct = default);
-    Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat, CancellationToken ct = default);
+    Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat, CancellationToken ct = default,
+        bool includeBooking = true);
 
     /// <summary>Legacy "Daftar Pasien Rawat Inap" list — see RawatInapFilter / RawatInapMode.</summary>
     Task<IReadOnlyList<RawatInapListItem>> GetDaftarAsync(RawatInapFilter filter, CancellationToken ct = default);
@@ -67,11 +68,9 @@ public interface IRawatInapRepository
     /// </summary>
     Task<decimal> PindahKamarAsync(RawatInapKey key, string kodeKamarBaru, CancellationToken ct = default);
 
-    /// <summary>Legacy right-click "Ganti → Jenis Bayar" — updates reg_periksa.kd_pj for the visit.</summary>
-    Task GantiJenisBayarAsync(string noRawat, string kodePenjab, CancellationToken ct = default);
-
-    /// <summary>Legacy "Ganti → Diagnosa Masuk / Diagnosa Akhir" — edits the stay's diagnosa text.</summary>
-    Task GantiDiagnosaAsync(RawatInapKey key, string? diagnosaAwal, string? diagnosaAkhir, CancellationToken ct = default);
+    /// <summary>Saves the changed payer and diagnosis fields from one edit panel together.</summary>
+    Task GantiDataKamarAsync(RawatInapListItem original, string kodePenjab, string? diagnosaAwal,
+        string? diagnosaAkhir, CancellationToken ct = default);
 }
 
 public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = null) : IRawatInapRepository
@@ -96,7 +95,8 @@ public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = 
         return await query.ToListAsync(ct);
     }
 
-    public async Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat, CancellationToken ct = default)
+    public async Task<IReadOnlyList<KamarTersediaItem>> GetAvailableKamarForVisitAsync(string noRawat,
+        CancellationToken ct = default, bool includeBooking = true)
     {
         var payer = await db.RegPeriksaSet.Where(r => r.NoRawat == noRawat).Select(r => r.KodePenjab).SingleOrDefaultAsync(ct)
             ?? throw new InvalidOperationException("No. Rawat tidak ditemukan.");
@@ -104,9 +104,9 @@ public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = 
             SELECT kd_kamar AS KodeKamar,CAST(tarif AS DECIMAL(20,4)) AS Tarif
             FROM set_harga_kamar WHERE kd_pj={payer}
             """).ToDictionaryAsync(r => r.KodeKamar, r => r.Tarif, StringComparer.OrdinalIgnoreCase, ct);
-        var booking = await db.Database.SqlQuery<string>($"""
+        var booking = includeBooking ? await db.Database.SqlQuery<string>($"""
             SELECT kd_kamar AS Value FROM permintaan_ranap WHERE no_rawat={noRawat}
-            """).SingleOrDefaultAsync(ct);
+            """).SingleOrDefaultAsync(ct) : null;
         return (await GetKamarTersediaAsync(booking, ct)).Select(k =>
             k with { TarifKamar = rates.GetValueOrDefault(k.KodeKamar, k.TarifKamar) }).ToList();
     }
@@ -335,21 +335,40 @@ public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = 
         return rows.SingleOrDefault() ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
     }
 
-    public async Task GantiJenisBayarAsync(string noRawat, string kodePenjab, CancellationToken ct = default)
+    public async Task GantiDataKamarAsync(RawatInapListItem original, string kodePenjab, string? diagnosaAwal,
+        string? diagnosaAkhir, CancellationToken ct = default)
     {
+        var gantiPenjab = kodePenjab != original.KodePenjab;
+        var gantiAwal = !DiagnosaSama(diagnosaAwal, original.DiagnosaAwal);
+        var gantiAkhir = !DiagnosaSama(diagnosaAkhir, original.DiagnosaAkhir);
+        if (!gantiPenjab && !gantiAwal && !gantiAkhir) return;
+
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
-        var reg = await KunjunganRanap.KunciAsync(db, noRawat, ct);
-        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
-        reg.KodePenjab = kodePenjab;
+        var reg = await KunjunganRanap.KunciAsync(db, original.NoRawat, ct);
+        var key = original.Key;
+        var rows = await db.KamarInapSet.FromSqlInterpolated($"""
+            SELECT * FROM kamar_inap WHERE no_rawat={key.NoRawat} AND kd_kamar={key.KodeKamar}
+                AND tgl_masuk={key.TanggalMasuk} AND jam_masuk={key.JamMasuk} FOR UPDATE
+            """).ToListAsync(ct);
+        var stay = rows.SingleOrDefault() ?? throw new InvalidOperationException("Data kamar inap sudah berubah.");
+
+        if ((gantiPenjab && reg.KodePenjab != original.KodePenjab) ||
+            (gantiAwal && !DiagnosaSama(stay.DiagnosaAwal, original.DiagnosaAwal)) ||
+            (gantiAkhir && !DiagnosaSama(stay.DiagnosaAkhir, original.DiagnosaAkhir)))
+            throw new InvalidOperationException("Data sudah diubah pengguna lain. Muat ulang daftar dan buka formulir kembali.");
+
+        if (gantiPenjab)
+        {
+            await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
+            reg.KodePenjab = kodePenjab;
+        }
+        if (gantiAwal) stay.DiagnosaAwal = diagnosaAwal;
+        if (gantiAkhir) stay.DiagnosaAkhir = diagnosaAkhir;
+
         await db.SaveChangesAsync(ct);
         await transaction.CommitAsync(ct);
     }
 
-    public async Task GantiDiagnosaAsync(RawatInapKey key, string? diagnosaAwal, string? diagnosaAkhir, CancellationToken ct = default)
-    {
-        var stay = await FindActiveStayAsync(key, ct);
-        stay.DiagnosaAwal = diagnosaAwal;
-        stay.DiagnosaAkhir = diagnosaAkhir;
-        await db.SaveChangesAsync(ct);
-    }
+    private static bool DiagnosaSama(string? kiri, string? kanan) =>
+        (kiri?.Trim() ?? "") == (kanan?.Trim() ?? "");
 }

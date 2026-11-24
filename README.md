@@ -37,6 +37,8 @@ Menu A now includes inpatient requests, surgery schedules, KFR requests, dischar
 
 Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasien, or the lab and radiology lists to open its context menu. The menu targets the clicked row and enables available actions according to Khanza permissions. The compact menu and its submenus follow the active light or dark theme.
 
+Dari **Registrasi → klik kanan pasien → Tindakan & Pemeriksaan → Tindakan Rawat Jalan**, area kerja terbuka di jendela utama. **Submenu kiri** memuat menu klinis yang bisa dicari sesuai hak akses akun dari katalog 178 menu. Nomor rawat mengikuti baris yang diklik. Pemeriksaan mendukung **5 SOAPIE Terakhir** untuk mengisi draf baru. **Catatan Dokter** mendukung tambah, ubah dan hapus sesuai hak akses. **Input Tindakan** mendukung dokter, petugas, dan gabungan, dengan pilihan tarif sesuai kunjungan dan simpan bersama jurnal. Obstetri, ginekologi, dan diagnosa tersedia baca saja. Pilih **Kembali ke Registrasi** untuk kembali ke daftar sebelumnya.
+
 Kasir shows a read-only breakdown of recorded procedures, drugs, and medical supplies for open visits. Settlement for visits with these charges uses Kasir Khanza.
 
 Menu G includes editable asset masters, facility maintenance, CSSD catalog entries, and environmental health logs. The inventory, procurement, repairs, and CSSD circulation lists support search and CSV export. Asset transactions, approvals, accounting entries, and CSSD circulation updates are recorded in Khanza.
@@ -63,9 +65,13 @@ Menu N and R provide editable blood-component, donor and PCRA/ICRA reference dat
 
 ### Workflow parity (beyond screen coverage)
 
-Screen coverage does not mean the legacy workflow is fully reproduced. The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited so far: [Registrasi](docs/tracker/AUDIT_REGISTRASI.md) and [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md). Fixed after those audits: new registration, delete and edit guards for Registrasi; the real examiner NIP, multiple SOAP entries per visit with edit/delete, an outpatient-only queue with search for Rawat Jalan; and the logged-in petugas for pharmacy sales (no more placeholder NIP). Remaining gaps are listed in each audit file. Nothing has been verified against a production database yet.
+Screen coverage does not mean the legacy workflow is fully reproduced. The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited workflows include [Registrasi](docs/tracker/AUDIT_REGISTRASI.md), [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md), and [Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md). The audits led to registration create, edit, and delete guards, a real examiner NIP and multiple SOAP entries per outpatient visit, and the logged-in petugas for pharmacy sales. Pharmacy sale entry is currently disabled after the audit found that its write path did not implement Khanza sales, stock and journals. Remaining gaps are listed in each audit file. Nothing has been verified against a production database yet.
 
 Pending tiles (Menu L) show a "not implemented" notice.
+
+Pada daftar Rawat Inap, pilih pasien lalu klik **SOAPIE** untuk melihat, mencatat, mengubah, atau menghapus pemeriksaan kunjungan sesuai hak akun. Formulir menampilkan nomor rawat dan NIK dokter atau petugas. Uji SQL SOAPIE di skema MariaDB sintetis lulus. Uji koneksi dari aplikasi dan input tindakan dokter, petugas, serta gabungan masih tertunda. [Audit Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md).
+
+Di SOAPIE Rawat Inap, **5 SOAPIE Terakhir** membuka catatan pasien yang sama berdasarkan NIK penulis. **Salin Narasi Terpilih** memakai catatan yang dipilih di daftar kunjungan. Kedua tombol menyalin enam isian narasi ke draf baru tanpa langsung menyimpannya.
 
 Project handover notes for developers are in [docs/handover](docs/handover/README.md).
 

@@ -1,4 +1,6 @@
 using SimrsKhanza.Data;
+using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 
 namespace SimrsKhanza.Tests;
 
@@ -6,6 +8,30 @@ public class RawatJalanServiceTests
 {
     private static PemeriksaanRalanInput Empty() => new("2026/11/22/000001", new DateTime(2026, 11, 22), new TimeSpan(9, 0, 0),
         "", "", "", "", "", "", "", "", "Compos Mentis", "", "", "", "", "", "", "", "", "198001");
+
+    [Fact]
+    public async Task PemeriksaanDanRiwayat_MemeriksaIzinSebelumDatabase()
+    {
+        var service = new RawatJalanService(new DatabaseSettings { Host = "127.0.0.1", Port = 1 });
+        var tanpaIzin = RawatJalanAkses.DariPengguna(new AuthenticatedUser { UserId = "198001", Permissions = new HashSet<string> { "catatan_perawatan" } });
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.PemeriksaanAsync("UJI", tanpaIzin));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.PegawaiAsync(tanpaIzin));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.LimaTerakhirAsync("UJI", "198001", "", tanpaIzin, true));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(Empty(), tanpaIzin));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.UbahAsync(Empty(), Empty(), tanpaIzin));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.HapusAsync(Empty(), tanpaIzin));
+        Assert.True(RawatJalanAkses.DariPengguna(new AuthenticatedUser { Permissions = new HashSet<string> { "tindakan_ralan" } }).Diizinkan);
+        Assert.True(RawatJalanAkses.DariPengguna(new AuthenticatedUser { IsAdminUtama = true }).Diizinkan);
+        Assert.False(RawatJalanAkses.DariPengguna(null).Diizinkan);
+    }
+
+    [Fact]
+    public async Task UbahPemeriksaan_MenolakKunjunganBerbeda()
+    {
+        var service = new RawatJalanService(new DatabaseSettings { Host = "127.0.0.1", Port = 1 });
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.UbahAsync(Empty() with { NoRawat = "LAIN" },
+            Empty() with { Keluhan = "Uji" }, new(false, "198001", true)));
+    }
 
     [Fact]
     public void AnyClinicalField_CountsAsContent()

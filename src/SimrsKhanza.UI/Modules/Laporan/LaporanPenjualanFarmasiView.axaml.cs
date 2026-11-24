@@ -34,7 +34,7 @@ public partial class LaporanPenjualanFarmasiView : UserControl
             var items = await new FarmasiRepository(db).GetPenjualanAsync(from, to);
             grid.ItemsSource = items;
             var total = items.Sum(i => i.Total);
-            ringkasan.Text = $"Total: Rp {total:N0}  —  {items.Count} transaksi";
+            ringkasan.Text = $"Total baris barang: Rp {total:N0} (belum termasuk ongkir/PPN nota)  —  {items.Count} baris";
         }
         catch (Exception)
         {

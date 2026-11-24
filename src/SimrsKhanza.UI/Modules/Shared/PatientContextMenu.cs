@@ -8,7 +8,7 @@ using SimrsKhanza.Data;
 
 namespace SimrsKhanza.UI.Modules.Shared;
 
-public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining }
+public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining, TindakanRawatJalan }
 public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic, EmergencyTriage }
 
 public record PatientMenuRequest(string NoRawat, string NoRekamMedis, string NamaPasien, PatientMenuAction Action, string? TileKey = null);
@@ -105,7 +105,8 @@ public static class PatientContextMenu
                         Entry("Permintaan Radiologi"), Entry("Permintaan Rawat Inap")),
                     ActionItem("Kamar Inap", PatientMenuAction.KamarInap, hasVisit && !patient.IsInpatient && Can("kamar_inap")),
                     Group("Tindakan & Pemeriksaan",
-                        ActionItem("Pemeriksaan Rawat Jalan", PatientMenuAction.TindakanDanPemeriksaan,
+                        ActionItem(kind == PatientMenuKind.Registration ? "Tindakan Rawat Jalan" : "Pemeriksaan Rawat Jalan",
+                            kind == PatientMenuKind.Registration ? PatientMenuAction.TindakanRawatJalan : PatientMenuAction.TindakanDanPemeriksaan,
                             hasVisit && !patient.IsInpatient && Can("tindakan_ralan")),
                         Entry("Periksa Laboratorium"), Entry("Periksa Radiologi"), Entry("Operasi")),
                     Group("Obat", Entry("Pemberian Obat"), Entry("No. Resep"), Entry("Resep Dokter"), Entry("Copy Resep")),

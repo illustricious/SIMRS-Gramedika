@@ -4,6 +4,7 @@ using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data;
 using SimrsKhanza.Data.Sql;
+using SimrsKhanza.UI.Controls;
 using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.RawatJalan;
@@ -34,14 +35,18 @@ public partial class RawatJalanView : UserControl
     private RawatJalanKunjungan? _selected;
     private SoapItem? _soap;
     private IReadOnlyList<PegawaiPilihan> _pegawai = [];
+    private readonly bool _embedded;
 
     private static RawatJalanAkses Akses() =>
-        new(AppSession.CurrentUser?.IsAdminUtama == true, AppSession.CurrentUser?.KodeLegacy ?? "-");
+        RawatJalanAkses.DariPengguna(AppSession.CurrentUser);
 
     private RawatJalanService Service => new(DatabaseSettings.Load());
 
-    public RawatJalanView()
+    public RawatJalanView() : this(false) { }
+
+    internal RawatJalanView(bool embedded)
     {
+        _embedded = embedded;
         InitializeComponent();
 
         PatientContextMenu.Attach<RawatJalanKunjungan>(this.FindControl<DataGrid>("QueueGrid")!,
@@ -53,6 +58,14 @@ public partial class RawatJalanView : UserControl
         this.FindControl<CalendarDatePicker>("SampaiPicker")!.SelectedDate = today;
         this.FindControl<ComboBox>("KesadaranCombo")!.ItemsSource = RawatJalanService.Kesadaran;
         ClearForm();
+        if (embedded)
+        {
+            foreach (var name in new[] { "PageHeading", "QueueFilters", "QueueArea", "PageFooter" })
+                this.FindControl<Control>(name)!.IsVisible = false;
+            var columns = this.FindControl<Grid>("WorkArea")!.ColumnDefinitions;
+            columns[0].Width = new GridLength(0);
+            columns[1].Width = new GridLength(0);
+        }
     }
 
     public async System.Threading.Tasks.Task ReloadAsync()
@@ -85,7 +98,7 @@ public partial class RawatJalanView : UserControl
         var combo = this.FindControl<ComboBox>("PegawaiCombo")!;
         try
         {
-            _pegawai = await Service.PegawaiAsync();
+            _pegawai = await Service.PegawaiAsync(Akses());
             combo.ItemsSource = _pegawai;
             var user = AppSession.CurrentUser;
             if (user is { IsAdminUtama: false })
@@ -161,7 +174,7 @@ public partial class RawatJalanView : UserControl
         var noRawat = _selected.NoRawat;
         try
         {
-            var rows = (await Service.PemeriksaanAsync(noRawat)).Select(SoapItem.From).ToList();
+            var rows = (await Service.PemeriksaanAsync(noRawat, Akses())).Select(SoapItem.From).ToList();
             if (_selected?.NoRawat == noRawat) grid.ItemsSource = rows;
         }
         catch (Exception)
@@ -194,6 +207,47 @@ public partial class RawatJalanView : UserControl
     {
         this.FindControl<DataGrid>("SoapGrid")!.SelectedItem = null;
         ClearForm();
+    }
+
+    private async void OnLimaTerakhirClick(object? sender, RoutedEventArgs e)
+    {
+        var status = this.FindControl<TextBlock>("SaveStatusText")!;
+        if (_selected is not { } kunjungan || _soap is not null)
+        {
+            Show(status, "Pilih kunjungan dan buka draf baru sebelum menyalin SOAPIE.", error: true);
+            return;
+        }
+        if (this.FindControl<ComboBox>("PegawaiCombo")!.SelectedItem is not PegawaiPilihan pegawai)
+        {
+            Show(status, "Pilih dokter atau paramedis terlebih dahulu.", error: true);
+            return;
+        }
+        if (TopLevel.GetTopLevel(this) is not Window owner) return;
+
+        try
+        {
+            var akses = Akses();
+            var ranap = sender is Button { Tag: "Ranap" };
+            var note = await SearchPickerDialog.ShowAsync<SoapItem>(owner, ranap ? "5 SOAPIE Terakhir Rawat Inap" : "5 SOAPIE Terakhir Rawat Jalan", async cari =>
+                (await Service.LimaTerakhirAsync(kunjungan.NoRawat, pegawai.Nik, cari, akses, ranap)).Select(SoapItem.From).ToList(),
+                item => $"{item.Tanggal} {item.Jam} | {item.Data.NoRawat} | {item.Data.Keluhan.ReplaceLineEndings(" ")}");
+            if (note is null || _selected?.NoRawat != kunjungan.NoRawat || _soap is not null) return;
+            (string Box, string Value)[] narasi =
+            [
+                ("KeluhanBox", note.Data.Keluhan), ("PemeriksaanBox", note.Data.Pemeriksaan), ("PenilaianBox", note.Data.Penilaian),
+                ("RtlBox", note.Data.Rtl), ("InstruksiBox", note.Data.Instruksi), ("EvaluasiBox", note.Data.Evaluasi),
+            ];
+            if (narasi.Any(field => !string.IsNullOrWhiteSpace(GetText(field.Box))) &&
+                !await Dialogs.ConfirmAsync(this, "Ganti narasi draf", "Ganti keenam isian narasi draf dengan catatan yang dipilih?"))
+                return;
+            if (_selected?.NoRawat != kunjungan.NoRawat || _soap is not null) return;
+            foreach (var field in narasi) SetText(field.Box, field.Value);
+            Show(status, "Narasi SOAPIE disalin ke draf. Periksa isinya sebelum menyimpan.", error: false);
+        }
+        catch (Exception)
+        {
+            Show(status, "Riwayat SOAPIE tidak dapat dimuat.", error: true);
+        }
     }
 
     private void ClearForm()
@@ -260,7 +314,7 @@ public partial class RawatJalanView : UserControl
         if (ReadForm(status) is not { } input) return;
         try
         {
-            await Service.UbahAsync(_soap.Data.NoRawat, _soap.Data.Tanggal, _soap.Data.Jam, input, Akses());
+            await Service.UbahAsync(_soap.Data, input, Akses());
             Show(status, "Perubahan pemeriksaan tersimpan.", error: false);
             await RefreshAfterWriteAsync();
         }
@@ -277,7 +331,7 @@ public partial class RawatJalanView : UserControl
         if (!await Dialogs.ConfirmAsync(this, "Hapus Pemeriksaan", $"Hapus pemeriksaan {soap.Tanggal} {soap.Jam}?")) return;
         try
         {
-            await Service.HapusAsync(soap.Data.NoRawat, soap.Data.Tanggal, soap.Data.Jam, Akses());
+            await Service.HapusAsync(soap.Data, Akses());
             Show(status, "Pemeriksaan dihapus.", error: false);
             await RefreshAfterWriteAsync();
         }
@@ -292,7 +346,7 @@ public partial class RawatJalanView : UserControl
         this.FindControl<DataGrid>("SoapGrid")!.SelectedItem = null;
         ClearForm();
         await LoadSoapAsync();
-        await LoadQueueAsync();
+        if (!_embedded) await LoadQueueAsync();
     }
 
     private static void Show(TextBlock status, string message, bool error)

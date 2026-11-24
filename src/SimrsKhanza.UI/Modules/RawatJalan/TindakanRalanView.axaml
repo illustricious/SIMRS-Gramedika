@@ -13,11 +13,11 @@
         yet; "Pemeriksaan" opens the existing vitals/exam form instead.
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="16,12">
-        <Border Classes="tegasHeading" Margin="0,0,0,6">
+        <Border Name="Heading" Classes="tegasHeading" Margin="0,0,0,6">
             <TextBlock Classes="pageTitle" Text="Perawatan/Tindakan Rawat Jalan" />
         </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
+        <StackPanel Name="Filters" Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
             <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
             <CalendarDatePicker Name="FromPicker" />
             <TextBlock Text="s.d." VerticalAlignment="Center" />
@@ -102,10 +102,15 @@
             </TabItem>
         </TabControl>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+        <StackPanel Name="Actions" Grid.Row="3" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
             <Button Content="🩺 Pemeriksaan" Click="OnPemeriksaanClick" />
             <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="16,0,0,0" />
             <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" Margin="16,0,0,0" />
+        </StackPanel>
+
+        <StackPanel Name="VisitActions" Grid.Row="3" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0" IsVisible="False">
+            <Button Name="UbahTindakanButton" Content="Ubah tindakan terpilih" Click="OnUbahTindakanClick" />
+            <Button Name="HapusTindakanButton" Content="Hapus tindakan terpilih" Click="OnHapusTindakanClick" />
         </StackPanel>
 
         <TextBlock Grid.Row="4" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />

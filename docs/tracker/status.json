@@ -689,7 +689,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnRawatJalan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji."
+    "bukti": "DlgReg.java:8398 dan DlgRawatJalan.java:5055 - RawatJalanKunjunganView dibuka di PageHost bagi baris klik kanan, dengan submenu klinis di kiri. Tes headless memverifikasi konteks baris dan kolom kiri. SOAPIE dan Catatan Dokter dapat diinput. Tindakan dan sebagian laporan masih baca saja."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLab": {
     "status": "kurang",
@@ -1512,12 +1512,12 @@
     "bukti": "PatientContextMenu.Screen, MainWindow.HandlePatientMenuAsync dan ReportRepository.RunForVisitAsync — laporan skrining baca-saja untuk nomor rawat terpilih; input dan ubah belum tersedia."
   },
   "popup|simrskhanza/DlgRawatInap.java|PopupSOAP|MnCopySOAP": {
-    "status": "kurang",
-    "bukti": "docs/tracker/AUDIT_CABANG.md — perintah popup salin/tempel enam bidang belum tersedia di editor layanan terkait."
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:8886 - PemeriksaanRanapWindow menyalin enam isian narasi dari catatan tersimpan yang dipilih ke draf baru dalam konteks pasien yang sama."
   },
   "popup|simrskhanza/DlgRawatInap.java|PopupPemeriksaan|MnPasteSOAP": {
-    "status": "kurang",
-    "bukti": "docs/tracker/AUDIT_CABANG.md — perintah popup salin/tempel enam bidang belum tersedia di editor layanan terkait."
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:8890 - PemeriksaanRanapWindow menyalin enam isian langsung ke draf baru dengan konfirmasi jika akan mengganti isi draf."
   },
   "popup|simrskhanza/DlgRawatJalan.java|PopupSOAP|MnCopySOAP": {
     "status": "kurang",
@@ -1645,7 +1645,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs SimpanAsync lewat OnSimpanClick: dokter/paramedis wajib, minimal satu isian, non-Admin Utama hanya atas NIK sendiri, waktu input tidak sebelum registrasi, pegawai harus ada. NIP placeholder dihapus. GCS, alergi, lingkar perut, tanggal, jam sudah ada. Tes aturan murni di src/SimrsKhanza.Tests/RawatJalanServiceTests.cs; SQL belum dijalankan ke DB. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
+    "bukti": "TindakanRalanInputService menyimpan tindakan dokter, petugas atau gabungan dan jurnal dalam satu transaksi dengan izin tindakan_ralan. TindakanRalanInputTests lulus di MariaDB sintetis. SOAPIE dan Catatan Dokter bisa disimpan. Obstetri, ginekologi dan diagnosa masih baca saja. Input parsial setelah billing belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBatal": {
     "status": "sebagian",
@@ -1653,11 +1653,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHapus": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs HapusAsync dengan konfirmasi: non-Admin Utama 48 jam dan milik sendiri. Satu baris sekali, Java menghapus semua baris tercentang. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
+    "bukti": "TindakanRalanInputService.HapusAsync menghapus satu tindakan dokter/petugas/gabungan dan memposting jurnal pembalik dalam transaksi dengan izin, guard billing, batas 48 jam dan konflik data; TindakanRalanInputTests diuji di MariaDB sintetis. SOAPIE dan Catatan Dokter mendukung hapus satu; hapus massal belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnEdit": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RawatJalanService.cs UbahAsync (Ganti): non-Admin Utama hanya miliknya, 48 jam, tidak sebelum registrasi; kunci lama dipakai agar tanggal/jam bisa diubah. Tidak mengubah no_rawat seperti Java. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
+    "bukti": "TindakanRalanInputService.UbahAsync mengubah satu tindakan dokter/petugas/gabungan serta memposting pembalik dan jurnal baru dalam satu transaksi, dengan izin dan guard billing. Fixture MariaDB menguji ketiga jenis, rekening hilang dan konflik. SOAPIE dan Catatan Dokter mendukung ubah; obstetri, ginekologi dan diagnosa belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPrint": {
     "status": "kurang",
@@ -1681,67 +1681,67 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTambahTindakan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/TindakanRalanView.axaml.cs hanya menampilkan tindakan (read-only); tambah tindakan jasa dokter/petugas dari layar ini belum ada. Input tindakan hanya lewat barcode Menu B."
+    "bukti": "DlgRawatJalan.java:7223 membuka master DlgJnsPerawatanRalan dengan izin tarif_ralan. Input tindakan kunjungan sudah ada di TindakanRalanInputView dengan izin tindakan_ralan; pintasan dari kunjungan ke master tarif belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memuat dokter dari tabel dokter untuk tindakan dokter. Pemilih ada dalam form kunjungan; dialog pencarian Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPetugas": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memuat petugas dari tabel petugas untuk tindakan petugas. Pemilih ada dalam form kunjungan; dialog pencarian Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPetugas2": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memilih petugas untuk tindakan gabungan. Pemilih ada dalam form kunjungan; dialog pencarian Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter2": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memilih dokter untuk tindakan gabungan. Pemilih ada dalam form kunjungan; dialog pencarian Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkInput": {
-    "status": "kurang",
-    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memberi form tindakan dokter dan cari tarif per kunjungan. Java melipat form di tab; rewrite berpindah antara form dan daftar di halaman yang sama."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPegawai": {
     "status": "sebagian",
     "bukti": "PegawaiCombo diisi src/SimrsKhanza.Data/RawatJalanService.cs PegawaiAsync: Admin Utama memilih pegawai, akun lain terkunci pada NIK sendiri. Tidak ada dialog cari."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|Btn5Soap": {
-    "status": "kurang",
-    "bukti": "Pilihan 5 SOAP terakhir belum ada."
+    "status": "sebagian",
+    "bukti": "RawatJalanService.LimaTerakhirAsync dan RawatJalanView: pilih lima SOAPIE Ralan atau Ranap pasien dan NIK yang sama, pencarian dan salin enam narasi ke draf. Izin tindakan_ralan diperiksa di layanan; akun biasa dibatasi NIK sendiri. Uji fixture baru belum dijalankan, tampilan berbeda dari dialog Java."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTemplatePemeriksaan": {
     "status": "kurang",
     "bukti": "Template pemeriksaan belum dipakai di RawatJalanView (master template ada di Menu M)."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkInput1": {
-    "status": "kurang",
-    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memberi form tindakan petugas dan cari tarif per kunjungan. Java melipat form di tab; rewrite berpindah antara form dan daftar di halaman yang sama."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkInput2": {
-    "status": "kurang",
-    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+    "status": "sebagian",
+    "bukti": "TindakanRalanInputView memberi form tindakan gabungan dan cari tarif per kunjungan. Java melipat form di tab; rewrite berpindah antara form dan daftar di halaman yang sama."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkInput3": {
     "status": "kurang",
     "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekDokter3": {
-    "status": "kurang",
-    "bukti": "Dialog cari dokter/petugas/pegawai belum ada; NIP pemeriksa placeholder."
+    "status": "sebagian",
+    "bukti": "CatatanDokterView menyediakan pemilih dokter untuk Admin Utama. Akun biasa memakai kode dokter yang sama dengan akun login. Dialog pencarian Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkJln": {
     "status": "kurang",
     "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkAccor": {
-    "status": "kurang",
-    "bukti": "Panel input yang bisa dilipat per tab belum ada; form SOAP selalu tampil."
+    "status": "selesai",
+    "bukti": "DlgRawatJalan.java:7406 dan isMenu membuka atau melipat submenu. RawatJalanKunjunganView.ToggleMenu membentangkan atau melipat kolom submenu kiri dengan tombol Menu Kiri."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRiwayat": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs menu Riwayat Perawatan membuka PatientHistoryWindow (daftar kunjungan pasien); riwayat SOAP/obat/lab per kunjungan seperti Java belum."
+    "bukti": "MenuKlinisRalanCatalog memeriksa resume_pasien sesuai DlgRawatJalan.java:11436. RawatJalanVisitReports.Riwayat menampilkan kunjungan pasien terpilih. Uji headless memeriksa pemisahan akses dari Resume. Isi riwayat Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnResepObat": {
     "status": "kurang",
@@ -1760,20 +1760,20 @@
     "bukti": "Pemberian obat dan BHP dari kunjungan belum ada (penjualan obat ada di Farmasi, stok keluar di Menu D)."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnObatBhp": {
-    "status": "kurang",
-    "bukti": "Daftar obat dan BHP per kunjungan belum ada."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka RawatJalanVisitReports.Obat baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBerkasDigital": {
     "status": "kurang",
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanLab": {
-    "status": "kurang",
-    "bukti": "Layar permintaan lab ada (LabPermintaanRepository) tetapi tidak dibuka dari Rawat Jalan; entri menu klik kanan tanpa aksi."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka RawatJalanVisitReports.Lab baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanRad": {
-    "status": "kurang",
-    "bukti": "Layar permintaan radiologi ada tetapi tidak dibuka dari Rawat Jalan; entri menu klik kanan tanpa aksi."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka RawatJalanVisitReports.Radiologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnJadwalOperasi": {
     "status": "kurang",
@@ -1796,116 +1796,116 @@
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnResume": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "MenuKlinisRalanCatalog memakai data_resume_pasien sesuai DlgRawatJalan.java:11396 dan fungsi/akses.java. Uji headless memeriksa izin terpisah dari Riwayat. RawatJalanVisitReports.Resume baca saja; input resume belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanIGD": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanIGD baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanRalan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanGigi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanGigi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanKandungan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanKebidanan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanAnak": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalRalanBayi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanPsikiatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanRalanPsikiatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalKeperawatanGeriatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalKeperawatanRalanGeriatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalFisioterapi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnFisioterapi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalTerapiWicara": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianTerapiWicara baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisIGD": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisIGD baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisIGDPsikiatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanIGDPsikiatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedis": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisKandungan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanKandungan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisAnak": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanBayi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisTHT": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanTHT baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisPsikiatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanPsikiatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisPenyakitDalam": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanPenyakitDalam baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisMata": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanMata baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisNeurologi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanNeurologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisOrthopedi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanOrthopedi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisBedah": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanBedah baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisBedahMulut": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanBedahMulut baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisGeriatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanGeriatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisKulitKelamin": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanKulitKelamin baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisParu": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanParu baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisRehabMedik": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanRehabMedik baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisHemodialisa": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "MenuKlinisRalanCatalog memeriksa penilaian_medis_hemodialisa, kolom dari getter getpenilaian_medis_ralan_hemodialisa di fungsi/akses.java:5017. Laporan per kunjungan baca saja; form tulis belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRujukKeluar": {
     "status": "kurang",
@@ -1928,112 +1928,112 @@
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianUlangNyeri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianUlangNyeri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanPEWSAnak": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPemantauanPEWSAnak baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanPEWSDewasa": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPemantauanPEWSDewasa baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanMEOWS": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPemantauanMEOWS baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPemantauanEWSNeonatus": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPemantauanEWSNeonatus baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringReaksiTranfusi": {
     "status": "kurang",
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnUjiFungsiKFR": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnUjiFungsiKFR baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukHCU": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukHCU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukICU": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPreOperasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistPreOperasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSignInSebelumAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnSignInSebelumAnestesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTimeOutSebelumInsisi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnTimeOutSebelumInsisi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSignOutSebelumMenutupLuka": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnSignOutSebelumMenutupLuka baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPostOperasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistPostOperasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreOperasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPreOperasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPreAnastesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorAldrettePascaAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnSkorAldrettePascaAnestesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorStewardPascaAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnSkorStewardPascaAnestesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMedicalCheckUp": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianMCU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhDewasa": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhDewasa baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhAnak": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhAnak baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhLansia": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhLansia baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhNeonatus": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhNeonatus baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhGeriatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhGeriatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanRisikoJatuhPsikiatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianRisikoJatuhPsikiatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianLanjutanSkriningFungsional": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianLanjutanSkriningFungsional baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSG": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanUSG baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnDokumentasiESWL": {
     "status": "kurang",
@@ -2045,39 +2045,39 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiDewasa": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningNutrisiDewasa baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiLansia": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningNutrisiLansia baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiAnak": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningNutrisiAnak baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningGiziLanjut": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningGiziLanjut baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAsuhanGizi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnAsuhanGizi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringAsuhanGizi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnMonitoringAsuhanGizi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanADIMEGizi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnCatatanADIMEGizi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnKonselingFarmasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnKonselingFarmasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnInformasiObat": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPelayananInformasiObat baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRekonsiliasiObat": {
     "status": "kurang",
@@ -2088,136 +2088,136 @@
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnEdukasiPasienKeluarga": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnEdukasiPasienKeluargaRJ baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPengkajianRestrain": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPengkajianRestrain baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienTerminal": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPasienTerminal baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianKorbanKekerasan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianKorbanKekerasan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienPenyakitMenular": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPasienPenyakitMenular baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienKeracunan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPasienKeracunan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanGeriatri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianTambahanGeriatri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanBunuhDiri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianTambahanBunuhDiri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanPerilakuKekerasan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianTambahanPerilakuKekerasan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianTambahanMelarikanDiri": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianTambahanMelarikanDiri baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkorBromagePascaAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnSkorBromagePascaAnestesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPreInduksi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPreInduksi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGUrologi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilUSGUrologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGGynecologi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilUSGGynecologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGNeonatus": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilUSGNeonatus baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanUSGAbdomen": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilUSGAbdomen baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanEKG": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanEKG baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanTreadmill": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanTreadmill baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanSlitLamp": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanSlitLamp baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanOCT": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanOCT baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanECHO": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanECHO baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPemeriksaanECHOPediatrik": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPemeriksaanECHOPediatrik baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenatalaksanaanTerapiOkupasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenatalaksanaanTerapiOkupasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPsikolog": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPsikologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPsikologKlinis": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPsikologiKlinis baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianBayiBaruLahir": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianBayiBaruLahir baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianDerajatDehidrasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianDerajatDehidrasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPelaksanaanInformasiEdukasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPelaksanaanInformasiEdukasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnLayananKedokteranFisikRehabilitasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnLayananKedokteranFisikRehabilitasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiFaringLaring": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilEndoskopiFaringLaring baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiHidung": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilEndoskopiHidung baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilEndoskopiTelinga": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilEndoskopiTelinga baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianPasienImunitasRendah": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianPasienImunitasRendah baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanKeseimbanganCairan": {
     "status": "kurang",
@@ -2244,168 +2244,168 @@
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPemberianFibrinolitik": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistPemberianFibrinolitik baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanKonsultasiMedik": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnKonsultasiMedik baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanKonsultasiPerawat": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnKonsultasiPerawat baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningMerokokUsiaRemaja": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningMerokokUsiaSekolah baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKekerasanPadaWanita": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKekerasanPadaPerempuan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningObesitas": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningObesitas baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerPayudara": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningRisikoKankerPayudara baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerParu": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningRisikoKankerParu baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutremaja": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKesehatanGigiMulutRemaja baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutBalita": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKesehatanGigiMulutBalita baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutLansia": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKesehatanGigiMulutLansia baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanGigiMulutDewasa": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKesehatanGigiMulutDewasa baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningRisikoKankerServiks": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningRisikoKankerServiks baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningAnemia": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningAnemia baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningHipertensi": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningHipertensi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKesehatanPenglihatan": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKesehatanPenglihatan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningIndraPendengaran": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningIndraPendengaran baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningFrailtySyndrome": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningFrailtySyndrome baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningTBC": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningTBC baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningPUMA": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningPUMA baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningAdiksiNikotin": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningAdiksiNikotin baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningThalassemia": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningThalassemia baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenSDQ": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningInstrumenSDQ baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenACRS": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningInstrumenACRS baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenMentalEmosional": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningInstrumenMentalEmosional baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenAMT": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningInstrumenAMT baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningPneumoniaSeverityIndex": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningPneumoniaSeverityIndex baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningCURB65": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningCURB65 baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningInstrumenSRQ": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningInstrumenSRQ baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningKankerKolorektal": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningKankerKolorektal baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningDiabetesMelitus": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningDiabetesMelitus baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisJantung": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanJantung baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAwalMedisUrologi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianAwalMedisRalanUrologi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnLaporanTindakan": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnLaporanTindakan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanPengkajianPaskaOperasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnCatatanPengkajianPaskaOperasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKesiapanAnestesi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKesiapanAnestesi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanAnastesiSedasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnCatatanAnastesiSedasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiBayi": {
     "status": "kurang",
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukNICU": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukNICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukPICU": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukPICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningGiziKehamilan": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja skrining gizi di Menu M (MenuMSpecs, tile skrining gizi), per tanggal bukan per kunjungan; input dari Rawat Jalan belum."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningGiziKehamilan baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnIntervensiNyeriFarmakologi": {
     "status": "kurang",
@@ -2417,42 +2417,850 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnResepIterasiBPJS": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "DlgRawatJalan.java:11343 memerlukan konfigurasi iterasi resep aktif, penjamin BPJS, dan resep_dokter. RawatJalanKunjunganView menyembunyikan menu sampai pemeriksaan konteks BPJS dan alur iterasi tersedia."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukIsolasi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukIsolasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningTOLAC": {
     "status": "sebagian",
-    "bukti": "Daftar baca-saja per kunjungan lewat klik kanan layar Registrasi/IGD (src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs, ScreeningMenu + ReportRepository.RunForVisitAsync). Layar Rawat Jalan memakai menu klik kanan jenis Visit tanpa submenu Skrining; input dan ubah belum ada."
+    "bukti": "RawatJalanKunjunganView membuka btnSkriningTOLAC baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAdmisiSkoringTOLAC": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnAdmisiSkoringTOLAC baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHasilPersalinanTOLAC": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnHasilPersalinanTOLAC baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringTolac": {
     "status": "kurang",
     "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnLaporanReaksiTranfusi": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnLaporanReaksiTranfusi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianGRACEScore": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianGRACEScore baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianBISHOPScore": {
-    "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "status": "sebagian",
+    "bukti": "RawatJalanKunjunganView membuka btnPenilaianBISHOPScore baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
   },
   "jendela|simrskhanza/DlgRawatJalan.java|DlgRawatJalan": {
     "status": "sebagian",
     "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsKhanza.Data/RawatJalanService.cs: daftar kunjungan Ralan non-IGD per tanggal dengan pencarian, banyak SOAP per kunjungan (tambah, ganti, hapus) dengan aturan akses Khanza. Belum: tab tindakan dokter/petugas, obstetri, catatan, resep, permintaan, dan tombol formulir klinis."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnDataRM|ppRiwayat": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:21744 - PatientContextMenu dan MainWindow.HandlePatientMenuAsync membuka PatientHistoryWindow pada pasien terpilih. Kesetaraan seluruh riwayat Java belum diverifikasi."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnTindakan|MnRawatInap": {
+    "status": "sebagian",
+    "bukti": "DlgKamarInap.java:6310 - Tombol SOAPIE pada RawatInapView membuka pemeriksaan untuk nomor rawat terpilih. Tab tindakan, obstetri, ginekologi dan konteks pasien gabungan belum tersedia."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnBilling": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:6690 - RawatInapView.OnBillingClick dan MainWindow.HandlePatientMenuAsync membuka Kasir untuk nomor rawat. Pelunasan ranap terbatas."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnGanti|MnPenjab": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7654 - Panel Ganti dan RawatInapRepository.GantiDataKamarAsync menyediakan edit penjamin melalui tombol bawah."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnGanti|MnDiagnosaMasuk": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:11348 - Panel Ganti mengubah diagnosis awal segmen yang dipilih saat formulir dibuka. Java menulis berdasarkan no_rawat."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnGanti|MnDiagnosaAkhir": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:11363 - Panel Ganti mengubah diagnosis akhir segmen yang dipilih saat formulir dibuka. Java menulis berdasarkan no_rawat."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnHapusData|MnHapusDataSalah": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:7464 - RawatInapView tidak menyediakan koreksi dengan penghapusan segmen kamar. Tindakan ini juga memengaruhi okupansi dan status registrasi di Java."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnReg": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5421 - MainWindow.HandlePatientMenuAsync dapat meneruskan nomor rawat dari Registrasi. Pemilih registrasi dari panel masuk belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnKamar": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5486 - RawatInapView memuat tarif sesuai penjamin dan kamar kosong atau pesanan pasien. Dialog pencarian kamar Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseIn": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:5841 - RawatInapView.OnActionCancelClick menutup panel tanpa menyimpan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5853 - RawatInapRepository.AdmitAsync/DischargeAsync mencatat segmen, tarif, dan okupansi melalui transaksi. Cabang penggabungan dan tindak lanjut pulang Java belum diterapkan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnBatal": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5943 - Panel RawatInapView dapat ditutup. Tombol reset formulir dalam panel setara Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnDiagnosa": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:8275 - RawatInapView memberi input diagnosis awal berupa teks. Pemilih diagnosis Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnKamar2": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7223 - Pilihan kamar kosong dimuat oleh RawatInapRepository.GetAvailableKamarForVisitAsync. Dialog pencarian kamar tujuan Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseInpindah": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:7289 - RawatInapView.OnActionCancelClick menutup panel tanpa menyimpan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpanpindah": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7298 - RawatInapRepository.PindahKamarAsync menutup segmen lama dan membuka segmen baru dalam satu transaksi. Variasi aturan tarif atau waktu Java belum seluruhnya diverifikasi."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseIn4": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:7579 - RawatInapView.OnActionCancelClick menutup panel Ganti tanpa menyimpan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpan4": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7583 - RawatInapRepository.GantiDataKamarAsync mengubah reg_periksa.kd_pj jika tagihan belum tersimpan, dari panel Ganti gabungan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnBayar": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7610 - RawatInapView memilih penjamin berdasarkan kode di panel Ganti. Dialog pencarian penjamin Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseGabung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:8349 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpanGabung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:8356 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnPasienRanapGabung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:8439 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnHapusGabung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:8483 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnPasienRanapGabung1": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:9253 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnPrint5": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:10895 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnKeluar4": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:10921 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSeek5": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgKamarInap.java:10925 - RawatInapView tidak menyediakan dialog penggabungan ranap atau layar pendukung terkait."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseIn5": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:11378 - RawatInapView.OnActionCancelClick menutup panel Ganti tanpa menyimpan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpan5": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:11382 - RawatInapRepository.GantiDataKamarAsync mengubah diagnosis awal segmen sesuai kunci. Java menulis berdasarkan no_rawat."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCloseIn6": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:11394 - RawatInapView.OnActionCancelClick menutup panel Ganti tanpa menyimpan."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnSimpan6": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:11398 - RawatInapRepository.GantiDataKamarAsync mengubah diagnosis akhir segmen sesuai kunci. Java menulis berdasarkan no_rawat."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnIn": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5552 - RawatInapView.OnMasukClick membuka formulir dengan No. Rawat manual atau prefill dari registrasi. Pemilih registrasi belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnOut": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5578 - RawatInapView.OnPulangClick dan RawatInapRepository.DischargeAsync memakai waktu saat simpan. Input waktu keluar dan tindak lanjut meninggal/rujuk Java belum setara."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnPindah": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:7163 - RawatInapView.OnPindahClick menampilkan tujuan kosong dan tarif per penjamin. Pengaturan waktu pindah dan variasi perhitungan Java belum setara."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5653 - RawatInapReport.GeneratePdf mencetak daftar terfilter. Paritas template laporan Java belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnKeluar": {
+    "status": "selesai",
+    "bukti": "simrskhanza/DlgKamarInap.java:5636 - RawatInapView.OnBackClick kembali dari layar daftar pasien rawat inap."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|btnBangsalCari": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:6264 - RawatInapView menyediakan filter bangsal/kamar berupa teks bebas. Pemilih bangsal belum tersedia."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5781 - RawatInapRepository.GetDaftarAsync menerapkan filter utama dan membatasi hasil 2.000 baris. Pencocokan semua cabang kueri Java belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgKamarInap.java|BtnAll": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:5793 - RawatInapView.OnSemuaClick membersihkan filter dan kembali ke Belum Pulang. Pencocokan semua cabang kueri Java belum diverifikasi."
+  },
+  "jendela|simrskhanza/DlgKamarInap.java|DlgKamarInap": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgKamarInap.java:1 - RawatInapView menyediakan daftar 21 kolom, filter, masuk, pulang, pindah, edit dan PDF. Penggabungan, koreksi data dan cabang klinis masih kurang."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:4365 dan :11939 - PemeriksaanRanapService.SimpanAsync menyimpan SOAPIE per kunjungan dengan NIK pegawai. Lima tab lain belum setara."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnBatal": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:4402 - PemeriksaanRanapWindow menyediakan Catatan Baru untuk reset isian SOAPIE. Lima tab lain belum setara."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:4816 - PemeriksaanRanapService.HapusAsync menghapus satu SOAPIE setelah konfirmasi di PemeriksaanRanapWindow. Hapus banyak baris dan lima tab lain belum tersedia."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:5399 - PemeriksaanRanapService.SimpanAsync mengubah SOAPIE berdasarkan kunci awal dan menolak konflik. Edit lima tab lain belum setara."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "PemeriksaanRanapWindow.SimpanPdfAsync menyimpan catatan SOAPIE terpilih sebagai PDF setelah memeriksa izin tindakan_ranap dan memuat ulang catatan. Hasil PDF belum diverifikasi visual; cetak tindakan, obstetri dan ginekologi serta format Jasper Java belum tersedia."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAll": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:5147 - Muat Ulang Riwayat pada PemeriksaanRanapWindow memuat seluruh SOAPIE untuk kunjungan terpilih. Reset filter multi-tab Java belum setara."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnKeluar": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgRawatInap.java:5137 - RawatInapView.OnBackClick menutup daftar kamar. Perintah keluar dari dialog tindakan dan pemeriksaan belum punya padanan."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnPasien": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5246 - Handler membuka DlgCariPasien dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:5171 - PemeriksaanRanapService.DaftarAsync memuat SOAPIE berdasarkan nomor rawat. Filter tanggal, pencarian teks dan lima tab lain belum tersedia di dialog ini."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSeekDokter": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5741 - Handler membuka DlgCariDokter dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6016 - Handler membuka DlgCariPerawatanRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan3": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6073 - Handler membuka DlgCariPerawatanRanap2 dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSeekPetugas": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5790 - Handler membuka DlgCariPetugas dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan4": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6130 - Handler membuka DlgCariPerawatanRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan5": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6187 - Handler membuka DlgCariPerawatanRanap2 dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSeekPetugas2": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5839 - Handler membuka DlgCariPetugas dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSeekDokter2": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5878 - Handler membuka DlgCariDokter dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan6": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6244 - Handler membuka DlgCariPerawatanRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|btnTindakan7": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6303 - Handler membuka DlgCariPerawatanRanap2 dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|ChkInput": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5729 - Kontrol klinis Java tidak punya jalur setara di RawatInapView."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSeekPegawai": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:6930 - PemeriksaanRanapWindow menampilkan NIK akun biasa dan daftar pegawai untuk Admin Utama. Dialog pencarian pegawai Java belum setara."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|Btn5Soap": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:7295 dan RMCari5SOAPTerakhir.java:388 - LimaTerakhirAsync menyaring pasien dan penulis, mencari keluhan atau pemeriksaan, dan memuat maksimal lima catatan. PemeriksaanRanapWindow mengisi enam narasi untuk catatan baru. Kueri lulus empat asersi MariaDB sintetis. Uji aplikasi dengan database belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|ChkInput1": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5931 - Kontrol klinis Java tidak punya jalur setara di RawatInapView."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|ChkInput2": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6378 - Kontrol klinis Java tidak punya jalur setara di RawatInapView."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|ChkJln": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:5313 - Kontrol klinis Java tidak punya jalur setara di RawatInapView."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|ChkAccor": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6620 - Kontrol klinis Java tidak punya jalur setara di RawatInapView."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnRiwayat": {
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgRawatInap.java:6830 - PatientContextMenu dan MainWindow.HandlePatientMenuAsync membuka PatientHistoryWindow dari daftar kamar dengan konteks pasien. Tombol di layar klinis belum tersedia."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnResepObat": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6624 - Handler membuka DlgPeresepanDokter dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCopyResep": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6644 - Handler membuka DlgCopyResep dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanStok": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6903 - Handler membuka DlgPermintaanStokPasien dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanResepPulang": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7063 - Handler membuka DlgPermintaanResepPulang dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnInputObat": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6661 - Handler membuka DlgCariObat3 dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnObatBhp": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6688 - Handler membuka DlgPemberianObat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnBerkasDigital": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6705 - Handler membuka DlgBerkasRawat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanLab": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6730 - Handler membuka DlgPermintaanLaboratorium dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanRad": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6747 - Handler membuka DlgPermintaanRadiologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnJadwalOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6965 - Handler membuka DlgBookingOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSKDP": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6764 - Handler membuka SuratKontrol dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnRujukKeluar": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6780 - Handler membuka DlgRujuk dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnDiagnosa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6816 - Handler membuka DlgDiagnosaPenyakit dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnResume": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6853 - Handler membuka RMDataResumePasienRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalKeperawatanUmum": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7149 - Handler membuka RMPenilaianAwalKeperawatanRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalKeperawatanKandungan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6979 - Handler membuka RMPenilaianAwalKeperawatanKebidananRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalFisioterapi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7030 - Handler membuka RMPenilaianFisioterapi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedis": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6996 - Handler membuka RMPenilaianAwalMedisRanapDewasa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedisKandungan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7013 - Handler membuka RMPenilaianAwalMedisRanapKandungan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedisHemodialisa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7970 - Handler membuka RMPenilaianAwalMedisHemodialisa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistPreOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7511 - Handler membuka RMChecklistPreOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSignInSebelumAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7528 - Handler membuka RMSignInSebelumAnastesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnTimeOutSebelumInsisi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7545 - Handler membuka RMTimeOutSebelumInsisi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSignOutSebelumMenutupLuka": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7562 - Handler membuka RMSignOutSebelumMenutupLuka dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistPostOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7579 - Handler membuka RMChecklistPostOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPreOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7210 - Handler membuka RMPenilaianPreOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPreAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7227 - Handler membuka RMPenilaianPreAnastesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkorAldrettePascaAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8090 - Handler membuka RMMonitoringAldrettePascaAnestesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkorStewardPascaAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8107 - Handler membuka RMMonitoringStewardPascaAnestesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPsikolog": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7132 - Handler membuka RMPenilaianPsikologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPerencanaanPemulangan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7244 - Handler membuka RMPerencanaanPemulangan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhDewasa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7261 - Handler membuka RMPenilaianLanjutanRisikoJatuhDewasa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhAnak": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7278 - Handler membuka RMPenilaianLanjutanRisikoJatuhAnak dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhLansia": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7664 - Handler membuka RMPenilaianLanjutanRisikoJatuhLansia dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhNeonatus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7919 - Handler membuka RMPenilaianRisikoJatuhNeonatus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhGeriatri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7936 - Handler membuka RMPenilaianLanjutanRisikoJatuhGeriatri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhPsikiatri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8004 - Handler membuka RMPenilaianLanjutanRisikoJatuhPsikiatri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanSkriningFungsional": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8021 - Handler membuka RMPenilaianLanjutanSkriningFungsional dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianResikoDekubitus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7834 - Handler membuka RMPenilaianRisikoDekubitus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanUSG": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7375 - Handler membuka RMHasilPemeriksaanUSG dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnDokumentasiESWL": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7851 - Handler membuka RMHasilTindakanESWL dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanPersalinan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8073 - Handler membuka RMCatatanPersalinan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6801 - Handler membuka DlgCatatan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiRanap": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7081 - Handler membuka RMDataCatatanObservasiRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiRanapKebidanan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7098 - Handler membuka RMDataCatatanObservasiRanapKebidanan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiRanapPostPartum": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7115 - Handler membuka RMDataCatatanObservasiRanapPostPartum dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnFollowUpDBD": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7902 - Handler membuka RMDataFollowUpDBD dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanKeperawatan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7176 - Handler membuka RMDataCatatanKeperawatanRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanCekGDS": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7494 - Handler membuka RMDataCatatanCekGDS dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianUlangNyeri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8038 - Handler membuka RMPenilaianUlangNyeri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPemantauanPEWSAnak": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7193 - Handler membuka RMPemantauanPEWS dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPemantauanPEWSDewasa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7698 - Handler membuka RMPemantauanEWSD dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPemantauanMEOWS": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7766 - Handler membuka RMPemantauanMEOWS dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPemantauanEWSNeonatus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7953 - Handler membuka RMPemantauanEWSNeonatus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaMasukHCU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7800 - Handler membuka RMChecklistKriteriaMasukHCU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaKeluarHCU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7817 - Handler membuka RMChecklistKriteriaKeluarHCU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaMasukICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7868 - Handler membuka RMChecklistKriteriaMasukICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaKeluarICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7885 - Handler membuka RMChecklistKriteriaKeluarICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnMonitoringReaksiTranfusi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7630 - Handler membuka RMDataMonitoringReaksiTranfusi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningNutrisiDewasa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7358 - Handler membuka RMSkriningNutrisiDewasa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningNutrisiLansia": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7392 - Handler membuka RMSkriningNutrisiLansia dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningNutrisiAnak": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7409 - Handler membuka RMSkriningNutrisiAnak dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningGiziLanjut": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7426 - Handler membuka RMDataSkriningGiziLanjut dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAsuhanGizi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6869 - Handler membuka RMDataAsuhanGizi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnMonitoringAsuhanGizi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:6886 - Handler membuka RMDataMonitoringAsuhanGizi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanADIMEGizi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7783 - Handler membuka RMCatatanADIMEGizi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnKonselingFarmasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7443 - Handler membuka RMKonselingFarmasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnInformasiObat": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7460 - Handler membuka DlgPermintaanPelayananInformasiObat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnRekonsiliasiObat": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7596 - Handler membuka RMRekonsiliasiObat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnTransferAntarRuang": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7477 - Handler membuka RMTransferPasienAntarRuang dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPengkajianRestrain": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8056 - Handler membuka RMPengkajianRestrain dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPasienTerminal": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7613 - Handler membuka RMPenilaianPasienTerminal dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianKorbanKekerasan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7647 - Handler membuka RMPenilaianKorbanKekerasan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianKecemasanAnak": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7987 - Handler membuka RMPenilaianLevelKecemasanRanapAnak dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPasienPenyakitMenular": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7681 - Handler membuka RMPenilaianPasienPenyakitMenular dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianTambahanGeriatri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7341 - Handler membuka RMPenilaianTambahanGeriatri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianTambahanBunuhDiri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7715 - Handler membuka RMPenilaianTambahanBunuhDiri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianTambahanPerilakuKekerasan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7732 - Handler membuka RMPenilaianTambahanPerilakuKekerasan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianTambahanMelarikanDiri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:7749 - Handler membuka RMPenilaianTambahanMelarikanDiri dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkorBromagePascaAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8148 - Handler membuka RMMonitoringBromagePascaAnestesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPreInduksi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8165 - Handler membuka RMPenilaianPreInduksi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanUSGUrologi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8182 - Handler membuka RMHasilPemeriksaanUSGUrologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanUSGGynecologi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8199 - Handler membuka RMHasilPemeriksaanUSGGynecologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanUSGNeonatus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8233 - Handler membuka RMHasilPemeriksaanUSGNeonatus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanUSGAbdomen": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8934 - Handler membuka RMHasilPemeriksaanUSGAbdomen dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanEKG": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8216 - Handler membuka RMHasilPemeriksaanEKG dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanTreadmill": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8817 - Handler membuka RMHasilPemeriksaanTreadmill dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanECHO": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8542 - Handler membuka RMHasilPemeriksaanEcho dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanECHOPediatrik": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8834 - Handler membuka RMHasilPemeriksaanEchoPediatrik dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilEndoskopiFaringLaring": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8250 - Handler membuka RMHasilEndoskopiFaringLaring dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilEndoskopiHidung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8267 - Handler membuka RMHasilEndoskopiHidung dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilEndoskopiTelinga": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8284 - Handler membuka RMHasilEndoskopiTelinga dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalKeperawatanNeonatus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8301 - Handler membuka RMPenilaianAwalKeperawatanRanapNeonatus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalKeperawatanBayiAnak": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8406 - Handler membuka RMPenilaianAwalKeperawatanRanapBayiAnak dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPasienImunitasRendah": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8318 - Handler membuka RMPenilaianPasienImunitasRendah dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanKeseimbanganCairan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8335 - Handler membuka RMDataCatatanKeseimbanganCairan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiCHBP": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8353 - Handler membuka RMDataCatatanObservasiCHBP dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanPengkajianPaskaOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8646 - Handler membuka RMCatatanPengkajianPaskaOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiInduksiPersalinan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8370 - Handler membuka RMDataCatatanObservasiInduksiPersalinan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiHemodialisa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8611 - Handler membuka RMDataCatatanObservasiHemodialisa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiRuangOperasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8917 - Handler membuka RMDataCatatanObservasiRuangOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanCairanHemodialisa": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8628 - Handler membuka RMDataCatatanCairanHemodialisa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistPemberianFibrinolitik": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8474 - Handler membuka RMChecklistPemberianFibrinolitik dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiRestrainNonfarmakologi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8423 - Handler membuka RMDataCatatanObservasiRestrainNonFarmakologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiVentilator": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8440 - Handler membuka RMDataCatatanObservasiVentilator dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanKonsultasiMedik": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8388 - Handler membuka DlgPermintaanKonsultasiMedik dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanKonsultasiPerawat": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8899 - Handler membuka DlgPermintaanKonsultasiPerawat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedisNeonatus": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8508 - Handler membuka RMPenilaianAwalMedisRanapNeonatus dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedisJantung": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8851 - Handler membuka RMPenilaianAwalMedisRanapJantung dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAwalMedisPsikiatri": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8766 - Handler membuka RMPenilaianAwalMedisRanapPsikiatrik dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianPsikologKlinis": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8491 - Handler membuka RMPenilaianPsikologiKlinis dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianDerajatDehidrasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8525 - Handler membuka RMPenilaianDerajatDehidrasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanAnastesiSedasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8457 - Handler membuka RMCatatanAnastesiSedasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianBayiBaruLahir": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8559 - Handler membuka RMPenilaianBayiBaruLahir dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnLaporanTindakan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8576 - Handler membuka RMLaporanTindakan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPelaksanaanInformasiEdukasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8593 - Handler membuka RMPelaksanaanInformasiEdukasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnCatatanObservasiBayi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8663 - Handler membuka RMDataCatatanObservasiBayi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKesiapanAnestesi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8681 - Handler membuka RMChecklistKesiapanAnestesi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanSlitLamp": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8698 - Handler membuka RMHasilPemeriksaanSlitLamp dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPemeriksaanOCT": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8715 - Handler membuka RMHasilPemeriksaanOCT dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaMasukNICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8732 - Handler membuka RMChecklistKriteriaMasukNICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaMasukPICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8783 - Handler membuka RMChecklistKriteriaMasukPICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaKeluarPICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8800 - Handler membuka RMChecklistKriteriaKeluarPICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaKeluarNICU": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8749 - Handler membuka RMChecklistKriteriaKeluarNICU dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningGiziKehamilan": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8868 - Handler membuka RMDataSkriningGiziKehamilan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnIntervensiNyeriFarmakologi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8951 - Handler membuka RMDataIntervensiNyeriFarmakologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnIntervensiNyeriNonFarmakologi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8968 - Handler membuka RMDataIntervensiNyeriNonFarmakologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaMasukIsolasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:8985 - Handler membuka RMChecklistKriteriaMasukIsolasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnChecklistKriteriaKeluarIsolasi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9002 - Handler membuka RMChecklistKriteriaKeluarIsolasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnAdmisiSkoringTOLAC": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9019 - Handler membuka RMAdmisiSkoringTOLAC dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnHasilPersalinanTOLAC": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9053 - Handler membuka RMHasilPersalinanTOLAC dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnMonitoringTolac": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9036 - Handler membuka RMDataMonitoringTOLAC dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnLaporanReaksiTranfusi": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9070 - Handler membuka RMReaksiTransfusi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianBISHOPScore": {
+    "status": "kurang",
+    "bukti": "simrskhanza/DlgRawatInap.java:9087 - Handler membuka RMPenilaianBishop dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+  },
+  "jendela|simrskhanza/DlgRawatInap.java|DlgRawatInap": {
+    "status": "sebagian",
+    "bukti": "DlgRawatInap.java:1 - PemeriksaanRanapWindow menyediakan tab Pemeriksaan SOAPIE melalui tombol SOAPIE pada RawatInapView. Tindakan, obstetri dan ginekologi belum tersedia."
   }
 }

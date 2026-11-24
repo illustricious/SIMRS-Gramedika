@@ -2,7 +2,7 @@
 
 Status otomatis: tile berstatus "layar tersedia" bila kuncinya dirutekan di kode (cakupan layar per menu ada di ringkasan); tile Menu L "ditunda". Status "selesai", "sebagian", dan "kurang" hanya dari status.json dengan bukti.
 
-Buka [ringkasan](RINGKASAN.md) atau filter [inventaris lengkap](fitur.tsv) menurut status, jenis, file Java, atau jalur submenu. Kolom ID menggunakan nama kontrol sehingga perubahan nomor baris tidak menghilangkan penilaian.
+Buka [prioritas pekerjaan](PRIORITAS.md), [ringkasan](RINGKASAN.md) atau filter [inventaris lengkap](fitur.tsv) menurut status, jenis, file Java, atau jalur submenu. Kolom ID menggunakan nama kontrol sehingga perubahan nomor baris tidak menghilangkan penilaian.
 
 ## Saat mengerjakan fitur
 
@@ -20,18 +20,25 @@ Pemetaan statis mengenali JFrame/JDialog dengan pewarisan langsung, rantai popup
 
 Kesetaraan fungsi perlu diperiksa per alur. Handler keyboard/mouse tanpa ActionListener, menu yang dibentuk dinamis, validasi, SQL, hasil cetak dan integrasi di balik tombol belum diurai menjadi fitur terpisah. Angka belum diaudit menunjukkan pekerjaan pemeriksaan. Angka kurang dan sebagian menunjukkan kekurangan yang sudah dikonfirmasi. Penilaian disimpan eksplisit agar membuka layar saja tidak otomatis menandai alur sebagai selesai.
 
-Hasil audit per layar: [Registrasi](AUDIT_REGISTRASI.md), [Rawat Jalan](AUDIT_RAWAT_JALAN.md).
+Hasil audit per layar tersedia untuk [Registrasi](AUDIT_REGISTRASI.md), [Rawat Jalan](AUDIT_RAWAT_JALAN.md), dan [Rawat Inap](AUDIT_RAWAT_INAP.md).
 
 Pembaruan visual menu klik kanan, termasuk tema terang/gelap dan jarak antarpilihan, dicatat di [audit Registrasi](AUDIT_REGISTRASI.md#tampilan-menu-klik-kanan-24-november-2026). Status fitur mengikuti cakupan alur masing-masing.
 
 Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [audit cabang pelayanan](AUDIT_CABANG.md).
 
-## Status audit per alur (22 November 2026)
+## Status audit per alur (24 November 2026)
 
 | Alur | Java | Dokumen | Hasil |
 |---|---|---|---|
 | Registrasi | `DlgReg.java` | [AUDIT_REGISTRASI.md](AUDIT_REGISTRASI.md) | 348 popup dinilai (298 kurang, 50 sebagian); 26 tombol/jendela: 4 selesai, 10 sebagian, 11 kurang, 1 ditunda. Perbaikan A-D selesai |
-| Rawat Jalan | `DlgRawatJalan.java` | [AUDIT_RAWAT_JALAN.md](AUDIT_RAWAT_JALAN.md) | 203 aksi dan jendela: 2 selesai, 43 sebagian, 158 kurang; 4 popup kurang. Perbaikan A-E selesai |
-| Farmasi (penjualan) | belum dipetakan ke file Java | dicatat di AUDIT_RAWAT_JALAN.md (bagian Masih tertinggal) | NIP placeholder diganti petugas dari akun login; belum diaudit per tombol |
+| Rawat Jalan | `DlgRawatJalan.java` | [AUDIT_RAWAT_JALAN.md](AUDIT_RAWAT_JALAN.md) | 207 entri. 3 selesai, 164 sebagian, 40 kurang. Submenu kiri disaring menurut hak akses Khanza. Sebanyak 147 dari 178 menu membuka laporan baca saja. Input tindakan dokter, petugas dan gabungan dengan jurnal lulus uji MariaDB sintetis. Catatan Dokter mendukung tambah, ubah dan hapus. 5 SOAPIE Terakhir mengisi draf baru |
+| Rawat Inap | `DlgRawatInap.java`, `DlgKamarInap.java` | [AUDIT_RAWAT_INAP.md](AUDIT_RAWAT_INAP.md) | 164 entri klinis dan 40 entri kamar dinilai. Lima SOAPIE terakhir dan salin narasi tersedia. Uji aplikasi, penguncian billing lintas koneksi, dan input tindakan masih tertunda |
+| Pelayanan inti | beberapa sumber Java | [AUDIT_PELAYANAN_INTI.md](AUDIT_PELAYANAN_INTI.md) | Audit awal terbatas IGD, Kasir, Farmasi, Laboratorium, Radiologi dan Pasien. Penjualan farmasi dinonaktifkan sampai transaksi stok/jurnal sesuai Khanza |
 
-Belum diaudit: Rawat Inap, Kasir, IGD, Laboratorium, Radiologi, Pasien, Farmasi (per tombol), dan semua alur lain. Pola kerja: baca handler Java, baca layar C#, isi `status.json` dengan bukti, tulis `AUDIT_<ALUR>.md`, jalankan `node tools/tracker.mjs`, perbaiki celah berisiko data lebih dulu. Log rinci: [../handover/05-SESSION-2026-11-22.md](../handover/05-SESSION-2026-11-22.md).
+Audit per tombol Kasir, IGD, Laboratorium, Radiologi, Pasien, dan Farmasi masih tertunda. Di Rawat Inap, 232 popup kamar belum diaudit. Lihat [log 23 November](../handover/06-SESSION-2026-11-23.md).
+
+## Cara membaca kemajuan
+
+Snapshot 24 November: 15.843 entri mencakup 14.619 popup/aksi/jendela dan 1.224 tile. Dari popup/aksi/jendela, 13.803 belum diaudit; 508 kurang, 294 sebagian, 13 selesai dan 1 ditunda. Tile berlayar adalah deteksi rute statis, bukan tes bahwa seluruh operasi berjalan. Jangan menjumlahkan tile, jendela, popup dan aksi sebagai fitur unik atau menyebut persentasenya sebagai persentase kesiapan produk.
+
+Laporan dibuat ulang dari `java.jsonl`, kode routing, dan `status.json`; status manual hanya berubah melalui audit berbukti. Dokumen audit mencatat sejarah dan bagian terbaru mengoreksi temuan lama. Untuk status pekerjaan saat ini gunakan [prioritas](PRIORITAS.md) bersama [ringkasan](RINGKASAN.md).

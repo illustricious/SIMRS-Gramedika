@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
 using SimrsKhanza.Data.Keuangan;
@@ -81,6 +83,35 @@ public class BillingRanapTests
             Assert.Equal(300_000m, tersedia.Single(row => row.KodeKamar == "UJI-A").TarifKamar);
             Assert.Equal(450_000m, tersedia.Single(row => row.KodeKamar == "UJI-B").TarifKamar);
             await repo.AdmitAsync(rawat, "UJI-A", "Data sintetis");
+        }
+        await VerifikasiSoapAsync(sql, settings, rawat);
+
+        await using (var ctx = SimrsKhanzaDbContextFactory.Create(settings))
+        {
+            var repo = new RawatInapRepository(ctx, jam);
+            var original = Assert.Single(await repo.GetDaftarAsync(
+                new(RawatInapMode.BelumPulang, roomA.TanggalMasuk, roomA.TanggalMasuk, null, rawat, null, null, null, null)));
+            await repo.GantiDataKamarAsync(original, "UJB", "Diagnosis dikoreksi", null);
+            Assert.Equal("UJB", await sql.StrAsync("SELECT kd_pj FROM reg_periksa WHERE no_rawat=@p0", rawat));
+            Assert.Equal("Diagnosis dikoreksi", await sql.StrAsync("SELECT diagnosa_awal FROM kamar_inap WHERE no_rawat=@p0", rawat));
+            Assert.Null(await sql.ScalarAsync("SELECT diagnosa_akhir FROM kamar_inap WHERE no_rawat=@p0", rawat) as string);
+        }
+        await using (var ctx = SimrsKhanzaDbContextFactory.Create(settings))
+        {
+            var repo = new RawatInapRepository(ctx, jam);
+            var original = Assert.Single(await repo.GetDaftarAsync(
+                new(RawatInapMode.BelumPulang, roomA.TanggalMasuk, roomA.TanggalMasuk, null, rawat, null, null, null, null)));
+            await Assert.ThrowsAsync<DbUpdateException>(
+                () => repo.GantiDataKamarAsync(original, "ZZZ", "Tidak boleh tersimpan", null));
+            Assert.Equal("Diagnosis dikoreksi", await sql.StrAsync("SELECT diagnosa_awal FROM kamar_inap WHERE no_rawat=@p0", rawat));
+            Assert.Equal("UJB", await sql.StrAsync("SELECT kd_pj FROM reg_periksa WHERE no_rawat=@p0", rawat));
+        }
+        await using (var ctx = SimrsKhanzaDbContextFactory.Create(settings))
+        {
+            var repo = new RawatInapRepository(ctx, jam);
+            var original = Assert.Single(await repo.GetDaftarAsync(
+                new(RawatInapMode.BelumPulang, roomA.TanggalMasuk, roomA.TanggalMasuk, null, rawat, null, null, null, null)));
+            await repo.GantiDataKamarAsync(original, "UJI", original.DiagnosaAwal, original.DiagnosaAkhir);
         }
 
         await using (var ctx = SimrsKhanzaDbContextFactory.Create(settings))
@@ -182,12 +213,55 @@ public class BillingRanapTests
         finally { await db.ExecAsync("SET SESSION FOREIGN_KEY_CHECKS=1"); }
     }
 
+    private static async Task VerifikasiSoapAsync(Db db, DatabaseSettings settings, string rawat)
+    {
+        var author = new AuthenticatedUser { UserId = "UJI-SOAP", Permissions = new HashSet<string> { PemeriksaanRanapService.Izin } };
+        var other = new AuthenticatedUser { UserId = "UJI-LAIN", Permissions = author.Permissions };
+        var service = new PemeriksaanRanapService(settings, rawat, author);
+        var otherService = new PemeriksaanRanapService(settings, rawat, other);
+        var waktu = ((DateTime)(await db.ScalarAsync("SELECT NOW()"))!).AddMinutes(-1);
+        var values = PemeriksaanRanapService.Isian.Select(f => f.Kolom == "keluhan" ? "Keluhan uji" : "").ToArray();
+        var note = new SoapRanap(rawat, waktu, other.UserId, "Compos Mentis", values);
+        await service.SimpanAsync(note);
+        await service.SimpanAsync(note with { Waktu = waktu.AddSeconds(1) });
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(note));
+        var read = await service.DaftarAsync();
+        Assert.Equal(2, read.Count);
+        var original = Assert.Single(read, item => item.Waktu == waktu);
+        Assert.Equal(author.UserId, original.Nip);
+        Assert.Equal(2, (await service.LimaTerakhirAsync(other.UserId, "Keluhan")).Count);
+        Assert.Empty(await otherService.LimaTerakhirAsync(author.UserId, null));
+        Assert.Empty(await service.LimaTerakhirAsync(author.UserId, "Tidak ditemukan"));
+        Assert.Empty(await new PemeriksaanRanapService(settings, "2026/11/19/000099", author).DaftarAsync());
+        await Assert.ThrowsAsync<InvalidOperationException>(() => otherService.HapusAsync(original));
+        await service.SimpanAsync(note with { Waktu = waktu.AddSeconds(2) }, original);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.HapusAsync(original));
+        foreach (var item in await service.DaftarAsync()) await service.HapusAsync(item);
+        Assert.Empty(await service.DaftarAsync());
+
+        await db.ExecAsync("""
+            INSERT INTO billing(noindex,no_rawat,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
+            VALUES (1,@p0,'1','Billing sintetis',':',1000,1,0,1000,'Administrasi')
+            """, rawat);
+        try
+        {
+            var blocked = await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(note));
+            Assert.Contains("Billing telah diverifikasi", blocked.Message);
+            Assert.Empty(await service.DaftarAsync());
+        }
+        finally
+        {
+            await db.ExecAsync("DELETE FROM billing WHERE no_rawat=@p0 AND noindex=1", rawat);
+        }
+    }
+
     private static async Task SeedAsync(Db db)
     {
         await db.ExecAsync("SET SESSION sql_mode='', FOREIGN_KEY_CHECKS=0");
         try
         {
-            await db.ExecAsync("INSERT INTO penjab VALUES ('UJI','Cara Bayar Uji','','','','','1')");
+            await db.ExecAsync("INSERT INTO penjab VALUES ('UJI','Cara Bayar Uji','','','','','1'),('UJB','Cara Bayar Uji Baru','','','','','1')");
+            await db.ExecAsync("INSERT INTO pegawai(nik,nama) VALUES ('UJI-SOAP','Petugas Uji'),('UJI-LAIN','Petugas Lain')");
             await db.ExecAsync("INSERT INTO pasien(no_rkm_medis,nm_pasien,nm_ibu,alamat,umur,pnd,namakeluarga,kd_pj) VALUES ('UJI-RM','Pasien Sintetis','','Alamat Uji','30 Th','-','','UJI')");
             await db.ExecAsync("""
                 INSERT INTO reg_periksa

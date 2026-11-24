@@ -8,6 +8,7 @@ using Avalonia.VisualTree;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Kepegawaian;
 using SimrsKhanza.UI.Modules.Kepegawaian;
+using SimrsKhanza.UI.Modules.RawatJalan;
 using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.Tests;
@@ -148,10 +149,10 @@ public class MenuCScreensTests
         });
         grid.ItemsSource = new[] { first, second };
         PatientMenuRequest? openedFor = null;
-        var menu = PatientContextMenu.Attach<PatientMenuTarget>(grid, row => row, request => openedFor = request);
+        var menu = PatientContextMenu.Attach<PatientMenuTarget>(grid, row => row, request => openedFor = request, PatientMenuKind.Registration);
         var window = new Window { Width = 640, Height = 480, Content = grid };
         var oldUser = AppSession.CurrentUser;
-        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "pasien" } };
+        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "pasien", "tindakan_ralan", "data_resume_pasien" } };
         try
         {
             window.Show();
@@ -168,13 +169,19 @@ public class MenuCScreensTests
 
             var record = Assert.IsType<MenuItem>(menu.Items[0]);
             VerifyPopupStyle(menu, record, "#FFFFFF", "#E8F0FC", "#123F8D");
-            var identity = Assert.IsType<MenuItem>(record.Items[0]);
+            var identity = record.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Identitas Pasien"));
             Assert.True(identity.IsEnabled);
             var billing = menu.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Billing/Pembayaran Pasien"));
             Assert.False(Assert.IsType<MenuItem>(billing.Items[1]).IsEnabled);
             grid.SelectedItem = first;
             identity.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
             Assert.Equal(second.NoRekamMedis, openedFor?.NoRekamMedis);
+            var tindakan = menu.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Tindakan & Pemeriksaan"));
+            var ralan = tindakan.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Tindakan Rawat Jalan"));
+            Assert.True(ralan.IsEnabled);
+            ralan.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(new PatientMenuRequest(second.NoRawat, second.NoRekamMedis, second.NamaPasien,
+                PatientMenuAction.TindakanRawatJalan), openedFor);
             menu.Close();
 
             var empty = new Point(25, 300);
@@ -189,6 +196,20 @@ public class MenuCScreensTests
             Assert.True(menu.IsOpen);
             VerifyPopupStyle(menu, Assert.IsType<MenuItem>(menu.Items[0]), "#1D2533", "#293857", "#ABC5FF");
             menu.Close();
+
+            var visit = new RawatJalanKunjunganView(openedFor!, AppSession.CurrentUser!);
+            window.Content = visit;
+            Dispatcher.UIThread.RunJobs();
+            var labels = visit.GetVisualDescendants().OfType<TextBlock>().Select(t => t.Text).ToList();
+            Assert.Contains(labels, t => t?.Contains(second.NoRawat) == true);
+            Assert.DoesNotContain(labels, t => t?.StartsWith("Input Resep") == true);
+            Assert.Contains("Resume Pasien", labels);
+            Assert.DoesNotContain("Riwayat Pasien", labels);
+            Assert.Contains("Pemeriksaan / SOAPIE", visit.GetVisualDescendants().OfType<Button>().Select(b => b.Content));
+            var sidebarSearch = visit.GetVisualDescendants().OfType<TextBox>().Single(t => t.PlaceholderText == "Cari menu klinis");
+            var sidebar = sidebarSearch.GetVisualAncestors().OfType<Border>().First(b => b.Child is DockPanel);
+            Assert.Equal(0, Grid.GetColumn(sidebar));
+            Assert.False(visit.GetVisualDescendants().OfType<Button>().Single(b => Equals(b.Content, "Catatan Dokter")).IsEnabled);
         }
         finally
         {

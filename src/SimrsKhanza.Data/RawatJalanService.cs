@@ -1,10 +1,20 @@
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Sql;
 
 namespace SimrsKhanza.Data;
 
 /// <summary>Pengguna yang menyimpan: <paramref name="Kode"/> = "Admin Utama" atau NIK pegawai (akses.getkode()).</summary>
-public record RawatJalanAkses(bool IsAdminUtama, string Kode);
+public record RawatJalanAkses(bool IsAdminUtama, string Kode, bool Diizinkan = false)
+{
+    public static RawatJalanAkses DariPengguna(AuthenticatedUser? user) =>
+        new(user?.IsAdminUtama == true, user?.KodeLegacy ?? "", user?.HasPermission("tindakan_ralan") == true);
+
+    public void PastikanIzin()
+    {
+        if (!Diizinkan) throw new InvalidOperationException("Akun tidak memiliki hak Tindakan Rawat Jalan.");
+    }
+}
 
 public record RawatJalanKunjungan(
     string NoRawat, string NoRekamMedis, string Pasien, DateTime? Tanggal, string Jam, string Poli, string Dokter, long JumlahPemeriksaan);
@@ -93,8 +103,9 @@ public class RawatJalanService(DatabaseSettings settings)
     private static RawatJalanKunjungan Kunjungan(Row r) => new(r.S("no_rawat"), r.S("no_rkm_medis"), r.S("nm_pasien"), r.Dt("tgl_registrasi"),
         r["jam_reg"] is TimeSpan t ? t.ToString(@"hh\:mm\:ss") : r.S("jam_reg"), r.S("nm_poli"), r.S("nm_dokter"), Convert.ToInt64(r["jumlah"] ?? 0));
 
-    public async Task<List<Row>> PemeriksaanAsync(string noRawat)
+    public async Task<List<Row>> PemeriksaanAsync(string noRawat, RawatJalanAkses akses)
     {
+        akses.PastikanIzin();
         await using var db = await Db.OpenAsync(settings);
         return await db.QueryAsync("""
             SELECT e.*,g.nama AS nama_pegawai FROM pemeriksaan_ralan e LEFT JOIN pegawai g ON g.nik=e.nip
@@ -102,15 +113,37 @@ public class RawatJalanService(DatabaseSettings settings)
             """, noRawat);
     }
 
-    public async Task<List<PegawaiPilihan>> PegawaiAsync()
+    public async Task<IReadOnlyList<Row>> LimaTerakhirAsync(string noRawat, string nip, string? cari, RawatJalanAkses akses, bool rawatInap = false)
     {
+        akses.PastikanIzin();
+        PastikanMilikSendiri(akses, nip);
         await using var db = await Db.OpenAsync(settings);
-        var rows = await db.QueryAsync("SELECT nik,nama FROM pegawai WHERE stts_aktif<>'KELUAR' ORDER BY nama,nik");
+        // Nama tabel dipilih dari konstanta, bukan dari input pengguna.
+        var tabel = rawatInap ? "pemeriksaan_ranap" : "pemeriksaan_ralan";
+        return await db.QueryAsync($"""
+            SELECT e.*,g.nama AS nama_pegawai
+            FROM reg_periksa aktif JOIN reg_periksa riwayat ON riwayat.no_rkm_medis=aktif.no_rkm_medis
+            JOIN {tabel} e ON e.no_rawat=riwayat.no_rawat
+            LEFT JOIN pegawai g ON g.nik=e.nip
+            WHERE aktif.no_rawat=@p0 AND e.nip=@p1
+              AND (@p2='' OR LOCATE(@p2,e.keluhan)>0 OR LOCATE(@p2,e.pemeriksaan)>0)
+            ORDER BY e.tgl_perawatan DESC,e.jam_rawat DESC,e.no_rawat DESC LIMIT 5
+            """, noRawat, nip, cari?.Trim() ?? "");
+    }
+
+    public async Task<List<PegawaiPilihan>> PegawaiAsync(RawatJalanAkses akses)
+    {
+        akses.PastikanIzin();
+        await using var db = await Db.OpenAsync(settings);
+        var rows = akses.IsAdminUtama
+            ? await db.QueryAsync("SELECT nik,nama FROM pegawai WHERE stts_aktif<>'KELUAR' ORDER BY nama,nik")
+            : await db.QueryAsync("SELECT nik,nama FROM pegawai WHERE stts_aktif<>'KELUAR' AND nik=@p0", akses.Kode);
         return rows.Select(r => new PegawaiPilihan(r.S("nik"), r.S("nama"))).ToList();
     }
 
     public async Task SimpanAsync(PemeriksaanRalanInput input, RawatJalanAkses akses, DateTime? sekarang = null)
     {
+        akses.PastikanIzin();
         input = Bersih(input);
         ValidasiDasar(input);
         PastikanMilikSendiri(akses, input.Nip);
@@ -126,42 +159,60 @@ public class RawatJalanService(DatabaseSettings settings)
     }
 
     /// <summary>Ubah satu baris (kunci lama: no_rawat + tanggal + jam). Non-Admin Utama: milik sendiri, 48 jam, tidak sebelum registrasi.</summary>
-    public async Task UbahAsync(string noRawat, DateTime tanggalLama, TimeSpan jamLama, PemeriksaanRalanInput input, RawatJalanAkses akses, DateTime? sekarang = null)
+    public async Task UbahAsync(PemeriksaanRalanInput asal, PemeriksaanRalanInput input, RawatJalanAkses akses)
     {
+        akses.PastikanIzin();
+        if (!string.Equals(asal.NoRawat, input.NoRawat, StringComparison.Ordinal))
+            throw new InvalidOperationException("Pemeriksaan berasal dari kunjungan lain.");
         input = Bersih(input);
         ValidasiDasar(input);
         await using var db = await Db.OpenAsync(settings);
-        var lama = await db.FirstAsync("SELECT nip FROM pemeriksaan_ralan WHERE no_rawat=@p0 AND tgl_perawatan=@p1 AND jam_rawat=@p2",
-            noRawat, tanggalLama.Date, jamLama.ToString(@"hh\:mm\:ss")) ?? throw new InvalidOperationException("Pemeriksaan tidak ditemukan lagi. Muat ulang daftar.");
+        await db.BeginAsync();
+        var lama = await KunciPemeriksaanAsync(db, asal);
         if (!akses.IsAdminUtama)
         {
             PastikanMilikSendiri(akses, lama.S("nip"));
             PastikanMilikSendiri(akses, input.Nip);
-            if (RegistrasiService.MelewatiBatasEdit(tanggalLama.Date + jamLama, sekarang ?? DateTime.Now))
+            if (RegistrasiService.MelewatiBatasEdit(asal.Tanggal.Date + asal.Jam, lama.Dt("sekarang")!.Value))
                 throw new InvalidOperationException("Maaf, perubahan data / penghapusan data tidak boleh lebih dari 2 x 24 jam !");
-            PastikanTidakSebelumRegistrasi(await WaktuRegistrasiAsync(db, noRawat), input.Tanggal.Date + input.Jam);
+            PastikanTidakSebelumRegistrasi(await WaktuRegistrasiAsync(db, asal.NoRawat), input.Tanggal.Date + input.Jam);
         }
         await PastikanPegawaiAsync(db, input.Nip);
         await db.ExecAsync("""
             UPDATE pemeriksaan_ralan SET tgl_perawatan=@p1,jam_rawat=@p2,suhu_tubuh=@p3,tensi=@p4,nadi=@p5,respirasi=@p6,tinggi=@p7,berat=@p8,spo2=@p9,gcs=@p10,
                 kesadaran=@p11,keluhan=@p12,pemeriksaan=@p13,alergi=@p14,lingkar_perut=@p15,rtl=@p16,penilaian=@p17,instruksi=@p18,evaluasi=@p19,nip=@p20
             WHERE no_rawat=@p0 AND tgl_perawatan=@p21 AND jam_rawat=@p22
-            """, [.. Args(input), tanggalLama.Date, jamLama.ToString(@"hh\:mm\:ss")]);
+            """, [.. Args(input), asal.Tanggal.Date, asal.Jam.ToString(@"hh\:mm\:ss")]);
+        await db.CommitAsync();
     }
 
-    public async Task HapusAsync(string noRawat, DateTime tanggal, TimeSpan jam, RawatJalanAkses akses, DateTime? sekarang = null)
+    public async Task HapusAsync(PemeriksaanRalanInput asal, RawatJalanAkses akses)
     {
+        akses.PastikanIzin();
         await using var db = await Db.OpenAsync(settings);
-        var row = await db.FirstAsync("SELECT nip FROM pemeriksaan_ralan WHERE no_rawat=@p0 AND tgl_perawatan=@p1 AND jam_rawat=@p2",
-            noRawat, tanggal.Date, jam.ToString(@"hh\:mm\:ss")) ?? throw new InvalidOperationException("Pemeriksaan tidak ditemukan lagi. Muat ulang daftar.");
+        await db.BeginAsync();
+        var row = await KunciPemeriksaanAsync(db, asal);
         if (!akses.IsAdminUtama)
         {
-            if (RegistrasiService.MelewatiBatasEdit(tanggal.Date + jam, sekarang ?? DateTime.Now))
+            if (RegistrasiService.MelewatiBatasEdit(asal.Tanggal.Date + asal.Jam, row.Dt("sekarang")!.Value))
                 throw new InvalidOperationException("Maaf, perubahan data / penghapusan data tidak boleh lebih dari 2 x 24 jam !");
             PastikanMilikSendiri(akses, row.S("nip"));
         }
         await db.ExecAsync("DELETE FROM pemeriksaan_ralan WHERE no_rawat=@p0 AND tgl_perawatan=@p1 AND jam_rawat=@p2",
-            noRawat, tanggal.Date, jam.ToString(@"hh\:mm\:ss"));
+            asal.NoRawat, asal.Tanggal.Date, asal.Jam.ToString(@"hh\:mm\:ss"));
+        await db.CommitAsync();
+    }
+
+    private static async Task<Row> KunciPemeriksaanAsync(Db db, PemeriksaanRalanInput asal)
+    {
+        var row = await db.FirstAsync("SELECT pemeriksaan_ralan.*,NOW() AS sekarang FROM pemeriksaan_ralan WHERE no_rawat=@p0 AND tgl_perawatan=@p1 AND jam_rawat=@p2 FOR UPDATE",
+            asal.NoRawat, asal.Tanggal.Date, asal.Jam.ToString(@"hh\:mm\:ss"))
+            ?? throw new InvalidOperationException("Pemeriksaan tidak ditemukan lagi. Muat ulang daftar.");
+        string[] kolom = ["suhu_tubuh", "tensi", "nadi", "respirasi", "tinggi", "berat", "spo2", "gcs", "kesadaran", "keluhan", "pemeriksaan", "alergi", "lingkar_perut", "rtl", "penilaian", "instruksi", "evaluasi", "nip"];
+        string[] nilai = [asal.Suhu, asal.Tensi, asal.Nadi, asal.Respirasi, asal.Tinggi, asal.Berat, asal.Spo2, asal.Gcs, asal.Kesadaran, asal.Keluhan, asal.Pemeriksaan, asal.Alergi, asal.LingkarPerut, asal.Rtl, asal.Penilaian, asal.Instruksi, asal.Evaluasi, asal.Nip];
+        if (kolom.Where((kolom, i) => row.S(kolom) != nilai[i]).Any())
+            throw new InvalidOperationException("Pemeriksaan telah berubah. Muat ulang daftar sebelum melanjutkan.");
+        return row;
     }
 
     private static void ValidasiDasar(PemeriksaanRalanInput x)

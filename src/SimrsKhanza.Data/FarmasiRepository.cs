@@ -31,7 +31,7 @@ public interface IFarmasiRepository
     Task<IReadOnlyList<ResepListItem>> GetResepDokterAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default);
     Task<IReadOnlyList<ResepItemLine>> GetResepItemsAsync(string noResep, CancellationToken ct = default);
 
-    /// <summary>Real INSERT into pengeluaran_obat_bhp + one detail_pengeluaran_obat_bhp row per line. Returns the generated NoKeluar.</summary>
+    /// <summary>Penjualan dinonaktifkan sampai alur penjualan, stok, dan jurnal Khanza diimplementasikan.</summary>
     Task<string> SimpanPenjualanAsync(IReadOnlyList<PenjualanLineInput> lines, string keterangan, string nip, CancellationToken ct = default);
 
     Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default);
@@ -107,64 +107,32 @@ public class FarmasiRepository(SimrsKhanzaDbContext db) : IFarmasiRepository
         return await query.ToListAsync(ct);
     }
 
-    public async Task<string> SimpanPenjualanAsync(IReadOnlyList<PenjualanLineInput> lines, string keterangan, string nip, CancellationToken ct = default)
-    {
-        if (lines.Count == 0)
-            throw new InvalidOperationException("Minimal satu barang dengan jumlah lebih dari 0.");
-
-        var noKeluar = GenerateNoKeluar();
-
-        db.PengeluaranObatBhpSet.Add(new PengeluaranObatBhp
-        {
-            NoKeluar = noKeluar,
-            Tanggal = DateOnly.FromDateTime(DateTime.Now),
-            Nip = nip,
-            Keterangan = keterangan,
-        });
-
-        foreach (var line in lines)
-        {
-            var barang = await db.DataBarangSet.AsNoTracking().FirstOrDefaultAsync(b => b.KodeBarang == line.KodeBarang, ct)
-                ?? throw new InvalidOperationException($"Barang '{line.KodeBarang}' tidak ditemukan.");
-
-            var subtotal = line.HargaSatuan * line.Jumlah;
-            var total = subtotal - line.PtgRp + line.TambahanRp;
-
-            db.DetailPengeluaranObatBhpSet.Add(new DetailPengeluaranObatBhp
-            {
-                NoKeluar = noKeluar,
-                KodeBarang = line.KodeBarang,
-                KodeSatuan = barang.KodeSatuanBesar,
-                NoBatch = string.IsNullOrWhiteSpace(line.NoBatch) ? "-" : line.NoBatch,
-                Jumlah = line.Jumlah,
-                HargaBeli = line.HargaSatuan,
-                Total = total,
-                NoFaktur = string.IsNullOrWhiteSpace(line.NoFaktur) ? "-" : line.NoFaktur,
-            });
-        }
-
-        await db.SaveChangesAsync(ct);
-        return noKeluar;
-    }
+    public Task<string> SimpanPenjualanAsync(IReadOnlyList<PenjualanLineInput> lines, string keterangan, string nip, CancellationToken ct = default)
+        => Task.FromException<string>(new InvalidOperationException(
+            "Penjualan farmasi belum tersedia: transaksi belum mencatat penjualan, stok, dan jurnal sesuai Khanza. Gunakan Khanza untuk transaksi ini."));
 
     public async Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default)
     {
-        var query =
-            from h in db.PengeluaranObatBhpSet
-            join d in db.DetailPengeluaranObatBhpSet on h.NoKeluar equals d.NoKeluar into dJoin
-            from d in dJoin.DefaultIfEmpty()
-            join b in db.DataBarangSet on d.KodeBarang equals b.KodeBarang into bJoin
-            from b in bJoin.DefaultIfEmpty()
-            where h.Tanggal >= fromDate && h.Tanggal <= toDate
-            orderby h.Tanggal descending
-            select new PenjualanListItem(
-                h.NoKeluar, h.Tanggal, h.Keterangan,
-                b != null ? b.NamaBarang : null, d != null ? d.Jumlah : 0, d != null ? d.Total : 0);
-
-        return await query.ToListAsync(ct);
+        var rows = await db.Database.SqlQuery<PenjualanRow>($"""
+            SELECT p.nota_jual AS NoKeluar,p.tgl_jual AS Tanggal,COALESCE(p.keterangan,'') AS Keterangan,
+                   b.nama_brng AS NamaBarang,CAST(COALESCE(d.jumlah,0) AS DECIMAL(18,4)) AS Jumlah,
+                   CAST(COALESCE(d.total,0) AS DECIMAL(18,2)) AS Total
+            FROM penjualan p LEFT JOIN detailjual d ON d.nota_jual=p.nota_jual
+            LEFT JOIN databarang b ON b.kode_brng=d.kode_brng
+            WHERE p.tgl_jual BETWEEN {fromDate} AND {toDate}
+            ORDER BY p.tgl_jual DESC,p.nota_jual DESC,d.kode_brng
+            """).ToListAsync(ct);
+        return rows.Select(r => new PenjualanListItem(r.NoKeluar, DateOnly.FromDateTime(r.Tanggal), r.Keterangan,
+            r.NamaBarang, r.Jumlah, r.Total)).ToList();
     }
 
-    /// <summary>Same approach as PenunjangRepository.GenerateNoOrder — no_keluar is varchar(15), not AUTO_INCREMENT.</summary>
-    private static string GenerateNoKeluar()
-        => DateTime.Now.ToString("yyMMddHHmmss") + Random.Shared.Next(10, 99);
+    private sealed class PenjualanRow
+    {
+        public string NoKeluar { get; set; } = "";
+        public DateTime Tanggal { get; set; }
+        public string Keterangan { get; set; } = "";
+        public string? NamaBarang { get; set; }
+        public decimal Jumlah { get; set; }
+        public decimal Total { get; set; }
+    }
 }
