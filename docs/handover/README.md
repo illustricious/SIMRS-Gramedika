@@ -13,6 +13,7 @@ Keadaan per **24 November 2026**. Rilis GitHub terakhir `v0.2.5-alpha.2026112222
 | [06-SESSION-2026-11-23.md](06-SESSION-2026-11-23.md) | Audit Rawat Inap, perbaikan integritas data kamar, dan verifikasi |
 | [07-SESSION-2026-11-24.md](07-SESSION-2026-11-24.md) | Hak akses submenu Rawat Jalan, input tindakan dengan jurnal, Catatan Dokter, 5 SOAPIE, dan uji MariaDB |
 | [08-SESSION-2026-11-24.md](08-SESSION-2026-11-24.md) | Tema terang/gelap dan tampilan ringkas untuk menu klik kanan |
+| [09-SESSION-2026-11-24.md](09-SESSION-2026-11-24.md) | Pemilih pasien, daftar rujukan internal DlgReg, hasil tes, build lokal, dan pekerjaan berikutnya |
 | [../tracker/README.md](../tracker/README.md) | Tracker kesetaraan fitur terhadap source Java (15.843 baris) dan cara memakainya |
 
 Dokumen terkait di `docs/audit/`: [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md) (daftar tile belum berlayar), `MENU_*_STATUS.md` (rincian per menu), [DB_SCHEMA.md](../audit/DB_SCHEMA.md) dan `schema_sik.sql` (skema tanpa data), [AUDIT_REPORT.md](../audit/AUDIT_REPORT.md) (audit repo Khanza lama), [PLANNING_APLIKASI.md](../audit/PLANNING_APLIKASI.md).
@@ -29,13 +30,13 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 
 - **1.041 dari 1.224 tile** dashboard membuka layar. 183 sisanya (Menu L) belum.
 - Selesai penuh (100% berlayar): A sampai K, M sampai U. Belum: hanya L (183, bridging). Rincian di [03-MENU-STATUS.md](03-MENU-STATUS.md).
-- **Tracker fitur** mencakup Registrasi, Rawat Jalan, dan Rawat Inap. Klik kanan Registrasi membuka Tindakan Rawat Jalan dalam jendela utama, dengan katalog 178 submenu yang disaring menurut hak akses. Input tindakan dokter, petugas, dan gabungan dengan jurnal lulus uji di MariaDB sintetis. Audit Rawat Inap menilai 164 entri klinis dan 40 entri kamar. SOAPIE Ranap memuat lima riwayat terakhir dan salin narasi. [Ringkasan tracker](../tracker/RINGKASAN.md).
+- **Tracker fitur** menginventarisasi kontrol Java dan tile; bukti audit ditambahkan pada area yang telah diperiksa. Registrasi menyediakan pemilih pasien dan daftar rujukan internal baca saja; menu dan operasi rujukan masih belum lengkap. Tindakan Rawat Jalan, diagnosis/prosedur dan obstetri/ginekologi sudah memiliki sebagian operasi dan uji fixture sintetis. [Grafik](../tracker/GRAFIK.html), [ringkasan](../tracker/RINGKASAN.md), dan [log terbaru](09-SESSION-2026-11-24.md).
 - **Sudah diperbaiki setelah audit:** registrasi baru/hapus/penjagaan ubah, NIP pemeriksa nyata di Rawat Jalan (placeholder `D0000099` dihapus), banyak SOAP per kunjungan. Input penjualan Farmasi sekarang dinonaktifkan setelah audit menemukan transaksi stok/jurnal belum setara Khanza.
 - Hasil tes historis berbeda menurut fixture yang aktif: log tindakan mencatat 154 lulus dengan fixture MariaDB, sedangkan sesi tema mencatat 152 lulus dan 2 dilewati. Ini bukan hasil verifikasi ulang saat ini. Lihat [log tindakan](07-SESSION-2026-11-24.md) dan [log tema](08-SESSION-2026-11-24.md).
 - "Berlayar" artinya tile membuka layar, bukan berarti setara fungsi Khanza. Keterbatasan tiap menu ada di `docs/audit/MENU_*_STATUS.md`.
 - **Belum pernah diuji ke database produksi.** Layar Menu K, N, P, Q, R, S, dan kebanyakan menu lain baru lolos build, tes struktur (layar bisa dibangun), dan pencocokan nama tabel/kolom dengan `schema_sik.sql`. Kesalahan nama kolom atau perilaku data nyata baru terlihat saat dibuka dengan data.
 
-## Verifikasi sebelumnya (24 November 2026)
+## Verifikasi historis sebelum sesi terbaru (24 November 2026)
 
 - `node tools/tracker.mjs` berhasil; laporan dibuat ulang dari snapshot dan status lokal.
 - Build Release `--no-restore -m:1 -p:UseSharedCompilation=false` berhasil, 0 error dan 12 warning, dengan workload resolver dinonaktifkan. Build Debug `--no-restore` gagal CS1061 pada `WithDeveloperTools`; perlu memeriksa restore aset konfigurasi Debug. Peringatan mencakup advisori MySqlConnector dan EF1002 yang perlu ditinjau, serta audit paket yang terhalang akses.
@@ -50,13 +51,13 @@ Penulisan ulang SIMRS Khanza (Java Swing, 1.199 tabel) menjadi aplikasi desktop 
 5. Mekanisme hak akses: pemetaan tile ke permission Khanza ada di `LegacyTilePermissions.g.cs` (dihasilkan, jangan diedit manual).
 6. Lisensi QuestPDF Community (cetak PDF) terbatas menurut pendapatan organisasi. Cek sebelum pemakaian produksi.
 
-Log sesi terakhir: [07 — tindakan dan Catatan Dokter](07-SESSION-2026-11-24.md) dan [08 — tema menu](08-SESSION-2026-11-24.md). Log adalah catatan historis; status terkini dan urutan kerja ada di [prioritas lanjutan](../tracker/PRIORITAS.md).
+Log sesi terbaru: [09 — Registrasi dan rujukan internal](09-SESSION-2026-11-24.md). Log sebelumnya adalah catatan historis; status terkini dan urutan kerja ada di [prioritas lanjutan](../tracker/PRIORITAS.md).
 
 ## Langkah berikutnya yang disarankan
 
-Lihat [prioritas dan kriteria selesai](../tracker/PRIORITAS.md). Mulai dengan verifikasi alur klinis dan keuangan pada database uji, lalu lengkapi tindakan Rawat Jalan dan Rawat Inap. Audit IGD, Kasir, Farmasi, Laboratorium dan Radiologi per alur sebelum menganggap layar-layarnya siap. Menu L tetap ditunda sampai integrasi dan akses uji tersedia.
+Lanjutkan DlgReg sesuai permintaan terakhir: lengkapi operasi dan menu rujukan internal, perujuk, cetak dan uji alur dengan database sintetis. Lihat [prioritas dan kriteria selesai](../tracker/PRIORITAS.md). Setelah itu lanjutkan Rawat Jalan dan pengujian bersama Khanza Java.
 
-**Kondisi Git saat pemeriksaan 24 November:** `master` satu commit di depan `origin/master`; ada perubahan lokal dan file baru yang belum dilacak, termasuk layanan dan tes klinis serta log sesi 06/07. Jangan menghapus atau mengabaikannya saat menyerahkan pekerjaan. Rilis terakhir adalah `v0.2.5-alpha.202611222238`; perubahan lokal dan commit sesudahnya tidak otomatis termasuk rilis tersebut.
+Rilis GitHub terdokumentasi terakhir adalah `v0.2.5-alpha.202611222238`; commit sesudahnya dan build lokal tidak otomatis termasuk rilis tersebut. Gunakan `git status` dan `git log` untuk memeriksa kondisi Git aktual.
 
 ## Aturan kerja dengan pemilik proyek
 

@@ -54,9 +54,10 @@
 
                 <Grid Grid.Column="1" ColumnDefinitions="111,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
                     <TextBlock Grid.Row="0" Text="No. Rekam Medik" VerticalAlignment="Center" />
-                    <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*" ColumnSpacing="6">
-                        <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" LostFocus="OnNoRmLostFocus" KeyDown="OnNoRmKeyDown" AutomationProperties.Name="Nomor rekam medis" />
+                    <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*,Auto" ColumnSpacing="6">
+                        <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" TextChanged="OnNoRmChanged" LostFocus="OnNoRmLostFocus" KeyDown="OnNoRmKeyDown" AutomationProperties.Name="Nomor rekam medis" />
                         <TextBox Grid.Column="1" Name="InputNamaPasienBox" IsReadOnly="True" AutomationProperties.Name="Nama pasien" />
+                        <Button Grid.Column="2" Name="PilihPasienButton" Content="Cari" IsEnabled="False" Click="OnPilihPasienClick" AutomationProperties.Name="Cari pasien" />
                     </Grid>
 
                     <TextBlock Grid.Row="1" Text="Penanggung Jawab" VerticalAlignment="Center" />
@@ -101,7 +102,7 @@
         </Border>
 
         <!-- Tabs: "Registrasi Awal" (implemented) / "Rujukan Internal Poli" (deferred) -->
-        <TabControl Grid.Row="2" Background="{DynamicResource ThemePanelBrush}" Padding="4,0,4,4">
+        <TabControl Name="RegistrasiTabs" Grid.Row="2" Background="{DynamicResource ThemePanelBrush}" Padding="4,0,4,4" SelectionChanged="OnTabChanged">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text="Registrasi Awal" FontSize="12" FontWeight="Medium"
@@ -147,7 +148,29 @@
                     <TextBlock Text="Rujukan Internal Poli" FontSize="12" FontWeight="Medium"
                                Foreground="{DynamicResource ThemeTextBrush}" />
                 </TabItem.Header>
-                <TextBlock Text="Rujukan internal poli belum tersedia." Classes="pageSubtitle" Margin="16" />
+                <DockPanel>
+                  <TextBlock DockPanel.Dock="Top" Text="Daftar rujukan internal — hanya lihat. Filter dokter dan unit berlaku untuk tujuan rujukan." Classes="pageSubtitle" Margin="4,4,4,8" TextWrapping="Wrap" />
+                  <DataGrid Name="RujukanInternalGrid" Margin="0,2,0,0" AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True" GridLinesVisibility="Horizontal" HeadersVisibility="Column" x:DataType="data:RujukanInternalItem">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="150" />
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal}" Width="100" />
+                        <DataGridTextColumn Header="Jam" Binding="{Binding Jam}" Width="90" />
+                        <DataGridTextColumn Header="Kode Dokter Tujuan" Binding="{Binding KodeDokter}" Width="130" />
+                        <DataGridTextColumn Header="Dokter Tujuan" Binding="{Binding Dokter}" Width="180" />
+                        <DataGridTextColumn Header="No. RM" Binding="{Binding NoRm}" Width="100" />
+                        <DataGridTextColumn Header="Pasien" Binding="{Binding Pasien}" Width="180" />
+                        <DataGridTextColumn Header="J.K." Binding="{Binding JenisKelamin}" Width="50" />
+                        <DataGridTextColumn Header="Umur" Binding="{Binding Umur}" Width="70" />
+                        <DataGridTextColumn Header="Poli Tujuan" Binding="{Binding Poli}" Width="150" />
+                        <DataGridTextColumn Header="Jenis Bayar" Binding="{Binding JenisBayar}" Width="120" />
+                        <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding PenanggungJawab}" Width="150" />
+                        <DataGridTextColumn Header="Alamat PJ" Binding="{Binding Alamat}" Width="150" />
+                        <DataGridTextColumn Header="Hubungan" Binding="{Binding Hubungan}" Width="100" />
+                        <DataGridTextColumn Header="Status Daftar" Binding="{Binding StatusDaftar}" Width="100" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" />
+                    </DataGrid.Columns>
+                  </DataGrid>
+                </DockPanel>
             </TabItem>
         </TabControl>
 
@@ -174,7 +197,7 @@
                     <Button Grid.Column="6" Content="Cari" Classes="accent" Click="OnSearchClick" Margin="8,0,0,0" />
                 </Grid>
                 <Grid ColumnDefinitions="*,Auto">
-                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
+                    <WrapPanel Name="RegistrasiActions" Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
                         <Button Content="Baru" Click="OnBaruClick" />
                         <Button Name="InputSimpanButton" Content="Simpan" Classes="accent"
                                 IsEnabled="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}"

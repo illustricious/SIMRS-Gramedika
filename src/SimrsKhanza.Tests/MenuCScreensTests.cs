@@ -102,10 +102,43 @@ public class MenuCScreensTests
 
             try { VerifyPatientContextMenu(); }
             catch (Exception ex) { errors.Add($"Patient context menu: {ex}"); }
+            try { VerifyRegistrasiPatientPicker(); }
+            catch (Exception ex) { errors.Add($"Registrasi patient picker: {ex}"); }
         });
         thread.Start();
         thread.Join();
         Assert.True(errors.Count == 0, string.Join("\n", errors));
+    }
+
+    private static void VerifyRegistrasiPatientPicker()
+    {
+        var view = new SimrsKhanza.UI.Modules.Registrasi.RegistrasiView();
+        var window = new Window { Content = view, Width = 1400, Height = 900 };
+        window.Show();
+        try
+        {
+            Dispatcher.UIThread.RunJobs();
+            var picker = view.FindControl<Button>("PilihPasienButton")!;
+            var rm = view.FindControl<TextBox>("InputNoRekamMedisBox")!;
+            Assert.False(picker.IsEnabled);
+            view.GetVisualDescendants().OfType<Button>().Single(b => Equals(b.Content, "Baru"))
+                .RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Dispatcher.UIThread.RunJobs();
+            Assert.True(picker.IsEnabled);
+            Assert.False(rm.IsReadOnly);
+            view.FindControl<TextBox>("InputNamaPasienBox")!.Text = "Pasien sebelumnya";
+            view.FindControl<TextBox>("InputPenanggungJawabBox")!.Text = "PJ sebelumnya";
+            rm.Text = "RM-BARU";
+            Dispatcher.UIThread.RunJobs();
+            Assert.True(string.IsNullOrEmpty(view.FindControl<TextBox>("InputNamaPasienBox")!.Text));
+            Assert.True(string.IsNullOrEmpty(view.FindControl<TextBox>("InputPenanggungJawabBox")!.Text));
+            var tabs = view.FindControl<TabControl>("RegistrasiTabs")!;
+            tabs.SelectedIndex = 1;
+            Dispatcher.UIThread.RunJobs();
+            Assert.False(view.FindControl<WrapPanel>("RegistrasiActions")!.IsEnabled);
+            Assert.False(view.FindControl<Avalonia.Controls.Primitives.ToggleButton>("InputDataToggle")!.IsEnabled);
+        }
+        finally { window.Close(); }
     }
 
     private static void VerifyPopupStyle(ContextMenu menu, MenuItem group, string surface, string highlight, string ink)

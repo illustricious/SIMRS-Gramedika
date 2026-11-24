@@ -3,7 +3,7 @@
 | Jenis | belum diaudit | layar tersedia | kurang | sebagian | selesai | ditunda | Total |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | popup | 2261 | 0 | 303 | 88 | 0 | 0 | 2652 |
-| aksi | 10252 | 0 | 205 | 202 | 13 | 1 | 10673 |
+| aksi | 10252 | 0 | 204 | 203 | 13 | 1 | 10673 |
 | jendela | 1290 | 0 | 0 | 4 | 0 | 0 | 1294 |
 | tile | 0 | 1041 | 0 | 0 | 0 | 183 | 1224 |
 

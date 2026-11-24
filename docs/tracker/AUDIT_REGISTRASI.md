@@ -34,3 +34,11 @@ Pemilih pasien lewat dialog, dialog perujuk dan asal rujukan, tab Rujukan Intern
 ## Tampilan menu klik kanan (24 November 2026)
 
 Menu pasien memakai palet Gramedika pada panel, sorotan, teks dan penanda submenu di tema terang dan gelap. Tinggi minimum baris turun dari 30 ke 25 piksel logis. Jarak tepi panel dan pemisah dirapatkan. Tes headless di `MenuCScreensTests.cs` memeriksa tinggi baris, warna panel utama dan submenu, sorotan, serta chevron pada kedua tema. Bukti ditambahkan ke entri popup terkait di tracker.
+
+## Pemilih pasien Registrasi
+
+Pada mode Baru, tombol Cari mencari pasien berdasarkan nomor RM atau nama dan mengisi formulir dari data pasien terpilih. Tombol tidak aktif pada mode ubah. Isian pasien lama dibersihkan saat nomor RM berubah; hasil pemuatan yang terlambat tidak diterapkan ke nomor RM yang berbeda. Pencarian dibatasi 100 hasil. Pendaftaran pasien baru dari dialog, uji database dan uji interaksi dialog lengkap masih tertunda. Entri `BtnPasien` berstatus sebagian karena Java juga membuka pengelolaan pasien.
+
+## Daftar rujukan internal poli
+
+Tab Rujukan Internal Poli kini menampilkan daftar baca saja dengan nomor rawat asal serta dokter dan poli tujuan. Filter periode, dokter, poli dan pencarian berlaku untuk daftar ini; layanan memeriksa izin `registrasi`. Tombol dan formulir untuk registrasi awal dinonaktifkan ketika tab rujukan dibuka. Fixture MariaDB sintetis menguji filter tujuan, periode, pencarian dan izin; tes headless memeriksa perpindahan tab. Menu konteks, hapus rujukan, operasi lain, cetak, dan uji UI bersama database masih tertunda.

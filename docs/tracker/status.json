@@ -1529,7 +1529,7 @@
   },
   "jendela|simrskhanza/DlgReg.java|DlgReg": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs: daftar tanpa IGDK, cari, registrasi baru, ubah, hapus, cetak PDF, klik kanan pasien. Belum: pilih pasien lewat dialog, tab Rujukan Internal Poli, grafik/demografi, tanggal-jam mundur, asal rujukan."
+    "bukti": "RegistrasiView: daftar tanpa IGDK, cari, registrasi baru, ubah, hapus, cetak PDF, klik kanan pasien, pemilih pasien dan daftar rujukan internal baca saja. RujukanInternalService membatasi hak registrasi dan difilter berdasarkan tujuan; fixture MariaDB sintetis serta tes layar headless lulus. Belum: operasi dan menu rujukan internal, pendaftaran pasien dari dialog, grafik/demografi, tanggal-jam mundur dan asal rujukan."
   },
   "aksi|simrskhanza/DlgReg.java|BtnSimpan": {
     "status": "sebagian",
@@ -1588,8 +1588,8 @@
     "bukti": "InputPenjabCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPenjabAsync; tidak ada dialog cari penjab."
   },
   "aksi|simrskhanza/DlgReg.java|BtnPasien": {
-    "status": "kurang",
-    "bukti": "Tidak ada pemilih/pendaftar pasien di RegistrasiView; pasien hanya dari baris tabel. Pasien baru lewat layar Pasien, bukan dari registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiView menyediakan pencarian dan pemilihan pasien berdasarkan nama atau nomor RM saat registrasi baru, mengisi data pasien dan menolak hasil pencarian lama setelah nomor RM berubah. Tes headless memeriksa mode Baru dan pembersihan isian. Dialog dibatasi 100 hasil; pendaftaran pasien baru dari dialog seperti Java serta uji database dan dialog lengkap belum tersedia."
   },
   "aksi|simrskhanza/DlgReg.java|btnPenjab1": {
     "status": "kurang",

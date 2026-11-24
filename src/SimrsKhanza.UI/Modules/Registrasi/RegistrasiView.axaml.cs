@@ -5,6 +5,8 @@ using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
+using SimrsKhanza.Data.MenuA;
+using SimrsKhanza.UI.Controls;
 using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Registrasi;
@@ -14,6 +16,7 @@ public partial class RegistrasiView : UserControl
     private RegistrasiListItem? _selected;
     private bool _newMode;
     private RegistrasiPasien? _pasienBaru;
+    private int _loadVersion;
     private const string KodePoliIgd = "IGDK";
 
     private static RegistrasiAkses Akses() =>
@@ -112,8 +115,20 @@ public partial class RegistrasiView : UserControl
 
     private async void OnSearchClick(object? sender, RoutedEventArgs e) => await LoadAsync();
 
+    private async void OnTabChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not TabControl tabs || e.Source != tabs || !IsLoaded) return;
+        var awal = tabs.SelectedIndex == 0;
+        this.FindControl<WrapPanel>("RegistrasiActions")!.IsEnabled = awal;
+        this.FindControl<ToggleButton>("InputDataToggle")!.IsEnabled = awal;
+        if (!awal) this.FindControl<ToggleButton>("InputDataToggle")!.IsChecked = false;
+        await LoadAsync();
+    }
+
     private async System.Threading.Tasks.Task LoadAsync()
     {
+        var version = ++_loadVersion;
+        var internalPoli = this.FindControl<TabControl>("RegistrasiTabs")!.SelectedIndex == 1;
         var grid = this.FindControl<DataGrid>("RegistrasiGrid")!;
         var recordCount = this.FindControl<TextBlock>("RecordCountText")!;
         var fromPicker = this.FindControl<CalendarDatePicker>("PeriodeFromPicker")!;
@@ -128,6 +143,15 @@ public partial class RegistrasiView : UserControl
         try
         {
             var settings = DatabaseSettings.Load();
+            if (internalPoli)
+            {
+                var user = AppSession.CurrentUser ?? throw new InvalidOperationException("Sesi pengguna tidak tersedia.");
+                var referrals = await new RujukanInternalService(settings, user).DaftarAsync(from, to, dokterCode, poliCode, keyWord);
+                if (version != _loadVersion) return;
+                this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource = referrals;
+                recordCount.Text = $"{referrals.Count} rujukan internal";
+                return;
+            }
             using var db = SimrsKhanzaDbContextFactory.Create(settings);
             var repo = new RegistrasiRepository(db);
             // Seperti DlgReg: kunjungan IGD (poli IGDK) hanya tampil di layar IGD.
@@ -147,14 +171,16 @@ public partial class RegistrasiView : UserControl
                               .ToList();
             }
 
+            if (version != _loadVersion) return;
             grid.ItemsSource = items;
             recordCount.Text = $"{items.Count} registrasi";
         }
         catch (Exception)
         {
-            // No reachable MySQL server — show an empty grid rather than crash.
-            grid.ItemsSource = new List<RegistrasiListItem>();
-            recordCount.Text = "Database tidak terhubung";
+            if (version != _loadVersion) return;
+            if (internalPoli) this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource = Array.Empty<RujukanInternalItem>();
+            else grid.ItemsSource = new List<RegistrasiListItem>();
+            recordCount.Text = "Data tidak dapat dimuat; periksa akses dan koneksi";
         }
     }
 
@@ -249,6 +275,7 @@ public partial class RegistrasiView : UserControl
         _newMode = on;
         if (!on) _pasienBaru = null;
         this.FindControl<TextBox>("InputNoRekamMedisBox")!.IsReadOnly = !on;
+        this.FindControl<Button>("PilihPasienButton")!.IsEnabled = on;
     }
 
     private void OnBaruClick(object? sender, RoutedEventArgs e)
@@ -266,12 +293,36 @@ public partial class RegistrasiView : UserControl
         var status = this.FindControl<TextBlock>("InputStatusText")!;
         status.Classes.Remove("error");
         status.Classes.Remove("saved");
-        status.Text = "Registrasi baru: isi No. Rekam Medik lalu Enter, pilih dokter, unit, dan jenis bayar. No. reg, no. rawat, status, dan biaya diisi otomatis.";
+        status.Text = "Registrasi baru: cari pasien atau isi No. Rekam Medik lalu Enter, pilih dokter, unit, dan jenis bayar. No. reg, no. rawat, status, dan biaya diisi otomatis.";
         status.IsVisible = true;
         this.FindControl<TextBox>("InputNoRekamMedisBox")!.Focus();
     }
 
     private async void OnNoRmLostFocus(object? sender, RoutedEventArgs e) => await LoadPasienBaruAsync();
+
+    private void OnNoRmChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (!_newMode) return;
+        if (_pasienBaru is not null && _pasienBaru.NoRekamMedis == this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim()) return;
+        _pasienBaru = null;
+        foreach (var name in new[] { "InputNamaPasienBox", "InputPenanggungJawabBox", "InputHubunganBox", "InputAlamatPjBox", "InputStatusDaftarBox" }) SetInputText(name, null);
+        this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedIndex = -1;
+    }
+
+    private async void OnPilihPasienClick(object? sender, RoutedEventArgs e)
+    {
+        if (!_newMode || TopLevel.GetTopLevel(this) is not Window owner) return;
+        try
+        {
+            var queries = new MenuAQueries(DatabaseSettings.Load());
+            var row = await SearchPickerDialog.ShowAsync(owner, "Cari pasien", q => queries.CariPasienAsync(q, false),
+                r => $"{r.S("no_rkm_medis")}  •  {r.S("nm_pasien")}");
+            if (!_newMode || row is null) return;
+            SetInputText("InputNoRekamMedisBox", row.S("no_rkm_medis"));
+            await LoadPasienBaruAsync();
+        }
+        catch (Exception ex) { ShowInputError(this.FindControl<TextBlock>("InputStatusText")!, $"Gagal mencari pasien: {ex.Message}"); }
+    }
 
     private async void OnNoRmKeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
     {
@@ -287,7 +338,7 @@ public partial class RegistrasiView : UserControl
         try
         {
             var pasien = await new RegistrasiService(DatabaseSettings.Load()).CariPasienAsync(rm);
-            if (!_newMode) return;
+            if (!_newMode || this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim() != rm) return;
             _pasienBaru = pasien;
             if (pasien is null)
             {
@@ -307,7 +358,8 @@ public partial class RegistrasiView : UserControl
         }
         catch (Exception ex)
         {
-            ShowInputError(status, $"Gagal memuat pasien: {ex.Message}");
+            if (_newMode && this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim() == rm)
+                ShowInputError(status, $"Gagal memuat pasien: {ex.Message}");
         }
     }
 
@@ -337,7 +389,11 @@ public partial class RegistrasiView : UserControl
             if (_newMode)
             {
                 if (_pasienBaru?.NoRekamMedis != noRekamMedis) await LoadPasienBaruAsync();
-                if (_pasienBaru is null) { ShowInputError(status, $"Pasien {noRekamMedis} tidak ditemukan."); return; }
+                if (!_newMode || this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim() != noRekamMedis || _pasienBaru?.NoRekamMedis != noRekamMedis)
+                { ShowInputError(status, "Data pasien berubah atau tidak ditemukan. Pilih kembali pasien."); return; }
+                pj = this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text?.Trim() ?? "";
+                alamat = this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "";
+                hubungan = this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "";
                 noRawat = await service.DaftarAsync(new(noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab, pj, alamat, hubungan, DateTime.Now), Akses());
                 SetNewMode(false);
                 await LoadAsync();
