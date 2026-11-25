@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Radiologi.RadiologiMenuView"
-             Background="{DynamicResource TegasDiagnosticsPageBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!-- Same submenu pattern as Laboratorium/LabMenuView — user shared a
          screenshot of the legacy Radiologi icon row (Permintaan Radiologi /

@@ -2,11 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Farmasi.DataPenjualanView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
-    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Data Penjualan Obat &amp; BHP"
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Data Penjualan Obat &amp; BHP"
                    Margin="0,0,0,12" />
+        </Border>
 
         <DataGrid Grid.Row="1" Name="PenjualanGrid" AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
@@ -21,9 +23,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="2" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

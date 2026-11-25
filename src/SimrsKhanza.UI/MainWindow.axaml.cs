@@ -24,7 +24,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _componentReady = true;
-        this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
+        UpdateFullscreenButton();
         _user = user;
         AppSession.CurrentUser = user;
 
@@ -816,6 +816,15 @@ public partial class MainWindow : Window
                 await view.ReloadAsync();
                 break;
             }
+            case Modules.Farmasi.FarmasiAction.ResepPulang:
+            {
+                if (_user?.HasPermission(SimrsKhanza.Data.MenuA.ResepPulangRepository.IzinFarmasi) != true) return;
+                var view = new Modules.Informasi.MenuAView(SimrsKhanza.Data.MenuA.MenuASpecs.ResepPulang);
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
             case Modules.Farmasi.FarmasiAction.NoResep:
             {
                 var view = new Modules.Farmasi.NoResepView();
@@ -1237,18 +1246,28 @@ public partial class MainWindow : Window
     private void OnMinimizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         => WindowState = WindowState.Minimized;
 
-    private void OnMaximizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => ToggleMaximize();
+    private void OnFullscreenClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => ToggleFullscreen();
 
-    private void ToggleMaximize()
-        => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    private void ToggleFullscreen()
+        => WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
 
     // Buttons mark their own presses handled, so this only fires on the empty strip:
-    // drag to move (the OS move loop gives edge snapping), double-click to maximize/restore.
+    // drag to move (the OS move loop gives edge snapping), double-click to enter or exit fullscreen.
     private void OnTitleBarPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
     {
         if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
-        if (e.ClickCount == 2) ToggleMaximize();
-        else BeginMoveDrag(e);
+        if (e.ClickCount == 2) ToggleFullscreen();
+        else if (WindowState == WindowState.Normal) BeginMoveDrag(e);
+    }
+
+    private void UpdateFullscreenButton()
+    {
+        var button = this.FindControl<Button>("FullscreenButton")!;
+        var fullscreen = WindowState == WindowState.FullScreen;
+        button.Content = fullscreen ? "❐" : "☐";
+        var label = fullscreen ? "Keluar dari layar penuh" : "Layar penuh";
+        ToolTip.SetTip(button, label);
+        Avalonia.Automation.AutomationProperties.SetName(button, label);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -1256,7 +1275,7 @@ public partial class MainWindow : Window
         base.OnPropertyChanged(change);
         // WindowState is set from XAML during InitializeComponent, before the name scope exists.
         if (change.Property == WindowStateProperty && _componentReady)
-            this.FindControl<Button>("MaximizeButton")!.Content = WindowState == WindowState.Maximized ? "❐" : "☐";
+            UpdateFullscreenButton();
     }
 
     /// <summary>Raised by the toolbar "Keluar" button — App swaps in the login window instead of quitting.</summary>

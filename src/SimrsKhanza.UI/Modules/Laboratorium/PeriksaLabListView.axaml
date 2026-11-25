@@ -3,7 +3,7 @@
              xmlns:data="using:SimrsKhanza.Data"
              xmlns:local="using:SimrsKhanza.UI.Modules.Laboratorium"
              x:Class="SimrsKhanza.UI.Modules.Laboratorium.PeriksaLabListView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy DlgCariPeriksaLab / ...PA / ...MB — "Data Pemeriksaan Laboratorium {kategori}".
@@ -12,21 +12,33 @@
         with the narrative fields, editable in the panel below. Legacy's third tab ("Detail
         Kunjungan", an HTML summary) is not ported.
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="10">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Name="TitleText" Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Name="TitleText" />
+        </Border>
 
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,170,16,Auto,Auto,Auto,Auto,16,Auto,100,16,Auto,200" Margin="0,0,0,6">
-            <TextBlock Grid.Column="0" Text="No.Rawat :" VerticalAlignment="Center" Margin="0,0,4,0" />
-            <TextBox Grid.Column="1" Name="NoRawatBox" KeyUp="OnFilterKeyUp" />
-            <TextBlock Grid.Column="3" Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,0" />
-            <CalendarDatePicker Grid.Column="4" Name="FromPicker" />
-            <TextBlock Grid.Column="5" Text="s.d." VerticalAlignment="Center" Margin="6,0" />
-            <CalendarDatePicker Grid.Column="6" Name="ToPicker" />
-            <TextBlock Grid.Column="8" Text="Pasien :" VerticalAlignment="Center" Margin="0,0,4,0" />
-            <TextBox Grid.Column="9" Name="NoRmBox" PlaceholderText="No.RM" KeyUp="OnFilterKeyUp" />
-            <TextBlock Grid.Column="11" Text="Petugas :" VerticalAlignment="Center" Margin="0,0,4,0" />
-            <ComboBox Grid.Column="12" Name="PetugasCombo" HorizontalAlignment="Stretch" />
-        </Grid>
+        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
+                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
+                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
+                    <ComboBox Name="PetugasCombo" Width="170" />
+                </StackPanel>
+            </WrapPanel>
+        </Border>
 
         <TabControl Grid.Row="2" Name="Tabs">
             <TabItem Header="Data Pemeriksaan">
@@ -131,15 +143,17 @@
             <TextBlock Grid.Column="3" Name="TotalText" VerticalAlignment="Center" Margin="12,0,0,0" FontWeight="Medium" />
         </Grid>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
-            <Button Content="🔍 Cari" Click="OnCariClick" />
-            <Button Content="🧪 Periksa Baru" Click="OnInputClick" />
-            <Button Content="🗑 Hapus" Click="OnHapusClick" />
-            <Button Content="📋 Semua" Click="OnSemuaClick" />
-            <Button Content="🖨 Cetak" Click="OnCetakClick" />
-            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
-            <TextBlock Name="StatusText" VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" IsVisible="False" />
-        </StackPanel>
+        <Border Grid.Row="5" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="🧪 Periksa Baru" Click="OnInputClick" />
+                <Button Content="🗑 Hapus" Click="OnHapusClick" />
+                <Button Content="📋 Semua" Click="OnSemuaClick" />
+                <Button Content="🖨 Cetak" Click="OnCetakClick" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <TextBlock Name="StatusText" VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" IsVisible="False" />
+            </WrapPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

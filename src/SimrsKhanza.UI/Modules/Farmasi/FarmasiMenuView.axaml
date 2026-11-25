@@ -1,18 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Farmasi.FarmasiMenuView"
-             Background="{DynamicResource TegasPharmacyPageBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
-    <!--
-        Farmasi submenu — same pattern as Modules/Laboratorium/LabMenuView:
-        user shared a screenshot of the legacy Farmasi icon row (Input/Data
-        Penjualan Obat & BHP, Data Penyerahan Darah, Daftar Resep Dokter,
-        No. Resep). Tiles shown 1:1 with that screenshot; 3 are wired to real
-        screens (Input/Data Penjualan, Daftar Resep Dokter), 2 are deliberate
-        placeholders — see docs/handover/04-HISTORY.md for the scope call (blood
-        bank / UTD is its own large subsystem, "No. Resep" purpose unclear
-        without more legacy context).
-    -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
         <Border Classes="tegasHeading" Margin="0,0,0,6">
             <TextBlock Classes="pageTitle" Text="Farmasi" />

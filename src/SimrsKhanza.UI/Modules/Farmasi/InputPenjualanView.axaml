@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:SimrsKhanza.UI.Modules.Farmasi"
              x:Class="SimrsKhanza.UI.Modules.Farmasi.InputPenjualanView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Matches the legacy "Transaksi Penjualan Obat, Alkes & BHP Medis"
@@ -14,12 +14,13 @@
         number are only known after Simpan (see InputPenjualanView.axaml.cs);
         the field here just says so rather than faking a preview number.
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="10">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Transaksi Penjualan Obat, Alkes &amp; BHP Medis"
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Transaksi Penjualan Obat, Alkes &amp; BHP Medis"
                    Margin="0,0,0,8" />
+        </Border>
 
-        <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
-                Background="{DynamicResource ThemeSurfaceBrush}" Padding="10" CornerRadius="4" Margin="0,0,0,6">
+        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
             <Grid ColumnDefinitions="Auto,*,20,Auto,*" RowDefinitions="Auto,Auto,Auto">
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Nota :" VerticalAlignment="Center" />
                 <TextBox Grid.Row="0" Grid.Column="1" Text="(dibuat otomatis saat Simpan)" IsReadOnly="True" Margin="4,2" />
@@ -100,12 +101,12 @@
         <Grid Grid.Row="5" ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto" RowDefinitions="Auto,Auto">
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Spacing="8">
                 <Button Name="NotaButton" Content="🧾 Nota" IsEnabled="False" />
-                <Button Name="SimpanButton" Content="💾 Simpan" Click="OnSimpanClick" />
+                <Button Name="SimpanButton" Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" Orientation="Horizontal" Spacing="8">
                 <TextBlock Text="Key Word :" VerticalAlignment="Center" />
                 <TextBox Name="KeywordBox" Width="220" TextChanged="OnKeywordChanged" />
-                <Button Content="🔍 Cari" Click="OnCariClick" />
+                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
                 <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
             </StackPanel>
             <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap"

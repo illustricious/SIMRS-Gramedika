@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Laboratorium.LabMenuView"
-             Background="{DynamicResource TegasDiagnosticsPageBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy Khanza's Laboratorium menu is itself a 6-icon submenu (Permintaan/

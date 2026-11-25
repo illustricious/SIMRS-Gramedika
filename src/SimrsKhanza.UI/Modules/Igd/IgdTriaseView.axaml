@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Igd.IgdTriaseView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         IGD/UGD — Khanza doesn't model IGD as a separate patient type, just a
@@ -16,9 +16,11 @@
         a grid row auto-opens the form and fills it in — still one click, not
         two, to start triaging someone.
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="12">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="IGD/UGD — Triase"
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="IGD/UGD — Triase"
                    Margin="0,0,0,8" />
+        </Border>
 
         <StackPanel Grid.Row="1" Spacing="0">
             <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
@@ -92,9 +94,11 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="4" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

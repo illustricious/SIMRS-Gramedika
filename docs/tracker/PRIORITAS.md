@@ -1,6 +1,8 @@
 # Prioritas pekerjaan dan progress
 
-Diperbarui 25 November 2026 setelah implementasi operasi rujukan Registrasi. Angka cakupan layar dan audit terkini tersedia di [ringkasan otomatis](RINGKASAN.md).
+Diperbarui 25 November 2026 setelah penyeragaman tampilan layanan. Angka cakupan layar dan audit terkini tersedia di [ringkasan otomatis](RINGKASAN.md).
+
+Laboratorium dan Radiologi memakai palet serta header Registrasi. Panel filter dan tombol aksi juga dirapikan pada layar layanan yang disentuh, termasuk IGD, Farmasi, Rawat Jalan dan Rawat Inap. Uji visual interaktif setelah login masih terbuka.
 
 | Urutan | Pekerjaan | Kondisi sekarang dan kriteria selesai |
 |---|---|---|
@@ -8,7 +10,7 @@ Diperbarui 25 November 2026 setelah implementasi operasi rujukan Registrasi. Ang
 | 0 | Verifikasi build dan tes | Build Debug dan suite tes berjalan dengan fixture MariaDB sintetis untuk Registrasi. Tinjau advisori NuGet untuk MySqlConnector 2.5.0 serta peringatan EF1002 di `RanapMenuRepository`. |
 | 1 | Uji keselamatan alur pada database uji | Jalankan fixture Rawat Jalan dan Rawat Inap dengan data sintetis, lalu uji aplikasi pada salinan database rumah sakit yang aman. Uji dua koneksi terhadap billing/tindakan dan kesesuaian jurnal; periksa rollback, hak akses, dan hasil dengan Khanza Java. Jangan gunakan database produksi untuk eksperimen. |
 | 2 | Rawat Jalan: tindakan dan kelengkapan klinis | Resep nonracikan, permintaan lab/radiologi, dan tambah/ubah resume tersedia di Alur Kunjungan. Lanjutkan verifikasi dan penyerahan resep di Farmasi, perubahan order, cetak resume, serta uji UI bersama unit penunjang. Formulir klinis tambahan, cetak/template/hapus massal SOAPIE, master tarif dan perilaku billing parsial masih terbuka. [Audit](AUDIT_RAWAT_JALAN.md). |
-| 3 | Rawat Inap: tindakan, kamar dan SOAPIE | Input tindakan dokter/petugas/gabungan, jurnal, guard billing dan rollback sudah diuji di MariaDB sintetis. Ubah dan hapus tindakan beserta jurnal pembalik masih terbuka. Tahap berikutnya audit koreksi kamar, gabung kunjungan, rujuk/meninggal, tarif dan pulang. Masih 232 popup kamar belum diaudit. [Audit](AUDIT_RAWAT_INAP.md). |
+| 3 | Rawat Inap: tindakan, kamar dan SOAPIE | Jalur pulang mencakup resume, konfirmasi waktu/status keluar, penutupan kamar dan akses ke Kasir. Permintaan, koreksi sebelum validasi, validasi dan catatan serah terima obat pulang tersedia. Berikutnya uji operasional Farmasi, sambungkan retur setelah validasi, rekonsiliasi pelunasan tindakan, dan lengkapi rujuk/meninggal. Koreksi kamar, penggabungan dan jurnal pembalik tindakan masih terbuka. [Audit](AUDIT_RAWAT_INAP.md). |
 | 4 | Audit dan lengkapi pelayanan inti | Pelunasan registrasi Rawat Jalan dan jual bebas nonbatch dengan mutasi dan jurnal tersedia. Lanjutkan rekonsiliasi pelunasan tindakan Rawat Inap, penjualan batch atau verifikasi Kasir, peresepan hingga penyerahan, serta audit Lab dan Radiologi. [Audit pelayanan inti](AUDIT_PELAYANAN_INTI.md). |
 | 5 | Layar menu lain dan laporan | Uji layar dan query pada salinan database nyata, khususnya menu K, N, P, Q, R, S, J dan I. Lengkapi transaksi, laporan/cetak dan grafik berdasarkan kebutuhan operasional; banyak layar masih baca saja. Cocokkan akun keuangan dengan bagan akun rumah sakit. |
 | 6 | Bridging Menu L | 183 tile ditunda. Inventarisasi kebutuhan dan spesifikasi integrasi BPJS/PCare, INA-CBG, Kemenkes dan pihak lain; siapkan kredensial serta lingkungan uji masing-masing sebelum implementasi dan uji end-to-end. |

@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsKhanza.UI.Modules.Radiologi.PermintaanRadiologiListView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy DlgCariPermintaanRadiologi: "Data Permintaan Radiologi" — Rawat Jalan / Rawat Inap
@@ -9,28 +9,41 @@
         examination) and "Item Permintaan" (one row per examination). Grids are built in code.
         The RIS bridging buttons (FUJI, Care Stream) and barcode/lembar printing are not ported.
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="10">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Data Permintaan Radiologi"
-                   Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Data Permintaan Radiologi" />
+        </Border>
 
-        <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,6">
-            <TextBlock Text="Tanggal :" VerticalAlignment="Center" Margin="0,0,4,4" />
-            <CalendarDatePicker Name="FromPicker" Margin="0,0,4,4" />
-            <TextBlock Text="s.d." VerticalAlignment="Center" Margin="4,0,4,4" />
-            <CalendarDatePicker Name="ToPicker" Margin="0,0,12,4" />
-            <TextBlock Text="Dokter :" VerticalAlignment="Center" Margin="0,0,4,4" />
-            <TextBox Name="DokterBox" Width="150" Margin="0,0,12,4" KeyUp="OnFilterKeyUp" />
-            <TextBlock Name="LokasiLabel" Text="Unit/Poli :" VerticalAlignment="Center" Margin="0,0,4,4" />
-            <TextBox Name="LokasiBox" Width="150" Margin="0,0,12,4" KeyUp="OnFilterKeyUp" />
-            <TextBlock Name="StatusLabel" Text="Status :" VerticalAlignment="Center" Margin="0,0,4,4" IsVisible="False" />
-            <ComboBox Name="StatusCombo" Width="120" Margin="0,0,12,4" IsVisible="False" SelectedIndex="0">
-                <ComboBoxItem Content="Semua" />
-                <ComboBoxItem Content="Belum Pulang" />
-            </ComboBox>
-            <TextBlock Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,4" />
-            <TextBox Name="KeywordBox" Width="200" Margin="0,0,8,4" KeyUp="OnFilterKeyUp" />
-            <Button Content="🔍 Cari" Click="OnCariClick" Margin="0,0,0,4" />
-        </WrapPanel>
+        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Dokter :" VerticalAlignment="Center" />
+                    <TextBox Name="DokterBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Name="LokasiLabel" Text="Unit/Poli :" VerticalAlignment="Center" />
+                    <TextBox Name="LokasiBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Name="StatusLabel" Text="Status :" VerticalAlignment="Center" IsVisible="False" />
+                    <ComboBox Name="StatusCombo" Width="120" IsVisible="False" SelectedIndex="0">
+                        <ComboBoxItem Content="Semua" />
+                        <ComboBoxItem Content="Belum Pulang" />
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Kata kunci" VerticalAlignment="Center" />
+                    <TextBox Name="KeywordBox" Width="200" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" Margin="0,0,0,4" />
+            </WrapPanel>
+        </Border>
 
         <Border Grid.Row="2" Name="ConfirmPanel" IsVisible="False" BorderBrush="{DynamicResource ThemeBorderBrush}"
                 BorderThickness="1" Background="{DynamicResource ThemeSurfaceBrush}" Padding="10" CornerRadius="4" Margin="0,0,0,6">
@@ -75,15 +88,17 @@
             </TabItem>
         </TabControl>
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-            <Button Content="🗑 Hapus" Click="OnHapusClick" />
-            <Button Content="🧪 Sampel" Click="OnSampelClick" />
-            <Button Content="📄 Hasil" Click="OnHasilClick" />
-            <Button Content="📋 Semua" Click="OnSemuaClick" />
-            <Button Content="🖨 Cetak" Click="OnCetakClick" />
-            <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
-            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" Margin="12,0,0,0" />
-        </StackPanel>
+        <Border Grid.Row="4" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="🗑 Hapus" Click="OnHapusClick" />
+                <Button Content="🧪 Sampel" Click="OnSampelClick" />
+                <Button Content="📄 Hasil" Click="OnHasilClick" />
+                <Button Content="📋 Semua" Click="OnSemuaClick" />
+                <Button Content="🖨 Cetak" Click="OnCetakClick" />
+                <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" Margin="12,0,0,0" />
+            </WrapPanel>
+        </Border>
 
         <TextBlock Grid.Row="5" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />
     </Grid>

@@ -17,18 +17,26 @@
             <TextBlock Classes="pageTitle" Text="Perawatan/Tindakan Rawat Jalan" />
         </Border>
 
-        <StackPanel Name="Filters" Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,6">
-            <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
-            <CalendarDatePicker Name="FromPicker" />
-            <TextBlock Text="s.d." VerticalAlignment="Center" />
-            <CalendarDatePicker Name="ToPicker" />
-            <TextBlock Text="No.R.M. :" VerticalAlignment="Center" Margin="12,0,0,0" />
-            <TextBox Name="NoRmBox" Width="110" KeyUp="OnFilterKeyUp" />
-            <TextBlock Text="Key Word :" VerticalAlignment="Center" Margin="12,0,0,0" />
-            <TextBox Name="KeywordBox" Width="240" KeyUp="OnFilterKeyUp" />
-            <Button Content="🔍 Cari" Click="OnCariClick" />
-            <Button Content="📋 Semua" Click="OnSemuaClick" />
-        </StackPanel>
+        <Border Name="Filters" Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal :" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No.R.M. :" VerticalAlignment="Center" />
+                    <TextBox Name="NoRmBox" Width="110" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Kata kunci" VerticalAlignment="Center" />
+                    <TextBox Name="KeywordBox" Width="240" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="📋 Semua" Click="OnSemuaClick" />
+            </WrapPanel>
+        </Border>
 
         <TabControl Grid.Row="2" Name="Tabs" SelectionChanged="OnTabChanged">
             <TabItem Header="Tindakan Dokter">

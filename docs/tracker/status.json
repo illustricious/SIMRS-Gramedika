@@ -2505,7 +2505,7 @@
   },
   "aksi|simrskhanza/DlgKamarInap.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "simrskhanza/DlgKamarInap.java:5853 - RawatInapRepository.AdmitAsync/DischargeAsync mencatat segmen, tarif, dan okupansi melalui transaksi. Cabang penggabungan dan tindak lanjut pulang Java belum diterapkan."
+    "bukti": "RawatInapView meminta izin kamar_inap, status dan konfirmasi waktu pulang. RawatInapRepository menghitung biaya dari waktu keluar dan menyimpan segmen serta okupansi bersama. PulangRanapTests menguji batas waktu, biaya dan penutupan berulang. Rujuk/meninggal membutuhkan tindak lanjut di Khanza."
   },
   "aksi|simrskhanza/DlgKamarInap.java|BtnBatal": {
     "status": "sebagian",
@@ -2744,8 +2744,8 @@
     "bukti": "simrskhanza/DlgRawatInap.java:6903 - Handler membuka DlgPermintaanStokPasien dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanResepPulang": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:7063 - Handler membuka DlgPermintaanResepPulang dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "Rawat Inap membuat permintaan resep per kunjungan dengan izin permintaan_resep_pulang. Farmasi dengan izin resep_pulang memvalidasi stok dan mencatat penerima, petugas dan waktu serah terima. Rawat Inap menampilkan ketiga status. Rawat Inap dapat membatalkan seluruh permintaan sebelum validasi. Pembatalan dan validasi memakai kunci kunjungan yang sama. Ubah Permintaan memuat ulang draf tersimpan dan menolak simpan atau validasi dari salinan lama. Retur dan uji UI terintegrasi masih terbuka."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnInputObat": {
     "status": "kurang",
@@ -2784,8 +2784,8 @@
     "bukti": "simrskhanza/DlgRawatInap.java:6816 - Handler membuka DlgDiagnosaPenyakit dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnResume": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:6853 - Handler membuka RMDataResumePasienRanap dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "RawatInapView membuka ResumePulangWindow dari kunjungan aktif atau pulang. ResumePulangRanapService menyimpan narasi, obat, edukasi, tindak lanjut, jadwal kontrol dan kode klinis; PulangRanapTests memeriksa izin, penyimpanan dan konflik. PDF tersedia untuk kunjungan pulang; audit visual dan template Java belum selesai."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnAwalKeperawatanUmum": {
     "status": "kurang",

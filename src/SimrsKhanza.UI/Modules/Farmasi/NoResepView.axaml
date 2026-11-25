@@ -1,6 +1,8 @@
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="using:SimrsKhanza.Data" x:Class="SimrsKhanza.UI.Modules.Farmasi.NoResepView" Background="{DynamicResource ThemeBackgroundBrush}">
-  <Grid RowDefinitions="Auto,Auto,Auto,2*,Auto,*,Auto" Margin="10" RowSpacing="6">
-    <TextBlock Classes="pageTitle" Text="No. Resep" />
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="using:SimrsKhanza.Data" x:Class="SimrsKhanza.UI.Modules.Farmasi.NoResepView" Background="{DynamicResource TegasPageBrush}">
+  <Grid RowDefinitions="Auto,Auto,Auto,2*,Auto,*,Auto" Margin="16,12" RowSpacing="6">
+    <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+        <TextBlock Classes="pageTitle" Text="No. Resep" />
+    </Border>
     <WrapPanel Grid.Row="1" Orientation="Horizontal">
       <TextBlock Text="No. Rawat:" VerticalAlignment="Center" Margin="0,0,4,0"/><TextBox Name="RawatBox" Width="150" Margin="0,0,8,0" PlaceholderText="No. rawat"/>
       <TextBlock Text="Dokter:" VerticalAlignment="Center" Margin="0,0,4,0"/><ComboBox Name="DokterBox" Width="190" Margin="0,0,8,0"/>

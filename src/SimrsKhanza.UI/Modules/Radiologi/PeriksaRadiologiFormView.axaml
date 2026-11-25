@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:SimrsKhanza.UI.Modules.Radiologi"
              x:Class="SimrsKhanza.UI.Modules.Radiologi.PeriksaRadiologiFormView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy DlgPeriksaRadiologi — "Input Data Hasil Periksa Radiologi". Top: pasien, dokter perujuk /
@@ -11,9 +11,10 @@
         Bottom: BHP radiologi (ipsrsbarang) with Jml and the hasil bacaan text.
         Not ported: Nota, Cetak lembar permintaan, bridging Fuji/RIS import, foto/URL upload, jurnal akuntansi.
     -->
-    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="10">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Input Data Hasil Periksa Radiologi"
-                   Margin="0,0,0,6" />
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Input Data Hasil Periksa Radiologi" />
+        </Border>
 
         <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
                 Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4">
@@ -145,11 +146,13 @@
             <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" IsVisible="False" />
         </StackPanel>
 
-        <StackPanel Grid.Row="6" Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
-            <Button Content="💾 Simpan" Click="OnSimpanClick" />
-            <Button Content="🆕 Baru" Click="OnBaruClick" />
-            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="6" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
+                <Button Content="🆕 Baru" Click="OnBaruClick" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

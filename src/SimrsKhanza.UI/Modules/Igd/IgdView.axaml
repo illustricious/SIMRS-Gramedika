@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsKhanza.Data"
              x:Class="SimrsKhanza.UI.Modules.Igd.IgdView"
-             Background="{DynamicResource TegasEmergencyPageBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Legacy "IGD/UGD" (DlgIGD.java) is NOT a triage screen: it is
@@ -43,7 +43,7 @@
                     <TextBlock Grid.Row="3" Grid.ColumnSpan="5" Name="InputStatusText" TextWrapping="Wrap" Margin="2" IsVisible="False" />
 
                     <StackPanel Grid.Row="4" Grid.ColumnSpan="5" Orientation="Horizontal" Spacing="8" Margin="2,6,2,0">
-                        <Button Content="💾 Simpan" Click="OnSimpanClick" />
+                        <Button Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
                         <Button Content="🆕 Baru" Click="OnBaruClick" />
                     </StackPanel>
                 </Grid>
@@ -85,27 +85,29 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Row="3" Spacing="6">
+        <Border Grid.Row="3" Classes="servicePanel">
+          <StackPanel Spacing="6">
             <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
                 <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <CalendarDatePicker Grid.Column="1" Name="FromPicker" />
                 <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
                 <CalendarDatePicker Grid.Column="3" Name="ToPicker" />
-                <TextBlock Grid.Column="5" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBlock Grid.Column="5" Text="Kata kunci" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <TextBox Grid.Column="6" Name="KeywordBox" KeyUp="OnKeywordKeyUp" />
                 <TextBlock Grid.Column="7" Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
             </Grid>
-            <StackPanel Orientation="Horizontal" Spacing="8">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
                 <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
                 <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
                 <Button Content="🖨 Cetak" Click="OnCetakClick" />
                 <Button Content="📋 Semua" Click="OnSemuaClick" />
-                <Button Content="🔎 Cari" Click="OnCariClick" />
+                <Button Content="🔎 Cari" Click="OnCariClick" Classes="accent" />
                 <Button Content="🚑 Triase" Click="OnTriaseClick" />
                 <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
-            </StackPanel>
+            </WrapPanel>
             <TextBlock Name="StatusText" TextWrapping="Wrap" IsVisible="False" />
-        </StackPanel>
+          </StackPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

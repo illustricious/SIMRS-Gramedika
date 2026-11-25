@@ -16,9 +16,6 @@
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="TegasPageBrush">#EAF1FC</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#E6F2F4</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#FCEBEC</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#EFEEFA</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingBrush">#DEE9FA</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#031C6D</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasRowAltBrush">#F2F6FC</SolidColorBrush>
@@ -50,9 +47,6 @@
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="TegasPageBrush">#1B2941</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasDiagnosticsPageBrush">#1A303A</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasEmergencyPageBrush">#35242E</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasPharmacyPageBrush">#262A45</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingBrush">#273C5B</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#8CB0FF</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasRowAltBrush">#263348</SolidColorBrush>
@@ -381,6 +375,13 @@
         <Style Selector="ContentControl.biruTegas TextBlock.pageTitle">
             <Setter Property="FontSize" Value="22" />
             <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style Selector="Border.servicePanel">
+            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="10,7" />
         </Style>
         <Style Selector="Border.tegasHeading">
             <Setter Property="Background" Value="{DynamicResource TegasHeadingBrush}" />

@@ -8,17 +8,14 @@
         Icon="avares://SimrsKhanza.UI/Assets/app.ico"
         Width="1200" Height="760"
         MinWidth="800" MinHeight="540"
-        WindowState="Maximized"
+        WindowState="FullScreen"
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         Background="{DynamicResource ThemePrimaryBrush}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
-        <!-- Row 0: top shortcut bar — secondary/admin menus. Doubles as the window
-             title bar (client area is extended, system chrome is off): the empty
-             space is the drag handle and the minimize/maximize/close buttons sit
-             on the same blue strip, per user request. -->
+        <!-- Row 0: application shortcuts and window controls. -->
         <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource TegasNavigationBrush}" MinHeight="42"
                 BorderBrush="{DynamicResource ThemeAccentBrush}" BorderThickness="0,0,0,2"
                 PointerPressed="OnTitleBarPointerPressed">
@@ -37,12 +34,9 @@
                 </StackPanel>
                 <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#E1EBFA" FontSize="12" FontWeight="SemiBold"
                            HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
-                <!-- BorderOnly keeps the thin OS frame (edge resize + snap work); the caption
-                     buttons are our own so they sit on the blue header. Close here quits the
-                     app; the toolbar "Keluar" logs out. -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
-                    <Button Classes="caption" Name="MaximizeButton" Content="☐" Click="OnMaximizeClick" />
+                    <Button Classes="caption" Name="FullscreenButton" Content="❐" Click="OnFullscreenClick" />
                     <Button Classes="caption close" Content="✕" Click="OnCloseClick" />
                 </StackPanel>
             </Grid>
@@ -163,11 +157,11 @@
 
         <!-- Row 3: status bar, mirrors legacy "Status Admin / date / IP / credit" footer -->
         <Border Grid.Row="3" Background="{DynamicResource ThemePrimaryDarkBrush}">
-            <Grid ColumnDefinitions="Auto,Auto,*,Auto" Margin="12,4">
-                <TextBlock Grid.Column="0" Name="LoggedInUserText" Text="Login sebagai: (belum terhubung)"
+            <Grid ColumnDefinitions="*,Auto" Margin="12,4">
+                <TextBlock Grid.Column="0" Name="LoggedInUserText" Text="Login sebagai: (belum terhubung)" TextTrimming="CharacterEllipsis"
                            Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" />
                 <TextBlock Grid.Column="1" Name="ClockText" Text=""
-                           Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" Margin="24,0,0,0" />
+                           Foreground="{DynamicResource ThemeOnPrimaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="12,0,0,0" />
             </Grid>
         </Border>
 

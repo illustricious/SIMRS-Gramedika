@@ -58,7 +58,7 @@ public interface IRawatInapRepository
     /// using set_jam_minimal and TotalBiaya (Lama * TarifKamar), frees the room back
     /// to "KOSONG". Returns the computed room bill.
     /// </summary>
-    Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default);
+    Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default, DateTime? waktuKeluar = null);
 
     /// <summary>
     /// "Pindah" — closes the current stay with stts_pulang "Pindah Kamar"
@@ -246,7 +246,7 @@ public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = 
                 k.TanggalMasuk == key.TanggalMasuk && k.JamMasuk == key.JamMasuk, ct)
            ?? throw new InvalidOperationException($"Data kamar inap untuk No.Rawat '{key.NoRawat}' tidak ditemukan.");
 
-    public async Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default)
+    public async Task<decimal> DischargeAsync(RawatInapKey key, StatusPulang statusPulang, string? diagnosaAkhir, CancellationToken ct = default, DateTime? waktuKeluar = null)
     {
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, key.NoRawat, ct);
@@ -254,16 +254,26 @@ public class RawatInapRepository(SimrsKhanzaDbContext db, TimeProvider? clock = 
         var stay = await FindActiveStayAsync(key, ct);
         if (stay.StatusPulang != StatusPulang.BelumPulang)
             throw new InvalidOperationException("Pasien ini sudah tercatat pulang/pindah — pilih baris yang masih dirawat.");
-        if (statusPulang is StatusPulang.BelumPulang or StatusPulang.PindahKamar)
+        if (!Enum.IsDefined(statusPulang) || statusPulang is StatusPulang.BelumPulang or StatusPulang.PindahKamar or StatusPulang.StatusBelumLengkap)
             throw new InvalidOperationException("Pilih status pulang yang valid.");
+        if (await db.KamarInapSet.AnyAsync(s => s.NoRawat == key.NoRawat && s.StatusPulang == StatusPulang.BelumPulang &&
+            (s.KodeKamar != key.KodeKamar || s.TanggalMasuk != key.TanggalMasuk || s.JamMasuk != key.JamMasuk), ct))
+            throw new InvalidOperationException("Kunjungan memiliki beberapa segmen aktif. Periksa data kamar sebelum pulang.");
 
         var kamar = await KunciKamarAsync(stay.KodeKamar, ct);
         var aturan = await AturanLamaRawat.LoadAsync(db, ct);
         var diagnosa = diagnosaAkhir ?? stay.DiagnosaAkhir;
         if (aturan.DiagnosaAkhirWajib && string.IsNullOrWhiteSpace(diagnosa))
             throw new InvalidOperationException("Diagnosis akhir wajib diisi sesuai Set Kamar Inap.");
-        var total = CloseStay(stay, statusPulang, diagnosa, aturan, Now);
-        kamar.Status = StatusKamar.Kosong;
+        if (diagnosa?.Length > 100) throw new ArgumentException("Diagnosis akhir maksimum 100 karakter.");
+        var sekarang = Now;
+        var keluar = waktuKeluar ?? sekarang;
+        if (keluar > sekarang) throw new ArgumentException("Waktu keluar tidak boleh di masa depan.");
+        var total = CloseStay(stay, statusPulang, diagnosa, aturan, keluar);
+        var masihTerisi = await db.KamarInapSet.AnyAsync(s => s.KodeKamar == key.KodeKamar &&
+            s.StatusPulang == StatusPulang.BelumPulang &&
+            (s.NoRawat != key.NoRawat || s.TanggalMasuk != key.TanggalMasuk || s.JamMasuk != key.JamMasuk), ct);
+        kamar.Status = masihTerisi ? StatusKamar.Isi : StatusKamar.Kosong;
         await db.SaveChangesAsync(ct);
         await transaction.CommitAsync(ct);
         return total;

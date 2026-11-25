@@ -49,7 +49,12 @@
                     <TextBlock Text="Status Pulang :" />
                     <ComboBox Name="StatusPulangCombo" HorizontalAlignment="Stretch" />
                     <TextBlock Text="Diagnosa Akhir :" Margin="0,4,0,0" />
-                    <TextBox Name="DiagnosaAkhirBox" />
+                    <TextBox Name="DiagnosaAkhirBox" MaxLength="100" />
+                    <TextBlock Text="Waktu keluar" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <CalendarDatePicker Name="TanggalKeluarPicker" AutomationProperties.Name="Tanggal keluar" />
+                        <TextBox Name="JamKeluarBox" Width="100" PlaceholderText="HH:mm:ss" AutomationProperties.Name="Jam keluar" />
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Name="PindahFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
@@ -102,11 +107,9 @@
         </DataGrid>
 
         <!-- Group filters and actions on a distinct surface without changing their order. -->
-        <Border Grid.Row="4" Grid.RowSpan="3" Margin="0,6,0,0"
-                Background="{DynamicResource ThemePanelBrush}"
-                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" />
+        <Border Grid.Row="4" Grid.RowSpan="3" Margin="0,6,0,0" Classes="servicePanel" />
 
-        <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="10" Margin="10,14,10,0">
+        <WrapPanel Grid.Row="4" Orientation="Horizontal" ItemSpacing="10" LineSpacing="6" Margin="10,14,10,0">
             <RadioButton Name="ModeBelumPulang" GroupName="Mode" Content="Belum Pulang" IsChecked="True" Click="OnFilterChanged" />
             <RadioButton Name="ModeMasuk" GroupName="Mode" Content="Tgl.Masuk :" Click="OnFilterChanged" />
             <CalendarDatePicker Name="MasukFromPicker" />
@@ -116,39 +119,42 @@
             <CalendarDatePicker Name="PulangFromPicker" />
             <TextBlock Text="s.d" VerticalAlignment="Center" />
             <CalendarDatePicker Name="PulangToPicker" />
-        </StackPanel>
+        </WrapPanel>
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" Spacing="8" Margin="10,6,10,0">
+        <WrapPanel Grid.Row="5" Orientation="Horizontal" ItemSpacing="8" LineSpacing="6" Margin="10,6,10,0">
             <TextBlock Text="Kamar :" VerticalAlignment="Center" />
             <TextBox Name="KamarFilterBox" Width="200" KeyUp="OnFilterKeyUp" />
-            <TextBlock Text="Key Word :" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <TextBlock Text="Kata kunci" VerticalAlignment="Center" Margin="12,0,0,0" />
             <TextBox Name="KeywordBox" Width="260" KeyUp="OnFilterKeyUp" />
             <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
             <Button Content="📋 Semua" Click="OnSemuaClick" />
-        </StackPanel>
+        </WrapPanel>
 
-        <StackPanel Grid.Row="6" Classes="bottomActions" Orientation="Horizontal" Spacing="8" Margin="10,8,10,10">
+        <WrapPanel Grid.Row="6" Classes="bottomActions" Orientation="Horizontal" ItemSpacing="8" LineSpacing="6" Margin="10,8,10,10">
             <Button Content="📖 Masuk" Click="OnMasukClick" />
             <Button Name="PulangButton" Content="🚪 Pulang" Click="OnPulangClick" />
             <Button Name="PindahButton" Content="🔀 Pindah" Click="OnPindahClick" />
             <Button Name="BillingButton" Content="Billing / Kasir" Click="OnBillingClick" />
             <Button Name="PemeriksaanButton" Content="SOAPIE" Click="OnPemeriksaanClick" />
+            <Button Name="BuatResepPulangButton" Content="Buat Resep Pulang" Click="OnBuatResepPulangClick" />
+            <Button Name="ResepPulangButton" Content="Status Resep Pulang" Click="OnResepPulangClick" />
+            <Button Name="ResumePulangButton" Content="Resume Pulang" Click="OnResumePulangClick" />
             <Button Name="TindakanButton" Content="Input Tindakan" Click="OnTindakanClick" />
             <Button Name="GantiButton" Content="✏ Ganti" Click="OnGantiClick" />
             <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="24,0,24,0"
                        Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold" />
             <Button Content="🖨 Cetak" Click="OnCetakClick" />
             <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        </WrapPanel>
 
         <TextBlock Grid.Row="7" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />
     </Grid>
 
     <UserControl.Styles>
-        <Style Selector="StackPanel.bottomActions Button /template/ ContentPresenter">
+        <Style Selector="WrapPanel.bottomActions Button /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
         </Style>
-        <Style Selector="StackPanel.bottomActions Button:pointerover /template/ ContentPresenter">
+        <Style Selector="WrapPanel.bottomActions Button:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
         </Style>
         <Style Selector="Button.accentText">

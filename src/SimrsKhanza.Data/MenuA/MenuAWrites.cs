@@ -185,6 +185,11 @@ internal static class MenuAWrites
     internal static async Task KeluarkanResepAsync(Db db, Dictionary<string, object?> values, Dictionary<string, object?>? keys)
     {
         var pasien = await KunciKunjunganAsync(db, values["no_rawat"], cekBilling: true);
+        if (await db.CountAsync("""
+            SELECT COUNT(*) FROM permintaan_resep_pulang
+            WHERE no_rawat=@p0 AND tgl_validasi=@p1 AND jam_validasi=@p2 AND status='Sudah'
+            """, values["no_rawat"], values["tanggal"], values["jam"]) != 0)
+            throw new InvalidOperationException("Waktu sudah digunakan oleh validasi permintaan resep. Gunakan waktu pengeluaran yang berbeda.");
         var jumlah = Positif(values, "jml_barang", "Jumlah obat");
         var harga = Convert.ToDouble(values["harga"], CultureInfo.InvariantCulture);
         if (!double.IsFinite(harga) || harga < 0 || !double.IsFinite(harga * jumlah)) throw new ArgumentException("Harga obat tidak valid.");
@@ -199,6 +204,11 @@ internal static class MenuAWrites
     internal static async Task KembalikanResepAsync(Db db, Dictionary<string, object?> keys)
     {
         var pasien = await KunciKunjunganAsync(db, keys["no_rawat"], cekBilling: true);
+        if (await db.CountAsync("""
+            SELECT COUNT(*) FROM permintaan_resep_pulang
+            WHERE no_rawat=@p0 AND tgl_validasi=@p1 AND jam_validasi=@p2 AND status='Sudah'
+            """, keys["no_rawat"], keys["tanggal"], keys["jam"]) != 0)
+            throw new InvalidOperationException("Obat ini berasal dari validasi permintaan resep. Pengembalian perlu memproses seluruh permintaan.");
         var resep = await db.FirstAsync("""
             SELECT jml_barang,kd_bangsal FROM resep_pulang
             WHERE no_rawat=@p0 AND kode_brng=@p1 AND tanggal=@p2 AND jam=@p3 AND no_batch=@p4 AND no_faktur=@p5 FOR UPDATE
@@ -211,7 +221,7 @@ internal static class MenuAWrites
 
     private static StokItem Item(string kode, string batch, string faktur) => new(kode, "", "", "", batch, faktur, 0, 0, null);
 
-    internal static async Task MutasiResepAsync(Db db, StokItem item, string depo, double jumlah, bool masuk, string ket)
+    internal static async Task MutasiResepAsync(Db db, StokItem item, string depo, double jumlah, bool masuk, string ket, string? petugas = null)
     {
         var stok = await db.FirstAsync("""
             SELECT stok FROM gudangbarang WHERE kode_brng=@p0 AND kd_bangsal=@p1 AND no_batch=@p2 AND no_faktur=@p3 FOR UPDATE
@@ -224,7 +234,7 @@ internal static class MenuAWrites
             """, delta, item.Kode, item.NoBatch, item.NoFaktur) != 1)
             throw new InvalidOperationException("Batch obat tidak ditemukan atau sisa batch tidak cukup.");
         await FarmasiStokRepository.CatatAsync(db, item, masuk ? jumlah : 0, masuk ? 0 : jumlah, "Resep Pulang",
-            KodePetugas, depo, ket, masuk ? "Hapus" : "Simpan");
+            petugas ?? KodePetugas, depo, ket, masuk ? "Hapus" : "Simpan");
         await FarmasiStokRepository.TambahStokAsync(db, item, depo, delta);
     }
 

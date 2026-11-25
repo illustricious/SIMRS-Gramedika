@@ -12,7 +12,7 @@ public partial class LoginWindow : Window
     private readonly IAuthService _authService;
     private bool _loadingServers;
 
-    public AuthenticatedUser? LoggedInUser { get; private set; }
+    public event Action<AuthenticatedUser>? LoginSucceeded;
 
     /// <summary>Design-time/XAML-loader constructor only.</summary>
     public LoginWindow() : this(new KhanzaLoginService(DatabaseSettings.Load))
@@ -24,7 +24,13 @@ public partial class LoginWindow : Window
         _authService = authService;
         InitializeComponent();
         LoadServers();
+        SizeChanged += (_, e) => UpdateLayoutForWidth(e.NewSize.Width);
         Opened += (_, _) => this.FindControl<TextBox>("UserIdBox")!.Focus();
+        UpdateFullscreenButton();
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == WindowStateProperty) UpdateFullscreenButton();
+        };
         KeyDown += (_, e) =>
         {
             if (e.Key == Key.Enter) OnLoginClick(this, new RoutedEventArgs());
@@ -77,12 +83,30 @@ public partial class LoginWindow : Window
         }
     }
 
-    private void OnDragPressed(object? sender, PointerPressedEventArgs e)
+    private void OnFullscreenClick(object? sender, RoutedEventArgs e)
+        => WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
+
+    private void UpdateFullscreenButton()
     {
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) BeginMoveDrag(e);
+        var button = this.FindControl<Button>("FullscreenButton")!;
+        var fullscreen = WindowState == WindowState.FullScreen;
+        this.FindControl<Button>("FullscreenCloseButton")!.IsVisible = fullscreen;
+        var label = fullscreen ? "Ukuran jendela biasa" : "Layar penuh";
+        button.Content = label;
+        Avalonia.Automation.AutomationProperties.SetName(button, label);
     }
 
-    private void OnMinimizeClick(object? sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+    private void UpdateLayoutForWidth(double width)
+    {
+        var compact = width < 740;
+        this.FindControl<Border>("PhotoPanel")!.IsVisible = !compact;
+        var form = this.FindControl<ScrollViewer>("FormScroll")!;
+        var actions = this.FindControl<StackPanel>("WindowActions")!;
+        Grid.SetColumn(form, compact ? 0 : 1);
+        Grid.SetColumn(actions, compact ? 0 : 1);
+        Grid.SetColumnSpan(form, compact ? 2 : 1);
+        Grid.SetColumnSpan(actions, compact ? 2 : 1);
+    }
 
     private void OnCloseClick(object? sender, RoutedEventArgs e) => Close();
 
@@ -103,33 +127,39 @@ public partial class LoginWindow : Window
 
         button.IsEnabled = false;
         button.Content = "Memeriksa...";
-        LoginResult result;
         try
         {
-            result = await _authService.LoginAsync(userId, password);
-        }
-        finally
-        {
-            button.IsEnabled = true;
-            button.Content = "Masuk";
-        }
+            var result = await _authService.LoginAsync(userId, password);
+            if (!IsVisible) return;
 
-        if (result.Success)
-        {
-            LoggedInUser = result.User;
-            Close();
-            return;
-        }
+            if (result.Success && result.User is { } user)
+            {
+                button.Content = "Membuka menu…";
+                errorText.IsVisible = false;
+                this.FindControl<TextBox>("PasswordBox")!.Clear();
+                if (LoginSucceeded is { } openMenu)
+                {
+                    openMenu(user);
+                    return;
+                }
+            }
 
-        errorText.Text = result.FailureReason switch
+            errorText.Text = result.FailureReason switch
+            {
+                LoginFailureReason.UserNotFound => "User tidak ditemukan.",
+                LoginFailureReason.WrongPassword => "Password salah.",
+                LoginFailureReason.AccountInactive => "Akun tidak aktif.",
+                LoginFailureReason.DatabaseUnavailable =>
+                    $"Tidak bisa terhubung ke database {DatabaseSettings.Load().Summary}. Klik ⚙ untuk mengatur koneksi.",
+                _ => "Login gagal."
+            };
+        }
+        catch (Exception)
         {
-            LoginFailureReason.UserNotFound => "User tidak ditemukan.",
-            LoginFailureReason.WrongPassword => "Password salah.",
-            LoginFailureReason.AccountInactive => "Akun tidak aktif.",
-            LoginFailureReason.DatabaseUnavailable =>
-                $"Tidak bisa terhubung ke database {DatabaseSettings.Load().Summary}. Klik ⚙ untuk mengatur koneksi.",
-            _ => "Login gagal."
-        };
+            errorText.Text = "Menu belum dapat dibuka. Coba masuk kembali.";
+        }
+        button.IsEnabled = true;
+        button.Content = "Masuk";
         errorText.IsVisible = true;
     }
 }

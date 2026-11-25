@@ -39,7 +39,8 @@ public sealed class MenuAView : MasterView
         if (spec == MenuASpecs.ResepPulang)
         {
             AddCommand("Pilih Stok dan Harga", PilihStokResepAsync);
-            AddCommand("Layani Permintaan Resep", LayaniPermintaanResepAsync);
+            AddCommand("Validasi Permintaan Resep", LayaniPermintaanResepAsync);
+            AddCommand("Catat Serah Terima Obat", CatatSerahResepAsync);
         }
         AddCommand("Simpan Daftar PDF", () => SimpanPdfAsync(ListedRows, perPasien: false));
         AddCommand(spec == MenuASpecs.Deposit ? "Simpan Bukti Deposit PDF" : "Simpan Data Terpilih PDF",
@@ -117,17 +118,68 @@ public sealed class MenuAView : MasterView
 
     private async Task LayaniPermintaanResepAsync()
     {
+        if (AppSession.CurrentUser is not { } user) return;
         var depo = ReadField("kd_bangsal");
         if (depo.Length == 0) throw new InvalidOperationException("Pilih depo pengeluaran obat terlebih dahulu.");
         if (TopLevel.GetTopLevel(this) is not Window owner) return;
         var resep = new ResepPulangRepository(DatabaseSettings.Load());
-        var row = await SearchPickerDialog.ShowAsync<Row>(owner, "Pilih Permintaan Resep Pulang", resep.CariPermintaanAsync,
+        var row = await SearchPickerDialog.ShowAsync<Row>(owner, "Pilih Permintaan Resep Pulang", q => resep.CariPermintaanAsync(user, q),
             r => $"{r.S("no_permintaan")} • {r.S("nm_pasien")} • {r.S("obat")}");
-        if (row is null || !await Dialogs.ConfirmAsync(this, "Layani Permintaan Resep",
-                $"Keluarkan obat untuk {row.S("nm_pasien")} dari depo {depo}?\n{row.S("obat")}")) return;
-        await resep.ProsesPermintaanAsync(row.S("no_permintaan"), depo);
+        if (row is null) return;
+        var noRawat = row.S("no_rawat");
+        var snapshot = await resep.MuatDrafAsync(user, noRawat, row.S("no_permintaan"),
+            row.S("tgl_permintaan"), row.S("jam"), farmasi: true);
+        var obat = string.Join("\n", snapshot.Obat.Select(x => $"{x.Nama} · {x.Isi.Jumlah} {x.Satuan} · {x.Isi.Dosis}"));
+        if (!await Dialogs.ConfirmAsync(this, "Validasi Resep Pulang",
+                $"Keluarkan obat untuk {row.S("nm_pasien")} dari depo {depo}?\n{obat}")) return;
+        await resep.ProsesPermintaanAsync(user, snapshot.Nomor, depo,
+            noRawat, snapshot.Tanggal, snapshot.Jam, snapshot);
         await ReloadAsync();
-        Ui.Ok(StatusText, "Permintaan resep selesai diproses.");
+        Ui.Ok(StatusText, "Resep sudah divalidasi. Catat serah terima setelah obat diberikan.");
+    }
+
+    private async Task CatatSerahResepAsync()
+    {
+        if (AppSession.CurrentUser is not { } user || TopLevel.GetTopLevel(this) is not Window owner) return;
+        var repo = new ResepPulangRepository(DatabaseSettings.Load());
+        var row = await SearchPickerDialog.ShowAsync<Row>(owner, "Pilih Resep yang Sudah Divalidasi",
+            q => repo.CariSiapSerahAsync(user, q),
+            r => $"{r.S("no_permintaan")} · {r.S("no_rawat")} · {r.S("nm_pasien")} · {r.S("obat")}");
+        if (row is null) return;
+
+        var dialog = new SerahResepDialog(repo, user, row);
+        await dialog.ShowDialog(owner);
+        if (dialog.Saved) Ui.Ok(StatusText, "Serah terima obat pulang sudah dicatat.");
+    }
+
+    private sealed class SerahResepDialog : FormDialog
+    {
+        private readonly TextBox _penerima = new() { MaxLength = 100, PlaceholderText = "Nama penerima obat" };
+        private readonly ResepPulangRepository _repo;
+        private readonly AuthenticatedUser _user;
+        private readonly string _nomor;
+
+        public SerahResepDialog(ResepPulangRepository repo, AuthenticatedUser user, Row row)
+            : base("Serah Terima Obat Pulang")
+        {
+            _repo = repo;
+            _user = user;
+            _nomor = row.S("no_permintaan");
+            Avalonia.Automation.AutomationProperties.SetName(_penerima, "Nama penerima obat");
+            SetBody(new StackPanel
+            {
+                Spacing = 8,
+                Children =
+                {
+                    Ui.Hint($"{row.S("nm_pasien")} · {row.S("no_rawat")} · {_nomor}"),
+                    Ui.Hint(row.S("obat")),
+                    new TextBlock { Text = "Nama penerima obat" },
+                    _penerima,
+                },
+            }, "Konfirmasi Sudah Diserahkan");
+        }
+
+        protected override Task OnSaveAsync() => _repo.CatatSerahAsync(_user, _nomor, _penerima.Text ?? "");
     }
 
     private async Task SimpanPdfAsync(IReadOnlyList<Row> rows, bool perPasien)

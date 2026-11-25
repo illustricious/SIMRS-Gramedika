@@ -55,13 +55,12 @@ public partial class App : Application
 
         login.Closed += (_, _) =>
         {
-            if (login.LoggedInUser is null)
-            {
+            if (ReferenceEquals(desktop.MainWindow, login))
                 desktop.Shutdown();
-                return;
-            }
-
-            var main = new MainWindow(login.LoggedInUser);
+        };
+        login.LoginSucceeded += user =>
+        {
+            var main = new MainWindow(user);
             // "Keluar" returns to the login window: the new login window must become
             // MainWindow before the old one closes, or closing it would end the app.
             main.LogoutRequested += (_, _) =>
@@ -71,7 +70,23 @@ public partial class App : Application
                 main.Close();
             };
             desktop.MainWindow = main;
-            main.Show();
+            try
+            {
+                main.Show();
+            }
+            catch
+            {
+                desktop.MainWindow = login;
+                AppSession.CurrentUser = null;
+                main.Close();
+                throw;
+            }
+
+            // Keep login behind the dashboard while its first frame is being presented.
+            main.RequestAnimationFrame(_ => main.RequestAnimationFrame(_ =>
+            {
+                if (login.IsVisible && ReferenceEquals(desktop.MainWindow, main)) login.Close();
+            }));
         };
 
         if (show) login.Show();

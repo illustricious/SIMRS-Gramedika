@@ -5,6 +5,7 @@ using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data;
+using SimrsKhanza.Data.MenuA;
 using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.RawatInap;
@@ -42,6 +43,11 @@ public partial class RawatInapView : UserControl
             AppSession.CurrentUser?.HasPermission(PemeriksaanRanapService.Izin) == true;
         this.FindControl<Button>("TindakanButton")!.IsVisible =
             AppSession.CurrentUser?.HasPermission(TindakanRanapInputService.Izin) == true;
+        this.FindControl<Button>("PulangButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("kamar_inap") == true;
+        this.FindControl<Button>("ResumePulangButton")!.IsVisible = AppSession.CurrentUser?.HasPermission(ResumePulangRanapService.Izin) == true;
+        this.FindControl<Button>("BuatResepPulangButton")!.IsVisible =
+            this.FindControl<Button>("ResepPulangButton")!.IsVisible =
+            AppSession.CurrentUser?.HasPermission(ResepPulangRepository.IzinPermintaan) == true;
         PatientContextMenu.Attach<RawatInapListItem>(grid,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, IsInpatient: true),
             request => PatientMenuRequested?.Invoke(this, request));
@@ -199,11 +205,154 @@ public partial class RawatInapView : UserControl
 
     private void OnPulangClick(object? sender, RoutedEventArgs e)
     {
-        if (_saving || !RequireSelected(mustBeActive: true)) return;
+        if (_saving || AppSession.CurrentUser?.HasPermission("kamar_inap") != true || !RequireSelected(mustBeActive: true)) return;
         var patient = Selected!;
         ShowAction(ActionMode.Pulang, patient);
         this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = patient.DiagnosaAkhir;
+        this.FindControl<ComboBox>("StatusPulangCombo")!.SelectedIndex = -1;
+        var now = DateTime.Now;
+        this.FindControl<CalendarDatePicker>("TanggalKeluarPicker")!.SelectedDate = now.Date;
+        this.FindControl<TextBox>("JamKeluarBox")!.Text = now.ToString("HH:mm:ss");
     }
+
+    private async void OnResumePulangClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(ResumePulangRanapService.Izin)
+            || !RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner) return;
+        if (visit.StatusPulang == StatusPulang.PindahKamar.ToLabel())
+        {
+            ShowStatus("Pilih segmen aktif atau segmen pulang terakhir untuk membuka resume.", isError: true);
+            return;
+        }
+        await new ResumePulangWindow(visit, user).ShowDialog(owner);
+    }
+
+    private async void OnBuatResepPulangClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(ResepPulangRepository.IzinPermintaan)
+            || !RequireSelected(mustBeActive: false) || Selected is not { } visit
+            || TopLevel.GetTopLevel(this) is not Window owner) return;
+        if (visit.StatusPulang == StatusPulang.PindahKamar.ToLabel())
+        {
+            ShowStatus("Pilih segmen aktif atau segmen pulang terakhir untuk membuat permintaan.", isError: true);
+            return;
+        }
+
+        var form = new PermintaanResepPulangWindow(visit, user);
+        await form.ShowDialog(owner);
+        if (form.Saved) ShowStatus($"Permintaan {form.Nomor} sudah masuk antrean Farmasi.", isError: false);
+    }
+
+    private async void OnResepPulangClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(ResepPulangRepository.IzinPermintaan)
+            || !RequireSelected(mustBeActive: false) || Selected is not { } visit
+            || TopLevel.GetTopLevel(this) is not Window owner) return;
+
+        var button = this.FindControl<Button>("ResepPulangButton")!;
+        button.IsEnabled = false;
+        try
+        {
+            var repo = new ResepPulangRepository(DatabaseSettings.Load());
+            var grid = new DataGrid { IsReadOnly = true, AutoGenerateColumns = false, SelectionMode = DataGridSelectionMode.Single };
+            async Task ReloadAsync()
+            {
+                var rows = await repo.RiwayatPermintaanAsync(user, visit.NoRawat);
+                grid.ItemsSource = rows.Select(row => new StatusObatPulang(
+                    row.S("no_permintaan"), row.S("tgl_permintaan"), row.S("jam"), row.S("status") == "Belum",
+                    row["waktu"] is not null ? "Sudah diserahkan"
+                        : row.S("status") == "Sudah" ? "Sudah divalidasi" : "Menunggu validasi",
+                    row.S("nama_brng"), row.S("jml"), row.S("dosis"),
+                    row.S("waktu"), row.S("petugas"), row.S("penerima"))).ToList();
+            }
+
+            await ReloadAsync();
+            var title = $"Status Resep Pulang · {visit.NamaPasien} · {visit.NoRawat}";
+            foreach (var (header, property) in new[]
+            {
+                ("No. Permintaan", "Nomor"), ("Tanggal", "Tanggal"), ("Status Farmasi", "Status"),
+                ("Obat", "Obat"), ("Jumlah", "Jumlah"), ("Aturan Pakai", "Dosis"),
+                ("Waktu Serah", "Waktu"), ("Petugas", "Petugas"), ("Penerima", "Penerima"),
+            })
+                grid.Columns.Add(new DataGridTextColumn { Header = header, Binding = new Avalonia.Data.Binding(property) });
+
+            var status = Ui.Status();
+            var batal = new Button { Content = "Batalkan Permintaan", IsEnabled = false };
+            var ubah = new Button { Content = "Ubah Permintaan", IsEnabled = false, Classes = { "accent" } };
+            var tutup = new Button { Content = "Tutup" };
+            var actions = Ui.Bar(ubah, batal, tutup, status);
+            actions.Margin = new Avalonia.Thickness(0, 8, 0, 0);
+            var root = new DockPanel { Margin = new Avalonia.Thickness(14) };
+            DockPanel.SetDock(actions, Dock.Bottom);
+            var pasien = Ui.Hint($"{visit.NamaPasien} · RM {visit.NoRekamMedis} · {visit.NoRawat}");
+            pasien.Margin = new Avalonia.Thickness(0, 0, 0, 8);
+            DockPanel.SetDock(pasien, Dock.Top);
+            root.Children.Add(pasien);
+            root.Children.Add(actions);
+            root.Children.Add(grid);
+            var dialog = new Window
+            {
+                Title = title, Width = 840, Height = 420, WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Content = root,
+            };
+            tutup.Click += (_, _) => dialog.Close();
+            dialog.Closing += (_, args) => args.Cancel = !grid.IsEnabled;
+            void UpdateButtons() => ubah.IsEnabled = batal.IsEnabled =
+                grid.IsEnabled && grid.SelectedItem is StatusObatPulang { Menunggu: true };
+
+            grid.SelectionChanged += (_, _) => UpdateButtons();
+            ubah.Click += async (_, _) =>
+            {
+                if (grid.SelectedItem is not StatusObatPulang { Menunggu: true } item) return;
+                grid.IsEnabled = false;
+                UpdateButtons();
+                try
+                {
+                    var awal = await repo.MuatDrafAsync(user, visit.NoRawat, item.Nomor, item.Tanggal, item.Jam);
+                    var form = new PermintaanResepPulangWindow(visit, user, awal);
+                    await form.ShowDialog(dialog);
+                    if (form.Saved) Ui.Ok(status, $"Permintaan {form.Nomor} diperbarui.");
+                }
+                catch (Exception ex) { Ui.Err(status, ex.Message); }
+                finally { await RefreshActionsAsync(); }
+            };
+
+            async Task RefreshActionsAsync()
+            {
+                try { await ReloadAsync(); }
+                catch (Exception ex) { Ui.Err(status, ex.Message); }
+                grid.IsEnabled = true;
+                UpdateButtons();
+            }
+            batal.Click += async (_, _) =>
+            {
+                if (grid.SelectedItem is not StatusObatPulang { Menunggu: true } item) return;
+                grid.IsEnabled = false;
+                UpdateButtons();
+                try
+                {
+                    if (!await Dialogs.ConfirmAsync(batal, "Batalkan Resep Pulang",
+                            $"Batalkan seluruh permintaan {item.Nomor} untuk {visit.NamaPasien}?")) return;
+                    await repo.BatalkanPermintaanAsync(user, visit.NoRawat, item.Nomor, item.Tanggal, item.Jam);
+                    Ui.Ok(status, $"Permintaan {item.Nomor} dibatalkan.");
+                }
+                catch (Exception ex) { Ui.Err(status, ex.Message); }
+                finally { await RefreshActionsAsync(); }
+            };
+            await dialog.ShowDialog(owner);
+        }
+        catch (Exception ex)
+        {
+            ShowStatus($"Gagal memuat status resep pulang. {ex.Message}", isError: true);
+        }
+        finally
+        {
+            button.IsEnabled = true;
+        }
+    }
+
+    private sealed record StatusObatPulang(string Nomor, string Tanggal, string Jam, bool Menunggu,
+        string Status, string Obat, string Jumlah, string Dosis, string Waktu, string Petugas, string Penerima);
 
     private async void OnPindahClick(object? sender, RoutedEventArgs e)
     {
@@ -339,6 +488,7 @@ public partial class RawatInapView : UserControl
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var repo = new RawatInapRepository(db);
             string message;
+            RawatInapKey? dischargeKey = null;
 
             switch (_mode)
             {
@@ -361,8 +511,36 @@ public partial class RawatInapView : UserControl
                 {
                     var s = _actionPatient!;
                     var idx = this.FindControl<ComboBox>("StatusPulangCombo")!.SelectedIndex;
-                    var total = await repo.DischargeAsync(s.Key, DischargeOptions[Math.Max(0, idx)], Text("DiagnosaAkhirBox"));
-                    message = $"{s.NamaPasien} dipulangkan. Biaya kamar: Rp {total:N0} (lihat Kasir untuk total tagihan).";
+                    if (AppSession.CurrentUser?.HasPermission("kamar_inap") != true) return;
+                    if (idx < 0 || this.FindControl<CalendarDatePicker>("TanggalKeluarPicker")!.SelectedDate is not { } tanggal ||
+                        !TimeOnly.TryParseExact(Text("JamKeluarBox"), "HH:mm:ss", out var jam))
+                    {
+                        ShowStatus("Pilih status pulang dan isi waktu keluar dalam format HH:mm:ss.", isError: true);
+                        return;
+                    }
+                    var waktu = DateOnly.FromDateTime(tanggal).ToDateTime(jam);
+                    var status = DischargeOptions[idx];
+                    var lanjutan = status switch
+                    {
+                        StatusPulang.Rujuk => " Lengkapi dokumen rujukan keluar di Khanza.",
+                        StatusPulang.Meninggal => " Lengkapi pencatatan pasien meninggal di Khanza.",
+                        _ => ""
+                    };
+                    if (!await Dialogs.ConfirmAsync(this, "Konfirmasi pulang", $"Catat {s.NamaPasien} keluar pada {waktu:dd/MM/yyyy HH:mm:ss} dengan status {status.ToLabel()}?{lanjutan}")) return;
+                    if (AppSession.CurrentUser?.HasPermission("kamar_inap") != true) return;
+                    var total = await repo.DischargeAsync(s.Key, status, Text("DiagnosaAkhirBox"), waktuKeluar: waktu);
+                    message = $"Pulang tersimpan untuk {s.NamaPasien}. Biaya kamar Rp {total:N0}. Buka Resume Pulang atau Billing / Kasir dari baris terpilih.{lanjutan}";
+                    dischargeKey = s.Key;
+                    _ready = false;
+                    try
+                    {
+                        this.FindControl<CalendarDatePicker>("PulangFromPicker")!.SelectedDate = waktu.Date;
+                        this.FindControl<CalendarDatePicker>("PulangToPicker")!.SelectedDate = waktu.Date;
+                        this.FindControl<ComboBox>("StatusBayarCombo")!.SelectedIndex = 0;
+                        this.FindControl<RadioButton>("ModePulang")!.IsChecked = true;
+                        this.FindControl<TextBox>("NoRawatFilterBox")!.Text = s.NoRawat;
+                    }
+                    finally { _ready = true; }
                     break;
                 }
                 case ActionMode.Pindah:
@@ -393,6 +571,8 @@ public partial class RawatInapView : UserControl
 
             ShowAction(ActionMode.None);
             await ReloadAsync();
+            if (dischargeKey is { } key && Grid().ItemsSource is IEnumerable<RawatInapListItem> rows)
+                Grid().SelectedItem = rows.FirstOrDefault(r => r.Key == key);
             ShowStatus(message, isError: false);
         }
         catch (Exception ex)
