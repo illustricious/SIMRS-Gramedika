@@ -347,9 +347,9 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Masuk | kurang | 4249 |
+| Masuk | sebagian | 4249 |
 | Keluar | kurang | 4265 |
-| Poli Internal | kurang | 4281 |
+| Poli Internal | sebagian | 4281 |
 
 ### Input Data
 
@@ -476,7 +476,7 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Hapus Rujukan Poli Internal | kurang | 5954 |
+| Hapus Rujukan Poli Internal | sebagian | 5954 |
 
 ### Data Konsultasi Medik
 

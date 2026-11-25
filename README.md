@@ -39,7 +39,7 @@ Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasi
 
 Dari **Registrasi → klik kanan pasien → Tindakan & Pemeriksaan → Tindakan Rawat Jalan**, area kerja terbuka di jendela utama. **Submenu kiri** memuat menu klinis yang bisa dicari sesuai hak akses akun dari katalog 178 menu. Nomor rawat mengikuti baris yang diklik. Pemeriksaan mendukung **5 SOAPIE Terakhir** untuk mengisi draf baru. **Catatan Dokter** mendukung tambah, ubah dan hapus sesuai hak akses. **Input Tindakan** mendukung dokter, petugas, dan gabungan, dengan pilihan tarif sesuai kunjungan dan simpan bersama jurnal. Obstetri, ginekologi, dan diagnosa tersedia baca saja. Pilih **Kembali ke Registrasi** untuk kembali ke daftar sebelumnya.
 
-Kasir shows a read-only breakdown of recorded procedures, drugs, and medical supplies for open visits. Settlement for visits with these charges uses Kasir Khanza.
+Kasir records registration-only outpatient payments and supported inpatient room payments. The saved receipt includes the payable amount and settlement details. Visits with procedure or drug charges use Kasir Khanza for settlement.
 
 Menu G includes editable asset masters, facility maintenance, CSSD catalog entries, and environmental health logs. The inventory, procurement, repairs, and CSSD circulation lists support search and CSV export. Asset transactions, approvals, accounting entries, and CSSD circulation updates are recorded in Khanza.
 
@@ -65,7 +65,7 @@ Menu N and R provide editable blood-component, donor and PCRA/ICRA reference dat
 
 ### Workflow parity (beyond screen coverage)
 
-Screen coverage does not mean the legacy workflow is fully reproduced. The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited workflows include [Registrasi](docs/tracker/AUDIT_REGISTRASI.md), [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md), and [Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md). The audits led to registration create, edit, and delete guards, a real examiner NIP and multiple SOAP entries per outpatient visit, and the logged-in petugas for pharmacy sales. Pharmacy sale entry is currently disabled after the audit found that its write path did not implement Khanza sales, stock and journals. Remaining gaps are listed in each audit file. Nothing has been verified against a production database yet.
+The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited workflows include [Registrasi](docs/tracker/AUDIT_REGISTRASI.md), [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md), and [Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md). Pharmacy supports direct sales for a registered patient from nonbatch stock in F.A with no tax, extra fees, or separate cashier verification. See [core services audit](docs/tracker/AUDIT_PELAYANAN_INTI.md) for the transactions verified with synthetic data and the remaining gaps.
 
 Pending tiles (Menu L) show a "not implemented" notice.
 

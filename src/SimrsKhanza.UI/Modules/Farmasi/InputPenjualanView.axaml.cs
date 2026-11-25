@@ -4,6 +4,7 @@ using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data;
 using SimrsKhanza.Data.Farmasi;
+using SimrsKhanza.UI.Modules.Shared;
 
 namespace SimrsKhanza.UI.Modules.Farmasi;
 
@@ -12,6 +13,7 @@ public partial class InputPenjualanView : UserControl
     public event EventHandler? BackRequested;
 
     private List<PenjualanLine> _all = new();
+    private bool _saving;
 
     public InputPenjualanView()
     {
@@ -20,13 +22,8 @@ public partial class InputPenjualanView : UserControl
         this.FindControl<CalendarDatePicker>("TanggalPicker")!.SelectedDate = DateTime.Today;
 
         var jenisCombo = this.FindControl<ComboBox>("JenisJualCombo")!;
-        jenisCombo.ItemsSource = new[] { "Jual Bebas", "Resep Dokter" };
+        jenisCombo.ItemsSource = new[] { "Jual Bebas" };
         jenisCombo.SelectedIndex = 0;
-        jenisCombo.SelectionChanged += OnJenisJualChanged;
-
-        var akunCombo = this.FindControl<ComboBox>("AkunBayarCombo")!;
-        akunCombo.ItemsSource = new[] { "1. Bayar Cash", "2. Bayar Kredit (BPJS/Asuransi)" };
-        akunCombo.SelectedIndex = 0;
     }
 
     private async System.Threading.Tasks.Task LoadPetugasAsync()
@@ -60,6 +57,8 @@ public partial class InputPenjualanView : UserControl
         {
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var katalog = await new FarmasiRepository(db).GetKatalogPenjualanAsync();
+            if (AppSession.CurrentUser is { } user)
+                this.FindControl<ComboBox>("AkunBayarCombo")!.ItemsSource = await new PenjualanTunaiService(DatabaseSettings.Load(), user).AkunAsync();
             _all = katalog.Select(k => new PenjualanLine(k)).ToList();
             foreach (var line in _all)
                 line.PropertyChanged += (_, _) => RecalculateTotals();
@@ -93,25 +92,8 @@ public partial class InputPenjualanView : UserControl
 
     private void OnCellEditEnded(object? sender, DataGridCellEditEndedEventArgs e) => RecalculateTotals();
 
-    private void OnJenisJualChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        var combo = (ComboBox)sender!;
-        if (combo.SelectedIndex == 1)
-            ShowStatus("Untuk penjualan berdasar resep dokter, pakai menu \"Daftar Resep Dokter\" — pengisian otomatis dari resep belum terhubung ke layar ini.", isError: true);
-        else
-            HideStatus();
-    }
-
     private void OnPaymentFieldChanged(object? sender, Avalonia.Controls.TextChangedEventArgs e) => RecalculateTotals();
 
-    /// <summary>
-    /// Recomputes Grand Total (sum of all lines with Jml &gt; 0) plus the
-    /// PPN/Ongkos Kirim/Jumlah Bayar/Kembali figures below it. Pure UI-side
-    /// arithmetic — nothing here is persisted until Simpan (PPN/Ongkos
-    /// Kirim/pembayaran aren't columns on pengeluaran_obat_bhp in the legacy
-    /// schema, so only the per-line Total actually gets saved; see
-    /// FarmasiRepository.SimpanPenjualanAsync).
-    /// </summary>
     private void RecalculateTotals()
     {
         var grandTotal = _all.Where(l => l.Jml > 0).Sum(l => l.Total);
@@ -132,6 +114,7 @@ public partial class InputPenjualanView : UserControl
 
     private async void OnSimpanClick(object? sender, RoutedEventArgs e)
     {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(PenjualanTunaiService.Izin)) return;
         var lines = _all.Where(l => l.Jml > 0).ToList();
         if (lines.Count == 0)
         {
@@ -154,27 +137,37 @@ public partial class InputPenjualanView : UserControl
             return;
         }
 
-        var pasien = this.FindControl<TextBox>("PasienBox")!.Text?.Trim();
-        var keterangan = string.IsNullOrWhiteSpace(pasien) ? catatan : $"{catatan} - Pasien: {pasien}";
+        var pasien = this.FindControl<TextBox>("PasienBox")!.Text?.Trim() ?? "";
+        if (this.FindControl<ComboBox>("AkunBayarCombo")!.SelectedItem is not string akun || pasien == "")
+        {
+            ShowStatus("Isi nomor RM dan pilih akun bayar.", isError: true);
+            return;
+        }
+        var diterima = ParseDecimal(this.FindControl<TextBox>("JumlahBayarBox")!.Text);
 
+        _saving = true;
+        var button = this.FindControl<Button>("SimpanButton")!;
+        button.IsEnabled = false;
         try
         {
-            using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var inputs = lines.Select(l => new PenjualanLineInput(
                 l.KodeBarang, l.Jml, l.Harga, l.PtgRp, l.TmbRp + l.EmbRp + l.TslRp, l.NoBatch, l.NoFaktur)).ToList();
-
-            var noKeluar = await new FarmasiRepository(db).SimpanPenjualanAsync(inputs, keterangan, petugas.Kode);
+            if (!await Dialogs.ConfirmAsync(this, "Simpan penjualan", $"Catat jual bebas Rp{lines.Sum(l => l.Total):N0} untuk RM {pasien}?")) return;
+            var noKeluar = await new PenjualanTunaiService(DatabaseSettings.Load(), user)
+                .SimpanAsync(inputs, catatan, petugas.Kode, pasien, "F.A", akun, diterima);
 
             ShowStatus($"Transaksi {noKeluar} tersimpan — {lines.Count} jenis barang, total Rp {lines.Sum(l => l.Total):N0}.", isError: false);
 
             this.FindControl<TextBox>("PasienBox")!.Text = string.Empty;
             this.FindControl<TextBox>("CatatanBox")!.Text = "Jual bebas";
+            this.FindControl<TextBox>("JumlahBayarBox")!.Text = "0";
             await ReloadAsync();
         }
         catch (Exception ex)
         {
             ShowStatus($"Gagal simpan transaksi: {ex.Message}", isError: true);
         }
+        finally { _saving = false; button.IsEnabled = true; }
     }
 
     private void ShowStatus(string message, bool isError)
@@ -184,8 +177,6 @@ public partial class InputPenjualanView : UserControl
         status.Text = message;
         status.IsVisible = true;
     }
-
-    private void HideStatus() => this.FindControl<TextBlock>("StatusText")!.IsVisible = false;
 
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
 }

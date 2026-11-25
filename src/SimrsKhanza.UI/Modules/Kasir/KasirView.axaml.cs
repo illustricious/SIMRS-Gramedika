@@ -69,7 +69,7 @@ public partial class KasirView : UserControl
             this.FindControl<Button>("BuktiButton")!.IsVisible = BisaCetakBukti(bill);
             var akun = this.FindControl<ComboBox>("AkunBayarBox")!;
             var akunRow = this.FindControl<StackPanel>("AkunBayarRow")!;
-            akunRow.IsVisible = bill.Ranap && !lunas && bill.AlasanBelumBisaBayar is null;
+            akunRow.IsVisible = !lunas && bill.AlasanBelumBisaBayar is null;
             var daftarAkun = akunRow.IsVisible ? await repo.AkunBayarRanapAsync() : [];
             akun.ItemsSource = daftarAkun;
             akun.SelectedIndex = -1;
@@ -88,7 +88,7 @@ public partial class KasirView : UserControl
                 ? $"{bill.StatusBayar ?? "-"} · Nota {nota}" : bill.StatusBayar ?? "-";
             var bayar = this.FindControl<Button>("BayarButton")!;
             bayar.IsEnabled = !lunas && bill.AlasanBelumBisaBayar is null;
-            bayar.Content = lunas ? "Sudah Lunas" : bill.Ranap ? "Catat Pelunasan" : "Tandai Lunas";
+            bayar.Content = lunas ? "Sudah Lunas" : "Catat Pelunasan";
             var catatan = bill.AlasanBelumBisaBayar;
             if (akunRow.IsVisible && daftarAkun.Count == 0)
             {
@@ -110,9 +110,9 @@ public partial class KasirView : UserControl
 
     private async void OnBayarClick(object? sender, RoutedEventArgs e)
     {
-        if (_paying || _current is not { AlasanBelumBisaBayar: null } bill || !BolehAkses(bill.Ranap)) return;
+        if (_paying || _current is not { AlasanBelumBisaBayar: null } bill || !BolehAkses(bill.Ranap) || AppSession.CurrentUser is not { } user) return;
         var akun = this.FindControl<ComboBox>("AkunBayarBox")!.SelectedItem as string;
-        if (bill.Ranap && akun is null) { Status("Pilih akun bayar terlebih dahulu."); return; }
+        if (akun is null) { Status("Pilih akun bayar terlebih dahulu."); return; }
 
         _paying = true;
         var tombol = this.FindControl<Button>("BayarButton")!;
@@ -120,16 +120,14 @@ public partial class KasirView : UserControl
         var selesai = false;
         try
         {
-            var pesan = bill.Ranap
-                ? $"Catat pembayaran {Rupiah(bill.Total)} untuk {bill.NamaPasien} melalui {akun}?"
-                : $"Tandai tagihan {bill.NamaPasien} senilai {Rupiah(bill.Total)} sebagai lunas?";
+            var pesan = $"Catat pembayaran {Rupiah(bill.Total)} untuk {bill.NamaPasien} melalui {akun}?";
             if (!await Dialogs.ConfirmAsync(this, "Konfirmasi Pelunasan", pesan)) return;
             using var db = SimrsKhanzaDbContextFactory.Create(DatabaseSettings.Load());
             var repo = new KasirRepository(db);
             if (bill.Ranap)
                 await repo.BayarRanapAsync(bill, akun!, AppSession.Kode);
             else
-                await repo.MarkPaidAsync(bill.NoRawat);
+                await repo.BayarRegistrasiRalanAsync(bill, akun, user);
             selesai = true;
         }
         catch (Exception ex)
@@ -147,12 +145,12 @@ public partial class KasirView : UserControl
     private static string Rupiah(decimal nilai) => $"Rp {nilai.ToString("#,0.####", CultureInfo.GetCultureInfo("id-ID"))}";
 
     private static bool BisaCetakBukti(KasirBillItem bill) =>
-        bill.Ranap && bill.StatusBayar == "Sudah Bayar" && !string.IsNullOrWhiteSpace(bill.NoNota)
+        bill.StatusBayar == "Sudah Bayar" && !string.IsNullOrWhiteSpace(bill.NoNota)
         && bill.RincianTersimpan && bill.Rincian.Count > 0;
 
     private async void OnBuktiClick(object? sender, RoutedEventArgs e)
     {
-        if (_paying || _loading || _current is not { } bill || !BisaCetakBukti(bill) || !BolehAkses(ranap: true)
+        if (_paying || _loading || _current is not { } bill || !BisaCetakBukti(bill) || !BolehAkses(bill.Ranap)
             || TopLevel.GetTopLevel(this) is not { } top) return;
         var tombol = this.FindControl<Button>("BuktiButton")!;
         if (!tombol.IsEnabled) return;
@@ -175,7 +173,7 @@ public partial class KasirView : UserControl
                 page.Header().Column(header =>
                 {
                     header.Spacing(4);
-                    header.Item().Text("Bukti Pelunasan Rawat Inap").FontSize(18).Bold();
+                    header.Item().Text(bill.Ranap ? "Bukti Pelunasan Rawat Inap" : "Bukti Pelunasan Rawat Jalan").FontSize(18).Bold();
                     header.Item().Text($"No. Nota {bill.NoNota}   |   No. Rawat {bill.NoRawat}");
                     header.Item().Text($"{bill.NamaPasien}   |   No. RM {bill.NoRekamMedis}");
                 });

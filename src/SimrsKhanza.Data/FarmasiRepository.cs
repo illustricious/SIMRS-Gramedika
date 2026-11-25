@@ -89,7 +89,7 @@ public class FarmasiRepository(SimrsKhanzaDbContext db) : IFarmasiRepository
             orderby r.TanggalPeresepan descending, r.JamPeresepan descending
             select new ResepListItem(
                 r.NoResep, r.NoRawat, reg != null && reg.Pasien != null ? reg.Pasien.NamaPasien : "",
-                reg != null && reg.Dokter != null ? reg.Dokter.NamaDokter : null,
+                r.Dokter != null ? r.Dokter.NamaDokter : null,
                 r.TanggalPeresepan, r.JamPeresepan);
 
         return await query.Take(200).ToListAsync(ct);

@@ -28,8 +28,8 @@ Kode: `RegistrasiService.cs`, `RegistrasiView.axaml(.cs)`, tes `RegistrasiServic
 
 Belum diuji ke database nyata: tes hanya untuk aturan murni (batas 48 jam, umur, kolom biaya, hari jadwal).
 
-## Masih tertinggal
-Pemilih pasien lewat dialog, dialog perujuk dan asal rujukan, tab Rujukan Internal Poli, grafik/demografi dari layar ini, tanggal-jam mundur, mode urut no. reg poli atau dokter+poli, closing kasir, catatan pasien, cetak berkop RS, hapus banyak baris.
+## Sisa pekerjaan per 25 November 2026
+Pendaftaran pasien baru dari dialog dengan penomoran RM sesuai pengaturan Khanza, grafik dan demografi dari layar ini, tanggal-jam mundur, mode urut no. reg poli atau dokter+poli, closing kasir, catatan pasien, cetak berkop RS, dan hapus banyak baris.
 
 ## Tampilan menu klik kanan (24 November 2026)
 
@@ -41,4 +41,10 @@ Pada mode Baru, tombol Cari mencari pasien berdasarkan nomor RM atau nama dan me
 
 ## Daftar rujukan internal poli
 
-Tab Rujukan Internal Poli kini menampilkan daftar baca saja dengan nomor rawat asal serta dokter dan poli tujuan. Filter periode, dokter, poli dan pencarian berlaku untuk daftar ini; layanan memeriksa izin `registrasi`. Tombol dan formulir untuk registrasi awal dinonaktifkan ketika tab rujukan dibuka. Fixture MariaDB sintetis menguji filter tujuan, periode, pencarian dan izin; tes headless memeriksa perpindahan tab. Menu konteks, hapus rujukan, operasi lain, cetak, dan uji UI bersama database masih tertunda.
+Daftar awal pada 24 November menampilkan nomor rawat asal serta dokter dan poli tujuan. Filter periode, dokter, poli dan pencarian berlaku untuk daftar ini. Layanan memeriksa izin `registrasi`. Tombol dan formulir untuk registrasi awal dinonaktifkan ketika tab rujukan dibuka. Fixture MariaDB sintetis menguji filter tujuan, periode, pencarian dan izin. Tes headless memeriksa perpindahan tab.
+
+## Operasi rujukan (25 November 2026)
+
+- Registrasi Awal membuka formulir **Rujukan → Poli Internal** dari baris yang diklik. Simpan memerlukan hak `rujukan_poli_internal`; satu kunjungan hanya bisa memiliki satu rujukan per dokter tujuan. Saat tab rujukan dibuka, satu baris bisa dihapus dengan konfirmasi lewat tombol atau klik kanan, dan daftar hasil filter bisa dicetak ke PDF. Pilihan tujuan memakai lookup dokter dan poli Registrasi. Filter jadwal seperti Java, penghapusan beberapa rujukan sekaligus, dan uji dialog end-to-end masih tertunda.
+- **Rujukan → Masuk** dan tombol **Rujukan Masuk** membuka data kunjungan tersimpan. Pengguna dengan hak `rujukan_masuk` dapat memilih perujuk dan alamat dari riwayat, mengisi formulir, lalu menambah atau mengubah data. Saat registrasi baru, draf rujukan mengikuti pasien terpilih dan disimpan bersama kunjungan dalam satu transaksi. Nomor balasan diisi manual. Penghapusan rujukan masuk dan cetak surat balasan masih tertunda.
+- Fixture MariaDB 11.4.8 sintetis memeriksa izin, filter, tambah dan hapus rujukan internal, duplikat, tambah dan ubah rujukan masuk, pencarian perujuk, penolakan perubahan berdasarkan data lama, dan pembuatan PDF. Tes juga memeriksa penyimpanan bersama registrasi baru serta rollback ketika kode diagnosis tidak ditemukan. Tampilan PDF dan interaksi dialog dengan database belum diperiksa secara visual.

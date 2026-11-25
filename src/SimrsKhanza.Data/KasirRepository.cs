@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using MySqlConnector;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Core.Entities;
 using SimrsKhanza.Data.Keuangan;
 
@@ -52,6 +53,25 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
         var visit = await KunjunganQuery.SingleOrDefaultAsync(r => r.Reg.NoRawat == noRawat, ct);
         if (visit is null) return null;
         var result = (await BuatRingkasanAsync([visit], ct)).Single();
+        if (!result.Ranap && result.StatusBayar == "Sudah Bayar")
+        {
+            var nota = await db.Database.SqlQuery<string>($"""
+                SELECT COALESCE(no_nota,'') AS Value FROM nota_jalan WHERE no_rawat={noRawat}
+                """).SingleOrDefaultAsync(ct);
+            if (!string.IsNullOrEmpty(nota))
+            {
+                var rincianNota = await db.Database.SqlQuery<KasirRincian>($"""
+                    SELECT 'Registrasi' AS Jenis,nm_perawatan AS Nama,CAST(biaya AS DECIMAL(20,4)) AS Tarif,
+                        CAST(jumlah AS DECIMAL(20,4)) AS Jumlah,CAST(totalbiaya AS DECIMAL(20,4)) AS Total
+                    FROM billing WHERE no_rawat={noRawat} AND status='Registrasi' ORDER BY noindex
+                    """).ToListAsync(ct);
+                if (rincianNota.Count == 1 && await db.Database.SqlQuery<bool>($"""
+                    SELECT EXISTS(SELECT 1 FROM billing WHERE no_rawat={noRawat} GROUP BY no_rawat
+                        HAVING COUNT(*)=2 AND SUM(status='Tagihan')=1) AS Value
+                    """).SingleAsync(ct))
+                    return result with { NoNota = nota, RincianTersimpan = true, Rincian = rincianNota, Total = rincianNota[0].Total };
+            }
+        }
         if (result.StatusBayar == "Sudah Bayar" || visit.Reg.Status == StatusRegistrasi.Batal
             || result.RincianTersimpan || result.NoNota is not null)
             return result;
@@ -90,6 +110,74 @@ public class KasirRepository(SimrsKhanzaDbContext db) : IKasirRepository
         await db.Database.SqlQuery<string>($"""
             SELECT nama_bayar AS Value FROM akun_bayar WHERE COALESCE(ppn,0)=0 AND COALESCE(kd_rek,'')<>'' ORDER BY nama_bayar
             """).ToListAsync(ct);
+
+    public async Task<string> BayarRegistrasiRalanAsync(KasirBillItem dilihat, string akunBayar, AuthenticatedUser user, CancellationToken ct = default)
+    {
+        if (!user.HasPermission("kasir_ralan") && !user.HasPermission("billing_ralan"))
+            throw new InvalidOperationException("Akun tidak memiliki hak billing rawat jalan.");
+        if (string.IsNullOrWhiteSpace(akunBayar)) throw new ArgumentException("Pilih akun bayar.");
+        await using var tx = await db.Database.BeginTransactionAsync(ct);
+        var reg = await KunjunganRanap.KunciAsync(db, dilihat.NoRawat, ct);
+        var rawat = reg.NoRawat;
+        if (reg.StatusLanjut != StatusLanjut.RawatJalan || reg.Status == StatusRegistrasi.Batal || reg.StatusBayar != StatusBayar.BelumBayar ||
+            await db.KamarInapSet.AnyAsync(k => k.NoRawat == rawat, ct) || await AdaBillingRalanAsync(rawat, ct) ||
+            await db.Database.SqlQuery<bool>($"""
+                SELECT (EXISTS(SELECT 1 FROM nota_jalan WHERE no_rawat={rawat}) OR
+                    EXISTS(SELECT 1 FROM detail_nota_jalan WHERE no_rawat={rawat}) OR
+                    EXISTS(SELECT 1 FROM tagihan_sadewa WHERE no_nota={rawat})) AS Value
+                """).SingleAsync(ct))
+            throw new InvalidOperationException("Kunjungan berubah, batal, atau tagihan sudah tercatat.");
+        if (await CekKomponenLainAsync(rawat, ct) is not null || await db.Database.SqlQuery<bool>($"""
+            SELECT (EXISTS(SELECT 1 FROM resep_obat WHERE no_rawat={rawat}) OR
+                EXISTS(SELECT 1 FROM permintaan_lab WHERE no_rawat={rawat}) OR
+                EXISTS(SELECT 1 FROM permintaan_labpa WHERE no_rawat={rawat}) OR
+                EXISTS(SELECT 1 FROM permintaan_labmb WHERE no_rawat={rawat}) OR
+                EXISTS(SELECT 1 FROM permintaan_radiologi WHERE no_rawat={rawat})) AS Value
+            """).SingleAsync(ct))
+            throw new InvalidOperationException(BayarDiKhanza);
+        var visit = await KunjunganQuery.SingleAsync(r => r.Reg.NoRawat == rawat, ct);
+        var bill = (await BuatRingkasanAsync([visit], ct)).Single();
+        if (dilihat.NoRekamMedis != bill.NoRekamMedis || dilihat.Total != bill.Total || !dilihat.Rincian.SequenceEqual(bill.Rincian) || bill.Total < 0)
+            throw new InvalidOperationException("Rincian tagihan berubah. Muat ulang sebelum mengonfirmasi.");
+        var rekening = await db.Database.SqlQuery<string>($"""
+            SELECT kd_rek AS Value FROM akun_bayar WHERE nama_bayar={akunBayar} AND COALESCE(ppn,0)=0 AND kd_rek<>''
+            """).SingleOrDefaultAsync(ct) ?? throw new InvalidOperationException("Akun bayar tidak valid.");
+        var now = await db.Database.SqlQuery<DateTime>($"SELECT NOW() AS Value").SingleAsync(ct);
+        var tanggal = DateOnly.FromDateTime(now);
+        var urut = 1 + await db.Database.SqlQuery<long>($"""
+            SELECT COALESCE(MAX(CAST(RIGHT(no_nota,4) AS SIGNED)),0) AS Value FROM nota_jalan WHERE tanggal={tanggal}
+            """).SingleAsync(ct);
+        if (urut > 9999) throw new InvalidOperationException("Nomor nota rawat jalan hari ini sudah penuh.");
+        var nota = $"{now:yyyy'/'MM'/'dd}/RJ{urut:0000}";
+        await db.Database.ExecuteSqlInterpolatedAsync($"""
+            INSERT INTO nota_jalan(no_rawat,no_nota,tanggal,jam) VALUES ({rawat},{nota},{tanggal},{now.TimeOfDay})
+            """, ct);
+        await db.Database.ExecuteSqlInterpolatedAsync($"""
+            INSERT INTO billing(noindex,no_rawat,tgl_byr,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
+            VALUES (0,{rawat},{tanggal},'','Registrasi',':',{bill.Total},1,0,{bill.Total},'Registrasi'),
+                   (1,{rawat},{tanggal},'','Total Tagihan',':',0,0,0,{bill.Total},'Tagihan')
+            """, ct);
+        if (bill.Total > 0)
+        {
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO detail_nota_jalan(no_rawat,nama_bayar,besarppn,besar_bayar) VALUES ({rawat},{akunBayar},0,{bill.Total})
+                """, ct);
+            var conn = (MySqlConnection)db.Database.GetDbConnection();
+            var sqlTx = (MySqlTransaction)tx.GetDbTransaction();
+            var akun = await JurnalPoster.ReadAkunAsync(conn, sqlTx, "set_akun_ralan", ct);
+            await JurnalPoster.PostAsync(conn, sqlTx, rawat, $"PELUNASAN RAWAT JALAN {rawat}, OLEH {user.KodeLegacy}",
+                [new(rekening, akunBayar, (double)bill.Total, 0),
+                 new(akun.GetValueOrDefault("Registrasi_Ralan", ""), Registrasi, 0, (double)bill.Total)], ct);
+        }
+        await db.Database.ExecuteSqlInterpolatedAsync($"""
+            INSERT INTO tagihan_sadewa(no_nota,no_rkm_medis,nama_pasien,alamat,tgl_bayar,jenis_bayar,jumlah_tagihan,jumlah_bayar,status,petugas)
+            VALUES({rawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},'Pelunasan',{bill.Total},{bill.Total},'Sudah',{user.KodeLegacy})
+            """, ct);
+        reg.StatusBayar = StatusBayar.SudahBayar;
+        await db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
+        return nota;
+    }
 
     public async Task<string> BayarRanapAsync(KasirBillItem dilihat, string akunBayar, string petugas, CancellationToken ct = default)
     {

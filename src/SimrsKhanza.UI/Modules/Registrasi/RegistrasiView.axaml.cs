@@ -15,7 +15,9 @@ public partial class RegistrasiView : UserControl
 {
     private RegistrasiListItem? _selected;
     private bool _newMode;
+    private bool _savingRegistration;
     private RegistrasiPasien? _pasienBaru;
+    private RujukanMasukData? _drafRujukan;
     private int _loadVersion;
     private const string KodePoliIgd = "IGDK";
 
@@ -36,7 +38,7 @@ public partial class RegistrasiView : UserControl
 
         PatientContextMenu.Attach<RegistrasiListItem>(this.FindControl<DataGrid>("RegistrasiGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
-            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput);
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput, BukaRujukanInternal, BukaRujukanMasuk);
 
         // Periode defaults to "today" (matches the legacy app's "Registrasi
         // Periksa Hari Ini" screen). An earlier revision defaulted to "all
@@ -149,6 +151,7 @@ public partial class RegistrasiView : UserControl
                 var referrals = await new RujukanInternalService(settings, user).DaftarAsync(from, to, dokterCode, poliCode, keyWord);
                 if (version != _loadVersion) return;
                 this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource = referrals;
+                this.FindControl<Button>("CetakRujukanButton")!.IsEnabled = referrals.Count > 0;
                 recordCount.Text = $"{referrals.Count} rujukan internal";
                 return;
             }
@@ -178,7 +181,11 @@ public partial class RegistrasiView : UserControl
         catch (Exception)
         {
             if (version != _loadVersion) return;
-            if (internalPoli) this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource = Array.Empty<RujukanInternalItem>();
+            if (internalPoli)
+            {
+                this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource = Array.Empty<RujukanInternalItem>();
+                this.FindControl<Button>("CetakRujukanButton")!.IsEnabled = false;
+            }
             else grid.ItemsSource = new List<RegistrasiListItem>();
             recordCount.Text = "Data tidak dapat dimuat; periksa akses dan koneksi";
         }
@@ -273,9 +280,11 @@ public partial class RegistrasiView : UserControl
     private void SetNewMode(bool on)
     {
         _newMode = on;
-        if (!on) _pasienBaru = null;
+        _drafRujukan = null;
+        _pasienBaru = null;
         this.FindControl<TextBox>("InputNoRekamMedisBox")!.IsReadOnly = !on;
         this.FindControl<Button>("PilihPasienButton")!.IsEnabled = on;
+        UpdateRujukanMasukButton();
     }
 
     private void OnBaruClick(object? sender, RoutedEventArgs e)
@@ -305,6 +314,9 @@ public partial class RegistrasiView : UserControl
         if (!_newMode) return;
         if (_pasienBaru is not null && _pasienBaru.NoRekamMedis == this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim()) return;
         _pasienBaru = null;
+        _drafRujukan = null;
+        SetInputText("InputAsalRujukanBox", null);
+        UpdateRujukanMasukButton();
         foreach (var name in new[] { "InputNamaPasienBox", "InputPenanggungJawabBox", "InputHubunganBox", "InputAlamatPjBox", "InputStatusDaftarBox" }) SetInputText(name, null);
         this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedIndex = -1;
     }
@@ -340,6 +352,7 @@ public partial class RegistrasiView : UserControl
             var pasien = await new RegistrasiService(DatabaseSettings.Load()).CariPasienAsync(rm);
             if (!_newMode || this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim() != rm) return;
             _pasienBaru = pasien;
+            UpdateRujukanMasukButton();
             if (pasien is null)
             {
                 SetInputText("InputNamaPasienBox", null);
@@ -365,6 +378,7 @@ public partial class RegistrasiView : UserControl
 
     private async void OnInputSimpanClick(object? sender, RoutedEventArgs e)
     {
+        if (_savingRegistration) return;
         var status = this.FindControl<TextBlock>("InputStatusText")!;
         var noRekamMedis = this.FindControl<TextBox>("InputNoRekamMedisBox")!.Text?.Trim();
         var poli = this.FindControl<ComboBox>("InputPoliCombo")!.SelectedItem as Poliklinik;
@@ -382,6 +396,7 @@ public partial class RegistrasiView : UserControl
             return;
         }
 
+        _savingRegistration = true;
         try
         {
             var service = new RegistrasiService(DatabaseSettings.Load());
@@ -394,7 +409,8 @@ public partial class RegistrasiView : UserControl
                 pj = this.FindControl<TextBox>("InputPenanggungJawabBox")!.Text?.Trim() ?? "";
                 alamat = this.FindControl<TextBox>("InputAlamatPjBox")!.Text?.Trim() ?? "";
                 hubungan = this.FindControl<TextBox>("InputHubunganBox")!.Text?.Trim() ?? "";
-                noRawat = await service.DaftarAsync(new(noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab, pj, alamat, hubungan, DateTime.Now), Akses());
+                noRawat = await service.DaftarAsync(new(noRekamMedis, dokter.KodeDokter, poli.KodePoli, penjab.KodePenjab, pj, alamat, hubungan, DateTime.Now),
+                    Akses(), rujukan: _drafRujukan, pengguna: AppSession.CurrentUser);
                 SetNewMode(false);
                 await LoadAsync();
                 status.Classes.Remove("error");
@@ -416,6 +432,7 @@ public partial class RegistrasiView : UserControl
         {
             ShowInputError(status, $"Gagal simpan registrasi: {ex.Message}");
         }
+        finally { _savingRegistration = false; }
     }
 
     private async void OnHapusClick(object? sender, RoutedEventArgs e)
@@ -451,63 +468,34 @@ public partial class RegistrasiView : UserControl
         block.IsVisible = true;
     }
 
-    private void OnPlaceholderClick(object? sender, RoutedEventArgs e)
-    {
-        var label = (sender as Button)?.Content?.ToString() ?? "Aksi";
-        var dialog = new Window
-        {
-            Width = 300,
-            Height = 120,
-            Title = label,
-            Content = new TextBlock
-            {
-                Text = $"\"{label}\" belum diimplementasikan di tahap scaffold ini.",
-                Margin = new Avalonia.Thickness(16),
-                TextWrapping = Avalonia.Media.TextWrapping.Wrap,
-            }
-        };
-        var owner = TopLevel.GetTopLevel(this) as Window;
-        if (owner is not null) _ = dialog.ShowDialog(owner);
-        else dialog.Show();
-    }
-
     private void OnBackClick(object? sender, RoutedEventArgs e) => BackRequested?.Invoke(this, EventArgs.Empty);
 
     private void OnPeriksaClick(object? sender, RoutedEventArgs e) => PeriksaRequested?.Invoke(this, EventArgs.Empty);
 
-    private void OnCetakClick(object? sender, RoutedEventArgs e)
+    private async void OnCetakClick(object? sender, RoutedEventArgs e)
     {
-        var grid = this.FindControl<DataGrid>("RegistrasiGrid")!;
-        var items = (grid.ItemsSource as IEnumerable<RegistrasiListItem>)?.ToList() ?? new List<RegistrasiListItem>();
-
-        if (items.Count == 0)
-        {
-            OnPlaceholderClick(new Button { Content = "🖨 Cetak (tidak ada data)" }, e);
-            return;
-        }
-
         try
         {
-            var path = RegistrasiReport.GeneratePdf(items, "Daftar Pasien Rawat Jalan");
+            string path;
+            if (ReferenceEquals(sender, this.FindControl<Button>("CetakRujukanButton")))
+            {
+                if (this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource is not IReadOnlyList<RujukanInternalItem> { Count: > 0 } referrals) return;
+                path = RegistrasiReport.GenerateRujukanPdf(referrals);
+            }
+            else
+            {
+                if (this.FindControl<DataGrid>("RegistrasiGrid")!.ItemsSource is not IReadOnlyList<RegistrasiListItem> { Count: > 0 } items)
+                {
+                    await Dialogs.InfoAsync(this, "Cetak Registrasi", "Tidak ada data untuk dicetak.");
+                    return;
+                }
+                path = RegistrasiReport.GeneratePdf(items, "Daftar Pasien Rawat Jalan");
+            }
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
         catch (Exception ex)
         {
-            var dialog = new Window
-            {
-                Width = 360,
-                Height = 140,
-                Title = "Gagal Cetak",
-                Content = new TextBlock
-                {
-                    Text = $"Gagal membuat/membuka PDF: {ex.Message}",
-                    Margin = new Avalonia.Thickness(16),
-                    TextWrapping = Avalonia.Media.TextWrapping.Wrap,
-                }
-            };
-            var owner = TopLevel.GetTopLevel(this) as Window;
-            if (owner is not null) _ = dialog.ShowDialog(owner);
-            else dialog.Show();
+            await Dialogs.InfoAsync(this, "Gagal Cetak", $"Gagal membuat atau membuka PDF: {ex.Message}");
         }
     }
 

@@ -50,6 +50,13 @@ Bukti sumber: `DlgRawatInap.java:9719`, `:9730`, `:9741`, dan `keuangan/DlgBilin
 Simpan tindakan dan jurnal satu transaksi di Java (`DlgRawatInap.java:11661`). Hapus membalik jurnal komponen lama (misalnya `:4524`). Ubah membalik nilai lama dan memposting nilai baru (misalnya `:12123`, `:12177`). Akun tindakan dibaca dari `set_akun_ranap`. `JurnalPoster` dapat digunakan untuk posting di transaksi yang sama. Pelunasan di Gramedika masih ditolak bila kunjungan punya tindakan. Jurnal dan perilaku pelunasan tindakan belum diverifikasi lewat aplikasi.
 
 
-## Simpan PDF SOAPIE (24 November, terbaru)
+## Simpan PDF SOAPIE (24 November)
 
 `PemeriksaanRanapWindow` dapat menyimpan catatan SOAPIE terpilih sebagai PDF setelah memeriksa izin `tindakan_ranap` dan memuat ulang catatan. Hasil PDF belum diverifikasi visual atau disamakan dengan template Jasper Khanza. Tindakan rawat inap dengan jurnal, koreksi kamar dan alur pulang yang tersisa tetap terbuka.
+
+## Input tindakan dan penguncian billing (25 November 2026)
+
+- **Rawat Inap → pilih pasien → Input Tindakan** mendukung dokter, petugas dan gabungan. Form disediakan untuk segmen kamar aktif dengan hak `tindakan_ranap`. Tarif mengikuti penjamin, bangsal dan kelas sesuai `set_tarif`. Waktu tindakan dibatasi oleh waktu masuk segmen dan waktu server.
+- Simpan memakai kunci baris registrasi yang sama dengan Kasir dan operasi kamar. Layanan memeriksa registrasi batal, status bayar, baris billing, nota dan perubahan segmen sebelum mencatat tindakan. Nilai per tindakan disalin dari tarif yang diperiksa ulang. Tindakan dan jurnal dari `set_akun_ranap` dikomit bersama.
+- `TindakanRanapInputTests` memakai MariaDB sintetis dengan database `simrs_tindakan_ranap_fixture` dan `SIMRS_TINDAKAN_RANAP_FIXTURE_PORT`. Tes memeriksa ketiga kategori, jurnal seimbang, penolakan tanpa izin, pelaksana salah, tarif berubah, duplikat, rollback saat rekening jurnal tidak ditemukan, serta dua koneksi yang berebut kunci registrasi. Tindakan menunggu transaksi billing dan ditolak setelah transaksi tersebut dikomit.
+- Ubah/hapus tindakan, jurnal pembalik, uji visual, input pada segmen yang sudah ditutup, serta penguncian saat klien Java digunakan bersamaan masih terbuka. Perubahan alur kamar dan pulang tetap menjadi tahap berikutnya.

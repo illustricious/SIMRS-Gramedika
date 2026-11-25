@@ -1057,6 +1057,7 @@ public partial class MainWindow : Window
         if (pageHost.Content is not Modules.RawatJalan.RawatJalanView view)
         {
             view = new Modules.RawatJalan.RawatJalanView();
+            view.TampilkanAlurKunjungan();
             // "Kembali" from the exam form returns to the patient list it was
             // opened from, not all the way home — matches how "🩺 Periksa" got here.
             view.BackRequested += async (_, _) => { if (_pemeriksaanFromTindakan) await OpenTindakanRalanAsync(); else await OpenRegistrasiAsync(); };
@@ -1318,6 +1319,7 @@ public partial class MainWindow : Window
 
             case PatientMenuAction.TindakanDanPemeriksaan when _user?.HasPermission("tindakan_ralan") == true:
                 var ralan = new Modules.RawatJalan.RawatJalanView();
+                ralan.TampilkanAlurKunjungan();
                 ralan.BackRequested += Back;
                 ralan.PatientMenuRequested += async (_, next) => await HandlePatientMenuAsync(next);
                 await OpenFeatureAsync(ralan, () => ralan.SelectVisitAsync(request.NoRawat));

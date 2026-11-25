@@ -22,6 +22,7 @@ public sealed class RawatJalanKunjunganView : UserControl
     private readonly Grid _body;
     private readonly Border _sidebar;
     private readonly TindakanRalanView _tindakan;
+    private readonly Dictionary<string, Control> _alurKunjungan = [];
     private RawatJalanView? _pemeriksaan;
     private CatatanDokterView? _catatan;
     private bool _ready;
@@ -145,13 +146,18 @@ public sealed class RawatJalanKunjunganView : UserControl
             item.Id != "BtnResepIterasiBPJS" && item.Label.Contains(search, StringComparison.CurrentCultureIgnoreCase)))
         {
             var spec = CariLaporan(item);
-            var available = spec is not null;
+            var input = item.Id is "BtnResepObat" or "BtnPermintaanLab" or "BtnPermintaanRad" or "BtnResume";
+            var available = input || spec is not null;
             var label = new TextBlock
             {
                 Text = available ? item.Label : $"{item.Label} · Belum tersedia",
                 TextWrapping = TextWrapping.Wrap,
             };
-            var button = Ui.Btn("", async (_, _) => { if (spec is not null) await BukaLaporanAsync(spec); }, available);
+            var button = Ui.Btn("", async (_, _) =>
+            {
+                if (input && _ready && _user.HasPermission(item.Permission)) BukaAlurKunjungan(item.Id);
+                else if (spec is not null) await BukaLaporanAsync(spec);
+            }, available);
             button.Content = label;
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             _menu.Children.Add(button);
@@ -159,14 +165,28 @@ public sealed class RawatJalanKunjunganView : UserControl
         if (_menu.Children.Count == 0) _menu.Children.Add(Ui.Hint("Menu tidak ditemukan."));
     }
 
+    private void BukaAlurKunjungan(string id)
+    {
+        if (!_alurKunjungan.TryGetValue(id, out var view))
+        {
+            view = id switch
+            {
+                "BtnResepObat" => new OrderRalanView(_patient.NoRawat, _patient.NoRekamMedis, _user, JenisOrderRalan.Resep),
+                "BtnPermintaanLab" => new OrderRalanView(_patient.NoRawat, _patient.NoRekamMedis, _user, JenisOrderRalan.LabPk),
+                "BtnPermintaanRad" => new OrderRalanView(_patient.NoRawat, _patient.NoRekamMedis, _user, JenisOrderRalan.Radiologi),
+                "BtnResume" => new ResumeRalanView(_patient.NoRawat, _patient.NoRekamMedis, _user),
+                _ => throw new ArgumentOutOfRangeException(nameof(id))
+            };
+            _alurKunjungan[id] = view;
+        }
+        _panel.Content = view;
+    }
+
     private ReportSpec? CariLaporan(MenuKlinisRalan item)
     {
         return item.Id switch
         {
             "BtnRiwayat" => RawatJalanVisitReports.Riwayat,
-            "BtnResume" => RawatJalanVisitReports.Resume,
-            "BtnPermintaanLab" => RawatJalanVisitReports.Lab,
-            "BtnPermintaanRad" => RawatJalanVisitReports.Radiologi,
             "BtnObatBhp" => RawatJalanVisitReports.Obat,
             _ => item.ReportKey is { } key && MenuMSpecs.Reports.TryGetValue(key, out var spec) && spec.VisitSql is not null
                 ? spec : null,

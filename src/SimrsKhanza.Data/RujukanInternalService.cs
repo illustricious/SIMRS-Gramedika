@@ -1,3 +1,4 @@
+using MySqlConnector;
 using SimrsKhanza.Config;
 using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Sql;
@@ -10,6 +11,47 @@ public sealed record RujukanInternalItem(string NoRawat, string Tanggal, string 
 
 public sealed class RujukanInternalService(DatabaseSettings settings, AuthenticatedUser user)
 {
+    public static bool BisaMengelola(AuthenticatedUser? user) =>
+        user?.HasPermission("registrasi") == true && user.HasPermission("rujukan_poli_internal");
+
+    public async Task TambahAsync(string noRawat, string dokter, string poli)
+    {
+        PastikanBisaMengelola();
+        ArgumentException.ThrowIfNullOrWhiteSpace(noRawat);
+        ArgumentException.ThrowIfNullOrWhiteSpace(dokter);
+        ArgumentException.ThrowIfNullOrWhiteSpace(poli);
+        await using var db = await Db.OpenAsync(settings);
+        try
+        {
+            await db.ExecAsync("""
+                INSERT INTO rujukan_internal_poli (no_rawat,kd_dokter,kd_poli) VALUES (@p0,@p1,@p2)
+                """, noRawat, dokter, poli);
+        }
+        catch (MySqlException ex) when (ex.Number == 1062)
+        {
+            throw new InvalidOperationException("Rujukan untuk dokter tujuan ini sudah ada pada kunjungan tersebut.", ex);
+        }
+        catch (MySqlException ex) when (ex.Number == 1452)
+        {
+            throw new InvalidOperationException("Kunjungan, dokter, atau poli tujuan sudah tidak tersedia.", ex);
+        }
+    }
+
+    public async Task<bool> HapusAsync(RujukanInternalItem rujukan)
+    {
+        PastikanBisaMengelola();
+        await using var db = await Db.OpenAsync(settings);
+        return await db.ExecAsync("""
+            DELETE FROM rujukan_internal_poli WHERE no_rawat=@p0 AND kd_dokter=@p1 AND kd_poli=@p2
+            """, rujukan.NoRawat, rujukan.KodeDokter, rujukan.KodePoli) == 1;
+    }
+
+    private void PastikanBisaMengelola()
+    {
+        if (!BisaMengelola(user))
+            throw new InvalidOperationException("Akun tidak memiliki hak mengelola rujukan poli internal.");
+    }
+
     public async Task<IReadOnlyList<RujukanInternalItem>> DaftarAsync(DateOnly from, DateOnly to, string? dokter, string? poli, string? keyword)
     {
         if (!user.HasPermission("registrasi")) throw new InvalidOperationException("Akun tidak memiliki hak registrasi.");

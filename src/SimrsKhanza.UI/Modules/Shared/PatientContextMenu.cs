@@ -17,7 +17,8 @@ public record PatientMenuTarget(string NoRawat, string NoRekamMedis, string Nama
 public static class PatientContextMenu
 {
     public static ContextMenu Attach<T>(DataGrid grid, Func<T, PatientMenuTarget?> getPatient, Action<PatientMenuRequest> execute,
-        PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null) where T : class
+        PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null, Action<T>? rujukInternal = null,
+        Action<T>? rujukMasuk = null) where T : class
     {
         var menu = new ContextMenu();
         grid.ContextRequested += (_, e) =>
@@ -119,7 +120,12 @@ public static class PatientContextMenu
                         ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
                         : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"), Entry("Label & Barcode") }),
                     new Separator(),
-                    Entry("Rujukan"), Entry("Bridging"),
+                    rujukInternal is null ? Entry("Rujukan") : Group("Rujukan",
+                        Entry("Masuk", hasVisit && rujukMasuk is not null && RujukanMasukService.BisaMengelola(user)
+                            ? () => Run(() => rujukMasuk(clicked)) : null),
+                        Entry("Poli Internal", hasVisit && RujukanInternalService.BisaMengelola(user)
+                            ? () => Run(() => rujukInternal(clicked)) : null)),
+                    Entry("Bridging"),
                     Group("Input Data", Entry("Catatan Pasien"), Entry("Berkas Digital"), Entry("Insiden Keselamatan Pasien")),
                     .. (kind == PatientMenuKind.Registration ? new[] { SortMenu(grid) } : Array.Empty<MenuItem>()),
                     Group("Hapus & Ubah Data",

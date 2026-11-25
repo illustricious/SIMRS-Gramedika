@@ -82,7 +82,10 @@
                     </Grid>
 
                     <TextBlock Grid.Row="4" Text="Asal Rujukan" VerticalAlignment="Center" />
-                    <TextBox Grid.Row="4" Grid.Column="1" Name="InputAsalRujukanBox" IsReadOnly="True" AutomationProperties.Name="Asal rujukan" />
+                    <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                        <TextBox Name="InputAsalRujukanBox" IsReadOnly="True" AutomationProperties.Name="Asal rujukan" />
+                        <Button Grid.Column="1" Name="RujukanMasukButton" Content="Rujukan Masuk" IsEnabled="False" Click="OnRujukanMasukClick" />
+                    </Grid>
                 </Grid>
               </Grid>
               <TextBlock Name="InputStatusText" Classes="registrationStatus" TextWrapping="Wrap" Margin="0,3,0,0" IsVisible="False" />
@@ -101,7 +104,6 @@
           </StackPanel>
         </Border>
 
-        <!-- Tabs: "Registrasi Awal" (implemented) / "Rujukan Internal Poli" (deferred) -->
         <TabControl Name="RegistrasiTabs" Grid.Row="2" Background="{DynamicResource ThemePanelBrush}" Padding="4,0,4,4" SelectionChanged="OnTabChanged">
             <TabItem>
                 <TabItem.Header>
@@ -149,8 +151,11 @@
                                Foreground="{DynamicResource ThemeTextBrush}" />
                 </TabItem.Header>
                 <DockPanel>
-                  <TextBlock DockPanel.Dock="Top" Text="Daftar rujukan internal — hanya lihat. Filter dokter dan unit berlaku untuk tujuan rujukan." Classes="pageSubtitle" Margin="4,4,4,8" TextWrapping="Wrap" />
-                  <DataGrid Name="RujukanInternalGrid" Margin="0,2,0,0" AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True" GridLinesVisibility="Horizontal" HeadersVisibility="Column" x:DataType="data:RujukanInternalItem">
+                  <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="8" Margin="4,4,4,8">
+                    <Button Name="HapusRujukanButton" Content="Hapus Rujukan" IsEnabled="False" Click="OnHapusRujukanClick" />
+                    <Button Name="CetakRujukanButton" Content="Cetak Daftar Rujukan" IsEnabled="False" Click="OnCetakClick" />
+                  </StackPanel>
+                  <DataGrid Name="RujukanInternalGrid" Margin="0,2,0,0" AutoGenerateColumns="False" IsReadOnly="True" CanUserResizeColumns="True" GridLinesVisibility="Horizontal" HeadersVisibility="Column" SelectionChanged="OnRujukanSelectionChanged" ContextRequested="OnRujukanContextRequested" x:DataType="data:RujukanInternalItem">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="150" />
                         <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal}" Width="100" />

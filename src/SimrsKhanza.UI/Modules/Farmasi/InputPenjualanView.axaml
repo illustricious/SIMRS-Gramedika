@@ -23,17 +23,17 @@
             <Grid ColumnDefinitions="Auto,*,20,Auto,*" RowDefinitions="Auto,Auto,Auto">
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Nota :" VerticalAlignment="Center" />
                 <TextBox Grid.Row="0" Grid.Column="1" Text="(dibuat otomatis saat Simpan)" IsReadOnly="True" Margin="4,2" />
-                <TextBlock Grid.Row="0" Grid.Column="3" Text="Pasien :" VerticalAlignment="Center" />
-                <TextBox Grid.Row="0" Grid.Column="4" Name="PasienBox" Margin="4,2" PlaceholderText="opsional — kosongkan jika jual bebas umum" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="No. RM :" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="4" Name="PasienBox" Margin="4,2" PlaceholderText="Nomor rekam medis pembeli" MaxLength="15" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Catatan :" VerticalAlignment="Center" />
-                <TextBox Grid.Row="1" Grid.Column="1" Name="CatatanBox" Margin="4,2" Text="Jual bebas" />
+                <TextBox Grid.Row="1" Grid.Column="1" Name="CatatanBox" Margin="4,2" Text="Jual bebas" MaxLength="40" />
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="Petugas :" VerticalAlignment="Center" />
                 <ComboBox Grid.Row="1" Grid.Column="4" Name="PetugasCombo" Margin="4,2" HorizontalAlignment="Stretch" AutomationProperties.Name="Petugas" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Tanggal :" VerticalAlignment="Center" />
                 <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,16,Auto,Auto" Margin="4,2" HorizontalAlignment="Left">
-                    <CalendarDatePicker Grid.Column="0" Name="TanggalPicker" />
+                    <CalendarDatePicker Grid.Column="0" Name="TanggalPicker" IsEnabled="False" />
                     <TextBlock Grid.Column="2" Text="Jenis Jual :" VerticalAlignment="Center" Margin="0,0,4,0" />
                     <ComboBox Grid.Column="3" Name="JenisJualCombo" MinWidth="140" />
                 </Grid>
@@ -79,13 +79,13 @@
             <TextBlock Grid.Column="1" Name="GrandTotalText" Text="0" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0" />
 
             <TextBlock Grid.Column="3" Text="PPN Obat(%) :" VerticalAlignment="Center" />
-            <TextBox Grid.Column="4" Name="PpnPercentBox" Text="0" Width="50" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
+            <TextBox Grid.Column="4" Name="PpnPercentBox" Text="0" IsReadOnly="True" Width="50" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
 
             <TextBlock Grid.Column="6" Text="Akun Bayar :" VerticalAlignment="Center" />
             <ComboBox Grid.Column="7" Name="AkunBayarCombo" MinWidth="150" Margin="4,0" />
 
             <TextBlock Grid.Column="8" Text="Ongkos Kirim :" VerticalAlignment="Center" Margin="8,0,0,0" />
-            <TextBox Grid.Column="10" Name="OngkosKirimBox" Text="0" Width="80" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
+            <TextBox Grid.Column="10" Name="OngkosKirimBox" Text="0" IsReadOnly="True" Width="80" Margin="4,0" TextChanged="OnPaymentFieldChanged" />
         </Grid>
 
         <Grid Grid.Row="4" ColumnDefinitions="Auto,Auto,16,Auto,*,Auto,8,Auto" Margin="0,0,0,4">

@@ -1,5 +1,6 @@
 using MySqlConnector;
 using SimrsKhanza.Config;
+using SimrsKhanza.Core.Auth;
 using SimrsKhanza.Data.Sql;
 
 namespace SimrsKhanza.Data;
@@ -72,12 +73,19 @@ public class RegistrasiService(DatabaseSettings settings)
     }
 
     /// <summary>Registrasi baru. Menolak data kosong, pasien yang sedang dirawat inap, dan (bila diaktifkan) kuota dokter penuh.</summary>
-    public async Task<string> DaftarAsync(RegistrasiBaru baru, RegistrasiAkses akses, bool terapkanKuota = false)
+    public async Task<string> DaftarAsync(RegistrasiBaru baru, RegistrasiAkses akses, bool terapkanKuota = false,
+        RujukanMasukData? rujukan = null, AuthenticatedUser? pengguna = null)
     {
         if (string.IsNullOrWhiteSpace(baru.NoRekamMedis)) throw new ArgumentException("Pilih pasien terlebih dahulu.");
         if (string.IsNullOrWhiteSpace(baru.KodeDokter)) throw new ArgumentException("Pilih dokter.");
         if (string.IsNullOrWhiteSpace(baru.KodePoli)) throw new ArgumentException("Pilih poliklinik.");
         if (string.IsNullOrWhiteSpace(baru.KodePenjab)) throw new ArgumentException("Pilih jenis bayar.");
+        if (rujukan is not null)
+        {
+            if (!RujukanMasukService.BisaMengelola(pengguna))
+                throw new InvalidOperationException("Akun tidak memiliki hak mengelola rujukan masuk.");
+            RujukanMasukService.Validasi(rujukan);
+        }
 
         var tanggal = baru.Waktu.Date;
         await using var db = await Db.OpenAsync(settings);
@@ -124,17 +132,24 @@ public class RegistrasiService(DatabaseSettings settings)
                 $"{tanggal:yyyy/MM/dd}/", 6, tanggal);
             try
             {
+                if (rujukan is not null) await db.BeginAsync();
                 await db.ExecAsync("""
                     INSERT INTO reg_periksa(no_reg,no_rawat,tgl_registrasi,jam_reg,kd_dokter,no_rkm_medis,kd_poli,p_jawab,almt_pj,hubunganpj,
                         biaya_reg,stts,stts_daftar,status_lanjut,kd_pj,umurdaftar,sttsumur,status_bayar,status_poli)
                     VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10,'Belum',@p11,'Ralan',@p12,@p13,@p14,'Belum Bayar',@p15)
                     """, noReg, noRawat, tanggal, baru.Waktu.ToString("HH:mm:ss"), baru.KodeDokter, baru.NoRekamMedis, baru.KodePoli,
                     baru.PenanggungJawab.Trim(), baru.AlamatPj.Trim(), baru.HubunganPj.Trim(), biaya, statusDaftar, baru.KodePenjab, umur, satuan, statusPoli);
+                if (rujukan is not null)
+                {
+                    await RujukanMasukService.TulisAsync(db, noRawat, rujukan, ubah: false);
+                    await db.CommitAsync();
+                }
                 return noRawat;
             }
             catch (MySqlException ex) when (ex.ErrorCode == MySqlErrorCode.DuplicateKeyEntry && percobaan < 4)
             {
                 // Dua loket mendaftar bersamaan: hitung ulang nomor seperti loop isNumber() di Java.
+                await db.DisposeTxAsync();
             }
         }
     }

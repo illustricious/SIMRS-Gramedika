@@ -40,6 +40,8 @@ public partial class RawatInapView : UserControl
         this.FindControl<Button>("BillingButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("billing_ranap") == true;
         this.FindControl<Button>("PemeriksaanButton")!.IsVisible =
             AppSession.CurrentUser?.HasPermission(PemeriksaanRanapService.Izin) == true;
+        this.FindControl<Button>("TindakanButton")!.IsVisible =
+            AppSession.CurrentUser?.HasPermission(TindakanRanapInputService.Izin) == true;
         PatientContextMenu.Attach<RawatInapListItem>(grid,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, IsInpatient: true),
             request => PatientMenuRequested?.Invoke(this, request));
@@ -247,6 +249,15 @@ public partial class RawatInapView : UserControl
         if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
             return;
         await new PemeriksaanRanapWindow(visit, user).ShowDialog(owner);
+    }
+
+    private async void OnTindakanClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(TindakanRanapInputService.Izin))
+            return;
+        if (!RequireSelected(mustBeActive: true) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+            return;
+        await new TindakanRanapWindow(visit, user).ShowDialog(owner);
     }
 
     private async void OnGantiClick(object? sender, RoutedEventArgs e)

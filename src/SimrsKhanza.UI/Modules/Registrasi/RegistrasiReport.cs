@@ -20,11 +20,24 @@ namespace SimrsKhanza.UI.Modules.Registrasi;
 /// </summary>
 public static class RegistrasiReport
 {
-    public static string GeneratePdf(IReadOnlyList<RegistrasiListItem> items, string title)
+    public static string GeneratePdf(IReadOnlyList<RegistrasiListItem> items, string title) =>
+        GeneratePdf(title, ["No.Rawat", "No.RM", "Pasien", "Poli", "Dokter", "Jenis Bayar", "Status", "Status Bayar", "Tanggal", "Jam"],
+            items.Select<RegistrasiListItem, string[]>(item =>
+                [item.NoRawat, item.NoRekamMedis, item.NamaPasien, item.NamaPoli ?? "-", item.NamaDokter ?? "-",
+                 item.JenisBayar ?? "-", item.Status ?? "-", item.StatusBayar ?? "-",
+                 item.TanggalRegistrasi?.ToString("dd/MM/yyyy") ?? "-", item.JamRegistrasi?.ToString("HH:mm") ?? "-"]));
+
+    public static string GenerateRujukanPdf(IReadOnlyList<RujukanInternalItem> items) =>
+        GeneratePdf("Daftar Rujukan Internal Poli",
+            ["No.Rawat", "No.RM", "Pasien", "Poli Tujuan", "Dokter Tujuan", "Jenis Bayar", "Status", "Tanggal", "Jam"],
+            items.Select<RujukanInternalItem, string[]>(item =>
+                [item.NoRawat, item.NoRm, item.Pasien, item.Poli, item.Dokter, item.JenisBayar, item.Status, item.Tanggal, item.Jam]));
+
+    private static string GeneratePdf(string title, string[] headers, IEnumerable<string[]> rows)
     {
         QuestPDF.Settings.License = LicenseType.Community;
 
-        var path = Path.Combine(Path.GetTempPath(), $"SimrsKhanza_{title.Replace(' ', '_')}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+        var path = Path.Combine(Path.GetTempPath(), $"SimrsKhanza_{title.Replace(' ', '_')}_{Guid.NewGuid():N}.pdf");
 
         Document.Create(container =>
         {
@@ -45,30 +58,20 @@ public static class RegistrasiReport
                 {
                     table.ColumnsDefinition(c =>
                     {
-                        for (var i = 0; i < 10; i++) c.RelativeColumn();
+                        foreach (var _ in headers) c.RelativeColumn();
                     });
 
                     table.Header(header =>
                     {
-                        foreach (var h in new[] { "No.Rawat", "No.RM", "Pasien", "Poli", "Dokter", "Jenis Bayar", "Status", "Status Bayar", "Tanggal", "Jam" })
+                        foreach (var h in headers)
                         {
                             header.Cell().Background(Colors.Grey.Lighten3).Padding(3).Text(h).Bold();
                         }
                     });
 
-                    foreach (var item in items)
-                    {
-                        table.Cell().Padding(3).Text(item.NoRawat);
-                        table.Cell().Padding(3).Text(item.NoRekamMedis);
-                        table.Cell().Padding(3).Text(item.NamaPasien);
-                        table.Cell().Padding(3).Text(item.NamaPoli ?? "-");
-                        table.Cell().Padding(3).Text(item.NamaDokter ?? "-");
-                        table.Cell().Padding(3).Text(item.JenisBayar ?? "-");
-                        table.Cell().Padding(3).Text(item.Status ?? "-");
-                        table.Cell().Padding(3).Text(item.StatusBayar ?? "-");
-                        table.Cell().Padding(3).Text(item.TanggalRegistrasi?.ToString("dd/MM/yyyy") ?? "-");
-                        table.Cell().Padding(3).Text(item.JamRegistrasi?.ToString("HH:mm") ?? "-");
-                    }
+                    foreach (var row in rows)
+                        foreach (var value in row)
+                            table.Cell().Padding(3).Text(value);
                 });
 
                 page.Footer().AlignCenter().Text(x =>

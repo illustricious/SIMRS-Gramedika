@@ -32,6 +32,15 @@ public partial class RawatJalanView : UserControl
     /// <summary>Raised from the grid's right-click patient menu — see Modules/Shared/PatientContextMenu.</summary>
     public event EventHandler<PatientMenuRequest>? PatientMenuRequested;
 
+    public void TampilkanAlurKunjungan() =>
+        this.FindControl<Button>("AlurKunjunganButton")!.IsVisible = true;
+
+    private void OnAlurKunjunganClick(object? sender, RoutedEventArgs e)
+    {
+        if (_selected is { } visit)
+            PatientMenuRequested?.Invoke(this, new(visit.NoRawat, visit.NoRekamMedis, visit.Pasien, PatientMenuAction.TindakanRawatJalan));
+    }
+
     private RawatJalanKunjungan? _selected;
     private SoapItem? _soap;
     private IReadOnlyList<PegawaiPilihan> _pegawai = [];
@@ -155,6 +164,7 @@ public partial class RawatJalanView : UserControl
     private async void OnQueueSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         _selected = this.FindControl<DataGrid>("QueueGrid")!.SelectedItem as RawatJalanKunjungan;
+        this.FindControl<Button>("AlurKunjunganButton")!.IsEnabled = _selected is not null;
         this.FindControl<TextBlock>("SelectedPatientText")!.Text = _selected is null
             ? "(belum ada kunjungan dipilih)"
             : $"{_selected.Pasien}  —  No. RM {_selected.NoRekamMedis}  —  No. Rawat {_selected.NoRawat}  —  {_selected.Poli}";

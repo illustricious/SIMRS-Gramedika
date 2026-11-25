@@ -26,20 +26,20 @@ Pembaruan visual menu klik kanan, termasuk tema terang/gelap dan jarak antarpili
 
 Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [audit cabang pelayanan](AUDIT_CABANG.md).
 
-## Status audit per alur (24 November 2026)
+## Status audit per alur (25 November 2026)
 
 | Alur | Java | Dokumen | Hasil |
 |---|---|---|---|
-| Registrasi | `DlgReg.java` | [AUDIT_REGISTRASI.md](AUDIT_REGISTRASI.md) | 348 popup dinilai (298 kurang, 50 sebagian); 26 tombol/jendela: 4 selesai, 10 sebagian, 11 kurang, 1 ditunda. Perbaikan A-D selesai |
+| Registrasi | `DlgReg.java` | [AUDIT_REGISTRASI.md](AUDIT_REGISTRASI.md) | 348 popup dinilai, 295 kurang dan 53 sebagian. Dari 26 tombol/jendela, 4 selesai, 13 sebagian, 8 kurang dan 1 ditunda. Rujukan internal mendukung tambah, hapus satu baris dan PDF. Rujukan masuk mendukung tambah, ubah dan pilih perujuk. |
 | Rawat Jalan | `DlgRawatJalan.java` | [AUDIT_RAWAT_JALAN.md](AUDIT_RAWAT_JALAN.md) | 207 entri. 3 selesai, 164 sebagian, 40 kurang. Submenu kiri disaring menurut hak akses Khanza. Sebanyak 147 dari 178 menu membuka laporan baca saja. Input tindakan dokter, petugas dan gabungan dengan jurnal lulus uji MariaDB sintetis. Catatan Dokter mendukung tambah, ubah dan hapus. 5 SOAPIE Terakhir mengisi draf baru |
-| Rawat Inap | `DlgRawatInap.java`, `DlgKamarInap.java` | [AUDIT_RAWAT_INAP.md](AUDIT_RAWAT_INAP.md) | 164 entri klinis dan 40 entri kamar dinilai. Lima SOAPIE terakhir dan salin narasi tersedia. Uji aplikasi, penguncian billing lintas koneksi, dan input tindakan masih tertunda |
-| Pelayanan inti | beberapa sumber Java | [AUDIT_PELAYANAN_INTI.md](AUDIT_PELAYANAN_INTI.md) | Audit awal terbatas IGD, Kasir, Farmasi, Laboratorium, Radiologi dan Pasien. Penjualan farmasi dinonaktifkan sampai transaksi stok/jurnal sesuai Khanza |
+| Rawat Inap | `DlgRawatInap.java`, `DlgKamarInap.java` | [AUDIT_RAWAT_INAP.md](AUDIT_RAWAT_INAP.md) | Lima SOAPIE terakhir, salin narasi dan input tindakan dokter/petugas/gabungan tersedia. Penguncian billing, izin, jurnal dan rollback diuji di MariaDB sintetis. Uji visual dan penggunaan bersamaan dengan klien Java masih terbuka. |
+| Pelayanan inti | beberapa sumber Java | [AUDIT_PELAYANAN_INTI.md](AUDIT_PELAYANAN_INTI.md) | Pelunasan registrasi Rawat Jalan dan jual bebas Farmasi nonbatch diuji terhadap alur sumber Java dan skema sintetis. Cabang lain tetap mengikuti batas di audit. |
 
 Audit per tombol Kasir, IGD, Laboratorium, Radiologi, Pasien, dan Farmasi masih tertunda. Di Rawat Inap, 232 popup kamar belum diaudit. Lihat [log 23 November](../handover/06-SESSION-2026-11-23.md).
 
 ## Cara membaca kemajuan
 
-Snapshot 24 November: 15.843 entri mencakup 14.619 popup/aksi/jendela dan 1.224 tile. Dari popup/aksi/jendela, 13.803 belum diaudit; 508 kurang, 294 sebagian, 13 selesai dan 1 ditunda. Tile berlayar adalah deteksi rute statis, bukan tes bahwa seluruh operasi berjalan. Jangan menjumlahkan tile, jendela, popup dan aksi sebagai fitur unik atau menyebut persentasenya sebagai persentase kesiapan produk.
+[Ringkasan otomatis](RINGKASAN.md) menampilkan jumlah tile, popup, aksi dan jendela menurut status terbaru. Cakupan tile berasal dari pemeriksaan rute di kode. Satu alur kerja dapat mencakup beberapa tile, jendela, popup dan aksi, sehingga kesiapan operasional perlu dinilai per alur.
 
 Laporan dibuat ulang dari `java.jsonl`, kode routing, dan `status.json`; status manual hanya berubah melalui audit berbukti. Dokumen audit mencatat sejarah dan bagian terbaru mengoreksi temuan lama. Untuk status pekerjaan saat ini gunakan [prioritas](PRIORITAS.md) bersama [ringkasan](RINGKASAN.md).
 
