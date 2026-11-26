@@ -25,7 +25,7 @@ dotnet test
 ## Exe tunggal lokal (portabel)
 
 ```powershell
-$v = "0.2.5-alpha.$(Get-Date -Format yyyyMMddHHmm)"
+$v = "0.3.0-alpha.$(Get-Date -Format yyyyMMddHHmm)"
 dotnet publish src\SimrsGramedika.UI -c Release -r win-x64 --self-contained true `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true `
   -p:DebugType=none -p:DebugSymbols=false -p:Version=$v -o dist\single-win-x64
@@ -39,8 +39,8 @@ Lihat `installer/README.md`. Windows lokal: `powershell -ExecutionPolicy Bypass 
 
 ## Versi dan release
 
-- Versi dasar di `src/SimrsGramedika.UI/SimrsGramedika.UI.csproj` (`<Version>0.2.5-alpha</Version>`). Build alpha menambah stempel waktu: `0.2.5-alpha.yyyyMMddHHmm`.
-- Seri alpha 0.1.5, 0.2.0, dan 0.2.5 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*`, `v0.2.0-alpha.*`, dan `v0.2.5-alpha.*`. Tag `v*` lain memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
+- Versi dasar di `src/SimrsGramedika.UI/SimrsGramedika.UI.csproj` (`<Version>0.3.0-alpha</Version>`). Build alpha menambah stempel waktu: `0.3.0-alpha.yyyyMMddHHmm`.
+- Seri alpha 0.1.5, 0.2.0, dan 0.2.5 dibuild lokal. `.github/workflows/release.yml` mengecualikan tag `v0.1.5-alpha.*`, `v0.2.0-alpha.*`, dan `v0.2.5-alpha.*`. Tag `v*` lain, termasuk seri 0.3.0, memicu CI semua platform dan Release GitHub. Jalankan manual lewat Actions untuk artefak saja.
 - Catatan rilis lama dan checksum disimpan lokal di `publish/release-tools/` (tidak di git).
 
 ## Langkah rilis exe tunggal (ringkas)
