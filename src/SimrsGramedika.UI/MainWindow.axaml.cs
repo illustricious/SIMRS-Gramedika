@@ -845,8 +845,7 @@ public partial class MainWindow : Window
                 break;
             }
             default:
-                // No. Resep is still deferred; Data Penyerahan Darah uses the read-only UTD report above.
-                await ShowNotImplementedAsync("No. Resep");
+                await ShowNotImplementedAsync($"Farmasi ({action})");
                 return;
         }
 

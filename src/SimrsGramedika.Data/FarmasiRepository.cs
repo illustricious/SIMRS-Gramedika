@@ -34,7 +34,7 @@ public interface IFarmasiRepository
     /// <summary>Penjualan dinonaktifkan sampai alur penjualan, stok, dan jurnal Khanza diimplementasikan.</summary>
     Task<string> SimpanPenjualanAsync(IReadOnlyList<PenjualanLineInput> lines, string keterangan, string nip, CancellationToken ct = default);
 
-    Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default);
+    Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default, string keyword = "");
 }
 
 public class FarmasiRepository(SimrsGramedikaDbContext db) : IFarmasiRepository
@@ -111,15 +111,19 @@ public class FarmasiRepository(SimrsGramedikaDbContext db) : IFarmasiRepository
         => Task.FromException<string>(new InvalidOperationException(
             "Penjualan farmasi belum tersedia: transaksi belum mencatat penjualan, stok, dan jurnal sesuai Khanza. Gunakan Khanza untuk transaksi ini."));
 
-    public async Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default)
+    public async Task<IReadOnlyList<PenjualanListItem>> GetPenjualanAsync(DateOnly fromDate, DateOnly toDate, CancellationToken ct = default, string keyword = "")
     {
+        var start = fromDate.ToDateTime(TimeOnly.MinValue);
+        var end = toDate.AddDays(1).ToDateTime(TimeOnly.MinValue);
+        var search = $"%{keyword.Trim()}%";
         var rows = await db.Database.SqlQuery<PenjualanRow>($"""
             SELECT p.nota_jual AS NoKeluar,p.tgl_jual AS Tanggal,COALESCE(p.keterangan,'') AS Keterangan,
                    b.nama_brng AS NamaBarang,CAST(COALESCE(d.jumlah,0) AS DECIMAL(18,4)) AS Jumlah,
                    CAST(COALESCE(d.total,0) AS DECIMAL(18,2)) AS Total
             FROM penjualan p LEFT JOIN detailjual d ON d.nota_jual=p.nota_jual
             LEFT JOIN databarang b ON b.kode_brng=d.kode_brng
-            WHERE p.tgl_jual BETWEEN {fromDate} AND {toDate}
+            WHERE p.tgl_jual >= {start} AND p.tgl_jual < {end}
+              AND CONCAT_WS(' ',p.nota_jual,p.keterangan,b.nama_brng,d.kode_brng) LIKE {search}
             ORDER BY p.tgl_jual DESC,p.nota_jual DESC,d.kode_brng
             """).ToListAsync(ct);
         return rows.Select(r => new PenjualanListItem(r.NoKeluar, DateOnly.FromDateTime(r.Tanggal), r.Keterangan,

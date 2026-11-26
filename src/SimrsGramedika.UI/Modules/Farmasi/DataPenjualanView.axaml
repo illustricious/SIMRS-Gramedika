@@ -4,13 +4,24 @@
              x:Class="SimrsGramedika.UI.Modules.Farmasi.DataPenjualanView"
              Background="{DynamicResource TegasPageBrush}">
 
-    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12">
         <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
-            <TextBlock Classes="pageTitle" Text="Data Penjualan Obat &amp; BHP"
-                   Margin="0,0,0,12" />
+            <TextBlock Classes="pageTitle" Text="Data Penjualan Obat &amp; BHP" />
         </Border>
 
-        <DataGrid Grid.Row="1" Name="PenjualanGrid" AutoGenerateColumns="False" IsReadOnly="True"
+        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <TextBlock Text="Periode:" VerticalAlignment="Center" />
+                <CalendarDatePicker Name="FromPicker" />
+                <TextBlock Text="s.d." VerticalAlignment="Center" />
+                <CalendarDatePicker Name="ToPicker" />
+                <TextBlock Text="Kata kunci:" VerticalAlignment="Center" />
+                <TextBox Name="KeywordBox" Width="210" PlaceholderText="Nota, barang, keterangan" KeyDown="OnKeywordKeyDown" />
+                <Button Content="Tampilkan" Click="OnTampilkanClick" Classes="accent" />
+            </WrapPanel>
+        </Border>
+
+        <DataGrid Grid.Row="2" Name="PenjualanGrid" AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
                   x:DataType="data:PenjualanListItem">
             <DataGrid.Columns>
@@ -23,9 +34,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Border Grid.Row="2" Classes="servicePanel" Margin="0,6,0,0">
+        <Border Grid.Row="3" Classes="servicePanel" Margin="0,6,0,0">
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
                 <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+                <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" />
             </WrapPanel>
         </Border>
     </Grid>
@@ -33,6 +45,12 @@
     <UserControl.Styles>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="TextBlock.error">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="TextBlock.success">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeIconBrush}" />
         </Style>
     </UserControl.Styles>
 </UserControl>
