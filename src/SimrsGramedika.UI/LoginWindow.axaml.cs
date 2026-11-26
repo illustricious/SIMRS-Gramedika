@@ -1,9 +1,11 @@
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsGramedika.Config;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data.Auth;
+using SimrsGramedika.UI.Controls;
 
 namespace SimrsGramedika.UI;
 
@@ -26,11 +28,9 @@ public partial class LoginWindow : Window
         LoadServers();
         SizeChanged += (_, e) => UpdateLayoutForWidth(e.NewSize.Width);
         Opened += (_, _) => this.FindControl<TextBox>("UserIdBox")!.Focus();
-        UpdateFullscreenButton();
-        PropertyChanged += (_, e) =>
-        {
-            if (e.Property == WindowStateProperty) UpdateFullscreenButton();
-        };
+        var versi = typeof(LoginWindow).Assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0];
+        this.FindControl<TextBlock>("VersionText")!.Text = $"RSU Gramedika  •  versi {versi}";
         KeyDown += (_, e) =>
         {
             if (e.Key == Key.Enter) OnLoginClick(this, new RoutedEventArgs());
@@ -83,32 +83,17 @@ public partial class LoginWindow : Window
         }
     }
 
-    private void OnFullscreenClick(object? sender, RoutedEventArgs e)
-        => WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
-
-    private void UpdateFullscreenButton()
-    {
-        var button = this.FindControl<Button>("FullscreenButton")!;
-        var fullscreen = WindowState == WindowState.FullScreen;
-        this.FindControl<Button>("FullscreenCloseButton")!.IsVisible = fullscreen;
-        var label = fullscreen ? "Ukuran jendela biasa" : "Layar penuh";
-        button.Content = label;
-        Avalonia.Automation.AutomationProperties.SetName(button, label);
-    }
+    private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
+        => WindowButtons.TanganiBilahJudul(this, e);
 
     private void UpdateLayoutForWidth(double width)
     {
         var compact = width < 740;
         this.FindControl<Border>("PhotoPanel")!.IsVisible = !compact;
-        var form = this.FindControl<ScrollViewer>("FormScroll")!;
-        var actions = this.FindControl<StackPanel>("WindowActions")!;
+        var form = this.FindControl<Grid>("FormSide")!;
         Grid.SetColumn(form, compact ? 0 : 1);
-        Grid.SetColumn(actions, compact ? 0 : 1);
         Grid.SetColumnSpan(form, compact ? 2 : 1);
-        Grid.SetColumnSpan(actions, compact ? 2 : 1);
     }
-
-    private void OnCloseClick(object? sender, RoutedEventArgs e) => Close();
 
     private async void OnLoginClick(object? sender, RoutedEventArgs e)
     {

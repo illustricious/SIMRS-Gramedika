@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="760"
+        xmlns:controls="using:SimrsGramedika.UI.Controls"
         x:Class="SimrsGramedika.UI.MainWindow"
         Title="SIMRS Gramedika"
         Icon="avares://SimrsGramedika.UI/Assets/app.ico"
@@ -32,11 +33,7 @@
                     <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="Mode Gelap"
                                   Click="OnThemeToggleClick" HorizontalAlignment="Right" />
                 </StackPanel>
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
-                    <Button Classes="caption" Name="FullscreenButton" Content="❐" Click="OnFullscreenClick" />
-                    <Button Classes="caption close" Content="✕" Click="OnCloseClick" />
-                </StackPanel>
+                <controls:WindowButtons Grid.Column="2" />
             </Grid>
         </Border>
 
@@ -177,24 +174,6 @@
         </Style>
         <Style Selector="Button.shortcut:pointerover /template/ ContentPresenter, ToggleButton.shortcut:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="#31588A" />
-        </Style>
-        <Style Selector="Button.caption">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Width" Value="46" />
-            <Setter Property="Padding" Value="0" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="CornerRadius" Value="0" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-        </Style>
-        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#31588A" />
-            <Setter Property="Foreground" Value="White" />
-        </Style>
-        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
         <Style Selector="Button.shortcut2">
             <Setter Property="Background" Value="Transparent" />

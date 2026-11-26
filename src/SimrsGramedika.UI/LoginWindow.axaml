@@ -1,86 +1,119 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:SimrsGramedika.UI.Controls"
         x:Class="SimrsGramedika.UI.LoginWindow"
         Title="Login — SIMRS Gramedika"
         Width="1080" Height="700" MinWidth="360" MinHeight="320" WindowStartupLocation="CenterScreen"
         WindowState="FullScreen"
+        WindowDecorations="BorderOnly"
+        ExtendClientAreaToDecorationsHint="True"
         Icon="avares://SimrsGramedika.UI/Assets/app.ico"
         RequestedThemeVariant="Light"
-        Background="#F8FAFC">
+        Background="#F1F5FB">
 
-    <Grid ColumnDefinitions="57*,43*" RowDefinitions="Auto,*">
-        <ScrollViewer Name="FormScroll" Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
-                      VerticalContentAlignment="Stretch">
-            <Border MaxWidth="348" Padding="24,12,24,48" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                <StackPanel Spacing="5">
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Margin="0,0,0,17">
-                        <Image Source="{StaticResource GramedikaMark}" Width="42" Height="42"
-                               Stretch="Uniform" VerticalAlignment="Center" />
-                        <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
-                            <TextBlock Text="SIMRS Gramedika" FontSize="22" FontWeight="Bold"
-                                       Foreground="#152B54" TextWrapping="Wrap" />
-                            <TextBlock Text="Masuk dengan akun rumah sakit" FontSize="12"
-                                       Foreground="#475569" TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Grid>
-
-                    <TextBlock Text="Server / Database" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
-                    <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,7">
-                        <ComboBox Name="ServerBox" HorizontalAlignment="Stretch" MinHeight="36"
-                                  AutomationProperties.Name="Server atau database" SelectionChanged="OnServerChanged" />
-                        <Button Grid.Column="1" Name="KoneksiButton" Content="⚙" Margin="6,0,0,0" Padding="10,4"
-                                AutomationProperties.Name="Atur koneksi database"
-                                ToolTip.Tip="Atur koneksi database (host, port, database)" Click="OnKoneksiClick" />
-                    </Grid>
-
-                    <TextBlock Text="User ID" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
-                    <TextBox Name="UserIdBox" AutomationProperties.Name="User ID" MinHeight="36" Margin="0,0,0,7" />
-
-                    <TextBlock Text="Password" FontSize="12" Foreground="#64748B" Margin="0,0,0,2" />
-                    <TextBox Name="PasswordBox" AutomationProperties.Name="Password" PasswordChar="*" MinHeight="36" />
-
-                    <TextBlock Name="ErrorText" Foreground="#DC2626" FontSize="12" IsVisible="False"
-                               TextWrapping="Wrap" Margin="0,8,0,0" />
-
-                    <Button Name="LoginButton" Content="Masuk" HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center" Margin="0,11,0,0" MinHeight="38" Padding="0,6"
-                            Background="#1E3A8A" Foreground="White" CornerRadius="6"
-                            FontWeight="Medium" Click="OnLoginClick" />
-
-                    <TextBlock Name="ServerInfo" FontSize="11" Foreground="#475569"
-                               TextWrapping="Wrap" Margin="0,10,0,0" />
-                </StackPanel>
-            </Border>
-        </ScrollViewer>
-
-        <Border Name="PhotoPanel" Grid.RowSpan="2" Background="#152B54" ClipToBounds="True">
+    <Grid ColumnDefinitions="57*,43*">
+        <Border Name="PhotoPanel" Background="#152B54" ClipToBounds="True">
             <Image Source="avares://SimrsGramedika.UI/Assets/login-gramedika.png" Stretch="UniformToFill"
                    AutomationProperties.Name="Foto gedung RS Gramedika 10" />
         </Border>
-        <StackPanel Name="WindowActions" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Margin="12,16,16,8" Spacing="8">
-            <Button Classes="caption" Name="FullscreenButton" Click="OnFullscreenClick" />
-            <Button Name="FullscreenCloseButton" Classes="caption close" Content="✕" AutomationProperties.Name="Tutup" Click="OnCloseClick" />
-        </StackPanel>
+
+        <Grid Name="FormSide" Grid.Column="1" RowDefinitions="Auto,*,Auto">
+            <!-- Ruang untuk bilah jendela di atas, agar kartu tidak tertutup tombol. -->
+            <Border Height="36" />
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <Border Name="LoginCard" Classes="card" MaxWidth="404" Margin="24,12" VerticalAlignment="Center">
+                    <StackPanel>
+                        <Image Source="{StaticResource GramedikaMark}" Width="60" Height="60" Stretch="Uniform"
+                               HorizontalAlignment="Center" />
+                        <TextBlock Text="SIMRS Gramedika" FontSize="26" FontWeight="Bold" Foreground="#152B54"
+                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,12,0,0" />
+                        <TextBlock Text="Masuk dengan akun rumah sakit" FontSize="13" Foreground="#64748B"
+                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,24" />
+
+                        <TextBlock Classes="label" Text="User ID" />
+                        <TextBox Name="UserIdBox" Classes="isian" PlaceholderText="Masukkan User ID"
+                                 AutomationProperties.Name="User ID" />
+
+                        <TextBlock Classes="label" Text="Password" Margin="0,14,0,5" />
+                        <TextBox Name="PasswordBox" Classes="isian" PlaceholderText="Masukkan password"
+                                 AutomationProperties.Name="Password" PasswordChar="●" />
+
+                        <Border Name="ErrorPanel" Background="#FEF2F2" BorderBrush="#FECACA" BorderThickness="1"
+                                CornerRadius="8" Padding="10,7" Margin="0,14,0,0"
+                                IsVisible="{Binding #ErrorText.IsVisible}">
+                            <TextBlock Name="ErrorText" Foreground="#B91C1C" FontSize="12" IsVisible="False"
+                                       TextWrapping="Wrap" />
+                        </Border>
+
+                        <Button Name="LoginButton" Classes="masuk" Content="Masuk" Margin="0,20,0,0" Click="OnLoginClick" />
+
+                        <Border Height="1" Background="#E2E8F0" Margin="0,22,0,14" />
+
+                        <TextBlock Classes="label" Text="Server / Database" />
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                            <ComboBox Name="ServerBox" HorizontalAlignment="Stretch" MinHeight="34" CornerRadius="8"
+                                      AutomationProperties.Name="Server atau database" SelectionChanged="OnServerChanged" />
+                            <Button Grid.Column="1" Name="KoneksiButton" Content="⚙" MinHeight="34" MinWidth="40"
+                                    CornerRadius="8" HorizontalContentAlignment="Center"
+                                    AutomationProperties.Name="Atur koneksi database"
+                                    ToolTip.Tip="Atur koneksi database (host, port, database)" Click="OnKoneksiClick" />
+                        </Grid>
+                        <TextBlock Name="ServerInfo" FontSize="11" Foreground="#64748B" TextWrapping="Wrap" Margin="0,7,0,0" />
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+
+            <TextBlock Grid.Row="2" Name="VersionText" FontSize="11" Foreground="#64748B" TextAlignment="Center"
+                       Margin="16,4,16,14" />
+        </Grid>
+
+        <!-- Bilah jendela tanpa bingkai: area kosong bisa digeser, klik dua kali mengubah ukuran. -->
+        <Border Name="DragArea" Grid.ColumnSpan="2" Height="36" VerticalAlignment="Top" Background="Transparent"
+                PointerPressed="OnTitleBarPointerPressed" />
+        <controls:WindowButtons Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Height="36" Terang="True" />
     </Grid>
 
     <Window.Styles>
-        <Style Selector="Button.caption">
-            <Setter Property="Background" Value="#E7EEF8" />
-            <Setter Property="Foreground" Value="#152B54" />
-            <Setter Property="MinWidth" Value="46" />
-            <Setter Property="Height" Value="34" />
-            <Setter Property="Padding" Value="12,0" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#DDE5F0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="34,30" />
+            <Setter Property="BoxShadow" Value="0 10 30 0 #1A152B54" />
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#334155" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+        <Style Selector="TextBox.isian">
+            <Setter Property="MinHeight" Value="40" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="CornerRadius" Value="8" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
-        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#CFDEF3" />
-            <Setter Property="Foreground" Value="#152B54" />
+        <Style Selector="Button.masuk">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Background" Value="#1E3A8A" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
-        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="#FDCFD3" />
+        <Style Selector="Button.masuk:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#2A4BA8" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.masuk:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#152B54" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
     </Window.Styles>
 </Window>

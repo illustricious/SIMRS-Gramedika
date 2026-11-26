@@ -23,8 +23,6 @@ public partial class MainWindow : Window
     public MainWindow(AuthenticatedUser? user)
     {
         InitializeComponent();
-        _componentReady = true;
-        UpdateFullscreenButton();
         _user = user;
         AppSession.CurrentUser = user;
 
@@ -1246,44 +1244,8 @@ public partial class MainWindow : Window
         ShowPage(Page.Feature);
     }
 
-    private bool _componentReady;
-
-    private void OnCloseClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => Close();
-
-    private void OnMinimizeClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-        => WindowState = WindowState.Minimized;
-
-    private void OnFullscreenClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e) => ToggleFullscreen();
-
-    private void ToggleFullscreen()
-        => WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
-
-    // Buttons mark their own presses handled, so this only fires on the empty strip:
-    // drag to move (the OS move loop gives edge snapping), double-click to enter or exit fullscreen.
     private void OnTitleBarPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
-    {
-        if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
-        if (e.ClickCount == 2) ToggleFullscreen();
-        else if (WindowState == WindowState.Normal) BeginMoveDrag(e);
-    }
-
-    private void UpdateFullscreenButton()
-    {
-        var button = this.FindControl<Button>("FullscreenButton")!;
-        var fullscreen = WindowState == WindowState.FullScreen;
-        button.Content = fullscreen ? "❐" : "☐";
-        var label = fullscreen ? "Keluar dari layar penuh" : "Layar penuh";
-        ToolTip.SetTip(button, label);
-        Avalonia.Automation.AutomationProperties.SetName(button, label);
-    }
-
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
-        // WindowState is set from XAML during InitializeComponent, before the name scope exists.
-        if (change.Property == WindowStateProperty && _componentReady)
-            UpdateFullscreenButton();
-    }
+        => Controls.WindowButtons.TanganiBilahJudul(this, e);
 
     /// <summary>Raised by the toolbar "Keluar" button — App swaps in the login window instead of quitting.</summary>
     public event EventHandler? LogoutRequested;

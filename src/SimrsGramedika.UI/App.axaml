@@ -107,6 +107,35 @@
             <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, Arial" />
             <Setter Property="FontSize" Value="13" />
         </Style>
+        <!-- Tombol jendela (Controls/WindowButtons): bawaan untuk bilah gelap, "terang" untuk latar terang. -->
+        <Style Selector="Button.caption">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Width" Value="46" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.caption:pointerover">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.caption:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#31588A" />
+        </Style>
+        <Style Selector="Button.caption.terang, Button.caption.terang:pointerover">
+            <Setter Property="Foreground" Value="#152B54" />
+        </Style>
+        <Style Selector="Button.caption.terang:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#DCE6F5" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.caption.close:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#E81123" />
+        </Style>
         <Style Selector="TextBlock.pageTitle">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="FontWeight" Value="SemiBold" />
