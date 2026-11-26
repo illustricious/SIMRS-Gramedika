@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Platform.Storage;
 using SimrsGramedika.UI.Modules.Shared;
 using SkiaSharp;
@@ -42,10 +43,11 @@ internal sealed class PatientLabelPreview : Window
                 VerticalAlignment = VerticalAlignment.Top, Child = page,
             },
         };
-        var print = new Button { Content = OperatingSystem.IsWindows() ? "Cetak" : "Simpan PDF", MinWidth = 68 };
-        var smaller = new Button { Content = "−" };
-        var larger = new Button { Content = "+" };
-        var zoom = new ComboBox { ItemsSource = ZoomLevels.Select(p => $"{p}%").ToArray(), MinWidth = 87 };
+        var print = new Button { Content = OperatingSystem.IsWindows() ? "Cetak" : "Simpan PDF",
+            MinWidth = 76, MinHeight = 32, Classes = { "accent" } };
+        var smaller = new Button { Content = "−", MinWidth = 32, MinHeight = 32 };
+        var larger = new Button { Content = "+", MinWidth = 32, MinHeight = 32 };
+        var zoom = new ComboBox { ItemsSource = ZoomLevels.Select(p => $"{p}%").ToArray(), MinWidth = 87, MinHeight = 32 };
         ToolTip.SetTip(smaller, "Perkecil");
         ToolTip.SetTip(larger, "Perbesar");
         zoom.SelectionChanged += (_, _) =>
@@ -69,8 +71,23 @@ internal sealed class PatientLabelPreview : Window
                 VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(8, 0, 0, 0),
             } },
         };
-        DockPanel.SetDock(toolbar, Dock.Top);
-        Content = new DockPanel { Children = { toolbar, canvas } };
+        var toolbarBorder = new Border
+        {
+            BorderThickness = new Thickness(0, 0, 0, 1),
+            Child = toolbar,
+        };
+        toolbarBorder[!Border.BackgroundProperty] = new DynamicResourceExtension("ThemePanelBrush");
+        toolbarBorder[!Border.BorderBrushProperty] = new DynamicResourceExtension("ThemeBorderBrush");
+        DockPanel.SetDock(toolbarBorder, Dock.Top);
+        var surface = new ContentControl
+        {
+            Classes = { "biruTegas" },
+            HorizontalContentAlignment = HorizontalAlignment.Stretch,
+            VerticalContentAlignment = VerticalAlignment.Stretch,
+            Content = new DockPanel { Children = { toolbarBorder, canvas } },
+        };
+        surface[!BackgroundProperty] = new DynamicResourceExtension("TegasPageBrush");
+        Content = surface;
 
         print.Click += async (_, _) => await PrintAsync(label, title);
         KeyDown += async (_, e) =>

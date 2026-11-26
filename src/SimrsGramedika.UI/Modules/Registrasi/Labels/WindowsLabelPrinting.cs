@@ -6,19 +6,24 @@ internal static class WindowsLabelPrinting
 {
     public static void Print(nint owner, PatientLabel label, string title)
     {
-        const uint ReturnDc = 0x100, NoSelection = 0x1, NoPageNumbers = 0x2, DriverCopies = 0x40000;
+        const uint ReturnDc = 0x100, NoSelection = 0x4, NoPageNumbers = 0x8,
+            DriverCopies = 0x40000, NoCurrentPage = 0x800000, NoPrintToFile = 0x80000;
+        const uint StartPageGeneral = uint.MaxValue, ResultPrint = 1;
         var dialog = new PrintDialog
         {
             Size = (uint)Marshal.SizeOf<PrintDialog>(), Owner = owner,
-            Flags = ReturnDc | NoSelection | NoPageNumbers | DriverCopies,
-            Copies = 1, MinPage = 1, MaxPage = 1, StartPage = uint.MaxValue,
+            Flags = ReturnDc | NoSelection | NoPageNumbers | NoCurrentPage | DriverCopies | NoPrintToFile,
+            Copies = 1, StartPage = StartPageGeneral,
         };
 
         try
         {
             var result = PrintDlgExW(ref dialog);
-            if (result < 0) Marshal.ThrowExceptionForHR(result);
-            if (dialog.ResultAction != 1) return;
+            if (result < 0)
+                throw new InvalidOperationException($"Dialog printer Windows gagal dibuka (0x{result:X8}).");
+            if (dialog.ResultAction != ResultPrint) return;
+            if (dialog.DeviceContext == 0)
+                throw new InvalidOperationException("Windows tidak mengembalikan printer yang dipilih.");
             SendPage(dialog.DeviceContext, label, title);
         }
         finally

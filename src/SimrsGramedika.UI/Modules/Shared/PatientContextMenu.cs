@@ -9,7 +9,12 @@ using SimrsGramedika.UI.Modules.Registrasi.Labels;
 
 namespace SimrsGramedika.UI.Modules.Shared;
 
-public enum PatientMenuAction { DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining, TindakanRawatJalan }
+public enum PatientMenuAction
+{
+    DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining,
+    TindakanRawatJalan, PeriksaLaboratorium, PeriksaRadiologi, PermintaanLab, PermintaanRadiologi,
+    ResepDokter, PeriksaLaboratoriumPa, PeriksaLaboratoriumMb,
+}
 public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic, EmergencyTriage }
 
 public record PatientMenuRequest(string NoRawat, string NoRekamMedis, string NamaPasien, PatientMenuAction Action, string? TileKey = null);
@@ -43,6 +48,7 @@ public static class PatientContextMenu
             var user = AppSession.CurrentUser;
             bool Can(string permission) => user?.HasPermission(permission) == true;
             var hasVisit = !string.IsNullOrWhiteSpace(patient.NoRawat);
+            var registrasiRalan = kind == PatientMenuKind.Registration && hasVisit && !patient.IsInpatient;
             MenuItem ActionItem(string text, PatientMenuAction action, bool allowed) =>
                 Entry(text, allowed ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, action))) : null);
 
@@ -103,15 +109,32 @@ public static class PatientContextMenu
                 :
                 [
                     Group("Data Rekam Medis", [.. (kind is PatientMenuKind.Registration or PatientMenuKind.Emergency ? new[] { ScreeningMenu() } : Array.Empty<MenuItem>()), identity, Entry("Resume Pasien"), history]),
-                    Group("Permintaan", Entry("Jadwal Operasi"), Entry("Permintaan Lab"),
-                        Entry("Permintaan Radiologi"), Entry("Permintaan Rawat Inap")),
+                    Group("Permintaan", Entry("Jadwal Operasi"),
+                        ActionItem("Permintaan Lab", PatientMenuAction.PermintaanLab,
+                            kind == PatientMenuKind.Registration && hasVisit && !patient.IsInpatient && Can("permintaan_lab")),
+                        ActionItem("Permintaan Radiologi", PatientMenuAction.PermintaanRadiologi,
+                            kind == PatientMenuKind.Registration && hasVisit && !patient.IsInpatient && Can("permintaan_radiologi")),
+                        Entry("Permintaan Rawat Inap")),
                     ActionItem("Kamar Inap", PatientMenuAction.KamarInap, hasVisit && !patient.IsInpatient && Can("kamar_inap")),
-                    Group("Tindakan & Pemeriksaan",
+                    Group("Tindakan & Pemeriksaan", [
                         ActionItem(kind == PatientMenuKind.Registration ? "Tindakan Rawat Jalan" : "Pemeriksaan Rawat Jalan",
                             kind == PatientMenuKind.Registration ? PatientMenuAction.TindakanRawatJalan : PatientMenuAction.TindakanDanPemeriksaan,
                             hasVisit && !patient.IsInpatient && Can("tindakan_ralan")),
-                        Entry("Periksa Laboratorium"), Entry("Periksa Radiologi"), Entry("Operasi")),
-                    Group("Obat", Entry("Pemberian Obat"), Entry("No. Resep"), Entry("Resep Dokter"), Entry("Copy Resep")),
+                        ActionItem("Periksa Laboratorium", PatientMenuAction.PeriksaLaboratorium,
+                            registrasiRalan && Can("periksa_lab")),
+                        .. (kind == PatientMenuKind.Registration ? new[]
+                        {
+                            ActionItem("Periksa Laboratorium Patologi Anatomi", PatientMenuAction.PeriksaLaboratoriumPa,
+                                registrasiRalan && Can("pemeriksaan_lab_pa")),
+                            ActionItem("Periksa Laboratorium Mikrobiologi", PatientMenuAction.PeriksaLaboratoriumMb,
+                                registrasiRalan && Can("pemeriksaan_lab_mb")),
+                        } : Array.Empty<MenuItem>()),
+                        ActionItem("Periksa Radiologi", PatientMenuAction.PeriksaRadiologi,
+                            registrasiRalan && Can("periksa_radiologi")),
+                        Entry("Operasi")]),
+                    Group("Obat", Entry("Pemberian Obat"), Entry("No. Resep"),
+                        ActionItem("Resep Dokter", PatientMenuAction.ResepDokter, registrasiRalan && Can("resep_dokter")),
+                        Entry("Copy Resep")),
                     Group("Billing/Pembayaran Pasien", Entry("Billing Parsial"),
                         ActionItem("Billing Total", PatientMenuAction.BillingPembayaran, hasVisit &&
                             (patient.IsInpatient ? Can("billing_ranap") : Can("kasir_ralan") || Can("billing_ralan")))),

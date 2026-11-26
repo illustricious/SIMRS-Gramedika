@@ -1356,7 +1356,86 @@ public partial class MainWindow : Window
                 kasir.BackRequested += Back;
                 await OpenFeatureAsync(kasir, () => kasir.SearchForAsync(request.NoRawat));
                 return;
+
+            case PatientMenuAction.PeriksaLaboratorium when _user?.HasPermission("periksa_lab") == true &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await OpenRegistrationLabAsync(SimrsGramedika.Data.LabCategory.PK, request.NoRawat, Back);
+                return;
+
+            case PatientMenuAction.PeriksaLaboratoriumPa when _user?.HasPermission("pemeriksaan_lab_pa") == true &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await OpenRegistrationLabAsync(SimrsGramedika.Data.LabCategory.PA, request.NoRawat, Back);
+                return;
+
+            case PatientMenuAction.PeriksaLaboratoriumMb when _user?.HasPermission("pemeriksaan_lab_mb") == true &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await OpenRegistrationLabAsync(SimrsGramedika.Data.LabCategory.MB, request.NoRawat, Back);
+                return;
+
+            case PatientMenuAction.PeriksaRadiologi when _user?.HasPermission("periksa_radiologi") == true &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                var radiologi = new Modules.Radiologi.PeriksaRadiologiFormView();
+                radiologi.BackRequested += Back;
+                radiologi.SavedRequested += Back;
+                await OpenFeatureAsync(radiologi, () => radiologi.PrefillAsync(request.NoRawat, null));
+                return;
+
+            case PatientMenuAction.PermintaanLab when _user is { } labUser && labUser.HasPermission("permintaan_lab") &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await ShowRegistrationOrderAsync(request, labUser, SimrsGramedika.Data.JenisOrderRalan.LabPk, "Permintaan Laboratorium");
+                return;
+
+            case PatientMenuAction.PermintaanRadiologi when _user is { } radUser && radUser.HasPermission("permintaan_radiologi") &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await ShowRegistrationOrderAsync(request, radUser, SimrsGramedika.Data.JenisOrderRalan.Radiologi, "Permintaan Radiologi");
+                return;
+
+            case PatientMenuAction.ResepDokter when _user is { } resepUser && resepUser.HasPermission("resep_dokter") &&
+                !string.IsNullOrWhiteSpace(request.NoRawat):
+                await ShowRegistrationOrderAsync(request, resepUser, SimrsGramedika.Data.JenisOrderRalan.Resep, "Input Resep Dokter");
+                return;
         }
+    }
+
+    private Task OpenRegistrationLabAsync(SimrsGramedika.Data.LabCategory category, string noRawat, EventHandler back)
+    {
+        var form = new Modules.Laboratorium.PeriksaLabFormView(category);
+        form.BackRequested += back;
+        form.SavedRequested += back;
+        return OpenFeatureAsync(form, () => form.PrefillAsync(noRawat, null));
+    }
+
+    private Task ShowRegistrationOrderAsync(PatientMenuRequest request, AuthenticatedUser user,
+        SimrsGramedika.Data.JenisOrderRalan jenis, string title)
+    {
+        var header = new TextBlock
+        {
+            Text = $"{request.NamaPasien}  ·  No. RM {request.NoRekamMedis}  ·  No. Rawat {request.NoRawat}",
+            Classes = { "pageSubtitle" },
+            Margin = new Avalonia.Thickness(10, 10, 10, 0),
+            TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+        };
+        DockPanel.SetDock(header, Dock.Top);
+        var window = new Window
+        {
+            Title = title,
+            Width = 980,
+            Height = 710,
+            MinWidth = 670,
+            MinHeight = 530,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Content = new ContentControl
+            {
+                Classes = { "biruTegas" },
+                HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+                VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Stretch,
+                Content = new DockPanel
+                {
+                    Children = { header, new Modules.RawatJalan.OrderRalanView(request.NoRawat, request.NoRekamMedis, user, jenis) },
+                },
+            },
+        };
+        return window.ShowDialog(this);
     }
 
     private async System.Threading.Tasks.Task ShowNotImplementedAsync(string label)
