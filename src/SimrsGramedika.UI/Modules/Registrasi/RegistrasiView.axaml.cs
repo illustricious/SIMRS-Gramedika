@@ -500,7 +500,8 @@ public partial class RegistrasiView : UserControl
         var lanjutan = statusBaru switch
         {
             "Dirujuk" => " Formulir Rujukan Keluar belum tersedia di aplikasi ini.",
-            "Meninggal" => " Data pasien meninggal belum dapat diisi di aplikasi ini.",
+            "Meninggal" when AppSession.CurrentUser?.HasPermission(PasienMeninggalService.Izin) != true =>
+                " Data pasien meninggal perlu diisi oleh akun berhak Pasien Meninggal.",
             _ => "",
         };
         var tersimpan = await TerapkanStatusAsync(row,
@@ -510,6 +511,28 @@ public partial class RegistrasiView : UserControl
         if (tersimpan && statusBaru == "Dirawat" && AppSession.CurrentUser?.HasPermission("kamar_inap") == true)
             PatientMenuRequested?.Invoke(this,
                 new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, PatientMenuAction.KamarInap));
+        if (tersimpan && statusBaru == "Meninggal") await IsiPasienMeninggalAsync(row);
+    }
+
+    private async Task IsiPasienMeninggalAsync(RegistrasiListItem row)
+    {
+        if (AppSession.CurrentUser is not { } user || !user.HasPermission(PasienMeninggalService.Izin)) return;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        try
+        {
+            var dokter = (this.FindControl<ComboBox>("InputDokterCombo")!.ItemsSource as IEnumerable<Dokter>)?.ToList() ?? [];
+            var form = new Pasien.PasienMeninggalWindow(new PasienMeninggalService(DatabaseSettings.Load(), user),
+                row.NoRekamMedis, row.NamaPasien, dokter, row.KodeDokter);
+            var tersimpan = await form.ShowForAsync(this);
+            status.Classes.Remove("error");
+            status.Classes.Remove("saved");
+            if (tersimpan) status.Classes.Add("saved");
+            status.Text = tersimpan
+                ? $"Data meninggal {row.NamaPasien} tersimpan."
+                : $"Status {row.NoRawat} sudah Meninggal, tetapi data kematian belum disimpan.";
+            status.IsVisible = true;
+        }
+        catch (Exception ex) { ShowInputError(status, $"Gagal membuka data pasien meninggal: {ex.Message}"); }
     }
 
     private async void SetStatusPoliDariContext(RegistrasiListItem row, string statusPoli) =>

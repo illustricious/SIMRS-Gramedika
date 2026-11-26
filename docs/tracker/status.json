@@ -1261,7 +1261,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnMeninggal": {
     "status": "sebagian",
-    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir data pasien meninggal (pasien_mati) belum tersedia. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir data pasien meninggal terbuka bagi akun berhak pasien_meninggal. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnPulangPaksa": {
     "status": "sebagian",
@@ -3282,5 +3282,13 @@
   "jendela|simrskhanza/DlgRawatInap.java|DlgRawatInap": {
     "status": "sebagian",
     "bukti": "DlgRawatInap.java:1 - PemeriksaanRanapWindow menyediakan tab Pemeriksaan SOAPIE melalui tombol SOAPIE pada RawatInapView. Tindakan, obstetri dan ginekologi belum tersedia."
+  },
+  "aksi|simrskhanza/DlgPasienMati.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "PasienMeninggalWindow dan PasienMeninggalService.SimpanAsync (hak pasien_meninggal), dibuka dari Set Status Meninggal di Registrasi; data lama diperbarui. Kode ICD diketik tanpa pencarian. Diuji pada MariaDB sintetis dan uji layar headless sementara; database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgPasienMati.java|BtnDokter": {
+    "status": "sebagian",
+    "bukti": "Dokter DPJP dipilih dari daftar dokter di PasienMeninggalWindow, bawaan dokter kunjungan. Diuji pada MariaDB sintetis dan uji layar headless sementara; database RS belum diuji."
   }
 }

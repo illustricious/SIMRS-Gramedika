@@ -103,7 +103,7 @@ public class RegistrasiMenuTests
         public FixtureFactAttribute()
         {
             if (!int.TryParse(Environment.GetEnvironmentVariable("SIMRS_REGISTRASI_FIXTURE_PORT"), out _))
-                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien, set_validasi_catatan, mutasi_berkas) pada MariaDB lokal.";
+                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien, set_validasi_catatan, mutasi_berkas, pasien_mati) pada MariaDB lokal.";
         }
     }
 
@@ -208,6 +208,44 @@ public class RegistrasiMenuTests
         await db.ExecAsync("UPDATE set_validasi_catatan SET tampilkan_catatan='Yes'");
         Assert.Equal("Alergi uji", await service.UntukDitampilkanAsync(rm));
         Assert.Equal("", await service.UntukDitampilkanAsync(rm + "X"));
+    }
+
+    [Fact]
+    public async Task PasienMeninggalDitolakSebelumKoneksi()
+    {
+        var settings = new DatabaseSettings { Host = "127.0.0.1", Port = 1 };
+        var data = new PasienMeninggalData(new DateTime(2026, 11, 26, 8, 0, 0), "Sebab uji", "Rumah Sakit", "D1");
+        var sekarang = new DateTime(2026, 11, 26, 9, 0, 0);
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new PasienMeninggalService(settings, new()).SimpanAsync("000001", data, sekarang));
+        var service = new PasienMeninggalService(settings, new() { Permissions = new HashSet<string> { "pasien_meninggal" } });
+        foreach (var salah in new[]
+        {
+            data with { Keterangan = " " }, data with { KodeDokter = "" }, data with { TempatMeninggal = "Lain" },
+            data with { Icd1 = new string('A', 21) }, data with { Waktu = sekarang.AddMinutes(1) },
+        })
+            await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync("000001", salah, sekarang));
+    }
+
+    [FixtureFact]
+    public async Task PasienMeninggalSimpanDanPerbarui()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var rm = "M" + Guid.NewGuid().ToString("N")[..10];
+        var service = new PasienMeninggalService(settings, new() { Permissions = new HashSet<string> { "pasien_meninggal" } });
+        Assert.Null(await service.MuatAsync(rm));
+
+        // Dokter fiktif: foreign key sesi layanan aktif, jadi dokter dan pasien harus ada.
+        await db.ExecAsync("INSERT INTO pasien(no_rkm_medis) VALUES(@p0)", rm);
+        await db.ExecAsync("INSERT IGNORE INTO dokter(kd_dokter,nm_dokter) VALUES('D1','DOKTER UJI')");
+        var data = new PasienMeninggalData(new DateTime(2026, 11, 26, 8, 30, 15), "  Sebab uji ", "Rumah Sakit", "D1", " I21 ");
+        await service.SimpanAsync(rm, data);
+        Assert.Equal(data with { Keterangan = "Sebab uji", Icd1 = "I21" }, await service.MuatAsync(rm));
+        await service.SimpanAsync(rm, data with { Keterangan = "Sebab baru", TempatMeninggal = "-" });
+        Assert.Equal(("Sebab baru", "-"), ((await service.MuatAsync(rm))!.Keterangan, (await service.MuatAsync(rm))!.TempatMeninggal));
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM pasien_mati WHERE no_rkm_medis=@p0", rm));
     }
 
     [FixtureFact]
