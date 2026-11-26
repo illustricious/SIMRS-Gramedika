@@ -3,6 +3,14 @@
     "status": "sebagian",
     "bukti": "KasirRepository.BayarRanapAsync menagihkan kamar hingga pulang, biaya kamar lain, tindakan, Lab/Radiologi, pemberian obat, dan resep pulang tervalidasi. Fixture MariaDB membandingkan total terhadap rumus Java, serta menguji saldo suspen, jurnal, izin, rollback, dan kuitansi. Deposit, piutang, retur, operasi dan penggunaan operasional bersama Java masih terbuka."
   },
+  "aksi|simrskhanza/frmUtama.java|btnDataPenjualan": {
+    "status": "sebagian",
+    "bukti": "DataPenjualanView dan FarmasiRepository.GetPenjualanAsync menyediakan laporan dengan periode bebas, pencarian kata kunci, total, serta pesan error yang terlihat. Layar masih baca-saja; kesetaraan aksi DlgCariPenjualan.java dan verifikasi pada database uji belum dilakukan."
+  },
+  "aksi|simrskhanza/frmUtama.java|btnResepObatDepan": {
+    "status": "sebagian",
+    "bukti": "NoResepView dan NoResepRepository mendukung pencarian periode/kata kunci, melihat obat pada resep, validasi nomor rawat, serta menyimpan header resep dengan nomor otomatis. Input detail obat/racikan dan alur penuh DlgResepObat.java belum setara; verifikasi database uji masih terbuka."
+  },
   "aksi|inventory/DlgPenjualan.java|BtnSimpan": {
     "status": "sebagian",
     "bukti": "PenjualanTunaiService menyimpan jual bebas F.A nonbatch tanpa PPN, diskon, atau verifikasi terpisah. PelunasanPenjualanTests menguji nota, stok, riwayat, jurnal dan rollback."

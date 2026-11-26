@@ -13094,10 +13094,10 @@ aksi|simrskhanza/frmUtama.java|BtnLogin	aksi	Log-in	simrskhanza/frmUtama.java:19
 aksi|simrskhanza/frmUtama.java|BtnCancel	aksi	Batal	simrskhanza/frmUtama.java:1992	belum diaudit	
 aksi|simrskhanza/frmUtama.java|button1	aksi	button1	simrskhanza/frmUtama.java:2039	belum diaudit	
 aksi|simrskhanza/frmUtama.java|ChkInput	aksi	ChkInput	simrskhanza/frmUtama.java:2082	belum diaudit	
-aksi|simrskhanza/frmUtama.java|btnDataPenjualan	aksi	Data Penjualan Obat & BHP	simrskhanza/frmUtama.java:2118	belum diaudit	
+aksi|simrskhanza/frmUtama.java|btnDataPenjualan	aksi	Data Penjualan Obat & BHP	simrskhanza/frmUtama.java:2118	sebagian	DataPenjualanView dan FarmasiRepository.GetPenjualanAsync menyediakan laporan dengan periode bebas, pencarian kata kunci, total, serta pesan error yang terlihat. Layar masih baca-saja; kesetaraan aksi DlgCariPenjualan.java dan verifikasi pada database uji belum dilakukan.
 aksi|simrskhanza/frmUtama.java|btnInputPenjualan	aksi	Input Penjualan Obat & BHP	simrskhanza/frmUtama.java:2129	belum diaudit	
 aksi|simrskhanza/frmUtama.java|btnDataPenyerahanDarah	aksi	Data Penyerahan Darah	simrskhanza/frmUtama.java:2140	belum diaudit	
-aksi|simrskhanza/frmUtama.java|btnResepObatDepan	aksi	No. Resep	simrskhanza/frmUtama.java:2151	belum diaudit	
+aksi|simrskhanza/frmUtama.java|btnResepObatDepan	aksi	No. Resep	simrskhanza/frmUtama.java:2151	sebagian	NoResepView dan NoResepRepository mendukung pencarian periode/kata kunci, melihat obat pada resep, validasi nomor rawat, serta menyimpan header resep dengan nomor otomatis. Input detail obat/racikan dan alur penuh DlgResepObat.java belum setara; verifikasi database uji masih terbuka.
 aksi|simrskhanza/frmUtama.java|BtnMenu	aksi	Menu	simrskhanza/frmUtama.java:7204	belum diaudit	
 aksi|simrskhanza/frmUtama.java|BtnToolReg	aksi	Registrasi	simrskhanza/frmUtama.java:7231	belum diaudit	
 aksi|simrskhanza/frmUtama.java|btnToolIGD	aksi	IGD/UGD	simrskhanza/frmUtama.java:7249	belum diaudit	
