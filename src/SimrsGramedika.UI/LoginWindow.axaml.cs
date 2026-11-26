@@ -5,7 +5,6 @@ using Avalonia.Interactivity;
 using SimrsGramedika.Config;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data.Auth;
-using SimrsGramedika.UI.Controls;
 
 namespace SimrsGramedika.UI;
 
@@ -82,9 +81,6 @@ public partial class LoginWindow : Window
             this.FindControl<TextBlock>("ErrorText")!.IsVisible = false;
         }
     }
-
-    private void OnTitleBarPointerPressed(object? sender, PointerPressedEventArgs e)
-        => WindowButtons.TanganiBilahJudul(this, e);
 
     private void UpdateLayoutForWidth(double width)
     {

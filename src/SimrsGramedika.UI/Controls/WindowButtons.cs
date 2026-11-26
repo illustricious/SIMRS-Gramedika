@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Controls;
+using Avalonia.Controls.Chrome;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Layout;
@@ -37,8 +38,10 @@ public sealed class WindowButtons : StackPanel
     public WindowButtons()
     {
         Orientation = Orientation.Horizontal;
+        // Berada di atas bilah judul, tetapi tetap menerima klik biasa.
+        WindowDecorationProperties.SetElementRole(this, WindowDecorationsElementRole.User);
         _kecilkan = Tombol("MinimizeButton", IkonKecilkan, "Kecilkan");
-        _ukuran = Tombol("FullscreenButton", IkonJendela, "Ukuran jendela biasa");
+        _ukuran = Tombol("MaximizeButton", IkonJendela, "Ukuran jendela biasa");
         _tutup = Tombol("CloseButton", IkonTutup, "Tutup");
         _tutup.Classes.Add("close");
         _kecilkan.Click += (_, _) => { if (_window is not null) _window.WindowState = WindowState.Minimized; };
@@ -48,15 +51,7 @@ public sealed class WindowButtons : StackPanel
     }
 
     public static void UbahUkuran(Window window) =>
-        window.WindowState = window.WindowState == WindowState.Normal ? WindowState.FullScreen : WindowState.Normal;
-
-    /// <summary>Area kosong bilah judul: geser untuk memindahkan jendela, klik dua kali untuk mengubah ukuran.</summary>
-    public static void TanganiBilahJudul(Window window, PointerPressedEventArgs e)
-    {
-        if (!e.GetCurrentPoint(window).Properties.IsLeftButtonPressed) return;
-        if (e.ClickCount == 2) UbahUkuran(window);
-        else if (window.WindowState == WindowState.Normal) window.BeginMoveDrag(e);
-    }
+        window.WindowState = window.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -82,7 +77,7 @@ public sealed class WindowButtons : StackPanel
     private void Perbarui()
     {
         var biasa = _window?.WindowState == WindowState.Normal;
-        Atur(_ukuran, biasa ? IkonPenuh : IkonJendela, biasa ? "Layar penuh" : "Ukuran jendela biasa");
+        Atur(_ukuran, biasa ? IkonPenuh : IkonJendela, biasa ? "Maksimalkan" : "Ukuran jendela biasa");
     }
 
     private static Button Tombol(string nama, string ikon, string label)

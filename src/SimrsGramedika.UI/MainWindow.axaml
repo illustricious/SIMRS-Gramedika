@@ -8,8 +8,8 @@
         Title="SIMRS Gramedika"
         Icon="avares://SimrsGramedika.UI/Assets/app.ico"
         Width="1200" Height="760"
-        MinWidth="800" MinHeight="540"
-        WindowState="FullScreen"
+        MinWidth="640" MinHeight="360"
+        WindowState="Maximized"
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         Background="{DynamicResource ThemeBackgroundBrush}">
@@ -19,9 +19,11 @@
         <!-- Row 0: application shortcuts and window controls. -->
         <Border Grid.Row="0" Name="TitleBar" Background="{DynamicResource TegasNavigationBrush}" MinHeight="42"
                 BorderBrush="{DynamicResource ThemeAccentBrush}" BorderThickness="0,0,0,2"
-                PointerPressed="OnTitleBarPointerPressed">
+                WindowDecorationProperties.ElementRole="TitleBar">
             <Grid ColumnDefinitions="Auto,*,Auto">
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <!-- Tombol tetap menerima klik; area kosong di sekitarnya menjadi bilah judul. -->
+                <WrapPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Left"
+                           WindowDecorationProperties.ElementRole="User">
                     <Image Source="{StaticResource GramedikaMark}" Width="28" Height="28" Margin="14,0,8,0"
                            VerticalAlignment="Center" />
                     <Button Classes="shortcut" Content="Program" Click="OnTopShortcutClick" />
@@ -32,7 +34,7 @@
                     <Border Width="1" Background="#627B9F" Margin="6,9" />
                     <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="Mode Gelap"
                                   Click="OnThemeToggleClick" HorizontalAlignment="Right" />
-                </StackPanel>
+                </WrapPanel>
                 <controls:WindowButtons Grid.Column="2" />
             </Grid>
         </Border>

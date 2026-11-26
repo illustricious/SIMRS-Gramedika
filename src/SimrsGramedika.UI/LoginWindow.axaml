@@ -4,7 +4,7 @@
         x:Class="SimrsGramedika.UI.LoginWindow"
         Title="Login — SIMRS Gramedika"
         Width="1080" Height="700" MinWidth="360" MinHeight="320" WindowStartupLocation="CenterScreen"
-        WindowState="FullScreen"
+        WindowState="Maximized"
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
         Icon="avares://SimrsGramedika.UI/Assets/app.ico"
@@ -68,9 +68,9 @@
                        Margin="16,4,16,14" />
         </Grid>
 
-        <!-- Bilah jendela tanpa bingkai: area kosong bisa digeser, klik dua kali mengubah ukuran. -->
+        <!-- Bilah judul: Windows menangani geser, snap ke tepi/pojok, dan klik dua kali. -->
         <Border Name="DragArea" Grid.ColumnSpan="2" Height="36" VerticalAlignment="Top" Background="Transparent"
-                PointerPressed="OnTitleBarPointerPressed" />
+                WindowDecorationProperties.ElementRole="TitleBar" />
         <controls:WindowButtons Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" VerticalAlignment="Top"
                                 Height="36" Terang="True" />
     </Grid>

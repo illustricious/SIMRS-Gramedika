@@ -1244,9 +1244,6 @@ public partial class MainWindow : Window
         ShowPage(Page.Feature);
     }
 
-    private void OnTitleBarPointerPressed(object? sender, Avalonia.Input.PointerPressedEventArgs e)
-        => Controls.WindowButtons.TanganiBilahJudul(this, e);
-
     /// <summary>Raised by the toolbar "Keluar" button — App swaps in the login window instead of quitting.</summary>
     public event EventHandler? LogoutRequested;
 
