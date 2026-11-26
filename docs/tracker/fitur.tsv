@@ -15586,7 +15586,7 @@ tile|N|btnUTDDonorDarah	tile	N > Donor Darah	LegacyMenuCatalog.cs	layar tersedia
 tile|N|btnUTDCekalDarah	tile	N > Pencekalan Darah	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuNRSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|N|btnUTDPemisahanDarah	tile	N > Pemisahan Darah	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuNRSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|N|btnUTDStokDarah	tile	N > Stok Darah	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuNRSpecs.cs. Kesetaraan fungsi belum diaudit.
-tile|N|btnUTDPenyerahanDarah	tile	N > Penyerahan Darah	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuNRSpecs.cs. Kesetaraan fungsi belum diaudit.
+tile|N|btnUTDPenyerahanDarah	tile	N > Penyerahan Darah	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
 tile|O|btnGrafikKunjunganPoli	tile	O > Registrasi Per Poli	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuOSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|O|btnGrafikKunjunganPerDokter	tile	O > Registrasi Per Dokter	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuOSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|O|btnGrafikKunjunganPerPekerjaan	tile	O > Registrasi Per Pekerjaan	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuOSpecs.cs. Kesetaraan fungsi belum diaudit.

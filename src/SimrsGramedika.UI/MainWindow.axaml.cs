@@ -808,6 +808,16 @@ public partial class MainWindow : Window
                 await view.ReloadAsync();
                 break;
             }
+            case Modules.Farmasi.FarmasiAction.DataPenyerahanDarah:
+            {
+                var spec = SimrsGramedika.Data.Master.MenuNRSpecs.Reports["btnUTDPenyerahanDarah"]
+                    with { Title = "Data Penyerahan Darah" };
+                var view = new Modules.Shared.ReportView(spec);
+                view.BackRequested += async (_, _) => await OpenFarmasiMenuAsync();
+                pageHost.Content = view;
+                await view.ReloadAsync();
+                break;
+            }
             case Modules.Farmasi.FarmasiAction.DaftarResepDokter:
             {
                 var view = new Modules.Farmasi.DaftarResepView();
@@ -835,10 +845,8 @@ public partial class MainWindow : Window
                 break;
             }
             default:
-                // "Data Penyerahan Darah" / "No. Resep" — deliberately deferred, see
-                // FarmasiMenuView.axaml's doc comment and docs/handover/04-HISTORY.md.
-                await ShowNotImplementedAsync(action == Modules.Farmasi.FarmasiAction.DataPenyerahanDarah
-                    ? "Data Penyerahan Darah" : "No. Resep");
+                // No. Resep is still deferred; Data Penyerahan Darah uses the read-only UTD report above.
+                await ShowNotImplementedAsync("No. Resep");
                 return;
         }
 
