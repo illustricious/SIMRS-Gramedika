@@ -160,7 +160,7 @@ public partial class IgdView : UserControl
         this.FindControl<TextBox>("InputAlamatPjBox")!.Text = string.Empty;
     }
 
-    private void OnCetakClick(object? sender, RoutedEventArgs e)
+    private async void OnCetakClick(object? sender, RoutedEventArgs e)
     {
         var items = (this.FindControl<DataGrid>("IgdGrid")!.ItemsSource as IEnumerable<RegistrasiListItem>)?.ToList()
                     ?? new List<RegistrasiListItem>();
@@ -172,7 +172,8 @@ public partial class IgdView : UserControl
 
         try
         {
-            var path = RegistrasiReport.GeneratePdf(items, "Registrasi IGD");
+            var kop = await KopInstansi.MuatAsync(DatabaseSettings.Load());
+            var path = RegistrasiReport.GeneratePdf(items, "Registrasi IGD", kop);
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
         catch (Exception ex)

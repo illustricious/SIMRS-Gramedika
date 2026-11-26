@@ -56,7 +56,7 @@ Kode: `PatientContextMenu.cs`, `ContextReports.cs`, `ReportView.cs`, `CatatanPas
 - **Set Status** (Sudah, Belum, Batal): ditolak bila pasien punya data kamar inap atau billing. Batal membuat `biaya_reg` 0. Berbeda dari Java: perlu hak `edit_registrasi` atau Admin Utama, dibatasi 2x24 jam untuk non-Admin Utama, dan penolakan billing berlaku untuk ketiga status (Java hanya untuk Batal). Seperti Java, mengembalikan registrasi Batal ke Sudah/Belum tidak memulihkan biaya registrasi.
 - **Catatan Pasien:** baca, simpan, dan hapus pada `catatan_pasien` dengan hak `catatan_pasien`.
 - **Laporan, Grafik Analisa, Input Data:** membuka laporan baca-saja yang sudah ada. Laporan pasien disaring persis menurut No. RM. Laporan berperiode tetap memakai periode bawaan layar; ubah tanggal untuk melihat data lama. Berkas digital dan insiden hanya daftar, belum input.
-- **Cetak:** Bukti Register 1-3, Check List 1-4, dan Lembar Periksa 1-6 dari template Jasper Khanza. Logo dan email RS tidak termasuk.
+- **Cetak:** Bukti Register 1-3, Check List 1-4, dan Lembar Periksa 1-6 dari template Jasper Khanza. Template-nya tidak memuat logo dan e-mail RS.
 - Pemeriksaan: seluruh format cetak digambar dengan data sintetis; status dan catatan diuji pada MariaDB 11.4.8 lokal dengan lima tabel dari `schema_sik.sql`. Untuk mengulang, buat `simrs_registrasi_fixture` (`pasien`, `reg_periksa`, `kamar_inap`, `billing`, `catatan_pasien`) lalu set `SIMRS_REGISTRASI_FIXTURE_PORT`. Query cetak, query laporan, klik menu di aplikasi, dan printer fisik belum diuji.
 
 ## Pasien baru dari Registrasi (26 November 2026)
@@ -79,3 +79,13 @@ Perbaikan: layar Pasien sebelumnya mengisi kode wilayah, suku, bahasa, dan cacat
 - Akun harus berhak `pasien`. Isian yang gagal dimuat tidak dapat disimpan.
 - Pemeriksaan: MariaDB 11.4.8 sintetis (`PasienBaruTests`) serta satu uji headless sementara untuk simpan, pilih baris, dan ubah dari layar. Database RS belum diuji.
 - Pilihan golongan darah, status nikah, hubungan P.J., dan agama memakai tulisan Khanza, satu daftar untuk layar dan dialog (`PilihanIdentitas.cs`). Agama lama di luar daftar tetap tampil.
+
+## Cetak berkop RS (26 November 2026)
+
+Kode: `KopInstansi.cs`, `RegistrasiReport.cs`. Tes: `KopInstansiTests.cs`.
+
+- Daftar Pasien Rawat Jalan, Daftar Rujukan Internal, dan daftar Registrasi IGD memakai kop dari tabel `setting` (baris `aktifkan = 'Yes'`): logo, nama, alamat, kontak, dan e-mail. Logo kosong atau rusak dilewati.
+- Bukti Register, Check List, dan Lembar Periksa tetap mengikuti template Jasper Khanza, yang tidak memuat logo maupun e-mail.
+- Pemeriksaan: kop dibaca dari tabel `setting` sintetis pada MariaDB 11.4.8 dan contoh PDF diperiksa secara visual. Logo asli RS dan printer fisik belum diuji.
+- Cetak daftar di Registrasi mengikuti `rptReg`: halaman 913 x 595 poin, 14 kolom (tanggal, jam, dokter, No. RM, nama, telepon, umur saat daftar, J.K., poliklinik, penanggung jawab, alamat, status daftar, asal rujukan, jenis bayar), judul "DATA REGISTRASI PERIKSA", dan kaki tanggal serta nomor halaman. Urutan baris sama dengan daftar di layar; datanya dibaca ulang saat cetak (`RegistrasiCetak.cs`, tes `RegistrasiCetakTests.cs`).
+- Beda yang tersisa: huruf bawaan QuestPDF ukuran 7,5 (Khanza Tahoma 8). Cetak rujukan internal dan IGD masih memakai susunan ringkas.

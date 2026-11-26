@@ -528,7 +528,7 @@ public partial class RegistrasiView : UserControl
             if (ReferenceEquals(sender, this.FindControl<Button>("CetakRujukanButton")))
             {
                 if (this.FindControl<DataGrid>("RujukanInternalGrid")!.ItemsSource is not IReadOnlyList<RujukanInternalItem> { Count: > 0 } referrals) return;
-                path = RegistrasiReport.GenerateRujukanPdf(referrals);
+                path = RegistrasiReport.GenerateRujukanPdf(referrals, await KopInstansi.MuatAsync(DatabaseSettings.Load()));
             }
             else
             {
@@ -537,7 +537,9 @@ public partial class RegistrasiView : UserControl
                     await Dialogs.InfoAsync(this, "Cetak Registrasi", "Tidak ada data untuk dicetak.");
                     return;
                 }
-                path = RegistrasiReport.GeneratePdf(items, "Daftar Pasien Rawat Jalan");
+                var settings = DatabaseSettings.Load();
+                var rows = await RegistrasiCetakRow.MuatAsync(settings, items.Select(i => i.NoRawat).ToList());
+                path = RegistrasiReport.GenerateRegistrasiPdf(rows, await KopInstansi.MuatAsync(settings));
             }
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
