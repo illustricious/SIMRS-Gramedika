@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="226" columnWidth="585" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5">
+  <detail>
+    <band height="216" splitType="Stretch">
+      <rectangle>
+        <reportElement x="0" y="0" width="279" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" />
+        </graphicElement>
+      </rectangle>
+      <textField>
+        <reportElement x="40" y="51" width="97" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="241" y="51" width="36" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="16" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+      </textField>
+      <line direction="BottomUp">
+        <reportElement x="37" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <staticText>
+        <reportElement x="0" y="0" width="37" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Tgl.Keluar]]></text>
+      </staticText>
+      <line>
+        <reportElement x="0" y="47" width="279" height="1" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <staticText>
+        <reportElement x="238" y="0" width="40" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[No.RM]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="37" y="0" width="103" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Nama Pasien]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="140" y="0" width="45" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Tujuan]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="143" y="51" width="39" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_poli}]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd/MM/yyyy HH:mm:ss">
+        <reportElement x="1" y="51" width="35" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{tgl_registrasi}]]></textFieldExpression>
+      </textField>
+      <staticText>
+        <reportElement x="185" y="0" width="53" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Nama & Paraf Peminjam]]></text>
+      </staticText>
+      <line direction="BottomUp">
+        <reportElement x="140" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line direction="BottomUp">
+        <reportElement x="184" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line direction="BottomUp">
+        <reportElement x="238" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <textField>
+        <reportElement x="447" y="51" width="39" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_poli}]]></textFieldExpression>
+      </textField>
+      <textField pattern="dd/MM/yyyy HH:mm:ss">
+        <reportElement x="305" y="51" width="35" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{tgl_registrasi}]]></textFieldExpression>
+      </textField>
+      <rectangle>
+        <reportElement x="304" y="0" width="279" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" />
+        </graphicElement>
+      </rectangle>
+      <staticText>
+        <reportElement x="341" y="0" width="103" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Nama Pasien]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="444" y="0" width="45" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Tujuan]]></text>
+      </staticText>
+      <line direction="BottomUp">
+        <reportElement x="444" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line direction="BottomUp">
+        <reportElement x="542" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line direction="BottomUp">
+        <reportElement x="341" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line>
+        <reportElement x="304" y="47" width="279" height="1" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <staticText>
+        <reportElement x="542" y="0" width="40" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[No.RM]]></text>
+      </staticText>
+      <line direction="BottomUp">
+        <reportElement x="488" y="0" width="1" height="182" forecolor="#006666" />
+        <graphicElement>
+          <pen lineWidth="1.0" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <textField>
+        <reportElement x="545" y="51" width="36" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="16" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="344" y="51" width="97" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+      </textField>
+      <staticText>
+        <reportElement x="489" y="0" width="53" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Nama & Paraf Peminjam]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="304" y="0" width="37" height="47" />
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Tgl.Keluar]]></text>
+      </staticText>
+      <textField pattern="dd/MM/yyyy HH:mm:ss">
+        <reportElement x="305" y="51" width="35" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{tgl_registrasi}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="447" y="51" width="39" height="130" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
+          <font fontName="Tahoma" size="10" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_poli}]]></textFieldExpression>
+      </textField>
+    </band>
+  </detail>
+</jasperReport>

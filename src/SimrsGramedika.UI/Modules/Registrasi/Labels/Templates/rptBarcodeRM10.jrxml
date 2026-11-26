@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="56" pageHeight="708" columnWidth="50" leftMargin="3" rightMargin="3" topMargin="3" bottomMargin="3">
+  <title>
+    <band height="702">
+      <textField pattern="">
+        <reportElement mode="Transparent" x="37" y="289" width="13" height="108" />
+        <textElement verticalAlignment="Middle" rotation="Left">
+          <font fontName="Tahoma" size="8" isBold="false" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA["No. RM : "+$F{no_rkm_medis}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="13" y="119" width="13" height="278" />
+        <textElement verticalAlignment="Middle" rotation="Left">
+          <font fontName="Tahoma" size="8" isBold="true" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{nm_pasien}+"/"+$F{nm_ibu}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="25" y="256" width="13" height="141" />
+        <textElement verticalAlignment="Middle" rotation="Left">
+          <font fontName="Tahoma" size="8" isBold="false" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA["Tgl Lahir : "+$F{tgl_lahir}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="0" y="119" width="13" height="278" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+          <font fontName="Tahoma" size="8" isBold="true" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$P{namars}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+</jasperReport>

@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.VisualTree;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data;
+using SimrsGramedika.UI.Modules.Registrasi.Labels;
 
 namespace SimrsGramedika.UI.Modules.Shared;
 
@@ -118,7 +119,13 @@ public static class PatientContextMenu
                     Entry("Laporan"), Entry("Grafik Analisa"), Entry("Surat-Surat"),
                     .. (kind is PatientMenuKind.Emergency or PatientMenuKind.EmergencyTriage
                         ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
-                        : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"), Entry("Label & Barcode") }),
+                        : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"),
+                            kind == PatientMenuKind.Registration
+                                ? Group("Label & Barcode", PatientLabel.Formats.Select(format => Entry(format.Title,
+                                    hasVisit && Can("registrasi")
+                                        ? () => Run(() => PatientLabelPreview.Open(grid, patient, format))
+                                        : null)).ToArray())
+                                : Entry("Label & Barcode") }),
                     new Separator(),
                     rujukInternal is null ? Entry("Rujukan") : Group("Rujukan",
                         Entry("Masuk", hasVisit && rujukMasuk is not null && RujukanMasukService.BisaMengelola(user)

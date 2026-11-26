@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="162" pageHeight="53" columnWidth="158" leftMargin="2" rightMargin="2" topMargin="2" bottomMargin="2">
+  <detail>
+    <band height="47" splitType="Stretch">
+      <componentElement>
+        <reportElement x="1" y="21" width="143" height="18" />
+        <jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barWidth="1" barHeight="25">
+          <jr:codeExpression><![CDATA[$F{no_rawat}]]></jr:codeExpression>
+        </jr:barbecue>
+      </componentElement>
+      <line>
+        <reportElement x="4" y="0" width="140" height="1" forecolor="#000000" />
+        <graphicElement>
+          <pen lineWidth="0.5" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line>
+        <reportElement x="4" y="44" width="140" height="1" forecolor="#000000" />
+        <graphicElement>
+          <pen lineWidth="0.5" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <textField>
+        <reportElement x="31" y="11" width="113" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$P{nama}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="71" y="2" width="73" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA["Tgl.lahir : "+$P{alamat}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="31" y="2" width="40" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$P{norm}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="8" y="38" width="136" height="6" />
+        <textElement>
+          <font fontName="Tahoma" size="4" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <textFieldExpression><![CDATA[$F{no_rawat}]]></textFieldExpression>
+      </textField>
+      <staticText>
+        <reportElement x="7" y="11" width="21" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[Nama]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="7" y="2" width="21" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[No.RM]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="28" y="2" width="3" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[:]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="28" y="11" width="3" height="9" />
+        <textElement>
+          <font fontName="Tahoma" size="7" />
+          <paragraph lineSpacing="Single" />
+        </textElement>
+        <text><![CDATA[:]]></text>
+      </staticText>
+      <line>
+        <reportElement x="3" y="1" width="1" height="43" forecolor="#000000" />
+        <graphicElement>
+          <pen lineWidth="0.5" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+      <line>
+        <reportElement x="144" y="1" width="1" height="43" forecolor="#000000" />
+        <graphicElement>
+          <pen lineWidth="0.5" lineStyle="Solid" />
+        </graphicElement>
+      </line>
+    </band>
+  </detail>
+</jasperReport>

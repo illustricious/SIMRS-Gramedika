@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="72" pageHeight="708" columnWidth="66" leftMargin="3" rightMargin="3" topMargin="3" bottomMargin="3">
+  <title>
+    <band height="702">
+      <textField pattern="">
+        <reportElement mode="Transparent" x="47" y="589" width="13" height="108" />
+        <textElement verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="8" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA["No. RM : "+$F{no_rkm_medis}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="23" y="556" width="13" height="141" />
+        <textElement verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="9" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$F{nm_pasien}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="35" y="556" width="13" height="141" />
+        <textElement verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="8" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA["Tgl Lahir : "+$F{tgl_lahir}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="10" y="419" width="13" height="278" />
+        <textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="9" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{namars}]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="35" y="419" width="13" height="123" />
+        <textElement verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="8" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA["Tanggal Dirawat :"]]></textFieldExpression>
+      </textField>
+      <textField pattern="">
+        <reportElement mode="Transparent" x="47" y="419" width="13" height="123" />
+        <textElement verticalAlignment="Middle" rotation="Left" lineSpacing="Single">
+          <font fontName="Tahoma" size="8" isBold="true" />
+        </textElement>
+        <textFieldExpression class="java.lang.String"><![CDATA[$P{tanggal}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+</jasperReport>
