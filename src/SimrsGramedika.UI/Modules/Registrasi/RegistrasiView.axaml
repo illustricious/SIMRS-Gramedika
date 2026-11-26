@@ -180,6 +180,22 @@
             </TabItem>
         </TabControl>
 
+        <!-- Catatan pasien muncul di atas tabel saat nama pasien diklik, seperti DlgCatatan di Khanza. -->
+        <Border Name="CatatanBanner" Grid.Row="2" IsVisible="False" VerticalAlignment="Bottom" Margin="12,12,12,28"
+                Background="{DynamicResource ThemePanelBrush}" BorderBrush="{DynamicResource ThemeAccentBrush}"
+                BorderThickness="2" CornerRadius="6" Padding="10,8">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <StackPanel Spacing="3">
+                    <TextBlock Name="CatatanJudul" FontWeight="SemiBold" TextWrapping="Wrap" />
+                    <ScrollViewer MaxHeight="120">
+                        <SelectableTextBlock Name="CatatanIsi" TextWrapping="Wrap" />
+                    </ScrollViewer>
+                </StackPanel>
+                <Button Grid.Column="1" Content="Tutup" VerticalAlignment="Top" Click="OnTutupCatatanClick"
+                        AutomationProperties.Name="Tutup catatan pasien" />
+            </Grid>
+        </Border>
+
         <Border Grid.Row="3" Background="{DynamicResource ThemePanelBrush}"
                 BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="9,6">
             <StackPanel Spacing="4">

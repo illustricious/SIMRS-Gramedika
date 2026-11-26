@@ -24,7 +24,8 @@ public static class PatientContextMenu
 {
     public static ContextMenu Attach<T>(DataGrid grid, Func<T, PatientMenuTarget?> getPatient, Action<PatientMenuRequest> execute,
         PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null, Action<T>? rujukInternal = null,
-        Action<T>? rujukMasuk = null, Action<T>? delete = null, Action<T, string>? setStatus = null) where T : class
+        Action<T>? rujukMasuk = null, Action<T>? delete = null, Action<T, string>? setStatus = null,
+        Action<T, string>? setStatusPoli = null) where T : class
     {
         var menu = new ContextMenu();
         grid.ContextRequested += (_, e) =>
@@ -69,9 +70,9 @@ public static class PatientContextMenu
 
             MenuItem PatientNote() => ActionItem("Catatan Pasien", PatientMenuAction.CatatanPasien, Can("catatan_pasien"));
 
-            MenuItem StatusItem(string label, string status) => Entry(label,
-                setStatus is not null && (Can("edit_registrasi") || user?.IsAdminUtama == true)
-                    ? () => Run(() => setStatus(clicked, status)) : null);
+            MenuItem StatusItem(string label, string status, Action<T, string>? ubah) => Entry(label,
+                ubah is not null && (Can("edit_registrasi") || user?.IsAdminUtama == true)
+                    ? () => Run(() => ubah(clicked, status)) : null);
 
             MenuItem PrintFormatGroup(string title, string templatePrefix) => Group(title,
                 PatientLabel.Formats.Where(format => format.Template.StartsWith(templatePrefix, StringComparison.Ordinal))
@@ -130,8 +131,14 @@ public static class PatientContextMenu
                 }) : null),
             };
             if (kind == PatientMenuKind.Registration)
-                manageItems.Add(Group("Set Status", StatusItem("Sudah Periksa", "Sudah"), StatusItem("Belum Periksa", "Belum"),
-                    StatusItem("Batal Periksa", "Batal")));
+                manageItems.Add(Group("Set Status",
+                    StatusItem("Berkas R.M. Diterima", "Berkas Diterima", setStatus),
+                    StatusItem("Sudah Periksa", "Sudah", setStatus), StatusItem("Belum Periksa", "Belum", setStatus),
+                    StatusItem("Batal Periksa", "Batal", setStatus), StatusItem("Dirujuk", "Dirujuk", setStatus),
+                    StatusItem("Dirawat", "Dirawat", setStatus), StatusItem("Meninggal", "Meninggal", setStatus),
+                    StatusItem("Pulang Paksa", "Pulang Paksa", setStatus),
+                    Group("Status Poli", StatusItem("Status Poli Baru", "Baru", setStatusPoli),
+                        StatusItem("Status Poli Lama", "Lama", setStatusPoli))));
             menu.ItemsSource = kind == PatientMenuKind.Diagnostic
                 ? new Control[] { identity, history }
                 : kind == PatientMenuKind.Patient

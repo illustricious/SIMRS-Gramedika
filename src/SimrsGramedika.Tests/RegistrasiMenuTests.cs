@@ -16,7 +16,9 @@ public class RegistrasiMenuTests
     public async Task UbahStatusDitolakSebelumKoneksi()
     {
         var service = new RegistrasiService(new DatabaseSettings { Host = "127.0.0.1", Port = 1 });
-        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => service.SetStatusAsync("R", "Dirujuk", Admin));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => service.SetStatusAsync("R", "Lain", Admin));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => service.SetStatusPoliAsync("R", "Lain", Admin));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SetStatusPoliAsync("R", "Baru", new(false, false)));
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.SetStatusAsync("R", "Sudah", new(false, false)));
     }
 
@@ -101,7 +103,7 @@ public class RegistrasiMenuTests
         public FixtureFactAttribute()
         {
             if (!int.TryParse(Environment.GetEnvironmentVariable("SIMRS_REGISTRASI_FIXTURE_PORT"), out _))
-                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien) pada MariaDB lokal.";
+                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien, set_validasi_catatan, mutasi_berkas) pada MariaDB lokal.";
         }
     }
 
@@ -150,6 +152,62 @@ public class RegistrasiMenuTests
             Assert.Equal(("Belum", 25000d), await Baca(akhiran));
         }
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.SetStatusAsync(Rawat("X"), "Sudah", Admin, sekarang));
+    }
+
+    [FixtureFact]
+    public async Task SemuaPilihanSetStatusTersimpan()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var kode = Guid.NewGuid().ToString("N")[..10];
+        string Rawat(string akhiran) => $"T{kode}{akhiran}";
+        foreach (var akhiran in new[] { "A", "B" })
+            await db.ExecAsync("INSERT INTO reg_periksa(no_rawat,tgl_registrasi,jam_reg,no_rkm_medis,stts,biaya_reg,status_lanjut,status_poli) VALUES(@p0,CURRENT_DATE,'00:00:00',@p0,'Belum',25000,'Ralan','Baru')", Rawat(akhiran));
+        await db.ExecAsync("INSERT INTO billing(noindex,no_rawat) VALUES(2,@p0)", Rawat("B"));
+        Task<string> Baca(string kolom, string akhiran) =>
+            db.StrAsync($"SELECT {kolom} FROM reg_periksa WHERE no_rawat=@p0", Rawat(akhiran));
+        var service = new RegistrasiService(settings);
+        var sekarang = DateTime.Today.AddHours(1);
+
+        foreach (var status in RegistrasiService.StatusPeriksa)
+        {
+            await service.SetStatusAsync(Rawat("A"), status, Admin, sekarang);
+            Assert.Equal(status, await Baca("stts", "A"));
+        }
+        Assert.Equal(1, await db.CountAsync(
+            "SELECT COUNT(*) FROM mutasi_berkas WHERE no_rawat=@p0 AND status='Sudah Diterima' AND diterima>'2000-01-01'", Rawat("A")));
+        // Diterima ulang memperbarui baris yang sama.
+        await service.SetStatusAsync(Rawat("A"), "Berkas Diterima", Admin, sekarang);
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM mutasi_berkas WHERE no_rawat=@p0", Rawat("A")));
+
+        // Billing menghalangi stts (termasuk catatan berkas), tetapi tidak status poli.
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SetStatusAsync(Rawat("B"), "Berkas Diterima", Admin, sekarang));
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM mutasi_berkas WHERE no_rawat=@p0", Rawat("B")));
+        await service.SetStatusPoliAsync(Rawat("B"), "Lama", Admin, sekarang);
+        Assert.Equal(("Lama", "Belum"), (await Baca("status_poli", "B"), await Baca("stts", "B")));
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            service.SetStatusPoliAsync(Rawat("B"), "Baru", new(false, true), DateTime.Today.AddDays(3)));
+    }
+
+    [FixtureFact]
+    public async Task CatatanDimunculkanHanyaBilaDiaktifkan()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var rm = "D" + Guid.NewGuid().ToString("N")[..10];
+        await db.ExecAsync("INSERT INTO pasien(no_rkm_medis) VALUES(@p0)", rm);
+        var service = new CatatanPasienService(settings);
+        await service.SimpanAsync(rm, "Alergi uji");
+
+        await db.ExecAsync("DELETE FROM set_validasi_catatan");
+        Assert.Equal("", await service.UntukDitampilkanAsync(rm));
+        await db.ExecAsync("INSERT INTO set_validasi_catatan VALUES('No')");
+        Assert.Equal("", await service.UntukDitampilkanAsync(rm));
+        await db.ExecAsync("UPDATE set_validasi_catatan SET tampilkan_catatan='Yes'");
+        Assert.Equal("Alergi uji", await service.UntukDitampilkanAsync(rm));
+        Assert.Equal("", await service.UntukDitampilkanAsync(rm + "X"));
     }
 
     [FixtureFact]

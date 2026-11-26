@@ -355,7 +355,7 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Catatan Untuk Pasien | kurang | 4574 |
+| Catatan Untuk Pasien | sebagian | 4574 |
 | Berkas Digital Perawatan | kurang | 4590 |
 | Insiden Keselamatan Pasien | kurang | 4606 |
 
@@ -387,16 +387,16 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Hapus Tagihan Operasi | kurang | 4902 |
 | Hapus Obat Operasi | kurang | 4918 |
 | Gabung Nomor Rawat | kurang | 4934 |
-| Set Status → Berkas R.M. Diterima | kurang | 4960 |
-| Set Status → Sudah Periksa | kurang | 4976 |
-| Set Status → Belum Periksa | kurang | 4992 |
-| Set Status → Batal Periksa | kurang | 5008 |
-| Set Status → Dirujuk | kurang | 5024 |
-| Set Status → Dirawat | kurang | 5040 |
-| Set Status → Meninggal | kurang | 5056 |
-| Set Status → Pulang Paksa | kurang | 5072 |
-| Set Status → Status Poli → Status Poli Baru | kurang | 5098 |
-| Set Status → Status Poli → Status Poli Lama | kurang | 5114 |
+| Set Status → Berkas R.M. Diterima | sebagian | 4960 |
+| Set Status → Sudah Periksa | sebagian | 4976 |
+| Set Status → Belum Periksa | sebagian | 4992 |
+| Set Status → Batal Periksa | sebagian | 5008 |
+| Set Status → Dirujuk | sebagian | 5024 |
+| Set Status → Dirawat | sebagian | 5040 |
+| Set Status → Meninggal | sebagian | 5056 |
+| Set Status → Pulang Paksa | sebagian | 5072 |
+| Set Status → Status Poli → Status Poli Baru | sebagian | 5098 |
+| Set Status → Status Poli → Status Poli Lama | sebagian | 5114 |
 
 ## Rujukan Internal Poli
 

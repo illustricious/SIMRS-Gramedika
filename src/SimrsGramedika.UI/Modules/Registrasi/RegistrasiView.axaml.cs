@@ -39,7 +39,8 @@ public partial class RegistrasiView : UserControl
         PatientContextMenu.Attach<RegistrasiListItem>(this.FindControl<DataGrid>("RegistrasiGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
             request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput,
-            BukaRujukanInternal, BukaRujukanMasuk, HapusDariContext, SetStatusDariContext);
+            BukaRujukanInternal, BukaRujukanMasuk, HapusDariContext, SetStatusDariContext, SetStatusPoliDariContext);
+        PasangCatatanPasien();
 
         // Periode defaults to "today" (matches the legacy app's "Registrasi
         // Periksa Hari Ini" screen). An earlier revision defaulted to "all
@@ -131,6 +132,7 @@ public partial class RegistrasiView : UserControl
     private async System.Threading.Tasks.Task LoadAsync()
     {
         var version = ++_loadVersion;
+        TutupCatatan();
         var internalPoli = this.FindControl<TabControl>("RegistrasiTabs")!.SelectedIndex == 1;
         var grid = this.FindControl<DataGrid>("RegistrasiGrid")!;
         var recordCount = this.FindControl<TextBlock>("RecordCountText")!;
@@ -196,6 +198,7 @@ public partial class RegistrasiView : UserControl
     {
         _selected = this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem as RegistrasiListItem;
         var row = _selected;
+        if (row is not null && row.NoRekamMedis != _catatanRm) TutupCatatan();
         if (_newMode && row is null) return;
         SetNewMode(false);
         SetInputText("InputNoRegBox", row?.NoReg);
@@ -490,21 +493,49 @@ public partial class RegistrasiView : UserControl
         this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
         if (statusBaru == "Batal" && !await Dialogs.ConfirmAsync(this, "Batalkan Pemeriksaan",
             $"Batalkan pemeriksaan {row.NoRawat} — {row.NamaPasien}? Biaya registrasi akan menjadi Rp0.")) return;
+        if (statusBaru == "Meninggal" && !await Dialogs.ConfirmAsync(this, "Status Meninggal",
+            $"Tandai {row.NoRawat} — {row.NamaPasien} sebagai meninggal?")) return;
 
+        // Khanza membuka formulir lanjutan; yang belum ada di aplikasi ini disebutkan kepada petugas.
+        var lanjutan = statusBaru switch
+        {
+            "Dirujuk" => " Formulir Rujukan Keluar belum tersedia di aplikasi ini.",
+            "Meninggal" => " Data pasien meninggal belum dapat diisi di aplikasi ini.",
+            _ => "",
+        };
+        var tersimpan = await TerapkanStatusAsync(row,
+            service => service.SetStatusAsync(row.NoRawat, statusBaru, Akses()),
+            $"Status {row.NoRawat} diperbarui menjadi {statusBaru}.{lanjutan}");
+        // Seperti DlgReg, "Dirawat" langsung membuka Kamar Inap.
+        if (tersimpan && statusBaru == "Dirawat" && AppSession.CurrentUser?.HasPermission("kamar_inap") == true)
+            PatientMenuRequested?.Invoke(this,
+                new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, PatientMenuAction.KamarInap));
+    }
+
+    private async void SetStatusPoliDariContext(RegistrasiListItem row, string statusPoli) =>
+        await TerapkanStatusAsync(row, service => service.SetStatusPoliAsync(row.NoRawat, statusPoli, Akses()),
+            $"Status poli {row.NoRawat} diperbarui menjadi {statusPoli}.");
+
+    private async Task<bool> TerapkanStatusAsync(RegistrasiListItem row, Func<RegistrasiService, Task> ubah, string berhasil)
+    {
         var status = this.FindControl<TextBlock>("InputStatusText")!;
+        _selected = row;
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
         try
         {
-            await new RegistrasiService(DatabaseSettings.Load()).SetStatusAsync(row.NoRawat, statusBaru, Akses());
+            await ubah(new RegistrasiService(DatabaseSettings.Load()));
             _selected = null;
             await LoadAsync();
             status.Classes.Remove("error");
             status.Classes.Add("saved");
-            status.Text = $"Status {row.NoRawat} diperbarui menjadi {statusBaru}.";
+            status.Text = berhasil;
             status.IsVisible = true;
+            return true;
         }
         catch (Exception ex)
         {
             ShowInputError(status, $"Gagal mengubah status registrasi: {ex.Message}");
+            return false;
         }
     }
 

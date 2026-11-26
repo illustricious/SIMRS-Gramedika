@@ -1148,8 +1148,8 @@
     "bukti": "RegistrasiView.Rujukan.cs membuka formulir untuk kunjungan yang diklik. RujukanInternalService.cs memeriksa izin dan menyimpan tujuan; fixture MariaDB memeriksa tambah dan duplikat dokter per kunjungan. Filter jadwal tujuan dan uji dialog end-to-end belum tersedia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppCatatanPasien": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "CatatanPasienWindow membaca, menyimpan, dan menghapus catatan pasien terpilih; klik nama pasien di Registrasi memunculkan catatan bila set_validasi_catatan aktif. Daftar semua catatan seperti DlgCatatan belum ada di menu ini. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppBerkasDigital": {
     "status": "kurang",
@@ -1236,44 +1236,44 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|ppBerkas": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Penerimaan berkas dicatat di mutasi_berkas. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnSudah": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnBelum": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnBatal": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Biaya registrasi menjadi 0. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDirujuk": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir Rujukan Keluar yang dibuka Java belum tersedia. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDIrawat": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Layar Kamar Inap dibuka setelah tersimpan bila berhak kamar_inap; alur itu belum diuji dari menu ini. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnMeninggal": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir data pasien meninggal (pasien_mati) belum tersedia. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnPulangPaksa": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|jMenu7|MnStatusBaru": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusPoliAsync: hak edit_registrasi atau Admin Utama dan batas 2 x 24 jam. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|jMenu7|MnStatusLama": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "RegistrasiService.SetStatusPoliAsync: hak edit_registrasi atau Admin Utama dan batas 2 x 24 jam. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnJadwalOperasi1": {
     "status": "kurang",

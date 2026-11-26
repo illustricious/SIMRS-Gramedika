@@ -214,11 +214,50 @@ public class RegistrasiService(DatabaseSettings settings)
         await db.ExecAsync("DELETE FROM reg_periksa WHERE no_rawat=@p0", noRawat);
     }
 
-    /// <summary>Set a safe outpatient visit status from the registration context menu.</summary>
-    public async Task SetStatusAsync(string noRawat, string status, RegistrasiAkses akses, DateTime? sekarang = null)
+    /// <summary>Pilihan "Set Status" Khanza yang mengubah reg_periksa.stts.</summary>
+    public static readonly IReadOnlyList<string> StatusPeriksa =
+        ["Berkas Diterima", "Sudah", "Belum", "Batal", "Dirujuk", "Dirawat", "Meninggal", "Pulang Paksa"];
+
+    /// <summary>
+    /// Set Status pemeriksaan. Ditolak bila pasien punya data kamar inap atau billing. "Batal" membuat biaya
+    /// registrasi 0; "Berkas Diterima" juga mencatat penerimaan berkas di mutasi_berkas.
+    /// </summary>
+    public Task SetStatusAsync(string noRawat, string status, RegistrasiAkses akses, DateTime? sekarang = null)
     {
-        if (status is not ("Sudah" or "Belum" or "Batal"))
+        if (!StatusPeriksa.Contains(status))
             throw new ArgumentOutOfRangeException(nameof(status), "Status registrasi tidak didukung.");
+        return UbahStatusAsync(noRawat, akses, sekarang, async db =>
+        {
+            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
+                throw new InvalidOperationException("Pasien sudah tercatat rawat inap. Ubah status melalui alur Rawat Inap.");
+            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0)
+                throw new InvalidOperationException("Registrasi sudah memiliki billing; status tidak diubah agar billing tetap konsisten.");
+
+            if (status == "Berkas Diterima")
+                await db.ExecAsync("""
+                    INSERT INTO mutasi_berkas(no_rawat,status,dikirim,diterima,kembali,tidakada,ranap)
+                    VALUES(@p0,'Sudah Diterima',NOW(),NOW(),'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00')
+                    ON DUPLICATE KEY UPDATE status='Sudah Diterima',diterima=NOW()
+                    """, noRawat);
+            if (status == "Batal")
+                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0,biaya_reg=0 WHERE no_rawat=@p1", status, noRawat);
+            else
+                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0 WHERE no_rawat=@p1", status, noRawat);
+        });
+    }
+
+    /// <summary>Set Status "Status Poli Baru/Lama". Tidak mengubah biaya, sehingga billing tidak menghalangi.</summary>
+    public Task SetStatusPoliAsync(string noRawat, string statusPoli, RegistrasiAkses akses, DateTime? sekarang = null)
+    {
+        if (statusPoli is not ("Baru" or "Lama"))
+            throw new ArgumentOutOfRangeException(nameof(statusPoli), "Status poli tidak didukung.");
+        return UbahStatusAsync(noRawat, akses, sekarang,
+            db => db.ExecAsync("UPDATE reg_periksa SET status_poli=@p0 WHERE no_rawat=@p1", statusPoli, noRawat));
+    }
+
+    /// <summary>Hak ubah, keberadaan data, dan batas 2 x 24 jam, lalu ubah dalam satu transaksi.</summary>
+    private async Task UbahStatusAsync(string noRawat, RegistrasiAkses akses, DateTime? sekarang, Func<Db, Task> ubah)
+    {
         if (!akses.IsAdminUtama && !akses.BolehEdit)
             throw new InvalidOperationException("Hak ubah registrasi diperlukan untuk mengubah status.");
 
@@ -226,19 +265,11 @@ public class RegistrasiService(DatabaseSettings settings)
         await db.BeginAsync();
         try
         {
-            var row = await db.FirstAsync("SELECT no_rkm_medis,kd_poli,biaya_reg,stts,stts_daftar,tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0 FOR UPDATE", noRawat)
+            var row = await db.FirstAsync("SELECT tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0 FOR UPDATE", noRawat)
                 ?? throw new InvalidOperationException("Registrasi tidak ditemukan lagi. Muat ulang daftar.");
             if (!akses.IsAdminUtama && MelewatiBatasEdit(Waktu(row), sekarang ?? DateTime.Now))
                 throw new InvalidOperationException("Perubahan registrasi lewat 2 x 24 jam hanya dapat dilakukan Admin Utama.");
-            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
-                throw new InvalidOperationException("Pasien sudah tercatat rawat inap. Ubah status melalui alur Rawat Inap.");
-            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0)
-                throw new InvalidOperationException("Registrasi sudah memiliki billing; status tidak diubah agar billing tetap konsisten.");
-
-            if (status == "Batal")
-                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0,biaya_reg=0 WHERE no_rawat=@p1", status, noRawat);
-            else
-                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0 WHERE no_rawat=@p1", status, noRawat);
+            await ubah(db);
             await db.CommitAsync();
         }
         catch
