@@ -89,3 +89,12 @@ Kode: `KopInstansi.cs`, `RegistrasiReport.cs`. Tes: `KopInstansiTests.cs`.
 - Pemeriksaan: kop dibaca dari tabel `setting` sintetis pada MariaDB 11.4.8 dan contoh PDF diperiksa secara visual. Logo asli RS dan printer fisik belum diuji.
 - Cetak daftar di Registrasi mengikuti `rptReg`: halaman 913 x 595 poin, 14 kolom (tanggal, jam, dokter, No. RM, nama, telepon, umur saat daftar, J.K., poliklinik, penanggung jawab, alamat, status daftar, asal rujukan, jenis bayar), judul "DATA REGISTRASI PERIKSA", dan kaki tanggal serta nomor halaman. Urutan baris sama dengan daftar di layar; datanya dibaca ulang saat cetak (`RegistrasiCetak.cs`, tes `RegistrasiCetakTests.cs`).
 - Beda yang tersisa: huruf bawaan QuestPDF ukuran 7,5 (Khanza Tahoma 8). Cetak rujukan internal dan IGD masih memakai susunan ringkas.
+
+## Nomor antrean, kuota, dan simpan IGD (26 November 2026)
+
+Kode: `RegistrasiService.NomorAntreanAsync`, `DatabaseSettings`, `KoneksiDatabaseWindow.cs`, `IgdView.axaml.cs`. Tes: `NomorAntreanTests.cs`.
+
+- Profil koneksi memuat `URUTNOREG` (dokter, poli, dokter + poli), `BASENOREG` (registrasi, booking), dan `JADWALDOKTERDIREGISTRASI`. Bawaan tetap per dokter, dasar registrasi, tanpa kuota; samakan dengan `setting/database.xml` Khanza yang dipakai. Kuota tidak berlaku untuk Admin Utama dan poli IGDK.
+- Perbaikan: simpan registrasi IGD sebelumnya menomori dari jumlah baris hari itu (bisa bentrok setelah ada yang dihapus), selalu "Lama", dan melewati cek rawat inap. Sekarang memakai layanan registrasi yang sama; dokter wajib dan isian P.J. kosong mengikuti data pasien.
+- Pemeriksaan: MariaDB 11.4.8 sintetis untuk urutan nomor, booking, kuota, dan IGD; satu uji headless sementara untuk simpan IGD dan tampilan jendela koneksi. Dua loket bersamaan dan database RS belum diuji. Untuk mengulang, muat tabel terkait ke `simrs_antrean_fixture` kosong lalu set `SIMRS_ANTREAN_FIXTURE_PORT`.
+- Belum ada: daftar dokter dibatasi jadwal saat kuota aktif, dan tanggal-jam mundur.

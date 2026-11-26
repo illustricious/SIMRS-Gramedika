@@ -72,8 +72,31 @@ public class RegistrasiService(DatabaseSettings settings)
             daftar, $"{umur.Item1} {umur.Item2}");
     }
 
+    /// <summary>
+    /// Nomor antrean berikutnya seperti isNumber() di DlgReg: urutan mengikuti URUTNOREG, dan bila BASENOREG "booking"
+    /// nomor yang sudah dipesan untuk tanggal itu ikut dihitung.
+    /// </summary>
+    private async Task<string> NomorAntreanAsync(Db db, string kodeDokter, string kodePoli, DateTime tanggal)
+    {
+        var syarat = settings.UrutNoReg switch
+        {
+            "poli" => "kd_poli=@p1",
+            "dokter + poli" => "kd_dokter=@p0 AND kd_poli=@p1",
+            _ => "kd_dokter=@p0",
+        };
+        // syarat hanya salah satu konstanta di atas; nilainya tetap lewat parameter.
+        var terakhir = await db.CountAsync(
+            $"SELECT IFNULL(MAX(CONVERT(no_reg,SIGNED)),0) FROM reg_periksa WHERE {syarat} AND tgl_registrasi=@p2",
+            kodeDokter, kodePoli, tanggal);
+        if (settings.BaseNoReg == "booking")
+            terakhir = Math.Max(terakhir, await db.CountAsync(
+                $"SELECT IFNULL(MAX(CONVERT(no_reg,SIGNED)),0) FROM booking_registrasi WHERE {syarat} AND tanggal_periksa=@p2",
+                kodeDokter, kodePoli, tanggal));
+        return (terakhir + 1).ToString("000");
+    }
+
     /// <summary>Registrasi baru. Menolak data kosong, pasien yang sedang dirawat inap, dan (bila diaktifkan) kuota dokter penuh.</summary>
-    public async Task<string> DaftarAsync(RegistrasiBaru baru, RegistrasiAkses akses, bool terapkanKuota = false,
+    public async Task<string> DaftarAsync(RegistrasiBaru baru, RegistrasiAkses akses,
         RujukanMasukData? rujukan = null, AuthenticatedUser? pengguna = null)
     {
         if (string.IsNullOrWhiteSpace(baru.NoRekamMedis)) throw new ArgumentException("Pilih pasien terlebih dahulu.");
@@ -105,7 +128,8 @@ public class RegistrasiService(DatabaseSettings settings)
         var poli = await db.FirstAsync("SELECT registrasi,registrasilama FROM poliklinik WHERE kd_poli=@p0", baru.KodePoli)
             ?? throw new InvalidOperationException($"Poliklinik {baru.KodePoli} tidak ditemukan.");
 
-        if (terapkanKuota && !akses.IsAdminUtama)
+        // Registrasi IGD tidak berjadwal, sama dengan DlgIGD.
+        if (settings.JadwalDokterDiRegistrasi && !akses.IsAdminUtama && baru.KodePoli != "IGDK")
         {
             var kuota = await db.ScalarAsync(
                 "SELECT MAX(kuota) FROM jadwal WHERE kd_dokter=@p0 AND kd_poli=@p1 AND hari_kerja=@p2",
@@ -124,9 +148,7 @@ public class RegistrasiService(DatabaseSettings settings)
 
         for (var percobaan = 0; ; percobaan++)
         {
-            var noReg = (await db.CountAsync(
-                "SELECT IFNULL(MAX(CONVERT(no_reg,SIGNED)),0) FROM reg_periksa WHERE kd_dokter=@p0 AND tgl_registrasi=@p1",
-                baru.KodeDokter, tanggal) + 1).ToString("000");
+            var noReg = await NomorAntreanAsync(db, baru.KodeDokter, baru.KodePoli, tanggal);
             var noRawat = await db.AutoNomorAsync(
                 "SELECT IFNULL(MAX(CONVERT(RIGHT(no_rawat,6),SIGNED)),0) FROM reg_periksa WHERE tgl_registrasi=@p0",
                 $"{tanggal:yyyy/MM/dd}/", 6, tanggal);

@@ -29,6 +29,9 @@ public sealed class KoneksiDatabaseWindow : Window
     private readonly CheckBox _batch = new() { Content = "Aktifkan batch obat (stok dipotong per No.Batch/No.Faktur)" };
     private readonly ComboBox _hpp = Ui.Choice(["dasar", "h_beli"]);
     private readonly TextBox _web = Ui.Text("http://host/webapps");
+    private readonly ComboBox _urut = Ui.Choice(["dokter", "poli", "dokter + poli"]);
+    private readonly ComboBox _base = Ui.Choice(["registrasi", "booking"]);
+    private readonly CheckBox _kuota = new() { Content = "Batasi registrasi sesuai kuota jadwal dokter (kecuali Admin Utama)" };
     private readonly TextBlock _status = Ui.Status();
     private readonly Button _test, _save, _ambil;
     private int _index = -1;
@@ -108,6 +111,8 @@ public sealed class KoneksiDatabaseWindow : Window
         _port.HorizontalAlignment = HorizontalAlignment.Left;
         _hpp.HorizontalAlignment = HorizontalAlignment.Left;
         _hpp.MinWidth = 140;
+        _urut.HorizontalAlignment = _base.HorizontalAlignment = HorizontalAlignment.Left;
+        _urut.MinWidth = _base.MinWidth = 160;
 
         var right = new StackPanel
         {
@@ -126,6 +131,10 @@ public sealed class KoneksiDatabaseWindow : Window
                 _batch,
                 Ui.Form(("Kolom HPP farmasi", _hpp)),
                 Ui.Hint("Samakan dengan AKTIFKANBATCHOBAT dan HPPFARMASI di Khanza lama supaya pemotongan stok & HPP sama."),
+                new TextBlock { Text = "Registrasi", FontWeight = FontWeight.SemiBold, Margin = new Thickness(0, 12, 0, 0) },
+                Ui.Form(("Urutan no. antrean", _urut), ("Dasar no. antrean", _base)),
+                _kuota,
+                Ui.Hint("Samakan dengan URUTNOREG, BASENOREG, dan JADWALDOKTERDIREGISTRASI di Khanza lama supaya nomor antrean tidak bentrok."),
                 new TextBlock { Text = "Aplikasi Web Khanza", FontWeight = FontWeight.SemiBold, Margin = new Thickness(0, 12, 0, 0) },
                 Ui.Form(("Alamat web", _web)),
                 Ui.Hint("Folder webapps Khanza (HOSTHYBRIDWEB + HYBRIDWEB), dipakai menu Kepegawaian & Gaji. Kosong = http://<host>/webapps."),
@@ -196,6 +205,9 @@ public sealed class KoneksiDatabaseWindow : Window
         _batch.IsChecked = s.AktifkanBatchObat;
         _hpp.SelectedIndex = s.HppColumn == "h_beli" ? 1 : 0;
         _web.Text = s.WebUrl;
+        _urut.SelectedItem = s.UrutNoReg is "poli" or "dokter + poli" ? s.UrutNoReg : "dokter";
+        _base.SelectedItem = s.BaseNoReg == "booking" ? "booking" : "registrasi";
+        _kuota.IsChecked = s.JadwalDokterDiRegistrasi;
         _dbList.IsVisible = false;
         _dbList.ItemsSource = null;
         _status.Text = "";
@@ -221,6 +233,9 @@ public sealed class KoneksiDatabaseWindow : Window
             AktifkanBatchObat = _batch.IsChecked == true,
             HppFarmasi = _hpp.SelectedIndex == 1 ? "h_beli" : "dasar",
             WebUrl = (_web.Text ?? "").Trim(),
+            UrutNoReg = _urut.SelectedItem as string ?? "dokter",
+            BaseNoReg = _base.SelectedItem as string ?? "registrasi",
+            JadwalDokterDiRegistrasi = _kuota.IsChecked == true,
         };
     }
 

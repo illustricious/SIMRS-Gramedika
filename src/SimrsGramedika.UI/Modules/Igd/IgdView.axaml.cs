@@ -3,6 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using SimrsGramedika.Config;
+using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Core.Entities;
 using SimrsGramedika.Data;
 using SimrsGramedika.UI.Modules.Registrasi;
@@ -14,6 +15,7 @@ public partial class IgdView : UserControl
 {
     /// <summary>Legacy DlgIGD hardcodes poliklinik 'IGDK' ("Unit IGD") in both its list query and its registration.</summary>
     private const string KodePoliIgd = "IGDK";
+    private bool _menyimpan;
 
     public event EventHandler? BackRequested;
     public event EventHandler? TriaseRequested;
@@ -127,19 +129,28 @@ public partial class IgdView : UserControl
         var dokter = this.FindControl<ComboBox>("InputDokterCombo")!.SelectedItem as Dokter;
         var penjab = this.FindControl<ComboBox>("InputPenjabCombo")!.SelectedItem as Penjab;
 
-        if (string.IsNullOrWhiteSpace(noRm) || penjab is null)
+        if (string.IsNullOrWhiteSpace(noRm) || dokter is null || penjab is null)
         {
-            ShowInputStatus("No.Rekam Medik dan Jenis Bayar wajib diisi.", isError: true);
+            ShowInputStatus("No.Rekam Medik, Dokter, dan Jenis Bayar wajib diisi.", isError: true);
             return;
         }
+        if (_menyimpan) return;
 
+        _menyimpan = true;
         try
         {
-            using var db = SimrsGramedikaDbContextFactory.Create(DatabaseSettings.Load());
-            var noRawat = await new RegistrasiRepository(db).CreateAsync(
-                noRm, dokter?.KodeDokter, KodePoliIgd, penjab.KodePenjab,
-                EmptyToNull(this.FindControl<TextBox>("InputPjBox")!.Text),
-                EmptyToNull(this.FindControl<TextBox>("InputAlamatPjBox")!.Text));
+            var service = new RegistrasiService(DatabaseSettings.Load());
+            var pasien = await service.CariPasienAsync(noRm)
+                ?? throw new InvalidOperationException($"Pasien {noRm} tidak ditemukan.");
+            var user = AppSession.CurrentUser;
+            // Isian P.J. yang kosong mengikuti data pasien, seperti isPas() di DlgIGD.
+            static string Isi(string? isian, string bawaan) => string.IsNullOrWhiteSpace(isian) ? bawaan : isian.Trim();
+            var noRawat = await service.DaftarAsync(
+                new RegistrasiBaru(pasien.NoRekamMedis, dokter.KodeDokter, KodePoliIgd, penjab.KodePenjab,
+                    Isi(this.FindControl<TextBox>("InputPjBox")!.Text, pasien.NamaKeluarga),
+                    Isi(this.FindControl<TextBox>("InputAlamatPjBox")!.Text, pasien.Alamat),
+                    pasien.Keluarga, DateTime.Now),
+                new RegistrasiAkses(user?.IsAdminUtama == true, user?.HasPermission("edit_registrasi") == true));
 
             ShowInputStatus($"Registrasi IGD tersimpan — No.Rawat {noRawat}.", isError: false);
             ClearInput();
@@ -148,6 +159,10 @@ public partial class IgdView : UserControl
         catch (Exception ex)
         {
             ShowInputStatus($"Gagal simpan registrasi IGD: {ex.Message}", isError: true);
+        }
+        finally
+        {
+            _menyimpan = false;
         }
     }
 

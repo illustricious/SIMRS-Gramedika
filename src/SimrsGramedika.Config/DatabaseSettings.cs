@@ -27,6 +27,15 @@ public class DatabaseSettings
     /// <summary>Legacy HOSTHYBRIDWEB/PORTWEB/HYBRIDWEB: base URL of the Khanza web apps (penggajian, berkas). Empty = http://{Host}/webapps.</summary>
     public string WebUrl { get; init; } = "";
 
+    /// <summary>Legacy URUTNOREG: nomor antrean berurut per "dokter", "poli", atau "dokter + poli".</summary>
+    public string UrutNoReg { get; init; } = "dokter";
+
+    /// <summary>Legacy BASENOREG: "booking" ikut menghitung nomor yang sudah dipesan di booking_registrasi.</summary>
+    public string BaseNoReg { get; init; } = "registrasi";
+
+    /// <summary>Legacy JADWALDOKTERDIREGISTRASI=aktif: kuota jadwal dokter membatasi registrasi selain Admin Utama.</summary>
+    public bool JadwalDokterDiRegistrasi { get; init; }
+
     [JsonIgnore]
     public string WebBase => (WebUrl is { Length: > 0 } w ? w : $"http://{Host}/webapps").TrimEnd('/');
 
@@ -56,6 +65,7 @@ public class DatabaseSettings
     {
         Name = name ?? Name, Host = Host, Port = Port, Database = Database, User = User, Password = Password,
         AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi, WebUrl = web ?? WebUrl,
+        UrutNoReg = UrutNoReg, BaseNoReg = BaseNoReg, JadwalDokterDiRegistrasi = JadwalDokterDiRegistrasi,
     };
 
     /// <summary>
