@@ -105,9 +105,9 @@ public sealed class TindakanRanapInputTests
         await using var context = SimrsKhanzaDbContextFactory.Create(settings);
         var kasir = new KasirRepository(context);
         var tagihan = Assert.IsType<KasirBillItem>(await kasir.GetBillAsync(key.NoRawat));
-        Assert.Equal(560m, tagihan.RincianTindakanObat.Sum(row => row.Total));
-        var alasan = await Assert.ThrowsAsync<InvalidOperationException>(() => kasir.BayarRanapAsync(tagihan, "Tunai", "PR"));
-        Assert.Contains("Kasir Khanza", alasan.Message);
+        Assert.Equal(560m, tagihan.Rincian.Where(row => row.Jenis.StartsWith("Ranap", StringComparison.Ordinal)).Sum(row => row.Total));
+        var alasan = await Assert.ThrowsAsync<InvalidOperationException>(() => kasir.BayarRanapAsync(tagihan, "Tunai", user));
+        Assert.Contains("hak billing rawat inap", alasan.Message);
         Assert.Equal("Belum Bayar", await sql.StrAsync("SELECT status_bayar FROM reg_periksa WHERE no_rawat='RANAP-UJI'"));
     }
 }

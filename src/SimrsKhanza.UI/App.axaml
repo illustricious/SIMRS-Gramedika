@@ -46,28 +46,28 @@
                     <StaticResource x:Key="MenuFlyoutSubItemChevronDisabled" ResourceKey="ThemeTextSecondaryBrush" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="TegasPageBrush">#1B2941</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasHeadingBrush">#273C5B</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasPageBrush">#000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasHeadingBrush">#191919</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasHeadingEdgeBrush">#8CB0FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasRowAltBrush">#263348</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasNavigationBrush">#0D1B42</SolidColorBrush>
-                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#203F6A</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasRowAltBrush">#101010</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasNavigationBrush">#000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="TegasTableHeaderBrush">#222222</SolidColorBrush>
                     <SolidColorBrush x:Key="TegasActionBrush">#3565A7</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryBrush">#3157A1</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#07143B</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryDarkBrush">#000000</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemePrimaryLightBrush">#8FB4FF</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeAccentBrush">#FF7378</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#171D29</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#242C3B</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemePanelBrush">#1D2533</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#29364A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#000000</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#181818</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePanelBrush">#0D0D0D</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTableHeaderBrush">#222222</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeIconBrush">#ABC5FF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#293857</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#39465A</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextBrush">#E5EAF3</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#AFBCD0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#242424</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#454545</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#F2F2F2</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#BDBDBD</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeRowAltBrush">#242F42</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeRowAltBrush">#101010</SolidColorBrush>
                     <StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="ThemePanelBrush" />
                     <StaticResource x:Key="MenuFlyoutPresenterBorderBrush" ResourceKey="ThemeBorderBrush" />
                     <StaticResource x:Key="MenuFlyoutSubItemChevron" ResourceKey="ThemeIconBrush" />

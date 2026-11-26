@@ -1,4 +1,4 @@
-> **ARSIP (log kronologis, 3–21 Nov 2026).** Berisi alasan keputusan dan bug yang pernah ditemukan. Jalur `B:\...`, "belum ada remote", dan hitungan tile/tes di bawah sudah usang. Untuk keadaan sekarang baca [README.md](README.md) dan file 01–03 di folder ini.
+> **ARSIP (log kronologis, 3–21 Nov 2026).** Berisi alasan keputusan dan bug yang pernah ditemukan. Jalur `B:\...`, "belum ada remote", dan hitungan tile/tes di bawah sudah usang. Untuk keadaan sekarang baca [README.md](README.md) dan [log sesi terbaru](10-SESSION-2026-11-26.md).
 
 # Handover — Audit Repo SIMRS Khanza (menuju rewrite C# Avalonia)
 

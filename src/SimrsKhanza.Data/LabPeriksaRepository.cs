@@ -1,3 +1,4 @@
+using SimrsKhanza.Data.Keuangan;
 #pragma warning disable EF1002 // table names/suffixes come from the LabCategory enum, never from user text
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
@@ -416,9 +417,10 @@ public class LabPeriksaRepository(SimrsKhanzaDbContext db) : ILabPeriksaReposito
     /// <summary>Legacy Sequel.cariRegistrasi: a billed (billing row) or cancelled (stts='Batal') visit is locked against edits.</summary>
     private async Task EnsureNotLockedAsync(string noRawat, string action, CancellationToken ct)
     {
+        var visit = await KunjunganRanap.KunciAsync(db, noRawat, ct);
         var billed = await ScalarAsync("select count(*) as Value from billing where no_rawat={0}", [noRawat], ct);
-        var batal = await ScalarAsync("select count(*) as Value from reg_periksa where no_rawat={0} and stts='Batal'", [noRawat], ct);
-        if (billed + batal > 0)
+        if (billed > 0 || visit.Status == SimrsKhanza.Core.Entities.StatusRegistrasi.Batal ||
+            visit.StatusBayar == SimrsKhanza.Core.Entities.StatusBayar.SudahBayar)
             throw new InvalidOperationException($"Data billing sudah terverifikasi (atau registrasi batal), {action}.\nSilahkan hubungi bagian kasir/keuangan.");
     }
 
@@ -447,9 +449,9 @@ public class LabPeriksaRepository(SimrsKhanzaDbContext db) : ILabPeriksaReposito
 
     public async Task DeleteAsync(LabCategory category, LabPeriksaKey key, string? kdJenisPrw, CancellationToken ct = default)
     {
-        await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
         await InTransactionAsync(async () =>
         {
+            await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
             var cat = Cat(category);
             if (category == LabCategory.PA)
             {
@@ -481,7 +483,6 @@ public class LabPeriksaRepository(SimrsKhanzaDbContext db) : ILabPeriksaReposito
     public async Task SaveAsync(LabSaveRequest rq, CancellationToken ct = default)
     {
         if (rq.Pemeriksaan.Count == 0) throw new InvalidOperationException("Pilih minimal satu pemeriksaan.");
-        await EnsureNotLockedAsync(rq.NoRawat, "data tidak bisa disimpan", ct);
 
         var tgl = rq.Tanggal.ToString("yyyy-MM-dd");
         var jam = rq.Jam.ToString("HH:mm:ss");
@@ -490,6 +491,7 @@ public class LabPeriksaRepository(SimrsKhanzaDbContext db) : ILabPeriksaReposito
 
         await InTransactionAsync(async () =>
         {
+            await EnsureNotLockedAsync(rq.NoRawat, "data tidak bisa disimpan", ct);
             foreach (var t in rq.Pemeriksaan)
             {
                 // Same column order as legacy simpanlab(); `biaya` = jns_perawatan_lab.total_byr.

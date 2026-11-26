@@ -61,7 +61,7 @@ public partial class MainWindow : Window
         var clock = this.FindControl<TextBlock>("ClockText");
         if (clock is not null)
         {
-            clock.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+            clock.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss", System.Globalization.CultureInfo.GetCultureInfo("id-ID"));
         }
     }
 

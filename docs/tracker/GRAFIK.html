@@ -31,6 +31,16 @@ a{color:var(--layar)}
 <h2>Ringkasan</h2>
 <div class="cards" id="cards"></div>
 
+<h2>Status alur pelayanan</h2>
+<div class="card">
+<ul>
+<li><a href="AUDIT_PELAYANAN_INTI.md">Kasir Rawat Jalan</a> mencakup registrasi, tindakan, penunjang, obat kunjungan, dan kuitansi PDF.</li>
+<li><a href="AUDIT_RAWAT_INAP.md">Kasir Rawat Inap</a> mencakup kamar sampai pulang, tindakan, penunjang, dan obat pulang.</li>
+<li>Uji transaksi memakai data sintetis. Rekonsiliasi saldo suspen dan konfigurasi rekening RS dengan Khanza Java masih terbuka.</li>
+</ul>
+<p><a href="PRIORITAS.md">Prioritas berikutnya</a> · <a href="../handover/README.md">Handover proyek</a></p>
+</div>
+
 <h2>Per jenis entri</h2>
 <table id="kinds"></table>
 
@@ -65,7 +75,7 @@ a{color:var(--layar)}
  for(const s of states){$('legend').insertAdjacentHTML('beforeend','<span><i class="sw '+cls[s]+'"></i>'+s+'</span>')}
 
  const tiles=data.filter(r=>r.kind==='tile'), tc=count(tiles);
- const tilesNonL=tiles.filter(r=>r.state!=='ditunda'), withScreen=tc['layar tersedia'];
+ const withScreen=tc['layar tersedia'];
  const detail=data.filter(r=>r.kind!=='tile'), dc=count(detail);
  const audited=dc.kurang+dc.sebagian+dc.selesai;
  const card=(big,label,extra)=>'<div class="card"><b>'+big+'</b><span>'+label+'</span>'+(extra||'')+'</div>';

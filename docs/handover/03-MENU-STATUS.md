@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 22 November 2026 (rilis 0.2.5-alpha): **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 26 November 2026: **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -8,7 +8,7 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 
 | Menu | Area | Tile | Bentuk utama | Rincian |
 |---|---|---:|---|---|
-| A | Registrasi, tagihan, pelayanan | 34 | Khusus + Edit | [MENU_A_STATUS](../audit/MENU_A_STATUS.md). Rawat Inap dan Kasir punya tulis nyata dengan jurnal, pelunasan terbatas pada kamar dan registrasi, satu akun bayar, tanpa biaya admin |
+| A | Registrasi, tagihan, pelayanan | 34 | Khusus + Edit | [MENU_A_STATUS](../audit/MENU_A_STATUS.md). Rawat Inap dan Kasir punya tulis nyata dengan jurnal, pelunasan gabungan Ralan dan Ranap, satu akun bayar tanpa biaya admin |
 | B | Barcode, lab kesling | 16 | Khusus | Tindakan/obat via barcode, jurnal lewat `JurnalPoster` |
 | C | Presensi, pegawai, K3, SKP | 61 | Edit + Baca + Khusus | Penggajian, penilaian SKP, rekap |
 | D | Inventori farmasi, stok pasien | 75 | Edit + Baca + Khusus | Transaksi stok (mutasi, opname, stok keluar, permintaan), penerimaan, review resep |
@@ -41,7 +41,7 @@ Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaa
 
 ## Keterbatasan lintas menu
 
-- Layar transaksi uang hanya-baca. Transaksi, persetujuan, penyesuaian stok, dan cetak laporan legacy dilakukan di Khanza.
-- Cetak PDF nyata baru untuk daftar Registrasi dan kuitansi pembayaran. Cetak laporan legacy lain belum ada.
+- Kasir mendukung pelunasan dan Farmasi mendukung jual bebas nonbatch. Batas per cabang ada di [audit pelayanan inti](../tracker/AUDIT_PELAYANAN_INTI.md).
+- PDF tersedia antara lain untuk daftar Registrasi, kuitansi Kasir dan bukti serah obat pulang.
 - Pemetaan tile ke hak akses mengikuti Khanza. Tile tanpa hak akses tidak tampil.
 - Penyimpanan password: tabel legacy `user`/`admin` menyimpan plaintext di versi lama. Rencana "rehash saat login pertama" belum diselesaikan (lihat [04-HISTORY.md](04-HISTORY.md), bagian `LegacyUserRepository`).

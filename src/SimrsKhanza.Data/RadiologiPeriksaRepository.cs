@@ -1,3 +1,4 @@
+using SimrsKhanza.Data.Keuangan;
 #pragma warning disable EF1002 // table names are constants in this file, never user text
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
@@ -343,9 +344,10 @@ public class RadiologiPeriksaRepository(SimrsKhanzaDbContext db) : IRadiologiPer
     /// <summary>Legacy Sequel.cariRegistrasi: a billed (billing row) or cancelled (stts='Batal') visit is locked against edits.</summary>
     private async Task EnsureNotLockedAsync(string noRawat, string action, CancellationToken ct)
     {
+        var visit = await KunjunganRanap.KunciAsync(db, noRawat, ct);
         var billed = await ScalarAsync("select count(*) as Value from billing where no_rawat={0}", [noRawat], ct);
-        var batal = await ScalarAsync("select count(*) as Value from reg_periksa where no_rawat={0} and stts='Batal'", [noRawat], ct);
-        if (billed + batal > 0)
+        if (billed > 0 || visit.Status == SimrsKhanza.Core.Entities.StatusRegistrasi.Batal ||
+            visit.StatusBayar == SimrsKhanza.Core.Entities.StatusBayar.SudahBayar)
             throw new InvalidOperationException($"Data billing sudah terverifikasi (atau registrasi batal), {action}.\nSilahkan hubungi bagian kasir/keuangan.");
     }
 
@@ -372,9 +374,9 @@ public class RadiologiPeriksaRepository(SimrsKhanzaDbContext db) : IRadiologiPer
 
     public async Task DeleteAsync(RadPeriksaKey key, CancellationToken ct = default)
     {
-        await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
         await InTransactionAsync(async () =>
         {
+            await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
             var p = new object[] { key.NoRawat, key.Tgl, key.Jam };
             var n = await db.Database.ExecuteSqlRawAsync("delete from periksa_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p, ct);
             if (n == 0) throw new InvalidOperationException("Data pemeriksaan tidak ditemukan.");
@@ -389,13 +391,13 @@ public class RadiologiPeriksaRepository(SimrsKhanzaDbContext db) : IRadiologiPer
     public async Task SaveAsync(RadSaveRequest rq, CancellationToken ct = default)
     {
         if (rq.Pemeriksaan.Count == 0) throw new InvalidOperationException("Pilih minimal satu pemeriksaan.");
-        await EnsureNotLockedAsync(rq.NoRawat, "data tidak bisa disimpan", ct);
 
         var tgl = rq.Tanggal.ToString("yyyy-MM-dd");
         var jam = rq.Jam.ToString("HH:mm:ss");
 
         await InTransactionAsync(async () =>
         {
+            await EnsureNotLockedAsync(rq.NoRawat, "data tidak bisa disimpan", ct);
             foreach (var x in rq.Pemeriksaan)
             {
                 var t = x.Tarif;

@@ -57,3 +57,7 @@ Untuk alur yang bukan daftar/formulir sederhana: `PostingJurnalView` (jurnal man
 `Ui` (pembangun kontrol: `Bar`, `Grid`, `Btn`, `Text`, `Number`, `Money`), `PageView` (rangka halaman, `RunAsync`, `StatusText`), `LookupBox` (pencarian kode/nama), `PeriodPicker`, `DataGridHeaderFit` (header kolom tidak terpotong), `PatientContextMenu` (klik kanan baris pasien, dipakai Registrasi/IGD/Ranap/Ralan/Pasien/Lab/Radiologi), `DashboardIcons`, `MenuTileBuilder`.
 
 Tema kompak global di `App.axaml` (Segoe UI 11, header tabel biru). Jendela utama `BorderOnly` dengan tombol caption buatan.
+
+## Kasir dan obat pulang
+
+`KasirRepository` membangun snapshot tagihan, mengunci baris kunjungan di `reg_periksa`, lalu menghitung ulang sebelum menulis. Simpan nota, rincian pembayaran, jurnal, billing, dan status kunjungan dalam transaksi yang sama. `MuatKuitansiAsync` membaca data tersimpan. Input tindakan, perubahan biaya penunjang dan validasi resep pulang memakai kunci kunjungan yang sama. `JurnalPoster` memposting pada transaksi pemanggil. Lihat [audit Ranap](../tracker/AUDIT_RAWAT_INAP.md) untuk rekonsiliasi suspen dan batas penggunaan bersama Java.

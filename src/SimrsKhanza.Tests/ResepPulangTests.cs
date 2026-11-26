@@ -103,6 +103,11 @@ public sealed class ResepPulangTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => repo.CatatSerahAsync(farmasi, nomor, "Penerima Lain"));
         await Assert.ThrowsAsync<InvalidOperationException>(() => ValidateAsync(farmasi));
         Assert.Empty(await repo.CariSiapSerahAsync(farmasi, nomor));
+        var bukti = await repo.MuatBuktiSerahAsync(dokter, "RANAP-UJI", nomor);
+        Assert.Equal("Penerima Uji", bukti.S("penerima"));
+        Assert.Equal("Pasien Uji", bukti.S("nm_pasien"));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => repo.MuatBuktiSerahAsync(farmasi, "RANAP-UJI", nomor));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repo.MuatBuktiSerahAsync(dokter, "RAWAT-LAIN", nomor));
         Assert.All(await repo.RiwayatPermintaanAsync(dokter, "RANAP-UJI"), row =>
         {
             Assert.Equal("Penerima Uji", row.S("penerima"));

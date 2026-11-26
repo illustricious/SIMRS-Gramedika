@@ -1,11 +1,15 @@
 {
+  "aksi|keuangan/DlgBilingRanap.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "KasirRepository.BayarRanapAsync menagihkan kamar hingga pulang, biaya kamar lain, tindakan, Lab/Radiologi, pemberian obat, dan resep pulang tervalidasi. Fixture MariaDB membandingkan total terhadap rumus Java, serta menguji saldo suspen, jurnal, izin, rollback, dan kuitansi. Deposit, piutang, retur, operasi dan penggunaan operasional bersama Java masih terbuka."
+  },
   "aksi|inventory/DlgPenjualan.java|BtnSimpan": {
     "status": "sebagian",
     "bukti": "PenjualanTunaiService menyimpan jual bebas F.A nonbatch tanpa PPN, diskon, atau verifikasi terpisah. PelunasanPenjualanTests menguji nota, stok, riwayat, jurnal dan rollback."
   },
   "aksi|keuangan/DlgBilingRalan.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "KasirRepository.BayarRegistrasiRalanAsync menyimpan nota dan jurnal pelunasan biaya registrasi saja. PelunasanPenjualanTests menguji transaksi, rekening hilang, izin, duplikat dan bukti tersimpan. Komponen tambahan masih melalui Khanza."
+    "bukti": "KasirRepository.BayarRalanAsync menagihkan registrasi, tindakan, hasil Lab/Radiologi dan pemberian obat kunjungan. Penjualan terpisah dan permintaan belum selesai tidak masuk tagihan. Nota, jurnal, penguncian dan cetak ulang kuitansi PDF memakai data pelunasan tersimpan. Fixture MariaDB menguji dua kasir, rollback paksa jurnal, dan baca ulang tanpa transaksi baru. Deposit, piutang, retur dan penyesuaian masih melalui Khanza."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMSkrining|MnSkriningMerokokUsiaSekolahRemaja": {
     "status": "sebagian",
@@ -2745,7 +2749,7 @@
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanResepPulang": {
     "status": "sebagian",
-    "bukti": "Rawat Inap membuat permintaan resep per kunjungan dengan izin permintaan_resep_pulang. Farmasi dengan izin resep_pulang memvalidasi stok dan mencatat penerima, petugas dan waktu serah terima. Rawat Inap menampilkan ketiga status. Rawat Inap dapat membatalkan seluruh permintaan sebelum validasi. Pembatalan dan validasi memakai kunci kunjungan yang sama. Ubah Permintaan memuat ulang draf tersimpan dan menolak simpan atau validasi dari salinan lama. Retur dan uji UI terintegrasi masih terbuka."
+    "bukti": "Rawat Inap membuat permintaan resep per kunjungan dengan izin permintaan_resep_pulang. Farmasi dengan izin resep_pulang memvalidasi stok dan mencatat penerima, petugas dan waktu serah terima. Rawat Inap menampilkan ketiga status. Rawat Inap dapat membatalkan seluruh permintaan sebelum validasi. Pembatalan dan validasi memakai kunci kunjungan yang sama. Ubah Permintaan memuat ulang draf tersimpan dan menolak simpan atau validasi dari salinan lama. Bukti serah terima dapat disimpan sebagai PDF dari kunjungan yang tercatat. Retur dan uji UI terintegrasi masih terbuka."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnInputObat": {
     "status": "kurang",

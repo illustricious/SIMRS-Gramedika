@@ -100,6 +100,8 @@ public class MenuCScreensTests
                 catch (Exception ex) { errors.Add($"{key}: {ex.GetType().Name}: {ex.Message}"); }
             }
 
+            try { VerifyKasirDoubleClick(); }
+            catch (Exception ex) { errors.Add($"Kasir double click: {ex}"); }
             try { VerifyPatientContextMenu(); }
             catch (Exception ex) { errors.Add($"Patient context menu: {ex}"); }
             try { VerifyRegistrasiPatientPicker(); }
@@ -169,6 +171,35 @@ public class MenuCScreensTests
     }
 
 
+    private static void VerifyKasirDoubleClick()
+    {
+        var view = new SimrsKhanza.UI.Modules.Kasir.KasirView();
+        var window = new Window { Content = view };
+        var oldUser = AppSession.CurrentUser;
+        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "kasir_ralan" } };
+        try
+        {
+            var field = view.GetType().GetField("_current", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
+            field.SetValue(view, new SimrsKhanza.Data.KasirBillItem("UJI", "RM-UJI", "Pasien Uji", 100, 0, 100, "Belum Bayar"));
+            var akun = view.FindControl<ComboBox>("AkunBayarBox")!;
+            akun.ItemsSource = new[] { "Tunai" };
+            akun.SelectedIndex = 0;
+            var button = view.FindControl<Button>("BayarButton")!;
+            window.Show();
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            Assert.False(button.IsEnabled);
+            var dialog = Assert.Single(window.OwnedWindows.OfType<Window>());
+            Assert.Equal("Konfirmasi Pelunasan", dialog.Title);
+            dialog.Close();
+        }
+        finally
+        {
+            window.Close();
+            AppSession.CurrentUser = oldUser;
+        }
+    }
+
     private static void VerifyPatientContextMenu()
     {
         var first = new PatientMenuTarget("RW-01", "RM-01", "Pasien A");
@@ -227,7 +258,7 @@ public class MenuCScreensTests
             grid.RaiseEvent(new ContextRequestedEventArgs { RoutedEvent = InputElement.ContextRequestedEvent });
             Dispatcher.UIThread.RunJobs();
             Assert.True(menu.IsOpen);
-            VerifyPopupStyle(menu, Assert.IsType<MenuItem>(menu.Items[0]), "#1D2533", "#293857", "#ABC5FF");
+            VerifyPopupStyle(menu, Assert.IsType<MenuItem>(menu.Items[0]), "#0D0D0D", "#242424", "#ABC5FF");
             menu.Close();
 
             var visit = new RawatJalanKunjunganView(openedFor!, AppSession.CurrentUser!);

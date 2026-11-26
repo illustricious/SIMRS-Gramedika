@@ -90,11 +90,15 @@ public class TindakanRalanInputTests
             """, Rawat, Waktu.Date, Waktu.TimeOfDay);
         await using (var kasirDb = SimrsKhanzaDbContextFactory.Create(settings))
         {
-            var pembayaran = new KasirRepository(kasirDb).MarkPaidAsync(Rawat);
+            var kasir = new KasirRepository(kasirDb);
+            var snapshot = Assert.IsType<KasirBillItem>(await kasir.GetBillAsync(Rawat));
+            var kasirUser = new AuthenticatedUser { UserId = "PET-UJI", Permissions = new HashSet<string> { "kasir_ralan" } };
+            var pembayaran = kasir.BayarRalanAsync(snapshot, "Tunai", kasirUser);
             await Task.Delay(300);
             Assert.False(pembayaran.IsCompleted, "Kasir harus menunggu kunci kunjungan.");
             await db.CommitAsync();
-            await Assert.ThrowsAsync<InvalidOperationException>(() => pembayaran);
+            var changed = await Assert.ThrowsAsync<InvalidOperationException>(() => pembayaran);
+            Assert.Contains("Rincian tagihan berubah", changed.Message);
         }
         Assert.Equal("Belum Bayar", await db.StrAsync("SELECT status_bayar FROM reg_periksa WHERE no_rawat=@p0", Rawat));
         await db.ExecAsync("DELETE FROM rawat_jl_dr WHERE no_rawat=@p0", Rawat);

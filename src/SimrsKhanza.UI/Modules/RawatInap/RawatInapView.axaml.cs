@@ -1,3 +1,7 @@
+using Avalonia.Platform.Storage;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -263,7 +267,7 @@ public partial class RawatInapView : UserControl
                     row["waktu"] is not null ? "Sudah diserahkan"
                         : row.S("status") == "Sudah" ? "Sudah divalidasi" : "Menunggu validasi",
                     row.S("nama_brng"), row.S("jml"), row.S("dosis"),
-                    row.S("waktu"), row.S("petugas"), row.S("penerima"))).ToList();
+                    row.S("waktu"), row.S("petugas"), row.S("penerima"), row["waktu"] is not null)).ToList();
             }
 
             await ReloadAsync();
@@ -280,7 +284,8 @@ public partial class RawatInapView : UserControl
             var batal = new Button { Content = "Batalkan Permintaan", IsEnabled = false };
             var ubah = new Button { Content = "Ubah Permintaan", IsEnabled = false, Classes = { "accent" } };
             var tutup = new Button { Content = "Tutup" };
-            var actions = Ui.Bar(ubah, batal, tutup, status);
+            var bukti = new Button { Content = "Simpan Bukti Serah PDF", IsEnabled = false };
+            var actions = Ui.Bar(ubah, batal, bukti, tutup, status);
             actions.Margin = new Avalonia.Thickness(0, 8, 0, 0);
             var root = new DockPanel { Margin = new Avalonia.Thickness(14) };
             DockPanel.SetDock(actions, Dock.Bottom);
@@ -297,8 +302,56 @@ public partial class RawatInapView : UserControl
             };
             tutup.Click += (_, _) => dialog.Close();
             dialog.Closing += (_, args) => args.Cancel = !grid.IsEnabled;
-            void UpdateButtons() => ubah.IsEnabled = batal.IsEnabled =
-                grid.IsEnabled && grid.SelectedItem is StatusObatPulang { Menunggu: true };
+            void UpdateButtons()
+            {
+                ubah.IsEnabled = batal.IsEnabled = grid.IsEnabled && grid.SelectedItem is StatusObatPulang { Menunggu: true };
+                bukti.IsEnabled = grid.IsEnabled && grid.SelectedItem is StatusObatPulang { Diserahkan: true };
+            }
+
+            bukti.Click += async (_, _) =>
+            {
+                if (grid.SelectedItem is not StatusObatPulang { Diserahkan: true } item) return;
+                grid.IsEnabled = false;
+                UpdateButtons();
+                try
+                {
+                    var data = await repo.MuatBuktiSerahAsync(user, visit.NoRawat, item.Nomor);
+                    var file = await dialog.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                    {
+                        Title = "Simpan Bukti Serah Terima Obat Pulang",
+                        SuggestedFileName = $"Bukti-Serah-{item.Nomor}", DefaultExtension = "pdf",
+                        FileTypeChoices = [new FilePickerFileType("PDF") { Patterns = ["*.pdf"] }],
+                    });
+                    if (file is null) return;
+                    QuestPDF.Settings.License = LicenseType.Community;
+                    var pdf = Document.Create(doc => doc.Page(page =>
+                    {
+                        page.Size(PageSizes.A4);
+                        page.Margin(36);
+                        page.Content().Column(c =>
+                        {
+                            c.Spacing(8);
+                            c.Item().Text("Bukti Serah Terima Obat Pulang").FontSize(18).Bold();
+                            c.Item().Text($"Pasien: {data.S("nm_pasien")} · RM {data.S("no_rkm_medis")}");
+                            c.Item().Text($"No. Rawat: {data.S("no_rawat")} · Permintaan: {data.S("no_permintaan")}");
+                            var waktu = data.Dt("waktu");
+                            c.Item().Text($"Waktu serah terima: {waktu:dd/MM/yyyy HH:mm:ss}");
+                            c.Item().Text($"Petugas Farmasi: {data.S("petugas")}");
+                            c.Item().Text($"Penerima: {data.S("penerima")}");
+                        });
+                    })).GeneratePdf();
+                    await using var output = await file.OpenWriteAsync();
+                    if (output.CanSeek) output.SetLength(0);
+                    await output.WriteAsync(pdf);
+                    Ui.Ok(status, "Bukti serah terima tersimpan.");
+                }
+                catch (Exception ex) { Ui.Err(status, ex.Message); }
+                finally
+                {
+                    grid.IsEnabled = true;
+                    UpdateButtons();
+                }
+            };
 
             grid.SelectionChanged += (_, _) => UpdateButtons();
             ubah.Click += async (_, _) =>
@@ -352,7 +405,7 @@ public partial class RawatInapView : UserControl
     }
 
     private sealed record StatusObatPulang(string Nomor, string Tanggal, string Jam, bool Menunggu,
-        string Status, string Obat, string Jumlah, string Dosis, string Waktu, string Petugas, string Penerima);
+        string Status, string Obat, string Jumlah, string Dosis, string Waktu, string Petugas, string Penerima, bool Diserahkan);
 
     private async void OnPindahClick(object? sender, RoutedEventArgs e)
     {

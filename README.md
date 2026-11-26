@@ -69,11 +69,11 @@ The [feature tracker](docs/tracker/README.md) compares Avalonia against the lega
 
 Pending tiles (Menu L) show a "not implemented" notice.
 
-Pada daftar Rawat Inap, pilih pasien lalu klik **SOAPIE** untuk melihat, mencatat, mengubah, atau menghapus pemeriksaan kunjungan sesuai hak akun. Formulir menampilkan nomor rawat dan NIK dokter atau petugas. Uji SQL SOAPIE di skema MariaDB sintetis lulus. Uji koneksi dari aplikasi dan input tindakan dokter, petugas, serta gabungan masih tertunda. [Audit Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md).
+Pada daftar Rawat Inap, pilih pasien lalu klik **SOAPIE** untuk melihat, mencatat, mengubah, atau menghapus pemeriksaan kunjungan sesuai hak akun. Formulir menampilkan nomor rawat dan NIK dokter atau petugas. Uji SQL SOAPIE di skema MariaDB sintetis lulus. Kasir mendukung tagihan gabungan Rawat Jalan dan Rawat Inap serta cetak ulang kuitansi PDF. Tindakan dokter, petugas dan gabungan memakai jurnal; rekonsiliasi dengan konfigurasi rekening RS masih diperlukan. [Audit Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md).
 
 Di SOAPIE Rawat Inap, **5 SOAPIE Terakhir** membuka catatan pasien yang sama berdasarkan NIK penulis. **Salin Narasi Terpilih** memakai catatan yang dipilih di daftar kunjungan. Kedua tombol menyalin enam isian narasi ke draf baru tanpa langsung menyimpannya.
 
-Project handover notes for developers are in [docs/handover](docs/handover/README.md).
+Mulai dari [handover terbaru](docs/handover/README.md) atau buka [tracker HTML](docs/tracker/GRAFIK.html).
 
 Menu T supports search, creation, editing, and deletion for all 16 Dankes reference lists. The legacy Kepemilikan Rumah tile opens the Atap Rumah screen. Avalonia stores ownership categories independently. Apply the [Kepemilikan Rumah SQL script](docs/audit/menu_t_kepemilikan_rumah.sql) to the configured SIMRS database before using that reference list.
 

@@ -11,7 +11,7 @@
         WindowState="FullScreen"
         WindowDecorations="BorderOnly"
         ExtendClientAreaToDecorationsHint="True"
-        Background="{DynamicResource ThemePrimaryBrush}">
+        Background="{DynamicResource ThemeBackgroundBrush}">
 
     <Grid RowDefinitions="Auto,Auto,*,Auto">
 
@@ -32,8 +32,6 @@
                     <ToggleButton Name="ThemeToggle" Classes="shortcut" Content="Mode Gelap"
                                   Click="OnThemeToggleClick" HorizontalAlignment="Right" />
                 </StackPanel>
-                <TextBlock Grid.Column="1" Text="SIMRS Gramedika" Foreground="#E1EBFA" FontSize="12" FontWeight="SemiBold"
-                           HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" />
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <Button Classes="caption" Content="—" Click="OnMinimizeClick" />
                     <Button Classes="caption" Name="FullscreenButton" Content="❐" Click="OnFullscreenClick" />

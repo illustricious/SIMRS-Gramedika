@@ -53,7 +53,7 @@ Lihat `installer/README.md`. Windows lokal: `powershell -ExecutionPolicy Bypass 
 
 ## Tracker fitur
 
-Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) membaca `LegacyMenuCatalog.cs`, snapshot source Java (`java.jsonl`), kode produksi, dan `status.json`, lalu menulis ulang `fitur.tsv`, `RINGKASAN.md`, dan `POPUP_REGISTRASI.md`. Commit ketiganya bersama `status.json`; CI (`.github/workflows/tracker.yml`) gagal bila laporan kedaluwarsa.
+Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) membaca `LegacyMenuCatalog.cs`, snapshot source Java (`java.jsonl`), kode produksi, dan `status.json`, lalu menulis ulang `fitur.tsv`, `RINGKASAN.md`, `POPUP_REGISTRASI.md`, dan `grafik-data.js`. Commit semua laporan bersama `status.json`; CI (`.github/workflows/tracker.yml`) gagal bila laporan kedaluwarsa.
 
 - Tile berstatus otomatis **layar tersedia** bila kuncinya (`btnXxx`, tanpa membedakan huruf besar/kecil) dirutekan di kode produksi (selain katalog, peta hak akses, `DashboardIcons.cs`, dan tes). Tile Menu L otomatis **ditunda**.
 - **selesai/sebagian/kurang** hanya lewat `status.json` dengan bukti (path implementasi atau tes). Layar baca-saja untuk alur yang di Java menyimpan data = sebagian.
@@ -68,3 +68,7 @@ Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) mem
 5. **Ukuran:** folder `bin`/`obj` bisa >1,5 GB. Aman dihapus, akan dibuat ulang saat build.
 6. **MariaDB lokal** bukan service Windows. Cek prosesnya sebelum bekerja bila memakai DB dev lokal.
 7. Tabel yang dibutuhkan fitur baru tetapi tidak ada di DB dev: ambil `CREATE TABLE`-nya dari `docs/audit/schema_sik.sql` (struktur saja, tanpa data).
+
+## Fixture Kasir dan Rawat Inap
+
+Buat database lokal kosong bernama `simrs_kasir_farmasi_fixture`, `simrs_ralan_fixture`, `simrs_ranap_fixture`, dan `simrs_tindakan_ranap_fixture`. Muat DDL Khanza dari `docs/audit/schema_sik.sql`, tanpa INSERT data, dengan pemeriksaan foreign key dimatikan saat membuat tabel. Jika nama tabel muncul lagi dari skema bridging, gunakan definisi pertama skema inti. Aktifkan fixture dengan `SIMRS_KASIR_FARMASI_FIXTURE_PORT`, `SIMRS_RALAN_FIXTURE_PORT`, `SIMRS_RANAP_FIXTURE_PORT`, dan `SIMRS_TINDAKAN_RANAP_FIXTURE_PORT`. Fixture menyisipkan data sintetis dan membutuhkan skema kosong untuk setiap putaran. Jalankan `dotnet test src/SimrsKhanza.Tests/SimrsKhanza.Tests.csproj -p:NuGetAudit=false -m:1`. Untuk fixture obat pulang, gunakan `simrs_resep_pulang_fixture`, terapkan SQL di `docs/migrations/20261125_serah_resep_pulang.sql`, lalu set `SIMRS_RESEP_PULANG_FIXTURE_PORT`.

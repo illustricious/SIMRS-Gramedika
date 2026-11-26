@@ -265,6 +265,22 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
         await db.CommitAsync();
     }
 
+    public async Task<Row> MuatBuktiSerahAsync(AuthenticatedUser user, string noRawat, string nomor)
+    {
+        PastikanIzin(user, IzinPermintaan);
+        await using var db = await Db.OpenAsync(settings);
+        await PastikanTabelSerahAsync(db);
+        return await db.FirstAsync("""
+            SELECT p.nm_pasien,r.no_rkm_medis,h.no_rawat,h.no_permintaan,s.waktu,s.petugas,s.penerima
+            FROM gramedika_serah_resep_pulang s
+            JOIN permintaan_resep_pulang h ON h.no_permintaan=s.no_permintaan AND h.no_rawat=s.no_rawat
+            JOIN reg_periksa r ON r.no_rawat=h.no_rawat
+            JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis
+            WHERE h.no_permintaan=@p0 AND h.no_rawat=@p1 AND h.status='Sudah'
+            """, nomor, noRawat)
+            ?? throw new InvalidOperationException("Bukti serah terima tidak ditemukan untuk kunjungan ini.");
+    }
+
     public async Task<IReadOnlyList<Row>> RiwayatPermintaanAsync(AuthenticatedUser user, string noRawat)
     {
         if (!user.HasPermission(IzinPermintaan))

@@ -65,12 +65,12 @@ public class BillingRanapTests
             var kasir = new KasirRepository(ctx);
             var ralan = await kasir.GetBillAsync(rawat);
             Assert.NotNull(ralan);
-            Assert.Equal(25_000m, ralan.Total);
-            Assert.Equal(14_500m, ralan.RincianTindakanObat.Sum(row => row.Total));
-            Assert.Equal(new KasirRincian("Obat & BHP", "Obat Uji", 2_000m, 1.5m, 4_500m),
-                Assert.Single(ralan.RincianTindakanObat, row => row.Jenis == "Obat & BHP"));
+            Assert.Equal(39_500m, ralan.Total);
+            Assert.Equal(new KasirRincian("Obat", "Obat Uji", 2_000m, 1.5m, 4_500m),
+                Assert.Single(ralan.Rincian, row => row.Jenis == "Obat"));
             Assert.NotNull(ralan.AlasanBelumBisaBayar);
-            await Assert.ThrowsAsync<InvalidOperationException>(() => kasir.MarkPaidAsync(rawat));
+            var kasirUser = new SimrsKhanza.Core.Auth.AuthenticatedUser { Permissions = new HashSet<string> { "kasir_ralan" } };
+            await Assert.ThrowsAsync<InvalidOperationException>(() => kasir.BayarRalanAsync(ralan, "Tunai", kasirUser));
             Assert.Equal("Belum Bayar", await sql.StrAsync("SELECT status_bayar FROM reg_periksa WHERE no_rawat=@p0", rawat));
         }
 
@@ -119,11 +119,8 @@ public class BillingRanapTests
             var aktif = await new KasirRepository(ctx).GetBillAsync(rawat);
             Assert.NotNull(aktif);
             Assert.Contains("masih menempati kamar", aktif.AlasanBelumBisaBayar);
-            Assert.Equal(29_500m, aktif.RincianTindakanObat.Sum(row => row.Total));
+            Assert.Equal(29_500m, aktif.Rincian.Where(row => row.Jenis is "Ralan Paramedis" or "Ranap Dokter" or "Obat").Sum(row => row.Total));
         }
-        await sql.ExecAsync("DELETE FROM rawat_jl_pr WHERE no_rawat=@p0", rawat);
-        await sql.ExecAsync("DELETE FROM rawat_inap_dr WHERE no_rawat=@p0", rawat);
-        await sql.ExecAsync("DELETE FROM detail_pemberian_obat WHERE no_rawat=@p0", rawat);
 
         await sql.ExecAsync("UPDATE set_harga_kamar SET tarif=900000 WHERE kd_kamar='UJI-A'");
         await new MasterRepository(settings).SaveAsync(MenuUSpecs.Tiles["btnSetHargaKamar"].Single(),
@@ -139,7 +136,15 @@ public class BillingRanapTests
             Assert.Equal(500_000m, await new RawatInapRepository(ctx, jam).DischargeAsync(roomB, StatusPulang.Sehat, "Data sintetis"));
 
         await using var billingContext = SimrsKhanzaDbContextFactory.Create(settings);
+        var kasirUserRanap = new AuthenticatedUser { UserId = "uiji", Permissions = new HashSet<string> { "billing_ranap" } };
         var billing = new KasirRepository(billingContext);
+        await SeedLayananTambahanAsync(sql, rawat);
+        var tertunda = Assert.IsType<KasirBillItem>(await billing.GetBillAsync(rawat));
+        Assert.Contains("menunggu", tertunda.AlasanBelumBisaBayar);
+        Assert.DoesNotContain(tertunda.Rincian, r => r.Jenis == "Resep Pulang");
+        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(tertunda, "Tunai Uji", kasirUserRanap));
+        await sql.ExecAsync("INSERT INTO resep_pulang VALUES (@p0,'UJI-OB',2,3500,7000,'Uji','2026-11-20','10:30:00','UJI','','')", rawat);
+        await sql.ExecAsync("UPDATE permintaan_resep_pulang SET status='Sudah',tgl_validasi='2026-11-20',jam_validasi='10:30:00' WHERE no_rawat=@p0", rawat);
         var bill = await billing.GetBillAsync(rawat);
         Assert.NotNull(bill);
         Assert.Null(bill.AlasanBelumBisaBayar);
@@ -152,30 +157,40 @@ public class BillingRanapTests
                 + (SELECT SUM(k.ttl_biaya) FROM kamar_inap k WHERE k.no_rawat=r.no_rawat)
                 + (SELECT SUM(h.besar_biaya*h.jml*k.lama) FROM kamar_inap k JOIN biaya_harian h USING(kd_kamar) WHERE k.no_rawat=r.no_rawat)
                 + (SELECT SUM(s.besar_biaya) FROM kamar_inap k JOIN biaya_sekali s USING(kd_kamar) WHERE k.no_rawat=r.no_rawat)
+                + (SELECT SUM(p.total_byrpr) FROM rawat_jl_pr t JOIN jns_perawatan p USING(kd_jenis_prw) WHERE t.no_rawat=r.no_rawat)
+                + (SELECT SUM(biaya_rawat) FROM rawat_inap_dr WHERE no_rawat=r.no_rawat)
+                + (SELECT SUM(total)+ROUND(SUM(total)*0.11) FROM detail_pemberian_obat WHERE no_rawat=r.no_rawat)
+                + (SELECT SUM(biaya) FROM periksa_lab WHERE no_rawat=r.no_rawat)
+                + (SELECT SUM(biaya_item) FROM detail_periksa_lab WHERE no_rawat=r.no_rawat)
+                + (SELECT SUM(biaya) FROM periksa_radiologi WHERE no_rawat=r.no_rawat)
+                + (SELECT SUM(total) FROM resep_pulang WHERE no_rawat=r.no_rawat)
             FROM reg_periksa r WHERE r.no_rawat=@p0
             """, rawat));
-        Assert.Equal(1_035_000m, bill.Total);
+        Assert.Equal(1_086_195m, bill.Total);
         Assert.Equal(legacy, bill.Total);
 
         await sql.ExecAsync("UPDATE biaya_harian SET besar_biaya=21000 WHERE kd_kamar='UJI-A'");
-        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", "uiji"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", kasirUserRanap));
         Assert.Equal(0, await sql.CountAsync("SELECT COUNT(*) FROM nota_inap"));
         await sql.ExecAsync("UPDATE biaya_harian SET besar_biaya=20000 WHERE kd_kamar='UJI-A'");
         await sql.ExecAsync("UPDATE set_akun_ranap2 SET Harian_Ranap=NULL");
-        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", "uiji"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", kasirUserRanap));
         Assert.Equal(0, await sql.CountAsync("SELECT COUNT(*) FROM nota_inap"));
         Assert.Equal(0, await sql.CountAsync("SELECT COUNT(*) FROM billing"));
         Assert.Equal("Belum Bayar", await sql.StrAsync("SELECT status_bayar FROM reg_periksa WHERE no_rawat=@p0", rawat));
         await sql.ExecAsync("UPDATE set_akun_ranap2 SET Harian_Ranap='UJI-H'");
 
-        var nota = await billing.BayarRanapAsync(bill, "Tunai Uji", "uiji");
-        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", "uiji"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", new AuthenticatedUser()));
+        var nota = await billing.BayarRanapAsync(bill, "Tunai Uji", kasirUserRanap);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => billing.BayarRanapAsync(bill, "Tunai Uji", kasirUserRanap));
         Assert.Equal(1, await sql.CountAsync("SELECT COUNT(*) FROM nota_inap WHERE no_nota=@p0", nota));
-        Assert.Equal(1, await sql.CountAsync("SELECT COUNT(*) FROM jurnal WHERE no_bukti=@p0", rawat));
-        var jurnal = await sql.FirstAsync("SELECT SUM(debet) AS Debet,SUM(kredit) AS Kredit FROM detailjurnal");
+        Assert.Equal(2, await sql.CountAsync("SELECT COUNT(*) FROM jurnal WHERE no_bukti=@p0", rawat));
+        var jurnal = await sql.FirstAsync("SELECT SUM(debet) AS Debet,SUM(kredit) AS Kredit FROM detailjurnal JOIN jurnal USING(no_jurnal) WHERE keterangan LIKE 'PEMBAYARAN PASIEN RAWAT INAP%'");
         Assert.NotNull(jurnal);
         Assert.Equal(legacy, Convert.ToDecimal(jurnal["Debet"]));
         Assert.Equal(legacy, Convert.ToDecimal(jurnal["Kredit"]));
+        foreach (var (rekening, jumlah) in new[] { ("UJI-S", 13000), ("UJI-T", 25000), ("UJI-L", 6200), ("UJI-D", 8000), ("UJI-O", 4500), ("UJI-P", 7000), ("UJI-X", 495) })
+            Assert.Equal(jumlah, await sql.CountAsync("SELECT SUM(kredit) FROM detailjurnal WHERE kd_rek=@p0", rekening));
         Assert.Equal(2, await sql.CountAsync("SELECT COUNT(*) FROM kamar WHERE status='KOSONG'"));
 
         await sql.ExecAsync("UPDATE biaya_harian SET besar_biaya=99000");
@@ -185,7 +200,48 @@ public class BillingRanapTests
         Assert.Equal(nota, lunas.NoNota);
         Assert.Equal(legacy, lunas.Total);
         Assert.Equal(bill.Rincian.ToArray(), lunas.Rincian.ToArray());
-        Assert.Empty(lunas.RincianTindakanObat);
+        var kuitansi = Assert.IsType<KasirKuitansi>(await billing.MuatKuitansiAsync(rawat));
+        Assert.Equal(nota, kuitansi.Tagihan.NoNota);
+        Assert.Equal(new KasirPembayaran("Tunai Uji", 0, legacy), Assert.Single(kuitansi.Pembayaran));
+    }
+
+    private static async Task SeedLayananTambahanAsync(Db db, string rawat)
+    {
+        await db.ExecAsync("SET SESSION sql_mode='', FOREIGN_KEY_CHECKS=0");
+        try
+        {
+            await db.ExecAsync("""
+                INSERT INTO rekening(kd_rek,nm_rek) VALUES ('UJI-S','Suspen'),('UJI-T','Tindakan'),('UJI-L','Lab'),
+                    ('UJI-D','Radiologi'),('UJI-O','Obat'),('UJI-P','Resep Pulang'),('UJI-X','PPN')
+                """);
+            await db.ExecAsync("""
+                UPDATE set_akun_ranap SET Suspen_Piutang_Tindakan_Ranap='UJI-S', Tindakan_Ranap='UJI-T',
+                    Laborat_Ranap='UJI-L', Radiologi_Ranap='UJI-D', Obat_Ranap='UJI-O', Resep_Pulang_Ranap='UJI-P'
+                """);
+            await db.ExecAsync("INSERT INTO set_akun(PPN_Keluaran) VALUES ('UJI-X')");
+            await db.ExecAsync("UPDATE set_nota SET tampilkan_ppnobat_ranap='Yes'");
+            await db.ExecAsync("INSERT INTO jurnal VALUES ('UJI-TIN',@p0,'2026-11-19','11:00:00','U','TINDAKAN RAWAT INAP')", rawat);
+            await db.ExecAsync("INSERT INTO detailjurnal VALUES ('UJI-TIN','UJI-S',13000,0),('UJI-TIN','UJI-T',0,13000)");
+            await db.ExecAsync("INSERT INTO jns_perawatan_lab(kd_jenis_prw,nm_perawatan) VALUES ('UJI-L','Lab Uji')");
+            await db.ExecAsync("""
+                INSERT INTO periksa_lab(no_rawat,kd_jenis_prw,tgl_periksa,jam,biaya,status,kategori)
+                VALUES (@p0,'UJI-L','2026-11-19','10:00:00',5000,'Ranap','PK')
+                """, rawat);
+            await db.ExecAsync("""
+                INSERT INTO detail_periksa_lab(no_rawat,kd_jenis_prw,tgl_periksa,jam,id_template,biaya_item)
+                VALUES (@p0,'UJI-L','2026-11-19','10:00:00',1,1200)
+                """, rawat);
+            await db.ExecAsync("INSERT INTO jns_perawatan_radiologi(kd_jenis_prw,nm_perawatan) VALUES ('UJI-D','Radiologi Uji')");
+            await db.ExecAsync("""
+                INSERT INTO periksa_radiologi(no_rawat,kd_jenis_prw,tgl_periksa,jam,biaya,status)
+                VALUES (@p0,'UJI-D','2026-11-19','10:00:00',8000,'Ranap')
+                """, rawat);
+            await db.ExecAsync("""
+                INSERT INTO permintaan_resep_pulang(no_permintaan,tgl_permintaan,jam,no_rawat,status)
+                VALUES ('UJI-RP','2026-11-20','10:00:00',@p0,'Belum')
+                """, rawat);
+        }
+        finally { await db.ExecAsync("SET SESSION FOREIGN_KEY_CHECKS=1"); }
     }
 
     private static async Task SeedTindakanObatAsync(Db db, string rawat)

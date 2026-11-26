@@ -150,11 +150,12 @@ public class BarcodeRepository(DatabaseSettings settings)
         }
 
         await using var db = await OpenAsync();
-        if (await db.CountAsync("SELECT COUNT(*) FROM billing WHERE no_rawat=@p0", c.NoRawat)
-            + await db.CountAsync("SELECT COUNT(*) FROM reg_periksa WHERE no_rawat=@p0 AND stts='Batal'", c.NoRawat) > 0)
+        await db.BeginAsync();
+        var visit = await db.FirstAsync("SELECT stts,status_bayar FROM reg_periksa WHERE no_rawat=@p0 FOR UPDATE", c.NoRawat);
+        if (visit is null || visit.S("stts") == "Batal" || visit.S("status_bayar") == "Sudah Bayar" ||
+            await db.CountAsync("SELECT COUNT(*) FROM billing WHERE no_rawat=@p0", c.NoRawat) > 0)
             throw new InvalidOperationException("Data billing sudah terverifikasi / registrasi batal, silahkan hubungi bagian kasir/keuangan.");
 
-        await db.BeginAsync();
         var akun = await JurnalPoster.ReadAkunAsync(db.Conn, db.Tx, c.Ranap ? "set_akun_ranap" : "set_akun_ralan");
         var now = Convert.ToDateTime(await db.ScalarAsync("SELECT NOW()"));
         var sfx = c.Ranap ? "Ranap" : "Ralan";
