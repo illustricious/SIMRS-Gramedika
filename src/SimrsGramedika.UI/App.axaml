@@ -32,7 +32,7 @@
                     <SolidColorBrush x:Key="ThemeTableHeaderBrush">#E8EEF7</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeIconBrush">#123F8D</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeIconBackgroundBrush">#E8F0FC</SolidColorBrush>
-                    <SolidColorBrush x:Key="ThemeBorderBrush">#D9E1EE</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#AAB8CC</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextBrush">#1B2638</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#5D697B</SolidColorBrush>
                     <SolidColorBrush x:Key="ThemeOnPrimaryBrush">#FFFFFF</SolidColorBrush>
@@ -127,6 +127,12 @@
         <Style Selector="TextBox, ComboBox">
             <Setter Property="MinHeight" Value="32" />
             <Setter Property="Padding" Value="8,4" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="TextBox:focus, ComboBox:focus, CalendarDatePicker:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryLightBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
         </Style>
         <Style Selector="DatePicker">
             <Setter Property="DayFormat" Value="d" />
@@ -147,10 +153,17 @@
             <Setter Property="MinHeight" Value="36" />
             <Setter Property="Padding" Value="9,4" />
             <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#1B2638" />
+            <Setter Property="BorderBrush" Value="#8FA2BC" />
             <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style Selector="CalendarDatePicker:pointerover">
+            <Setter Property="BorderBrush" Value="#3868C0" />
+        </Style>
+        <Style Selector="CalendarDatePicker:focus">
+            <Setter Property="BorderBrush" Value="#1769E0" />
+            <Setter Property="BorderThickness" Value="2" />
         </Style>
         <Style Selector="CalendarDatePicker /template/ Button#PART_Button">
             <Setter Property="MinWidth" Value="30" />
@@ -163,58 +176,70 @@
         </Style>
         <Style Selector="Calendar">
             <Setter Property="FontSize" Value="13" />
-            <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#1B2638" />
+            <Setter Property="BorderBrush" Value="#B8C7DD" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="10" />
-            <Setter Property="Padding" Value="6" />
+            <Setter Property="Padding" Value="8" />
+        </Style>
+        <Style Selector="CalendarItem">
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="Foreground" Value="#1B2638" />
+            <Setter Property="BorderBrush" Value="#E0E7F0" />
+        </Style>
+        <Style Selector="CalendarItem /template/ Grid#PART_MonthView TextBlock:nth-child(1)">
+            <Setter Property="Foreground" Value="#D71920" />
+            <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="CalendarDayButton">
             <Setter Property="MinWidth" Value="36" />
             <Setter Property="MinHeight" Value="36" />
             <Setter Property="Margin" Value="1" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="Foreground" Value="#1B2638" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="7" />
         </Style>
+        <Style Selector="CalendarDayButton:nth-child(7n+1)">
+            <Setter Property="Foreground" Value="#D71920" />
+        </Style>
         <Style Selector="CalendarDayButton:pointerover /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Background" Value="#EAF2FF" />
             <Setter Property="CornerRadius" Value="7" />
         </Style>
         <Style Selector="CalendarDayButton /template/ Border#Root, CalendarDayButton /template/ Border#Border">
             <Setter Property="CornerRadius" Value="7" />
         </Style>
         <Style Selector="CalendarDayButton:today /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Background" Value="#EAF2FF" />
         </Style>
         <Style Selector="CalendarDayButton:today /template/ Border#Border">
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
+            <Setter Property="BorderBrush" Value="#1769E0" />
         </Style>
         <Style Selector="CalendarDayButton:today /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="#1769E0" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="CalendarDayButton:selected /template/ Border#Root">
-            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Background" Value="#1769E0" />
         </Style>
         <Style Selector="CalendarDayButton:selected /template/ Border#Border">
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="#1769E0" />
         </Style>
         <Style Selector="CalendarDayButton:selected /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Foreground" Value="{DynamicResource ThemeOnPrimaryBrush}" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
         <Style Selector="CalendarButton">
             <Setter Property="MinHeight" Value="32" />
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="#1769E0" />
             <Setter Property="CornerRadius" Value="6" />
         </Style>
         <Style Selector="CalendarButton:pointerover">
-            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+            <Setter Property="Background" Value="#EAF2FF" />
         </Style>
         <Style Selector="ContextMenu, MenuFlyoutPresenter">
             <Setter Property="Background" Value="{DynamicResource ThemePanelBrush}" />

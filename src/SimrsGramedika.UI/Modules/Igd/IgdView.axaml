@@ -97,13 +97,48 @@
                 <TextBlock Grid.Column="7" Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
             </Grid>
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
-                <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
-                <Button Content="🖨 Cetak" Click="OnCetakClick" />
-                <Button Content="📋 Semua" Click="OnSemuaClick" />
-                <Button Content="🔎 Cari" Click="OnCariClick" Classes="accent" />
-                <Button Content="🚑 Triase" Click="OnTriaseClick" />
-                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <Button Click="OnPlaceholderClick" Classes="iconAction dangerIcon">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="#D71920" StrokeThickness="1.7" StrokeLineCap="Round" Data="M3,4 L13,4 M6,4 L6,2 L10,2 L10,4 M4.5,5.5 L5.2,13 L10.8,13 L11.5,5.5 M6.5,7 L6.7,11 M9.5,7 L9.3,11" />
+                        <TextBlock Text="Hapus" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnPlaceholderClick" Classes="iconAction">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="{DynamicResource ThemeIconBrush}" StrokeThickness="1.7" StrokeLineCap="Round" Data="M12.5,5.5 A5.5,5.5 0 0 0 3,4 L2,5 M2,5 L2,2 M2,5 L5,5 M3.5,10.5 A5.5,5.5 0 0 0 13,12 L14,11 M14,11 L14,14 M14,11 L11,11" />
+                        <TextBlock Text="Ganti" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnCetakClick" Classes="iconAction">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="{DynamicResource ThemeIconBrush}" StrokeThickness="1.6" StrokeLineCap="Round" Data="M4,2 L10,2 L13,5 L13,13 L4,13 Z M10,2 L10,5 L13,5 M6,8 L11,8 M6,10.5 L11,10.5 M6,5.5 L7.5,5.5" />
+                        <TextBlock Text="Cetak" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnSemuaClick" Classes="iconAction">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="{DynamicResource ThemeIconBrush}" StrokeThickness="1.6" StrokeLineCap="Round" Data="M2.5,3.5 L11.5,3.5 M2.5,7.5 L11.5,7.5 M2.5,11.5 L11.5,11.5 M1,3.5 L1,3.5 M1,7.5 L1,7.5 M1,11.5 L1,11.5" />
+                        <TextBlock Text="Semua" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnCariClick" Classes="iconAction accent">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="{DynamicResource ThemeOnPrimaryBrush}" StrokeThickness="1.8" StrokeLineCap="Round" Data="M10.5,10.5 L14,14 M11.5,6.5 A5,5 0 1 1 1.5,6.5 A5,5 0 0 1 11.5,6.5 Z" />
+                        <TextBlock Text="Cari" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnTriaseClick" Classes="iconAction">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="{DynamicResource ThemeIconBrush}" StrokeThickness="1.6" StrokeLineCap="Round" Data="M7.5,1.5 L7.5,13.5 M1.5,7.5 L13.5,7.5" />
+                        <TextBlock Text="Triase" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button Click="OnBackClick" Classes="iconAction accentText dangerIcon">
+                    <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Path Width="15" Height="15" Stroke="#D71920" StrokeThickness="1.8" StrokeLineCap="Round" Data="M6,2 L13,2 L13,13 L6,13 M8,7.5 L1.5,7.5 M1.5,7.5 L4.5,4.5 M1.5,7.5 L4.5,10.5" />
+                        <TextBlock Text="Keluar" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
             </WrapPanel>
             <TextBlock Name="StatusText" TextWrapping="Wrap" IsVisible="False" />
           </StackPanel>
@@ -111,6 +146,14 @@
     </Grid>
 
     <UserControl.Styles>
+        <Style Selector="Button.iconAction">
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="MinHeight" Value="34" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="Button.iconAction.dangerIcon">
+            <Setter Property="Foreground" Value="#B4232A" />
+        </Style>
         <Style Selector="Button.accentText">
             <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
         </Style>
