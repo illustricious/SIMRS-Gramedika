@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName PresentationCore, WindowsBase
 
-$ui = Join-Path $PSScriptRoot '../src/SimrsKhanza.UI'
+$ui = Join-Path $PSScriptRoot '../src/SimrsGramedika.UI'
 $assets = Join-Path $ui 'Assets'
 [xml]$svg = Get-Content -LiteralPath (Join-Path $assets 'app.svg') -Raw
 $viewBox = $svg.DocumentElement.GetAttribute('viewBox') -split '\s+'

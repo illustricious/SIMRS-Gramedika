@@ -51,7 +51,7 @@ if (arg >= 0) {
 } else rows.push(...read(snapshot).trim().split('\n').map(line => JSON.parse(line)));
 
 function catalog() {
-  return read(path.join(root,'src/SimrsKhanza.UI/Modules/Shared/LegacyMenuCatalog.cs')).split('[][] Tiles')[1];
+  return read(path.join(root,'src/SimrsGramedika.UI/Modules/Shared/LegacyMenuCatalog.cs')).split('[][] Tiles')[1];
 }
 function tileKeys() {
   return tileKeys.cache ??= new Set([...catalog().matchAll(/\("([^"]+)",/g)].map(m => m[1]));
@@ -59,7 +59,7 @@ function tileKeys() {
 // Tile -> layar: kunci tile (btnXxx) yang muncul sebagai literal di kode produksi selain katalog dan peta hak akses.
 const routedBy = new Map();
 for (const rel of fs.readdirSync(path.join(root, 'src'), {recursive:true}).map(f => f.replaceAll('\\', '/'))) {
-  if (!rel.endsWith('.cs') || /(^|\/)(bin|obj|SimrsKhanza\.Tests)\//.test(rel) || /LegacyMenuCatalog\.cs$|LegacyTilePermissions\.g\.cs$|DashboardIcons\.cs$/.test(rel)) continue;
+  if (!rel.endsWith('.cs') || /(^|\/)(bin|obj|SimrsGramedika\.Tests)\//.test(rel) || /LegacyMenuCatalog\.cs$|LegacyTilePermissions\.g\.cs$|DashboardIcons\.cs$/.test(rel)) continue;
   for (const m of read(path.join(root, 'src', rel)).matchAll(/"([Bb]tn\w+)"/g)) {
     const key = m[1].toLowerCase();
     if (!routedBy.has(key)) routedBy.set(key, path.basename(rel));

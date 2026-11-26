@@ -1,0 +1,32 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SimrsGramedika.UI.Controls.SearchPickerDialog"
+        Title="Cari Data"
+        Width="480" Height="420"
+        WindowStartupLocation="CenterOwner"
+        Background="#2E4057">
+
+    <!--
+        Generic search/pick popup — replaces the legacy 16-strong Dlg*Cari*
+        family (CariPasien, CariPoli, CariDokter, CariBangsal, ...) in
+        src/simrskhanza with ONE reusable dialog. See
+        docs/audit/PLANNING_APLIKASI.md §1-2 for the rationale.
+    -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
+        <TextBlock Name="TitleText" Grid.Row="0" Text="Cari Data"
+                   FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,8" />
+
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+            <TextBox Name="QueryBox" Grid.Column="0" PlaceholderText="Ketik untuk mencari..." />
+            <Button Name="SearchButton" Grid.Column="1" Content="Cari" Margin="8,0,0,0" Click="OnSearchClick" />
+        </Grid>
+
+        <ListBox Name="ResultsList" Grid.Row="2" Background="#1B2A41"
+                  DoubleTapped="OnResultDoubleTapped" />
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0" Spacing="8">
+            <Button Name="OkButton" Content="Pilih" Click="OnOkClick" />
+            <Button Name="CancelButton" Content="Batal" Click="OnCancelClick" />
+        </StackPanel>
+    </Grid>
+</Window>

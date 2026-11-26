@@ -23,7 +23,7 @@ var arch = args.Length == 5 ? args[4] : "amd64";
 if (arch is not ("amd64" or "arm64")) { Console.Error.WriteLine("arch must be amd64 or arm64"); return 2; }
 
 const string Package = "simrs-gramedika";
-const string MainBinary = "SimrsKhanza.UI";
+const string MainBinary = "SimrsGramedika.UI";
 
 var exec = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute |
            UnixFileMode.GroupRead | UnixFileMode.GroupExecute | UnixFileMode.OtherRead | UnixFileMode.OtherExecute;
@@ -81,9 +81,9 @@ Directory.CreateDirectory(Path.GetDirectoryName(output)!);
 if (output.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase))
 {
     const string Root = "simrs-gramedika";
-    var run = "#!/bin/sh\n# SIMRS Gramedika (portable)\nDIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nexec \"$DIR/app/SimrsKhanza.UI\" \"$@\"\n";
+    var run = "#!/bin/sh\n# SIMRS Gramedika (portable)\nDIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nexec \"$DIR/app/SimrsGramedika.UI\" \"$@\"\n";
     var readme = $"SIMRS Gramedika {version} (linux-{(arch == "amd64" ? "x64" : "arm64")}, portable)\n\nJalankan: ./simrs-gramedika\n" +
-                 "Koneksi database diatur saat pertama dibuka dan disimpan di ~/.config/SimrsKhanza.\n";
+                 "Koneksi database diatur saat pertama dibuka dan disimpan di ~/.config/SimrsGramedika.\n";
     using var fs = File.Create(output);
     WriteTar(fs,
     [
@@ -99,7 +99,7 @@ if (output.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase))
 // ---------------------------------------------------------------- .deb
 var md5sums = new StringBuilder();
 var dataTar = new MemoryStream();
-var launcher = "#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsKhanza.UI \"$@\"\n";
+var launcher = "#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsGramedika.UI \"$@\"\n";
 var installedBytes = WriteTar(dataTar,
 [
     .. appFiles.Select(f => ($"opt/simrs-gramedika/{f.Rel}", File.ReadAllBytes(f.Path), IsExecutable(f.Rel))),
@@ -125,7 +125,7 @@ Description: SIMRS Gramedika - Sistem Informasi Manajemen Rumah Sakit
  sudah ada, memakai akun dan hak akses yang sama.
  .
  Koneksi database diatur saat pertama kali aplikasi dibuka dan disimpan
- per user di ~/.config/SimrsKhanza.
+ per user di ~/.config/SimrsGramedika.
 
 """;
 

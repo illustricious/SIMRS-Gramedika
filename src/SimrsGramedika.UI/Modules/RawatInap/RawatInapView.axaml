@@ -1,0 +1,164 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsGramedika.Data"
+             x:Class="SimrsGramedika.UI.Modules.RawatInap.RawatInapView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <!--
+        Mirrors legacy "Daftar Pasien Rawat Inap" (DlgKamarInap): filter on top,
+        the full-width stay list (same 21 columns, same order), mode radios
+        (Belum Pulang / Tgl.Masuk / Pulang), Kamar + Key Word search, and the
+        Masuk / Pulang / Pindah / Ganti / Cetak / Keluar bar. Masuk, Pulang,
+        Pindah and Ganti open a small action panel above the grid (the legacy
+        opens modal dialogs; this app stays single-window).
+    -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Daftar Pasien Rawat Inap" />
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,170,6,110,6,220,40,Auto,Auto" Margin="0,0,0,6">
+            <TextBlock Grid.Column="0" Text="No. Rawat :" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox Grid.Column="1" Name="NoRawatFilterBox" KeyUp="OnFilterKeyUp" />
+            <TextBox Grid.Column="3" Name="NoRmFilterBox" KeyUp="OnFilterKeyUp" PlaceholderText="No. RM" />
+            <TextBox Grid.Column="5" Name="NamaFilterBox" KeyUp="OnFilterKeyUp" PlaceholderText="Nama pasien" />
+            <TextBlock Grid.Column="7" Text="Stts.Bayar :" VerticalAlignment="Center" Margin="0,0,6,0" />
+            <ComboBox Grid.Column="8" Name="StatusBayarCombo" MinWidth="130" SelectionChanged="OnFilterChanged" />
+        </Grid>
+
+        <Border Grid.Row="2" Name="ActionPanel" IsVisible="False" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                BorderThickness="1" Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,6">
+            <StackPanel Spacing="4">
+                <TextBlock Name="ActionTitle" FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock Name="ActionSubtitle" Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
+
+                <StackPanel Name="MasukFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBlock Text="No. Rawat (pasien harus sudah registrasi) :" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                        <TextBox Name="AdmitNoRawatBox" PlaceholderText="contoh: 2026/11/07/000001"
+                                 TextChanged="OnAdmitNoRawatChanged" KeyDown="OnAdmitNoRawatKeyDown" />
+                        <Button Grid.Column="1" Content="Cari Tarif Kamar" Click="OnCariKamarClick" />
+                    </Grid>
+                    <TextBlock Text="Kamar Tersedia dan Tarif per Hari" Margin="0,4,0,0" />
+                    <ComboBox Name="KamarCombo" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="Diagnosa Awal :" Margin="0,4,0,0" />
+                    <TextBox Name="DiagnosaAwalBox" />
+                </StackPanel>
+
+                <StackPanel Name="PulangFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBlock Text="Status Pulang :" />
+                    <ComboBox Name="StatusPulangCombo" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="Diagnosa Akhir :" Margin="0,4,0,0" />
+                    <TextBox Name="DiagnosaAkhirBox" MaxLength="100" />
+                    <TextBlock Text="Waktu keluar" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <CalendarDatePicker Name="TanggalKeluarPicker" AutomationProperties.Name="Tanggal keluar" />
+                        <TextBox Name="JamKeluarBox" Width="100" PlaceholderText="HH:mm:ss" AutomationProperties.Name="Jam keluar" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Name="PindahFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBlock Text="Pindah ke Kamar Kosong :" />
+                    <ComboBox Name="PindahKamarCombo" HorizontalAlignment="Stretch" />
+                </StackPanel>
+
+                <StackPanel Name="GantiFields" Spacing="4" MaxWidth="460" HorizontalAlignment="Left">
+                    <TextBlock Text="Jenis Bayar :" />
+                    <ComboBox Name="GantiPenjabCombo" HorizontalAlignment="Stretch" />
+                    <TextBlock Text="Diagnosa Awal :" Margin="0,4,0,0" />
+                    <TextBox Name="GantiDiagnosaAwalBox" />
+                    <TextBlock Text="Diagnosa Akhir :" Margin="0,4,0,0" />
+                    <TextBox Name="GantiDiagnosaAkhirBox" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,6,0,0">
+                    <Button Name="ActionOkButton" Content="💾 Simpan" Click="OnActionOkClick" />
+                    <Button Content="Batal" Click="OnActionCancelClick" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <DataGrid Grid.Row="3" Name="RawatInapGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column" CanUserResizeColumns="True"
+                  x:DataType="data:RawatInapListItem">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.3*" MinWidth="125" />
+                <DataGridTextColumn Header="Nomer RM" Binding="{Binding NoRekamMedis}" Width="0.7*" MinWidth="70" />
+                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="1.6*" MinWidth="150" />
+                <DataGridTextColumn Header="Alamat Pasien" Binding="{Binding Alamat}" Width="1.6*" MinWidth="150" />
+                <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding PenanggungJawab}" Width="1.1*" MinWidth="110" />
+                <DataGridTextColumn Header="Hubungan P.J." Binding="{Binding HubunganPj}" Width="0.8*" MinWidth="80" />
+                <DataGridTextColumn Header="Jenis Bayar" Binding="{Binding JenisBayar}" Width="0.8*" MinWidth="80" />
+                <DataGridTextColumn Header="Kamar" Binding="{Binding Kamar}" Width="1.5*" MinWidth="140" />
+                <DataGridTextColumn Header="Tarif Kamar" Binding="{Binding TarifKamar}" Width="0.7*" MinWidth="75" />
+                <DataGridTextColumn Header="Diagnosa Awal" Binding="{Binding DiagnosaAwal}" Width="1*" MinWidth="100" />
+                <DataGridTextColumn Header="Diagnosa Akhir" Binding="{Binding DiagnosaAkhir}" Width="1*" MinWidth="100" />
+                <DataGridTextColumn Header="Tgl.Masuk" Binding="{Binding TglMasuk}" Width="0.75*" MinWidth="80" />
+                <DataGridTextColumn Header="Jam Masuk" Binding="{Binding JamMasukText}" Width="0.65*" MinWidth="70" />
+                <DataGridTextColumn Header="Tgl.Keluar" Binding="{Binding TglKeluar}" Width="0.75*" MinWidth="80" />
+                <DataGridTextColumn Header="Jam Keluar" Binding="{Binding JamKeluar}" Width="0.65*" MinWidth="70" />
+                <DataGridTextColumn Header="Ttl.Biaya" Binding="{Binding TotalBiaya}" Width="0.75*" MinWidth="75" />
+                <DataGridTextColumn Header="Stts.Pulang" Binding="{Binding StatusPulang}" Width="0.8*" MinWidth="80" />
+                <DataGridTextColumn Header="Lama" Binding="{Binding Lama}" Width="0.4*" MinWidth="45" />
+                <DataGridTextColumn Header="Dokter P.J." Binding="{Binding DokterPj}" Width="1.3*" MinWidth="120" />
+                <DataGridTextColumn Header="Status Bayar" Binding="{Binding StatusBayar}" Width="0.8*" MinWidth="85" />
+                <DataGridTextColumn Header="Agama" Binding="{Binding Agama}" Width="0.6*" MinWidth="65" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Group filters and actions on a distinct surface without changing their order. -->
+        <Border Grid.Row="4" Grid.RowSpan="3" Margin="0,6,0,0" Classes="servicePanel" />
+
+        <WrapPanel Grid.Row="4" Orientation="Horizontal" ItemSpacing="10" LineSpacing="6" Margin="10,14,10,0">
+            <RadioButton Name="ModeBelumPulang" GroupName="Mode" Content="Belum Pulang" IsChecked="True" Click="OnFilterChanged" />
+            <RadioButton Name="ModeMasuk" GroupName="Mode" Content="Tgl.Masuk :" Click="OnFilterChanged" />
+            <CalendarDatePicker Name="MasukFromPicker" />
+            <TextBlock Text="s.d" VerticalAlignment="Center" />
+            <CalendarDatePicker Name="MasukToPicker" />
+            <RadioButton Name="ModePulang" GroupName="Mode" Content="Pulang :" Margin="12,0,0,0" Click="OnFilterChanged" />
+            <CalendarDatePicker Name="PulangFromPicker" />
+            <TextBlock Text="s.d" VerticalAlignment="Center" />
+            <CalendarDatePicker Name="PulangToPicker" />
+        </WrapPanel>
+
+        <WrapPanel Grid.Row="5" Orientation="Horizontal" ItemSpacing="8" LineSpacing="6" Margin="10,6,10,0">
+            <TextBlock Text="Kamar :" VerticalAlignment="Center" />
+            <TextBox Name="KamarFilterBox" Width="200" KeyUp="OnFilterKeyUp" />
+            <TextBlock Text="Kata kunci" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <TextBox Name="KeywordBox" Width="260" KeyUp="OnFilterKeyUp" />
+            <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
+            <Button Content="📋 Semua" Click="OnSemuaClick" />
+        </WrapPanel>
+
+        <WrapPanel Grid.Row="6" Classes="bottomActions" Orientation="Horizontal" ItemSpacing="8" LineSpacing="6" Margin="10,8,10,10">
+            <Button Content="📖 Masuk" Click="OnMasukClick" />
+            <Button Name="PulangButton" Content="🚪 Pulang" Click="OnPulangClick" />
+            <Button Name="PindahButton" Content="🔀 Pindah" Click="OnPindahClick" />
+            <Button Name="BillingButton" Content="Billing / Kasir" Click="OnBillingClick" />
+            <Button Name="PemeriksaanButton" Content="SOAPIE" Click="OnPemeriksaanClick" />
+            <Button Name="BuatResepPulangButton" Content="Buat Resep Pulang" Click="OnBuatResepPulangClick" />
+            <Button Name="ResepPulangButton" Content="Status Resep Pulang" Click="OnResepPulangClick" />
+            <Button Name="ResumePulangButton" Content="Resume Pulang" Click="OnResumePulangClick" />
+            <Button Name="TindakanButton" Content="Input Tindakan" Click="OnTindakanClick" />
+            <Button Name="GantiButton" Content="✏ Ganti" Click="OnGantiClick" />
+            <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="24,0,24,0"
+                       Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold" />
+            <Button Content="🖨 Cetak" Click="OnCetakClick" />
+            <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+        </WrapPanel>
+
+        <TextBlock Grid.Row="7" Name="StatusText" Margin="0,6,0,0" TextWrapping="Wrap" IsVisible="False" />
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="WrapPanel.bottomActions Button /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+        </Style>
+        <Style Selector="WrapPanel.bottomActions Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeIconBackgroundBrush}" />
+        </Style>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

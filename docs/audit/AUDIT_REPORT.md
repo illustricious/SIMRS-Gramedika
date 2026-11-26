@@ -157,9 +157,9 @@ Repo ini berisi **dua aplikasi utama** plus puluhan modul satelit:
 Tujuan: mempertahankan tampilan/UX, mendesain ulang backend & arsitektur.
 
 ```
-SimrsKhanza.sln
+SimrsGramedika.sln
 ├── src/
-│   ├── SimrsKhanza.UI/              # Avalonia UI (views, dipetakan 1:1 dari layout Swing/PHP lama per modul)
+│   ├── SimrsGramedika.UI/           # Avalonia UI (views, dipetakan 1:1 dari layout Swing/PHP lama per modul)
 │   │   ├── Modules/
 │   │   │   ├── RekamMedis/          # ganti nama Indonesia tetap dipertahankan agar mudah dilacak ke modul lama
 │   │   │   ├── Keuangan/
@@ -170,11 +170,10 @@ SimrsKhanza.sln
 │   │   │   └── ... (mengikuti 31 package Java + modul web sejenis)
 │   │   ├── Assets/                  # dipindahkan dari gambar/, suara/, picture/, 48x48/, css asli sbg referensi warna/ikon
 │   │   └── ReportTemplates/         # migrasi dari .jrxml → format cetak Avalonia (QuestPDF/Avalonia.Controls.PrintToDocument, dipetakan per-laporan)
-│   ├── SimrsKhanza.Core/            # Domain model & business logic (bebas dari UI dan DB), hasil rewrite dari fungsi/rekammedis/keuangan/dst
-│   ├── SimrsKhanza.Data/            # Data access layer baru (EF Core/Dapper ke MySQL/MariaDB), menggantikan koneksiDB & conf.php
-│   ├── SimrsKhanza.Integrations/    # Bridging eksternal (BPJS, SatuSehat, bank, lab/radiologi) — port dari KhanzaHMSService*, api-*, bank*
-│   ├── SimrsKhanza.Config/          # Settings service (ganti database.xml terenkripsi ad-hoc) — pakai secret manager/.env, TIDAK dikomit ke git
-│   └── SimrsKhanza.Tests/
+│   ├── SimrsGramedika.Core/         # Domain model & business logic
+│   ├── SimrsGramedika.Data/         # Data access layer untuk MySQL/MariaDB
+│   ├── SimrsGramedika.Config/       # Pengaturan koneksi per pengguna
+│   └── SimrsGramedika.Tests/        # Unit, UI headless, dan tes database opsional
 ├── docs/
 │   ├── audit/                       # laporan ini + handover, dipindahkan ke sini setelah disetujui
 │   ├── legacy-reference/            # cross-reference modul lama ↔ modul baru (tabel pemetaan)

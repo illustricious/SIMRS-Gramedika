@@ -22,7 +22,7 @@ param(
 $ErrorActionPreference = "Stop"
 if ($WindowsSetupOnly -and $Only -ne "win") { throw "-WindowsSetupOnly memerlukan -Only win." }
 $root = Split-Path -Parent $PSScriptRoot
-$proj = Join-Path $root "src/SimrsKhanza.UI/SimrsKhanza.UI.csproj"
+$proj = Join-Path $root "src/SimrsGramedika.UI/SimrsGramedika.UI.csproj"
 $dist = Join-Path $root "dist"
 $dotnet = (Get-Command dotnet -ErrorAction SilentlyContinue).Source
 if (-not $dotnet) { $dotnet = "C:\Program Files\dotnet\dotnet.exe" }
@@ -65,7 +65,7 @@ if ($Only -in "all", "win") {
     if (-not $iscc) { throw "Inno Setup 6 tidak ditemukan. Pasang dengan: winget install JRSoftware.InnoSetup" }
     foreach ($a in $Arch) {
         $win = Publish "win-$a"
-        Rename-Item (Join-Path $win "SimrsKhanza.UI.exe") "SIMRS Gramedika.exe"
+        Rename-Item (Join-Path $win "SimrsGramedika.UI.exe") "SIMRS Gramedika.exe"
 
         Write-Host "== Inno Setup ($a)" -ForegroundColor Cyan
         & $iscc /Q "/DAppVersion=$Version" "/DFileVersion=$FileVersion" "/DArch=$a" "/DSourceDir=$win" "/DOutputDir=$dist" (Join-Path $PSScriptRoot "windows/SimrsGramedika.iss")

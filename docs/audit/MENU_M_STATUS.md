@@ -2,6 +2,12 @@
 
 Per 22 November 2026, **255 dari 255 kemunculan tile** sudah membuka layar: tile Pasien dan seluruh 254 tile lainnya di Menu M. Tidak ada tile Menu M yang tersisa tanpa rute. Screen coverage tidak berarti seluruh alur legacy sudah direplikasi.
 
+## Identitas pasien — perubahan 26 November 2026
+
+Memilih pasien pada daftar kini memuat data ke form sebagai mode ubah. Tombol Simpan memperbarui kolom identitas yang tersedia di form dan mempertahankan kolom legacy yang belum tersedia, termasuk kode lokasi serta referensi TNI/POLRI. Tombol Baru mengembalikan form ke mode pembuatan pasien. Nomor RM baru membaca aturan `set_urut_no_rkm_medis` dan nomor terakhir `set_no_rkm_medis`; penyimpanan pasien mengunci urutan, mencari nomor yang belum dipakai, menyimpan pasien dan memperbarui nomor terakhir dalam satu transaksi. Pencarian pasien mendukung nama, No. RM, KTP, telepon, nama ibu, alamat, dan email serta dapat dijalankan dengan Enter.
+
+Perubahan database dan interaksi UI belum diuji pada sesi ini.
+
 ## Selesai pada batch pertama
 
 **Master yang bisa dikelola:** Instansi/Perusahaan Pasien, Suku/Bangsa, Bahasa, Golongan/Satuan/Jabatan/Pangkat TNI, Golongan/Satuan/Jabatan/Pangkat POLRI, Cacat Fisik, dan Master Insiden Keselamatan.

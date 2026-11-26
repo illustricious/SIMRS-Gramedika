@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsGramedika.Data"
+             x:Class="SimrsGramedika.UI.Modules.Igd.IgdView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <!--
+        Legacy "IGD/UGD" (DlgIGD.java) is NOT a triage screen: it is
+        "::[ Registrasi IGD Hari Ini ]::" — the registration list restricted to
+        poliklinik kd_poli='IGDK' (hardcoded in the legacy query), same shape as
+        Registrasi/DlgReg, with its own column order (below), an input block
+        (No.Rekam Medik, Dr Dituju, Png. Jawab, Almt Png. Jwb, Jenis Bayar), and
+        Simpan / Baru / Hapus / Ganti / Cetak / Semua / Keluar. The triage form
+        built earlier (data_triase_igd) lives on as IgdTriaseView, reached from
+        the "Triase" button (legacy: right-click "Data Triase Gawat Darurat").
+    -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Registrasi IGD Hari Ini" />
+        </Border>
+
+        <StackPanel Grid.Row="1" Spacing="0">
+            <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4" Margin="0,0,0,4"
+                    IsVisible="False">
+                <Grid ColumnDefinitions="Auto,*,24,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Rekam Medik :" VerticalAlignment="Center" Margin="0,2" />
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="InputNoRmBox" Width="160" HorizontalAlignment="Left" Margin="2"
+                             PlaceholderText="contoh: 160853" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Png. Jawab :" VerticalAlignment="Center" Margin="0,2" />
+                    <TextBox Grid.Row="0" Grid.Column="4" Name="InputPjBox" Margin="2" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Dr Dituju :" VerticalAlignment="Center" Margin="0,2" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Name="InputDokterCombo" Margin="2" HorizontalAlignment="Stretch" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="Almt Png. Jwb :" VerticalAlignment="Center" Margin="0,2" />
+                    <TextBox Grid.Row="1" Grid.Column="4" Name="InputAlamatPjBox" Margin="2" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Poliklinik :" VerticalAlignment="Center" Margin="0,2" />
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="PoliText" IsReadOnly="True" Margin="2" Text="Unit IGD (IGDK)" />
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="Jenis Bayar :" VerticalAlignment="Center" Margin="0,2" />
+                    <ComboBox Grid.Row="2" Grid.Column="4" Name="InputPenjabCombo" Margin="2" HorizontalAlignment="Stretch" />
+
+                    <TextBlock Grid.Row="3" Grid.ColumnSpan="5" Name="InputStatusText" TextWrapping="Wrap" Margin="2" IsVisible="False" />
+
+                    <StackPanel Grid.Row="4" Grid.ColumnSpan="5" Orientation="Horizontal" Spacing="8" Margin="2,6,2,0">
+                        <Button Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
+                        <Button Content="🆕 Baru" Click="OnBaruClick" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ToggleButton Name="InputToggle" IsChecked="False" Click="OnToggleInput" HorizontalAlignment="Left"
+                          Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Data" FontStyle="Italic" Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" Name="IgdGrid" Margin="0,6" AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:RegistrasiListItem">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No.Reg" Binding="{Binding NoReg}" Width="0.5*" MinWidth="40" />
+                <DataGridTextColumn Header="No.Rawat" Binding="{Binding NoRawat}" Width="1.1*" MinWidth="95" />
+                <DataGridTextColumn Header="Tanggal" Binding="{Binding TanggalRegistrasi}" Width="0.75*" MinWidth="70" />
+                <DataGridTextColumn Header="Jam" Binding="{Binding JamRegistrasi}" Width="0.55*" MinWidth="55" />
+                <DataGridTextColumn Header="Kd.Dokter" Binding="{Binding KodeDokter}" Width="0.7*" MinWidth="60" />
+                <DataGridTextColumn Header="Dokter Dituju" Binding="{Binding NamaDokter}" Width="1.3*" MinWidth="100" />
+                <DataGridTextColumn Header="Nomer RM" Binding="{Binding NoRekamMedis}" Width="0.65*" MinWidth="60" />
+                <DataGridTextColumn Header="Pasien" Binding="{Binding NamaPasien}" Width="1.3*" MinWidth="100" />
+                <DataGridTextColumn Header="J.K." Binding="{Binding JenisKelamin}" Width="0.3*" MinWidth="30" />
+                <DataGridTextColumn Header="Umur" Binding="{Binding Umur}" Width="0.5*" MinWidth="45" />
+                <DataGridTextColumn Header="Poliklinik" Binding="{Binding NamaPoli}" Width="0.9*" MinWidth="70" />
+                <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding PenanggungJawab}" Width="1.0*" MinWidth="90" />
+                <DataGridTextColumn Header="Alamat P.J." Binding="{Binding AlamatPj}" Width="1.0*" MinWidth="90" />
+                <DataGridTextColumn Header="Hubungan dg P.J." Binding="{Binding HubunganPj}" Width="0.8*" MinWidth="80" />
+                <DataGridTextColumn Header="Biaya Registrasi" Binding="{Binding BiayaReg}" Width="0.7*" MinWidth="70" />
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="0.6*" MinWidth="50" />
+                <DataGridTextColumn Header="Jenis Bayar" Binding="{Binding JenisBayar}" Width="0.8*" MinWidth="70" />
+                <DataGridTextColumn Header="Stts Rawat" Binding="{Binding StatusRawat}" Width="0.55*" MinWidth="55" />
+                <DataGridTextColumn Header="Kd PJ" Binding="{Binding KodePj}" Width="0.45*" MinWidth="45" />
+                <DataGridTextColumn Header="Status Bayar" Binding="{Binding StatusBayar}" Width="0.75*" MinWidth="75" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="3" Classes="servicePanel">
+          <StackPanel Spacing="6">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,24,Auto,*,Auto">
+                <TextBlock Grid.Column="0" Text="Periode :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <CalendarDatePicker Grid.Column="1" Name="FromPicker" />
+                <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" Margin="8,0" />
+                <CalendarDatePicker Grid.Column="3" Name="ToPicker" />
+                <TextBlock Grid.Column="5" Text="Kata kunci" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox Grid.Column="6" Name="KeywordBox" KeyUp="OnKeywordKeyUp" />
+                <TextBlock Grid.Column="7" Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
+            </Grid>
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="🗑 Hapus" Click="OnPlaceholderClick" />
+                <Button Content="🔁 Ganti" Click="OnPlaceholderClick" />
+                <Button Content="🖨 Cetak" Click="OnCetakClick" />
+                <Button Content="📋 Semua" Click="OnSemuaClick" />
+                <Button Content="🔎 Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="🚑 Triase" Click="OnTriaseClick" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+            <TextBlock Name="StatusText" TextWrapping="Wrap" IsVisible="False" />
+          </StackPanel>
+        </Border>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+        <Style Selector="DatePicker">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="MinHeight" Value="28" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

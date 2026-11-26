@@ -23,3 +23,5 @@ Status 26 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Rawat Inap memiliki tindakan dengan jurnal, resume, penutupan kamar saat pulang, serta permintaan obat pulang yang tersambung ke validasi dan serah terima Farmasi.
 - Kasir mendukung pelunasan gabungan Rawat Jalan dan Rawat Inap dengan satu akun bayar tanpa biaya admin. Kuitansi PDF dibaca ulang dari data pelunasan. Farmasi memiliki jual bebas tunai nonbatch.
 - Verifikasi terbaru mencakup 160 tes lulus dan 5 dilewati di skema sintetis, serta build EXE yang bisa membuka layar login. Rekonsiliasi klien Java dengan konfigurasi RS masih terbuka, terutama akun suspen.
+
+- Checkout aktif: "SimrsGramedika". Publish Windows x64 setelah rename berhasil dan EXE baru membuka layar login. Lihat [log sesi terbaru](10-SESSION-2026-11-26.md#hasil-build-windows-setelah-rename) untuk perintah build, warning, dan status pengujian.

@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version (empty = <Version> from SimrsKhanza.UI.csproj)"
+        description: "Version (empty = <Version> from SimrsGramedika.UI.csproj)"
         required: false
   push:
     # The 0.1.5, 0.2.0 and 0.2.5 alpha series use locally built Windows x64 binaries.
@@ -34,7 +34,7 @@ jobs:
         run: |
           v="${{ inputs.version }}"
           if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
-          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj); fi
+          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsGramedika.UI/SimrsGramedika.UI.csproj); fi
           case "$v" in *-*) [ "${{ github.ref_type }}" = "tag" ] || v="$v.$(date -u +%Y%m%d%H%M)";; esac
           echo "VERSION=$v" >> "$GITHUB_ENV"
           echo "FILEVERSION=0.1.$(date -u +%y%j)" >> "$GITHUB_ENV"
@@ -63,7 +63,7 @@ jobs:
         run: |
           v="${{ inputs.version }}"
           if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
-          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj); fi
+          if [ -z "$v" ]; then v=$(grep -oPm1 '(?<=<Version>)[^<]+' src/SimrsGramedika.UI/SimrsGramedika.UI.csproj); fi
           case "$v" in *-*) [ "${{ github.ref_type }}" = "tag" ] || v="$v.$(date -u +%Y%m%d%H%M)";; esac
           echo "VERSION=$v" >> "$GITHUB_ENV"
           echo "FILEVERSION=0.1.$(date -u +%y%j)" >> "$GITHUB_ENV"
@@ -78,7 +78,7 @@ jobs:
           chmod +x appimagetool
       - name: .rpm
         run: |
-          printf '#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsKhanza.UI "$@"\n' > launcher.sh
+          printf '#!/bin/sh\n# SIMRS Gramedika launcher\nexec /opt/simrs-gramedika/SimrsGramedika.UI "$@"\n' > launcher.sh
           chmod +x launcher.sh
           for a in x64 arm64; do
             [ "$a" = x64 ] && na=amd64 || na=arm64
@@ -117,7 +117,7 @@ jobs:
             D="AppDir-$a"; rm -rf "$D"; mkdir -p "$D/usr/lib/simrs-gramedika"
             cp -a "publish/linux-$a/." "$D/usr/lib/simrs-gramedika/"
             cp installer/linux/simrs-gramedika.desktop installer/linux/simrs-gramedika.png "$D/"
-            printf '#!/bin/sh\nHERE="$(dirname "$(readlink -f "$0")")"\nexec "$HERE/usr/lib/simrs-gramedika/SimrsKhanza.UI" "$@"\n' > "$D/AppRun"
+            printf '#!/bin/sh\nHERE="$(dirname "$(readlink -f "$0")")"\nexec "$HERE/usr/lib/simrs-gramedika/SimrsGramedika.UI" "$@"\n' > "$D/AppRun"
             chmod +x "$D/AppRun"
             curl -fsSL -o "runtime-$A" "https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$A"
             ARCH=$A ./appimagetool --no-appstream --runtime-file "runtime-$A" "$D" "dist/SIMRS-Gramedika-$VERSION-linux-$a.AppImage"
@@ -143,7 +143,7 @@ jobs:
         run: |
           v="${{ inputs.version }}"
           if [ "${{ github.ref_type }}" = "tag" ]; then v="${GITHUB_REF_NAME#v}"; fi
-          if [ -z "$v" ]; then v=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SimrsKhanza.UI/SimrsKhanza.UI.csproj | head -1); fi
+          if [ -z "$v" ]; then v=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/SimrsGramedika.UI/SimrsGramedika.UI.csproj | head -1); fi
           case "$v" in *-*) [ "${{ github.ref_type }}" = "tag" ] || v="$v.$(date -u +%Y%m%d%H%M)";; esac
           echo "VERSION=$v" >> "$GITHUB_ENV"
           echo "FILEVERSION=0.1.$(date -u +%y%j)" >> "$GITHUB_ENV"
@@ -159,7 +159,7 @@ jobs:
         run: |
           mkdir -p dist
           for a in arm64 x64; do
-            dotnet publish src/SimrsKhanza.UI/SimrsKhanza.UI.csproj -c Release -r osx-$a --self-contained true \
+            dotnet publish src/SimrsGramedika.UI/SimrsGramedika.UI.csproj -c Release -r osx-$a --self-contained true \
               -o "publish/osx-$a" -p:Version=$VERSION -p:DebugType=none -p:DebugSymbols=false -nologo -v q
             ROOT="dmg-$a"; APP="$ROOT/SIMRS Gramedika.app"
             rm -rf "$ROOT"; mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
@@ -172,7 +172,7 @@ jobs:
             <key>CFBundleName</key><string>SIMRS Gramedika</string>
             <key>CFBundleDisplayName</key><string>SIMRS Gramedika</string>
             <key>CFBundleIdentifier</key><string>id.rsugramedika.simrs</string>
-            <key>CFBundleExecutable</key><string>SimrsKhanza.UI</string>
+            <key>CFBundleExecutable</key><string>SimrsGramedika.UI</string>
             <key>CFBundleIconFile</key><string>AppIcon</string>
             <key>CFBundlePackageType</key><string>APPL</string>
             <key>CFBundleShortVersionString</key><string>$FILEVERSION</string>

@@ -7,4 +7,4 @@ Exec=simrs-gramedika
 Icon=simrs-gramedika
 Terminal=false
 Categories=Office;MedicalSoftware;
-StartupWMClass=SimrsKhanza.UI
+StartupWMClass=SimrsGramedika.UI

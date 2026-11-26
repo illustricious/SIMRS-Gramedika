@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsGramedika.UI.Modules.Pengaturan.PengaturanView"
+             Background="{DynamicResource ThemeBackgroundBrush}">
+
+    <!--
+        Admin-only settings screen. Legacy equivalent: setting/database.ini
+        (host/database/port/user/pass for the presensi app) and
+        setting/database.xml (AES-encrypted flat properties file for the main
+        Java app — see docs/audit/PLANNING_APLIKASI.md §2 for why that design
+        needs replacing). This screen is the rewrite's single place to edit
+        the DB connection; it persists via SimrsGramedika.Config.DatabaseSettingsStore
+        (a JSON file under %APPDATA%, never inside the repo).
+
+        Access control: Admin Utama only (Setup Aplikasi is admin-only in
+        LegacyTilePermissions, and MainWindow re-checks before opening).
+    -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+
+        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Pengaturan — Admin Only"
+                   Margin="0,0,0,8" />
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="8" MaxWidth="560" HorizontalAlignment="Left">
+
+                <TextBlock Text="Koneksi Database" FontWeight="Medium"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock Text="Profil server (host, port, database, user, password) diatur di layar Koneksi Database — sama dengan tombol ⚙ di layar login. Disimpan lokal di komputer ini."
+                           FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
+                <TextBlock Name="ActiveText" Margin="0,4,0,0" TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="🔌 Tes Koneksi Aktif" Click="OnTestConnectionClick" />
+                    <Button Content="⚙ Kelola Koneksi Database..." Click="OnKoneksiClick" />
+                </StackPanel>
+
+                <TextBlock Text="Farmasi (pengganti AKTIFKANBATCHOBAT &amp; HPPFARMASI di database.xml)" FontWeight="Medium" Margin="0,12,0,0"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <CheckBox Name="BatchBox" Content="Aktifkan batch obat (stok dipotong per No.Batch/No.Faktur)" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="Kolom HPP farmasi :" VerticalAlignment="Center" />
+                    <ComboBox Name="HppBox" Width="140">
+                        <ComboBoxItem Content="dasar" />
+                        <ComboBoxItem Content="h_beli" />
+                    </ComboBox>
+                </StackPanel>
+                <TextBlock FontSize="11" TextWrapping="Wrap" Foreground="{DynamicResource ThemeTextSecondaryBrush}"
+                           Text="Samakan dengan setting Khanza lama di komputer ini, supaya pemotongan stok &amp; HPP di menu Barcode Ralan/Ranap sama." />
+
+                <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap" IsVisible="False" />
+
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    
+                    <Button Content="💾 Simpan Pengaturan Farmasi" Click="OnSaveClick" />
+                </StackPanel>
+
+                <TextBlock Text="Identitas &amp; Aset (belum diimplementasikan)" FontWeight="Medium" Margin="0,20,0,0"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}">
+                    Legacy <Run FontFamily="Consolas">setting/</Run> juga menyimpan
+                    <Run FontFamily="Consolas">logo.jpg</Run>,
+                    <Run FontFamily="Consolas">wallpaper.jpg</Run> (aset tampilan),
+                    <Run FontFamily="Consolas">modem.xml</Run> (gateway SMS), dan konfigurasi
+                    perangkat fingerprint presensi. Belum ada UI untuk mengganti aset/konfigurasi ini di tahap scaffold —
+                    dicatat di docs/handover/04-HISTORY.md sebagai pekerjaan lanjutan.
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

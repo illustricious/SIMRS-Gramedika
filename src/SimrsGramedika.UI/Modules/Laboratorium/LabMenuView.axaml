@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="SimrsGramedika.UI.Modules.Laboratorium.LabMenuView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <!--
+        Legacy Khanza's Laboratorium menu is itself a 6-icon submenu (Permintaan/
+        Periksa × PK/PA/MB) rather than one flat screen — user shared a
+        screenshot of it. Mirrored here: clicking "Laboratorium" in MainWindow's
+        toolbar lands on this tile grid first; each tile opens a focused
+        single-purpose screen (LabPermintaanView / LabPeriksaView, parameterized
+        by KategoriLab) instead of a form+grid+hasil screen all at once.
+    -->
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Laboratorium" />
+        </Border>
+
+        <Grid Grid.Row="1" Name="TilePanel" ColumnSpacing="8" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+        </StackPanel>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

@@ -86,18 +86,18 @@ Menu T supports search, creation, editing, and deletion for all 16 Dankes refere
 ## Build & run
 
 ```bash
-dotnet build SimrsKhanza.sln
-dotnet test SimrsKhanza.sln
-dotnet run --project src/SimrsKhanza.UI
+dotnet build SimrsGramedika.sln
+dotnet test SimrsGramedika.sln
+dotnet run --project src/SimrsGramedika.UI
 ```
 
 On first start the app asks for the database connection (host, port, user, password, database). Profiles are stored per user
-(`%APPDATA%\SimrsKhanza` on Windows, `~/.config/SimrsKhanza` on Linux), never in the repository.
+(`%APPDATA%\SimrsGramedika` on Windows, `~/.config/SimrsGramedika` on Linux), never in the repository. Existing settings under the former `SimrsKhanza` folder are read automatically; saving writes to the new folder and keeps the old file intact.
 
 Optional database smoke tests run every list/report query against the configured database (read-only):
 
 ```bash
-SIMRS_DB_SMOKE=1 dotnet test SimrsKhanza.sln
+SIMRS_DB_SMOKE=1 dotnet test SimrsGramedika.sln
 ```
 
 ## Installers
@@ -110,11 +110,11 @@ SIMRS_DB_SMOKE=1 dotnet test SimrsKhanza.sln
 ## Project layout
 
 ```
-src/SimrsKhanza.Config   connection profiles
-src/SimrsKhanza.Core     domain types, legacy access-right mapping
-src/SimrsKhanza.Data     repositories on the legacy sik schema (menu specs, stock, journals)
-src/SimrsKhanza.UI       Avalonia desktop application
-src/SimrsKhanza.Tests    unit, headless-UI and optional database smoke tests
+src/SimrsGramedika.Config   connection profiles
+src/SimrsGramedika.Core     domain types, legacy access-right mapping
+src/SimrsGramedika.Data     repositories on the legacy sik schema (menu specs, stock, journals)
+src/SimrsGramedika.UI       Avalonia desktop application
+src/SimrsGramedika.Tests    unit, headless-UI and optional database smoke tests
 installer/               Windows and Debian packaging
 tools/                   feature tracker scripts (Node 22): node tools/tracker.mjs
 docs/handover            developer handover, runbook, session logs

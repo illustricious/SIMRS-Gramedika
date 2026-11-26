@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Windows executable icon generated at multiple sizes from Assets/app.svg. -->
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+
+    <!-- Product identity shown in Windows file properties / installers. AssemblyName stays
+         SimrsGramedika.UI because every avares://SimrsGramedika.UI/... asset URI depends on it. -->
+    <Product>SIMRS Gramedika</Product>
+    <AssemblyTitle>SIMRS Gramedika</AssemblyTitle>
+    <Description>Sistem Informasi Manajemen Rumah Sakit — SIMRS Gramedika</Description>
+    <Company>RSU Gramedika</Company>
+    <Copyright>RSU Gramedika</Copyright>
+    <Version>0.2.5-alpha</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="12.1.5" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="12.1.5" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.5" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.5" />
+    <PackageReference Include="QuestPDF" Version="2024.10.3" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimrsGramedika.Core\SimrsGramedika.Core.csproj" />
+    <ProjectReference Include="..\SimrsGramedika.Data\SimrsGramedika.Data.csproj" />
+    <ProjectReference Include="..\SimrsGramedika.Config\SimrsGramedika.Config.csproj" />
+  </ItemGroup>
+</Project>

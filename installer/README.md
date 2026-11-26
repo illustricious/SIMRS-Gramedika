@@ -43,4 +43,4 @@ Output goes to `dist\` (git-ignored).
   (the build is ad-hoc signed, not notarized). If macOS still refuses: `xattr -cr "/Applications/SIMRS Gramedika.app"`.
 
 The database connection is configured on first start and stored per user
-(`%APPDATA%\SimrsKhanza` on Windows, `~/.config/SimrsKhanza` on Linux and macOS). Uninstalling keeps it.
+(`%APPDATA%\SimrsGramedika` on Windows, `~/.config/SimrsGramedika` on Linux and macOS). The app reads an existing profile from the former `SimrsKhanza` directory and writes it to the new directory on the next save. Uninstalling keeps both directories.

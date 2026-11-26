@@ -37,7 +37,7 @@ DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
 OutputDir={#OutputDir}
 OutputBaseFilename=SIMRS-Gramedika-Setup-{#AppVersion}-win-{#Arch}
-SetupIconFile=..\..\src\SimrsKhanza.UI\Assets\app.ico
+SetupIconFile=..\..\src\SimrsGramedika.UI\Assets\app.ico
 UninstallDisplayIcon={app}\{#AppExe}
 UninstallDisplayName={#AppName}
 Compression=lzma2/max
@@ -70,5 +70,5 @@ Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopico
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
 
-; Koneksi database disimpan per user di %APPDATA%\SimrsKhanza dan sengaja TIDAK dihapus
+; Koneksi database disimpan per user di %APPDATA%\SimrsGramedika dan sengaja TIDAK dihapus
 ; saat uninstall, supaya upgrade/instal ulang tidak perlu mengatur koneksi lagi.

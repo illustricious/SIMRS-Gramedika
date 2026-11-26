@@ -1,14 +1,14 @@
 # Arsitektur dan pola menambah layar
 
-## Solusi `SimrsKhanza.sln`
+## Solusi `SimrsGramedika.sln`
 
 | Proyek | Isi |
 |---|---|
-| `SimrsKhanza.Config` | `DatabaseSettings` dan penyimpanan pengaturan koneksi per pengguna |
-| `SimrsKhanza.Core` | Entitas, autentikasi (`IAuthService`), hak akses, `LegacyTilePermissions.g.cs` (peta tile ke permission Khanza, dihasilkan) |
-| `SimrsKhanza.Data` | Akses data. Repository, SQL mentah lewat `Db`, dan katalog spesifikasi layar per menu |
-| `SimrsKhanza.UI` | Avalonia: `MainWindow` (satu jendela, `PageHost`), `Modules/<Fitur>/`, `Modules/Shared` (komponen bersama) |
-| `SimrsKhanza.Tests` | xUnit. Tes spesifikasi, tes layar headless, tes integrasi DB (opsional) |
+| `SimrsGramedika.Config` | `DatabaseSettings` dan penyimpanan pengaturan koneksi per pengguna |
+| `SimrsGramedika.Core` | Entitas, autentikasi (`IAuthService`), hak akses, `LegacyTilePermissions.g.cs` (peta tile ke permission Khanza, dihasilkan) |
+| `SimrsGramedika.Data` | Akses data. Repository, SQL mentah lewat `Db`, dan katalog spesifikasi layar per menu |
+| `SimrsGramedika.UI` | Avalonia: `MainWindow` (satu jendela, `PageHost`), `Modules/<Fitur>/`, `Modules/Shared` (komponen bersama) |
+| `SimrsGramedika.Tests` | xUnit. Tes spesifikasi, tes layar headless, tes integrasi DB (opsional) |
 
 Navigasi: satu `MainWindow`, halaman diganti lewat `PageHost`. Setiap halaman adalah `PageView` dengan event `BackRequested`. Dashboard menu A–U dibangun dari `LegacyMenuCatalog` (1.224 tile) dan disaring dengan hak akses.
 

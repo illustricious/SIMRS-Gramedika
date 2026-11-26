@@ -1,0 +1,109 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsGramedika.Data"
+             x:Class="SimrsGramedika.UI.Modules.Igd.IgdTriaseView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <!--
+        IGD/UGD — Khanza doesn't model IGD as a separate patient type, just a
+        poliklinik (see IgdRepository.IgdKodePoli). This is the triage intake
+        step (data_triase_igd); the doctor's exam itself reuses Rawat Jalan.
+
+        Layout follows the same "input form on top (collapsible, closed by
+        default) + data grid below" language as RegistrasiView, per user
+        feedback that this should be the shared pattern across modules
+        (instead of the antrian-left/form-right split used earlier). Selecting
+        a grid row auto-opens the form and fills it in — still one click, not
+        two, to start triaging someone.
+    -->
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="IGD/UGD — Triase"
+                   Margin="0,0,0,8" />
+        </Border>
+
+        <StackPanel Grid.Row="1" Spacing="0">
+            <Border Name="InputPanel" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="12" CornerRadius="4" Margin="0,0,0,4"
+                    IsVisible="False">
+                <StackPanel Spacing="4">
+                    <TextBlock Name="SelectedPatientText" Text="(belum ada pasien dipilih dari antrian)"
+                               FontWeight="Medium" Foreground="{DynamicResource ThemeTextBrush}" />
+
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto" Margin="0,8,0,0">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Cara Masuk :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name="CaraMasukCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Alat Transport :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="0" Grid.Column="4" Name="AlatTransportasiCombo" Margin="4" HorizontalAlignment="Stretch" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Alasan Datang :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="1" Grid.Column="1" Name="AlasanKedatanganCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="Macam Kasus :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="1" Grid.Column="4" Name="KasusCombo" Margin="4" HorizontalAlignment="Stretch" />
+                    </Grid>
+                    <TextBlock Text="Keterangan Kedatangan :" Margin="0,4,0,2" />
+                    <TextBox Name="KeteranganBox" />
+
+                    <TextBlock Text="Tanda Vital" FontWeight="Medium" Margin="0,8,0,0"
+                               Foreground="{DynamicResource ThemeTextBrush}" />
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*,16,Auto,*" RowDefinitions="Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Tensi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="TensiBox" PlaceholderText="120/80" Margin="4" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Nadi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="4" Name="NadiBox" PlaceholderText="x/mnt" Margin="4" />
+                        <TextBlock Grid.Row="0" Grid.Column="6" Text="Napas :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="7" Name="NapasBox" PlaceholderText="x/mnt" Margin="4" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Suhu :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Name="SuhuBox" PlaceholderText="°C" Margin="4" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="SpO2 :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="4" Name="Spo2Box" PlaceholderText="%" Margin="4" />
+                        <TextBlock Grid.Row="1" Grid.Column="6" Text="Nyeri (0-10) :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="7" Name="NyeriBox" Margin="4" />
+                    </Grid>
+
+                    <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    <Button Name="SimpanButton" Content="💾 Simpan Triase" Click="OnSimpanClick"
+                            HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
+                </StackPanel>
+            </Border>
+
+            <ToggleButton Name="InputToggle" IsChecked="False" Click="OnToggleInput"
+                          HorizontalAlignment="Left" Background="Transparent" Padding="2">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Ellipse Width="14" Height="14" Fill="{DynamicResource ThemePrimaryLightBrush}" />
+                    <TextBlock Text=":: Input Triase" FontStyle="Italic"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" FontSize="12" />
+                </StackPanel>
+            </ToggleButton>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" Text="Belum Triase" FontWeight="Medium" Margin="0,8,0,4"
+                   Foreground="{DynamicResource ThemeTextBrush}" />
+
+        <DataGrid Grid.Row="3" Name="AntrianGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:IgdAntrianItem" SelectionChanged="OnAntrianSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="160" />
+                <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
+                <DataGridTextColumn Header="Poli" Binding="{Binding NamaPoli}" Width="110" />
+                <DataGridTextColumn Header="Tanggal" Binding="{Binding TanggalRegistrasi}" Width="90" />
+                <DataGridTextColumn Header="Jam Reg" Binding="{Binding JamRegistrasi}" Width="80" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="4" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+        </Border>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

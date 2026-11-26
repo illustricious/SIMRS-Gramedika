@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:data="using:SimrsGramedika.Data"
+             x:Class="SimrsGramedika.UI.Modules.Farmasi.DataPenjualanView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Data Penjualan Obat &amp; BHP"
+                   Margin="0,0,0,12" />
+        </Border>
+
+        <DataGrid Grid.Row="1" Name="PenjualanGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                  CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
+                  x:DataType="data:PenjualanListItem">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No. Transaksi" Binding="{Binding NoKeluar}" Width="150" />
+                <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal}" Width="100" />
+                <DataGridTextColumn Header="Barang" Binding="{Binding NamaBarang}" Width="*" />
+                <DataGridTextColumn Header="Jumlah" Binding="{Binding Jumlah}" Width="80" />
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="100" />
+                <DataGridTextColumn Header="Keterangan" Binding="{Binding Keterangan}" Width="200" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="2" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+            </WrapPanel>
+        </Border>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

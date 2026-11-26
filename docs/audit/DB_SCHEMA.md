@@ -55,9 +55,9 @@ kamar_inap ──► kamar ──► bangsal
 - Beberapa FK pakai `varchar`/`char` sebagai key (`kd_dokter`, `kd_poli`, dst) bukan surrogate integer — pertimbangkan tetap pakai kode asli (untuk kompatibilitas data lama) tapi tambahkan surrogate `Guid`/`int` di internal model baru.
 - `pegawai.photo` nullable varchar(500) — kemungkinan path file foto pegawai, bukan BLOB — konsisten dengan pola "path file di kolom varchar" yang juga dipakai di modul lain.
 
-## 3. Dampak ke Desain `SimrsKhanza.Core` / `SimrsKhanza.Data`
+## 3. Dampak ke Desain `SimrsGramedika.Core` / `SimrsGramedika.Data`
 
-Usulan entity awal (`SimrsKhanza.Core/Entities/`):
+Usulan entity awal (`SimrsGramedika.Core/Entities/`):
 ```
 Pasien, RegPeriksa, Dokter, Pegawai, Petugas, Penjab, Poliklinik, Bangsal, Kamar, KamarInap
 ```

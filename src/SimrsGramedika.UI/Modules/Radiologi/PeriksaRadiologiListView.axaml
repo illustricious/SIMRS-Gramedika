@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SimrsGramedika.UI.Modules.Radiologi"
+             x:Class="SimrsGramedika.UI.Modules.Radiologi.PeriksaRadiologiListView"
+             Background="{DynamicResource TegasPageBrush}">
+
+    <!--
+        Legacy DlgCariPeriksaRadiologi — "Data Pemeriksaan Radiologi": one header row per visit, then the
+        nested "Proyeksi & Dosis Radiasi / Kode Periksa / Nama Pemeriksaan / Biaya" rows, the BHP rows and
+        a grand Total, exactly how the legacy table model is built. Below the grid: the hasil bacaan editor
+        (hasil_radiologi) and the permintaan's informasi/diagnosa; "Ubah" = legacy window "Ubah P.J.Rad,
+        Perujuk & Petugas". Not ported: the DICOM/foto tab, hasil print models 1–3, right-click menus.
+    -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto" Margin="16,12">
+        <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
+            <TextBlock Classes="pageTitle" Text="Data Pemeriksaan Radiologi" />
+        </Border>
+
+        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
+                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
+                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
+                    <ComboBox Name="PetugasCombo" Width="170" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Bacaan" VerticalAlignment="Center" />
+                    <ComboBox Name="HasilCombo" Width="140" />
+                </StackPanel>
+            </WrapPanel>
+        </Border>
+
+        <DataGrid Grid.Row="2" Name="NestedGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
+                  HeadersVisibility="Column" CanUserResizeColumns="True"
+                  x:DataType="local:RadDisplayRow" SelectionChanged="OnSelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No.Rawat" Binding="{Binding C0}" Width="1.1*" MinWidth="110" />
+                <DataGridTextColumn Header="Pasien" Binding="{Binding C1}" Width="2.2*" MinWidth="200" />
+                <DataGridTextColumn Header="Petugas" Binding="{Binding C2}" Width="1.5*" MinWidth="120" />
+                <DataGridTextColumn Header="Tgl.Periksa" Binding="{Binding C3}" Width="1.1*" MinWidth="90" />
+                <DataGridTextColumn Header="Jam Periksa" Binding="{Binding C4}" Width="0.7*" MinWidth="70" />
+                <DataGridTextColumn Header="Dokter Perujuk" Binding="{Binding C5}" Width="1.5*" MinWidth="120" />
+                <DataGridTextColumn Header="Penanggung Jawab" Binding="{Binding C6}" Width="1.5*" MinWidth="120" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Grid.Row="3" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4" Margin="0,6,0,0">
+            <Grid ColumnDefinitions="Auto,2*,16,Auto,*,16,Auto" RowDefinitions="Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Hasil Pemeriksaan :" VerticalAlignment="Top" Margin="0,4,4,0" />
+                <TextBox Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="HasilBox" AcceptsReturn="True" TextWrapping="Wrap" Height="64" />
+                <TextBlock Grid.Row="0" Grid.Column="3" Text="Informasi Tambahan :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox Grid.Row="0" Grid.Column="4" Name="InformasiBox" IsReadOnly="True" />
+                <TextBlock Grid.Row="1" Grid.Column="3" Text="Diagnosis Klinis :" VerticalAlignment="Center" Margin="0,4,4,0" />
+                <TextBox Grid.Row="1" Grid.Column="4" Name="DiagnosisBox" IsReadOnly="True" Margin="0,4,0,0" />
+                <StackPanel Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" Spacing="4">
+                    <Button Content="💾 Update Hasil" Click="OnUpdateHasilClick" />
+                    <Button Content="✏ Ubah P.J./Perujuk/Petugas" Click="OnUbahClick" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="4" Name="UbahPanel" IsVisible="False" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                Background="{DynamicResource ThemeSurfaceBrush}" Padding="8" CornerRadius="4" Margin="0,6,0,0">
+            <Grid ColumnDefinitions="Auto,*,16,Auto,*,16,Auto,*,16,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="P.J. Rad :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <ComboBox Grid.Column="1" Name="UbahPjCombo" HorizontalAlignment="Stretch" />
+                <TextBlock Grid.Column="3" Text="Perujuk :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <ComboBox Grid.Column="4" Name="UbahPerujukCombo" HorizontalAlignment="Stretch" />
+                <TextBlock Grid.Column="6" Text="Petugas :" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <ComboBox Grid.Column="7" Name="UbahPetugasCombo" HorizontalAlignment="Stretch" />
+                <Button Grid.Column="9" Content="💾 Simpan" Click="OnUbahSimpanClick" />
+                <Button Grid.Column="10" Content="Tutup" Click="OnUbahTutupClick" Margin="6,0,0,0" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="5" ColumnDefinitions="Auto,*,Auto,Auto" Margin="0,8,0,0">
+            <TextBlock Grid.Column="0" Text="Key Word :" VerticalAlignment="Center" Margin="0,0,4,0" />
+            <TextBox Grid.Column="1" Name="KeywordBox" KeyUp="OnFilterKeyUp" MaxWidth="300" HorizontalAlignment="Left" />
+            <TextBlock Grid.Column="2" Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="12,0,0,0" />
+            <TextBlock Grid.Column="3" Name="TotalText" VerticalAlignment="Center" Margin="12,0,0,0" FontWeight="Medium" />
+        </Grid>
+
+        <Border Grid.Row="6" Classes="servicePanel" Margin="0,6,0,0">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="🩻 Periksa Baru" Click="OnInputClick" />
+                <Button Content="🗑 Hapus" Click="OnHapusClick" />
+                <Button Content="📋 Semua" Click="OnSemuaClick" />
+                <Button Content="🖨 Cetak" Click="OnCetakClick" />
+                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <TextBlock Name="StatusText" VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" IsVisible="False" />
+            </WrapPanel>
+        </Border>
+    </Grid>
+
+    <UserControl.Styles>
+        <Style Selector="Button.accentText">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+</UserControl>

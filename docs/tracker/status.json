@@ -133,571 +133,571 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanRalan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanGigi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanKebidanan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanBayiAnak": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanPsikiatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalKeperawatan|MnPenilaianAwalKeperawatanRalanGeriatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanKebidanan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanBayi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanTHT": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanPsikiatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanPenyakitDalam": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanMata": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanNeurologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanOrthopedi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanBedah": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanBedahMulut": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanGeriatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanKulitKelamin": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanParu": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanJantung": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanUrologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisRalanFisikRehabilitasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnAwalMedis|MnPenilaianAwalMedisHemodialisa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilUSG|MnHasilPemeriksaanUSG": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilUSG|MnHasilPemeriksaanUSGUrologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilUSG|MnHasilPemeriksaanUSGGynecologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilUSG|MnHasilPemeriksaanUSGNeonatus": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilUSG|MnHasilPemeriksaanUSGAbdomen": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanEKG": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanECHO": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanECHOPediatrik": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanSlitLamp": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanOCT": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilPemeriksaanTreadmill": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilEndoskopi|MnHasilEndoskopiFaringLaring": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilEndoskopi|MnHasilEndoskopiHidung": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnHasilEndoskopi|MnHasilEndoskopiTelinga": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnDokumentasiTindakanESWL": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnPenilaianPsikolog": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRawatJalan|MnPenilaianPsikologKlinis": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnDataTriaseIGD": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianAwalKeperawatanIGD": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianAwalMedisIGD": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianAwalMedisIGDPsikiatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianPasienKeracunan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPengkajianRestrain": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPemantauanPEWSAnak": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPemantauanPEWSDewasa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPemantauanMEOWSObstetri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPemantauanEWSNeonatus": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianGRACEScore": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMIGD|MnPenilaianBISHOPScore": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnPenilaianPreInduksi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnChecklistPreOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnSignInSebelumAnestesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnTimeOutSebelumInsisi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnSignOutSebelumMenutupLuka": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnChecklistPostOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnPenilaianPreOp": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnCatatanAnastesiSedasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnPenilaianPreAnastesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnCheckListKesiapanAnestesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnSkorAldrettePascaAnestesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnSkorStewardPascaAnestesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnSkorBromagePascaAnestesi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnCatatanPengkajianPaskaOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMOperasi|MnCatatanObservasiRuangOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukHCU": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukICU": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukNICU": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukPICU": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukIsolasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnPenilaianFisioterapi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnPenilaianTerapiWicara": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnPenatalaksanaanTerapiOkupasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnLayananKedokteranFisikRehabilitasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnUjiFungsiKFR": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhDewasa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhAnak": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhLansia": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhNeonatus": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhGeriatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianRisikoJatuhPsikiatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMRisikoJatuh|MnPenilaianLanjutanSkriningFungsional": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianTambahanGeriatri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianTambahanBunuhDiri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianTambahanPerilakuKekerasan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianTambahanMelarikanDiri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianPasienTerminal": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianKorbanKekerasan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianPasienPenyakitMenular": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianPasienImunitasRendah": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianDerajatDehidrasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianMCU": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnHemodialisa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnPenilaianLain|MnPenilaianBayiBaruLahir": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMFarmasi|MnKonselingFarmasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMFarmasi|MnRekonsiliasiObat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnPenilaianUlangNyeri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnIntervensiNyeriFarmakologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnIntervensiNyeriNonFarmakologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanKeperawatan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnAdmisiSkoringTOLAC": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanPersalinan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanCekGDS": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnMonitoringReaksiTranfusi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanKeseimbanganCairan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanObservasiIGD": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanObservasiCHBP": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanObservasiInduksiPersalinan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnMonitoringTOLAC": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanObservasiBayi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanObservasi|MnCatatanObservasiHemodialisa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnHasilPersalinanTOLAC": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnCatatanCairanHemodialisa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnChecklistPemberianFibrinolitik": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnLaporanReaksiTranfusi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMCatatanMonitoring|MnLaporanTindakan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnDiagnosa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppSkriningNutrisiDewasa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppSkriningNutrisiLansia": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppSkriningNutrisiAnak": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|MnSkriningGiziKehamilan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppSkriningGizi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppAsuhanGizi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppMonitoringAsuhanGizi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnGizi|ppCatatanAdimeGizi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnTransferAntarRuang": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnEdukasi|MnEdukasiPasienKeluarga": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnEdukasi|MnPelaksanaanInformasiEdukasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|ppResume": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|ppRiwayat": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsGramedika.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|ppDeteksiDIniCorona": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnJadwalOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanLab": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanRadiologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanRanap": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanInformasiObat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanKonsultasiMedik": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanKonsultasiPerawat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnKamarInap": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsGramedika.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnRawatJalan": {
     "status": "sebagian",
@@ -705,427 +705,427 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLab": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLabPA": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLabMB": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaRadiologi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnDataOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnPemberianObat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnNoResep": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnResepDOkter": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnCopyResep": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPilihBilling|MnBillingParsial": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Billing/Pembayaran Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Billing/Pembayaran Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPilihBilling|MnBilling": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsKhanza.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs dan src/SimrsGramedika.UI/MainWindow.axaml.cs (HandlePatientMenuAsync) — aksi membuka layar dengan konteks pasien. Kesetaraan alur akhir belum diuji. App.axaml merapatkan menu klik kanan dan submenu dengan palet Gramedika terang/gelap. MenuCScreensTests memeriksa warna, tinggi baris, dan popup submenu."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganPoli": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganDokter": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapJenisBayar": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapRawatDarurat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganBulanan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganBulananPoli": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapPenyakitRalan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapPerujuk": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerJK": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerPekerjaan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerAgama": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerTahun": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerBulan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerTanggal": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikDemografi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratKontrol": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratButaWarna": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratBebasTato": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratKewaspadaanKesehatan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratBebasTBC": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSehat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSehat1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSehat2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakBebasNarkoba": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSakit": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSakitPihak2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratKeteranganRanap": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratHamil": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratCutiHamil": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratCovid": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratKeteranganLayakTerbang": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratKeteranganBerobat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnBuktiPelayananRalan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnLembarCasemix": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnLembarCasemix1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnLembarCasemix2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnSPBK": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnSPBK1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnSBT": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnJKRA": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnLembarRalan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnBlangkoResep": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnSuratJaminanPelayanan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnLembarKeluarMasuk2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanUmum": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanPenolakanTindakan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPulangAtasPermintaanSendiri": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPernyataanPasienUmum": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanRawatInap": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanPenundaanPelayanan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPenolakanAnjuranMedis": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanPemeriksaanHIV": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPernyataanMemilihDPJP": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnSerahTerimaBarangAnggotaTubuh": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPersetujuanBimbinganRohani": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPermintaanPerlindunganDariKekerasan": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnSuratPermohonanPrivasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnSuratPermintaanSecondOpinion": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnSuratPenolakanResusitasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratPersetujuan|MnPengajuanCutiPerawatanPasien": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList3": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList4": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList5": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList6": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList7": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList8": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList9": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker3": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcodeRM9": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang1": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang2": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang3": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang4": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang5": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang6": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang7": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnRujukMasuk": {
     "status": "sebagian",
@@ -1133,7 +1133,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnRujuk": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Rujukan di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Rujukan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnPoliInternal": {
     "status": "sebagian",
@@ -1141,259 +1141,259 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppCatatanPasien": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppBerkasDigital": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppIKP": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutNoRawatDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutNoRawatAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutTanggalDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutTanggalAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutDokterDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutDokterAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutPoliklinikDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutPoliklinikAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutPenjabDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutPenjabAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutStatusDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutStatusAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutRegDesc1": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutRegAsc1": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutRMDesc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutRMAsc": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — SortMenu memanggil Sort pada kolom terikat di RegistrasiView.axaml. Urutan hasil lintas halaman belum diverifikasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnHapusTagihanOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnHapusObatOperasi": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnGabungNoRawat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|ppBerkas": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnSudah": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnBelum": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnBatal": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDirujuk": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDIrawat": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnMeninggal": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnPulangPaksa": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|jMenu7|MnStatusBaru": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|jMenu7|MnStatusLama": {
     "status": "kurang",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Hapus & Ubah Data di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnJadwalOperasi1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnPermintaanLab1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnPermintaanRadiologi1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnPermintaanRanap1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnPermintaan1|MnPermintaanInformasiObat1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnKamarInap1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnRawatJalan1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnPeriksaLab1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnPeriksaLabPA2": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnPeriksaLabMB2": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnPeriksaRadiologi1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnTindakan1|MnOperasi1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnObat1|MnPemberianObat1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnObat1|MnNoResep1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnObat1|MnResepDOkter1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnBilling1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MenuInputData1|ppBerkasDigital1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MenuInputData1|ppIKP1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MenuInputData1|MnDiagnosa1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutNoRawatDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutNoRawatAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutTanggalDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutTanggalAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutDokterDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutDokterAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutPoliklinikDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutPoliklinikAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutPenjabDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutPenjabAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutStatusDesc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnUrut1|MnUrutStatusAsc1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|ppRiwayat1": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnHapusRujukan": {
     "status": "sebagian",
@@ -1401,7 +1401,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu2|MnDataKonsultasiMedik": {
     "status": "kurang",
-    "bukti": "DlgReg.java:6695,6709 dan src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
+    "bukti": "DlgReg.java:6695,6709 dan src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs — popup khusus tabel Rujukan Internal Poli belum memiliki pemasangan tersendiri di Avalonia."
   },
   "popup|simrskhanza/DlgIGD.java|jPopupMenu1|MnDataRM|MnRMSkrining|MnSkriningMerokokUsiaSekolahRemaja": {
     "status": "sebagian",
@@ -1545,35 +1545,35 @@
   },
   "aksi|simrskhanza/DlgReg.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs DaftarAsync (dipanggil OnInputSimpanClick mode Baru): tolak pasien rawat inap aktif, no. reg per dokter per hari, no. rawat MAX+1 dengan ulang saat duplikat, stts_daftar Baru/Lama dari tgl_daftar, status_poli dari riwayat poli, biaya registrasi/registrasilama, umur Th/Bl/Hr. Tes murni di src/SimrsKhanza.Tests/RegistrasiServiceTests.cs; SQL belum dijalankan ke DB. Belum: kuota jadwal aktif secara bawaan (terapkanKuota=false), mode urut no. reg poli/dokter+poli, closing kasir, catatan pasien, asal rujukan, tanggal-jam mundur."
+    "bukti": "src/SimrsGramedika.Data/RegistrasiService.cs DaftarAsync (dipanggil OnInputSimpanClick mode Baru): tolak pasien rawat inap aktif, no. reg per dokter per hari, no. rawat MAX+1 dengan ulang saat duplikat, stts_daftar Baru/Lama dari tgl_daftar, status_poli dari riwayat poli, biaya registrasi/registrasilama, umur Th/Bl/Hr. Tes murni di src/SimrsGramedika.Tests/RegistrasiServiceTests.cs; SQL belum dijalankan ke DB. Belum: kuota jadwal aktif secara bawaan (terapkanKuota=false), mode urut no. reg poli/dokter+poli, closing kasir, catatan pasien, asal rujukan, tanggal-jam mundur."
   },
   "aksi|simrskhanza/DlgReg.java|BtnBatal": {
     "status": "selesai",
-    "bukti": "Tombol Baru (OnBaruClick) di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs mengosongkan form dan masuk mode registrasi baru."
+    "bukti": "Tombol Baru (OnBaruClick) di src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs mengosongkan form dan masuk mode registrasi baru."
   },
   "aksi|simrskhanza/DlgReg.java|BtnEdit": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs UbahAsync: tolak bila ada billing atau batal, non-Admin Utama wajib hak edit_registrasi dan paling lama 48 jam, biaya dihitung ulang saat poli berubah. Belum mengubah tanggal/jam, no. reg/rawat, stts_daftar, umur secara manual."
+    "bukti": "src/SimrsGramedika.Data/RegistrasiService.cs UbahAsync: tolak bila ada billing atau batal, non-Admin Utama wajib hak edit_registrasi dan paling lama 48 jam, biaya dihitung ulang saat poli berubah. Belum mengubah tanggal/jam, no. reg/rawat, stts_daftar, umur secara manual."
   },
   "aksi|simrskhanza/DlgReg.java|BtnHapus": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.Data/RegistrasiService.cs HapusAsync lewat OnHapusClick (src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs, konfirmasi): non-Admin Utama paling lama 48 jam. Tambahan Gramedika: ditolak bila ada billing (Java tidak). Hanya satu baris, Java menghapus semua baris tercentang."
+    "bukti": "src/SimrsGramedika.Data/RegistrasiService.cs HapusAsync lewat OnHapusClick (src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs, konfirmasi): non-Admin Utama paling lama 48 jam. Tambahan Gramedika: ditolak bila ada billing (Java tidak). Hanya satu baris, Java menghapus semua baris tercentang."
   },
   "aksi|simrskhanza/DlgReg.java|BtnPrint": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnCetakClick membuat PDF dari RegistrasiReport (QuestPDF) untuk baris di grid. Java memakai rptReg.jasper berkop RS dan mengecualikan IGDK; kop dan kolom belum disamakan."
+    "bukti": "src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnCetakClick membuat PDF dari RegistrasiReport (QuestPDF) untuk baris di grid. Java memakai rptReg.jasper berkop RS dan mengecualikan IGDK; kop dan kolom belum disamakan."
   },
   "aksi|simrskhanza/DlgReg.java|BtnAll": {
     "status": "selesai",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnSemuaClick mengosongkan filter dokter, poli, kata kunci lalu memuat ulang, sama dengan BtnAllActionPerformed (periode tidak direset di keduanya)."
+    "bukti": "src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnSemuaClick mengosongkan filter dokter, poli, kata kunci lalu memuat ulang, sama dengan BtnAllActionPerformed (periode tidak direset di keduanya)."
   },
   "aksi|simrskhanza/DlgReg.java|BtnCari": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync: poli IGDK dikecualikan dan pencarian mencakup nama, RM, no. rawat, no. reg, tanggal, poli, dokter, PJ, alamat PJ, jenis bayar, hubungan PJ, status. Dicocokkan dengan kolom Java yang terbaca; query Java terpotong, belum diverifikasi penuh."
+    "bukti": "src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs LoadAsync: poli IGDK dikecualikan dan pencarian mencakup nama, RM, no. rawat, no. reg, tanggal, poli, dokter, PJ, alamat PJ, jenis bayar, hubungan PJ, status. Dicocokkan dengan kolom Java yang terbaca; query Java terpotong, belum diverifikasi penuh."
   },
   "aksi|simrskhanza/DlgReg.java|BtnKeluar": {
     "status": "selesai",
-    "bukti": "src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnBackClick (Kembali ke Menu)."
+    "bukti": "src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnBackClick (Kembali ke Menu)."
   },
   "aksi|simrskhanza/DlgReg.java|ChkInput": {
     "status": "selesai",
@@ -1581,23 +1581,23 @@
   },
   "aksi|simrskhanza/DlgReg.java|BtnSeek3": {
     "status": "sebagian",
-    "bukti": "FilterDokterCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs (LoadInputLookupsAsync) memilih dokter dari daftar; tidak ada dialog cari dokter."
+    "bukti": "FilterDokterCombo di src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs (LoadInputLookupsAsync) memilih dokter dari daftar; tidak ada dialog cari dokter."
   },
   "aksi|simrskhanza/DlgReg.java|BtnSeek4": {
     "status": "sebagian",
-    "bukti": "FilterPoliCombo di src/SimrsKhanza.UI/Modules/Registrasi/RegistrasiView.axaml.cs memilih poli dari daftar; tidak ada dialog cari poli."
+    "bukti": "FilterPoliCombo di src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs memilih poli dari daftar; tidak ada dialog cari poli."
   },
   "aksi|simrskhanza/DlgReg.java|BtnDokter": {
     "status": "sebagian",
-    "bukti": "InputDokterCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetDokterAsync; tidak ada dialog cari dan tidak ada cek jadwal/kuota dokter."
+    "bukti": "InputDokterCombo diisi src/SimrsGramedika.Data/RegistrasiRepository.cs GetDokterAsync; tidak ada dialog cari dan tidak ada cek jadwal/kuota dokter."
   },
   "aksi|simrskhanza/DlgReg.java|BtnUnit": {
     "status": "sebagian",
-    "bukti": "InputPoliCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPoliklinikAsync; Java memakai DlgCariPoli dan jadwal aktif, belum ada."
+    "bukti": "InputPoliCombo diisi src/SimrsGramedika.Data/RegistrasiRepository.cs GetPoliklinikAsync; Java memakai DlgCariPoli dan jadwal aktif, belum ada."
   },
   "aksi|simrskhanza/DlgReg.java|btnPenjab": {
     "status": "sebagian",
-    "bukti": "InputPenjabCombo diisi src/SimrsKhanza.Data/RegistrasiRepository.cs GetPenjabAsync; tidak ada dialog cari penjab."
+    "bukti": "InputPenjabCombo diisi src/SimrsGramedika.Data/RegistrasiRepository.cs GetPenjabAsync; tidak ada dialog cari penjab."
   },
   "aksi|simrskhanza/DlgReg.java|BtnPasien": {
     "status": "sebagian",
@@ -1661,7 +1661,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBatal": {
     "status": "sebagian",
-    "bukti": "Tombol Baru (OnBaruClick, src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs) mengosongkan form SOAP. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
+    "bukti": "Tombol Baru (OnBaruClick, src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs) mengosongkan form SOAP. Hanya tab Pemeriksaan (SOAP); tab Penanganan Dokter/Petugas/Dokter+Petugas, obstetri, dan catatan belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnHapus": {
     "status": "sebagian",
@@ -1677,11 +1677,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnAll": {
     "status": "selesai",
-    "bukti": "OnSemuaClick di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs mengosongkan kata kunci dan memuat ulang daftar."
+    "bukti": "OnSemuaClick di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs mengosongkan kata kunci dan memuat ulang daftar."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnKeluar": {
     "status": "selesai",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs OnBackClick (Kembali ke Menu)."
+    "bukti": "src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs OnBackClick (Kembali ke Menu)."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|btnPasien": {
     "status": "kurang",
@@ -1689,7 +1689,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCari": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs LoadQueueAsync + src/SimrsKhanza.Data/RawatJalanService.cs AntrianAsync: rentang tanggal dan kata kunci (no. rawat, reg, RM, pasien, poli, dokter). Dicocokkan dengan perilaku Java secara umum, bukan kolom per kolom."
+    "bukti": "src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs LoadQueueAsync + src/SimrsGramedika.Data/RawatJalanService.cs AntrianAsync: rentang tanggal dan kata kunci (no. rawat, reg, RM, pasien, poli, dokter). Dicocokkan dengan perilaku Java secara umum, bukan kolom per kolom."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTambahTindakan": {
     "status": "kurang",
@@ -1717,15 +1717,15 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSeekPegawai": {
     "status": "sebagian",
-    "bukti": "PegawaiCombo diisi src/SimrsKhanza.Data/RawatJalanService.cs PegawaiAsync: Admin Utama memilih pegawai, akun lain terkunci pada NIK sendiri. Tidak ada dialog cari."
+    "bukti": "PegawaiCombo diisi src/SimrsGramedika.Data/RawatJalanService.cs PegawaiAsync: Admin Utama memilih pegawai, akun lain terkunci pada NIK sendiri. Tidak ada dialog cari."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|Btn5Soap": {
     "status": "sebagian",
     "bukti": "RawatJalanService.LimaTerakhirAsync dan RawatJalanView: pilih lima SOAPIE Ralan atau Ranap pasien dan NIK yang sama, pencarian dan salin enam narasi ke draf. Izin tindakan_ralan diperiksa di layanan; akun biasa dibatasi NIK sendiri. Uji fixture baru belum dijalankan, tampilan berbeda dari dialog Java."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTemplatePemeriksaan": {
-    "status": "kurang",
-    "bukti": "Template pemeriksaan belum dipakai di RawatJalanView (master template ada di Menu M)."
+    "status": "sebagian",
+    "bukti": "RawatJalanService.TemplatePemeriksaanAsync mencari template milik dokter terpilih dengan izin template_pemeriksaan; RawatJalanView menerapkan enam narasi ke draf SOAPIE setelah konfirmasi bila draf sudah berisi. Penyimpanan tetap lewat aksi Simpan SOAPIE. Order, diagnosa, resep, dan tindakan terkait template belum diterapkan; uji database dan UI belum dijalankan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|ChkInput1": {
     "status": "sebagian",
@@ -1777,7 +1777,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnBerkasDigital": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPermintaanLab": {
     "status": "sebagian",
@@ -1789,23 +1789,23 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnJadwalOperasi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSKDP": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnKamar": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/Shared/PatientContextMenu.cs aksi Kamar Inap tersedia dari klik kanan; permintaan rawat inap dari tombol ini belum."
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs aksi Kamar Inap tersedia dari klik kanan; permintaan rawat inap dari tombol ini belum."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTriaseIGD": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRujukInternal": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnResume": {
     "status": "sebagian",
@@ -1921,23 +1921,23 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRujukKeluar": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatan": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiIGD": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanCekGDS": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanKeperawatan": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnPenilaianUlangNyeri": {
     "status": "sebagian",
@@ -1961,7 +1961,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringReaksiTranfusi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnUjiFungsiKFR": {
     "status": "sebagian",
@@ -2049,11 +2049,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnDokumentasiESWL": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanPersalinanan": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningNutrisiDewasa": {
     "status": "sebagian",
@@ -2093,11 +2093,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnRekonsiliasiObat": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnTransferAntarRuang": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnEdukasiPasienKeluarga": {
     "status": "sebagian",
@@ -2233,27 +2233,27 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanKeseimbanganCairan": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiCHBP": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiInduksiPersalinan": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiHemodialisa": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiRuangOperasi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanCairanHemodialisa": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPemberianFibrinolitik": {
     "status": "sebagian",
@@ -2405,7 +2405,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnCatatanObservasiBayi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukNICU": {
     "status": "sebagian",
@@ -2421,11 +2421,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnIntervensiNyeriFarmakologi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnIntervensiNyeriNonFarmakologi": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnResepIterasiBPJS": {
     "status": "kurang",
@@ -2449,7 +2449,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnMonitoringTolac": {
     "status": "kurang",
-    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
+    "bukti": "Tombol input/ubah formulir per kunjungan tidak ada di src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs. Menu M menyediakan daftar baca-saja untuk sebagian besar formulir (lihat docs/audit/MENU_M_STATUS.md), tetapi belum dipetakan per tombol dan tidak bisa menyimpan."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnLaporanReaksiTranfusi": {
     "status": "sebagian",
@@ -2465,7 +2465,7 @@
   },
   "jendela|simrskhanza/DlgRawatJalan.java|DlgRawatJalan": {
     "status": "sebagian",
-    "bukti": "src/SimrsKhanza.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsKhanza.Data/RawatJalanService.cs: daftar kunjungan Ralan non-IGD per tanggal dengan pencarian, banyak SOAP per kunjungan (tambah, ganti, hapus) dengan aturan akses Khanza. Belum: tab tindakan dokter/petugas, obstetri, catatan, resep, permintaan, dan tombol formulir klinis."
+    "bukti": "src/SimrsGramedika.UI/Modules/RawatJalan/RawatJalanView.axaml.cs dan src/SimrsGramedika.Data/RawatJalanService.cs: daftar kunjungan Ralan non-IGD per tanggal dengan pencarian, banyak SOAP per kunjungan (tambah, ganti, hapus) dengan aturan akses Khanza. Belum: tab tindakan dokter/petugas, obstetri, catatan, resep, permintaan, dan tombol formulir klinis."
   },
   "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnDataRM|ppRiwayat": {
     "status": "sebagian",
