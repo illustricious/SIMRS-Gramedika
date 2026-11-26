@@ -1,11 +1,18 @@
-<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="SimrsGramedika.UI.Modules.Informasi.BookingMenuAView" Background="{DynamicResource ThemeBackgroundBrush}">
-  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12" RowSpacing="8">
-    <TextBlock Classes="pageTitle" Name="Judul" />
-    <WrapPanel Grid.Row="1" Orientation="Horizontal">
-      <TextBlock Text="Tanggal pemeriksaan:" VerticalAlignment="Center" Margin="0,0,6,0"/><CalendarDatePicker Name="Dari"/><TextBlock Text="s.d." VerticalAlignment="Center" Margin="8,0"/><CalendarDatePicker Name="Sampai"/>
-      <TextBlock Text="Kata kunci:" VerticalAlignment="Center" Margin="12,0,6,0"/><TextBox Name="KataKunci" Width="200"/><Button Content="🔎 Cari" Click="OnCari" Margin="8,0"/><TextBlock Name="Status" VerticalAlignment="Center"/>
-    </WrapPanel>
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Class="SimrsGramedika.UI.Modules.Informasi.BookingMenuAView" Background="{DynamicResource TegasPageBrush}">
+  <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12" RowSpacing="6">
+    <Border Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Name="Judul" />
+        </Border>
+    
     <DataGrid Grid.Row="2" Name="Tabel" AutoGenerateColumns="True" IsReadOnly="True" CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"/>
-    <Button Grid.Row="3" Content="⬅ Kembali ke Menu" Click="OnBack" HorizontalAlignment="Left"/>
+    <Border Grid.Row="3" Classes="servicePanel">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <WrapPanel Orientation="Horizontal">
+      <TextBlock Text="Tanggal pemeriksaan:" VerticalAlignment="Center" Margin="0,0,6,0"/><CalendarDatePicker Name="Dari"/><TextBlock Text="s.d." VerticalAlignment="Center" Margin="8,0"/><CalendarDatePicker Name="Sampai"/>
+      <TextBlock Text="Kata kunci:" VerticalAlignment="Center" Margin="12,0,6,0"/><TextBox Name="KataKunci" Width="200"/><Button Content="Cari" Click="OnCari" Margin="8,0"/><TextBlock Name="Status" VerticalAlignment="Center"/>
+    </WrapPanel>
+                <Button Grid.Column="1" Content="Kembali ke Menu" Click="OnBack" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            </Grid>
+        </Border>
   </Grid>
 </UserControl>

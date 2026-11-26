@@ -44,8 +44,8 @@
                     <TextBlock Grid.Row="3" Grid.ColumnSpan="5" Name="InputStatusText" TextWrapping="Wrap" Margin="2" IsVisible="False" />
 
                     <StackPanel Grid.Row="4" Grid.ColumnSpan="5" Orientation="Horizontal" Spacing="8" Margin="2,6,2,0">
-                        <Button Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
-                        <Button Content="🆕 Baru" Click="OnBaruClick" />
+                        <Button Content="Simpan" Click="OnSimpanClick" Classes="accent" />
+                        <Button Content="Baru" Click="OnBaruClick" />
                     </StackPanel>
                 </Grid>
             </Border>

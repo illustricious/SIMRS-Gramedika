@@ -79,12 +79,12 @@ public class BarcodeView : PageView
         }
 
         var tindakan = Section("Tindakan", _cariTindakan, _hasilTindakan,
-            Ui.Btn("➕ Tambah", (_, _) => { if (Ui.Selected<TindakanItem>(_hasilTindakan) is { } t) AddTindakan(t); }), _cartTindakan,
-            Ui.Bar(Ui.Btn("🗑 Hapus Tindakan", (_, _) => { if (Ui.Selected<TindakanItem>(_cartTindakan) is { } t) { _tindakan.Remove(t); Refresh(); } })));
+            Ui.Btn("Tambah", (_, _) => { if (Ui.Selected<TindakanItem>(_hasilTindakan) is { } t) AddTindakan(t); }), _cartTindakan,
+            Ui.Bar(Ui.Btn("Hapus Tindakan", (_, _) => { if (Ui.Selected<TindakanItem>(_cartTindakan) is { } t) { _tindakan.Remove(t); Refresh(); } })));
         var obat = Section("Obat / BHP", _cariObat, _hasilObat,
-            Ui.Btn("➕ Tambah", (_, _) => { if (Ui.Selected<ObatItem>(_hasilObat) is { } o) AddObat(o); }), _cartObat,
+            Ui.Btn("Tambah", (_, _) => { if (Ui.Selected<ObatItem>(_hasilObat) is { } o) AddObat(o); }), _cartObat,
             Ui.Bar(Ui.L("Jumlah"), _jumlah, _kapasitas, Ui.L("Embalase"), _emb, Ui.L("Tuslah"), _tus,
-                Ui.Btn("🗑 Hapus Obat", (_, _) => { if (_cartObat.SelectedItem is GridRow { Tag: ObatCart c }) { _obat.Remove(c); Refresh(); } })));
+                Ui.Btn("Hapus Obat", (_, _) => { if (_cartObat.SelectedItem is GridRow { Tag: ObatCart c }) { _obat.Remove(c); Refresh(); } })));
 
         var cols = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,*") };
         Avalonia.Controls.Grid.SetColumn(obat, 2);
@@ -92,8 +92,8 @@ public class BarcodeView : PageView
         cols.Children.Add(obat);
 
         var body = new DockPanel();
-        var top = Ui.Bar(Ui.L("No.Rawat :"), _noRawat, Ui.Btn("🔎 Tampilkan", async (_, _) => await LoadPasienAsync()), _pasien);
-        var bottom = Ui.Bar(Ui.Btn("💾 Simpan Semua", async (_, _) => await SaveAsync()), Ui.Btn("🧹 Bersihkan", (_, _) => Clear()), _total);
+        var top = Ui.Bar(Ui.L("No.Rawat :"), _noRawat, Ui.Btn("Tampilkan", async (_, _) => await LoadPasienAsync()), _pasien);
+        var bottom = Ui.Bar(Ui.Btn("Simpan Semua", async (_, _) => await SaveAsync()), Ui.Btn("Bersihkan", (_, _) => Clear()), _total);
         DockPanel.SetDock(top, Dock.Top);
         DockPanel.SetDock(bottom, Dock.Bottom);
         body.Children.Add(top);

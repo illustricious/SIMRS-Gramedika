@@ -3,41 +3,32 @@
              xmlns:auth="using:SimrsGramedika.Data.Auth"
              xmlns:akun="using:SimrsGramedika.UI.Modules.Akun"
              x:Class="SimrsGramedika.UI.Modules.Akun.ManajemenUserView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!-- Port of legacy setting/DlgUser.java: same `user` table (AES 'nur'/'windi'),
          so accounts made here also log into the original Khanza and vice versa. -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="16">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Manajemen User &amp; Hak Akses"
-                   Margin="0,0,0,12" />
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12" RowSpacing="6">
+        <Border Grid.Row="0" Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Text="Manajemen User &amp; Hak Akses" />
+        </Border>
 
-        <Grid Grid.Row="1" ColumnDefinitions="2*,12,3*">
-
-            <!-- Left: user list -->
-            <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
-                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
-                    <TextBox Name="CariUserBox" PlaceholderText="Cari ID / nama..." Width="220" KeyDown="OnCariUserKeyDown" />
-                    <Button Content="🔎 Cari" Click="OnRefreshClick" />
-                    <TextBlock Name="JumlahUserText" VerticalAlignment="Center"
-                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+        <Grid Grid.Row="1" RowDefinitions="Auto,*" RowSpacing="6">
+            <Border Background="{DynamicResource ThemePanelBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6">
+          <DockPanel>
+            <ToggleButton Name="InputDataToggle" DockPanel.Dock="Bottom" Classes="inputData" IsChecked="True"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                          AutomationProperties.Name="Input Data" Padding="12,4">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Path Width="12" Height="8" Stretch="Uniform" StrokeThickness="1.7"
+                          StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                          Stroke="{DynamicResource ThemeIconBrush}" Data="M2,2 L7,7 L12,2" />
+                    <TextBlock Text="Input Data" VerticalAlignment="Center" />
                 </StackPanel>
-                <DataGrid Grid.Row="1" Name="UserGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                          SelectionMode="Single" GridLinesVisibility="All" HeadersVisibility="Column"
-                          SelectionChanged="OnUserSelected" x:DataType="auth:KhanzaUserRow">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID User" Binding="{Binding IdUser}" Width="130" />
-                        <DataGridTextColumn Header="Nama" Binding="{Binding Nama}" Width="*" />
-                        <DataGridTextColumn Header="Jml Akses" Binding="{Binding JumlahAkses}" Width="80" />
-                    </DataGrid.Columns>
-                </DataGrid>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                    <Button Content="➕ User Baru" Click="OnBaruClick" />
-                    <Button Content="🗑 Hapus User" Click="OnHapusClick" />
-                </StackPanel>
-            </Grid>
-
-            <!-- Right: editor -->
-            <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*,Auto">
+            </ToggleButton>
+            <Border Name="InputDataPanel" Padding="10,7"
+                    IsVisible="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}">
+<Grid Height="320" RowDefinitions="Auto,Auto,Auto,*,Auto">
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,*" Margin="0,0,0,8">
                     <TextBlock Grid.Column="0" Text="ID User :" VerticalAlignment="Center" Margin="0,0,6,0" />
                     <TextBox Grid.Column="1" Name="IdUserBox" PlaceholderText="NIK pegawai / kode dokter" />
@@ -52,10 +43,10 @@
                              TextChanged="OnFilterAksesChanged" />
                     <CheckBox Name="HanyaDicentangBox" Content="Hanya yang dicentang" Margin="0,0,8,4"
                               IsCheckedChanged="OnFilterAksesChanged" />
-                    <Button Content="☑ Centang yang tampil" Click="OnCentangSemuaClick" Margin="0,0,8,4" />
-                    <Button Content="☐ Kosongkan yang tampil" Click="OnKosongkanClick" Margin="0,0,8,4" />
+                    <Button Content="Centang yang tampil" Click="OnCentangSemuaClick" Margin="0,0,8,4" />
+                    <Button Content="Kosongkan yang tampil" Click="OnKosongkanClick" Margin="0,0,8,4" />
                     <ComboBox Name="SalinDariCombo" PlaceholderText="Salin hak akses dari..." Width="220" Margin="0,0,8,4" />
-                    <Button Content="📋 Salin" Click="OnSalinClick" Margin="0,0,8,4" />
+                    <Button Content="Salin" Click="OnSalinClick" Margin="0,0,8,4" />
                 </WrapPanel>
 
                 <Border Grid.Row="3" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="4">
@@ -73,15 +64,39 @@
                 </Border>
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                    <Button Content="💾 Simpan" Click="OnSimpanClick" />
+                    <Button Content="Simpan" Click="OnSimpanClick" />
                     <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+            </Border>
+          </DockPanel>
+        </Border>
+            <Grid Grid.Row="1" RowDefinitions="Auto,*,Auto">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
+                    <TextBox Name="CariUserBox" PlaceholderText="Cari ID / nama..." Width="220" KeyDown="OnCariUserKeyDown" />
+                    <Button Content="Cari" Click="OnRefreshClick" />
+                    <TextBlock Name="JumlahUserText" VerticalAlignment="Center"
+                               Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+                </StackPanel>
+                <DataGrid Grid.Row="1" Name="UserGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Single" GridLinesVisibility="All" HeadersVisibility="Column"
+                          SelectionChanged="OnUserSelected" x:DataType="auth:KhanzaUserRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID User" Binding="{Binding IdUser}" Width="130" />
+                        <DataGridTextColumn Header="Nama" Binding="{Binding Nama}" Width="*" />
+                        <DataGridTextColumn Header="Jml Akses" Binding="{Binding JumlahAkses}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                    <Button Content="User Baru" Click="OnBaruClick" />
+                    <Button Content="Hapus User" Click="OnHapusClick" />
                 </StackPanel>
             </Grid>
         </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="2" Classes="servicePanel">
+            <Button Content="Kembali" Click="OnBackClick" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        </Border>
     </Grid>
 
     <UserControl.Styles>

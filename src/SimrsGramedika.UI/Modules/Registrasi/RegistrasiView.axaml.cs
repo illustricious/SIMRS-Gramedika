@@ -38,7 +38,8 @@ public partial class RegistrasiView : UserControl
 
         PatientContextMenu.Attach<RegistrasiListItem>(this.FindControl<DataGrid>("RegistrasiGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
-            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput, BukaRujukanInternal, BukaRujukanMasuk);
+            request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput,
+            BukaRujukanInternal, BukaRujukanMasuk, HapusDariContext, SetStatusDariContext);
 
         // Periode defaults to "today" (matches the legacy app's "Registrasi
         // Periksa Hari Ini" screen). An earlier revision defaulted to "all
@@ -284,6 +285,8 @@ public partial class RegistrasiView : UserControl
         _pasienBaru = null;
         this.FindControl<TextBox>("InputNoRekamMedisBox")!.IsReadOnly = !on;
         this.FindControl<Button>("PilihPasienButton")!.IsEnabled = on;
+        this.FindControl<Button>("PasienBaruButton")!.IsEnabled =
+            on && AppSession.CurrentUser?.HasPermission(PasienBaruService.Izin) == true;
         UpdateRujukanMasukButton();
     }
 
@@ -336,6 +339,20 @@ public partial class RegistrasiView : UserControl
         catch (Exception ex) { ShowInputError(this.FindControl<TextBlock>("InputStatusText")!, $"Gagal mencari pasien: {ex.Message}"); }
     }
 
+    private async void OnPasienBaruClick(object? sender, RoutedEventArgs e)
+    {
+        if (!_newMode || TopLevel.GetTopLevel(this) is not Window owner || AppSession.CurrentUser is not { } user) return;
+        try
+        {
+            var noRm = await new Pasien.PasienBaruWindow(new PasienBaruService(DatabaseSettings.Load(), user))
+                .ShowDialog<string?>(owner);
+            if (!_newMode || string.IsNullOrEmpty(noRm)) return;
+            SetInputText("InputNoRekamMedisBox", noRm);
+            await LoadPasienBaruAsync();
+        }
+        catch (Exception ex) { ShowInputError(this.FindControl<TextBlock>("InputStatusText")!, $"Gagal mendaftarkan pasien: {ex.Message}"); }
+    }
+
     private async void OnNoRmKeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
     {
         if (e.Key == Avalonia.Input.Key.Enter) await LoadPasienBaruAsync();
@@ -356,7 +373,7 @@ public partial class RegistrasiView : UserControl
             if (pasien is null)
             {
                 SetInputText("InputNamaPasienBox", null);
-                ShowInputError(status, $"Pasien {rm} tidak ditemukan. Daftarkan pasien lebih dulu di layar Pasien.");
+                ShowInputError(status, $"Pasien {rm} tidak ditemukan. Gunakan tombol Pasien Baru atau layar Pasien untuk mendaftarkannya.");
                 return;
             }
             SetInputText("InputNamaPasienBox", $"{pasien.Nama} ({pasien.Umur})");
@@ -457,6 +474,37 @@ public partial class RegistrasiView : UserControl
         catch (Exception ex)
         {
             ShowInputError(status, $"Gagal hapus registrasi: {ex.Message}");
+        }
+    }
+
+    private void HapusDariContext(RegistrasiListItem row)
+    {
+        _selected = row;
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
+        OnHapusClick(this, new RoutedEventArgs());
+    }
+
+    private async void SetStatusDariContext(RegistrasiListItem row, string statusBaru)
+    {
+        _selected = row;
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
+        if (statusBaru == "Batal" && !await Dialogs.ConfirmAsync(this, "Batalkan Pemeriksaan",
+            $"Batalkan pemeriksaan {row.NoRawat} — {row.NamaPasien}? Biaya registrasi akan menjadi Rp0.")) return;
+
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        try
+        {
+            await new RegistrasiService(DatabaseSettings.Load()).SetStatusAsync(row.NoRawat, statusBaru, Akses());
+            _selected = null;
+            await LoadAsync();
+            status.Classes.Remove("error");
+            status.Classes.Add("saved");
+            status.Text = $"Status {row.NoRawat} diperbarui menjadi {statusBaru}.";
+            status.IsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            ShowInputError(status, $"Gagal mengubah status registrasi: {ex.Message}");
         }
     }
 

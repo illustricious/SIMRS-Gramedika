@@ -17,28 +17,7 @@
             <TextBlock Classes="pageTitle" Name="TitleText" />
         </Border>
 
-        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
-            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
-                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
-                    <CalendarDatePicker Name="FromPicker" />
-                    <TextBlock Text="s.d." VerticalAlignment="Center" />
-                    <CalendarDatePicker Name="ToPicker" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
-                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
-                    <ComboBox Name="PetugasCombo" Width="170" />
-                </StackPanel>
-            </WrapPanel>
-        </Border>
+        
 
         <TabControl Grid.Row="2" Name="Tabs">
             <TabItem Header="Data Pemeriksaan">
@@ -114,7 +93,7 @@
                 <TextBox Grid.Column="1" Name="KesanBox" AcceptsReturn="True" Height="48" MaxLength="700" />
                 <TextBlock Grid.Column="3" Text="Saran :" VerticalAlignment="Top" Margin="0,4,4,0" />
                 <TextBox Grid.Column="4" Name="SaranBox" AcceptsReturn="True" Height="48" MaxLength="700" />
-                <Button Grid.Column="6" Content="💾 Update Kesan &amp; Saran" Click="OnUpdateKesanClick" VerticalAlignment="Top" />
+                <Button Grid.Column="6" Content="Update Kesan &amp; Saran" Click="OnUpdateKesanClick" VerticalAlignment="Top" />
             </Grid>
         </Border>
         <Border Grid.Row="3" Name="PaPanel" IsVisible="False" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
@@ -131,7 +110,7 @@
                 <StackPanel Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" Spacing="4">
                     <TextBlock Text="Kesan :" />
                     <TextBox Name="PaKesanBox" AcceptsReturn="True" Height="46" Width="200" MaxLength="300" />
-                    <Button Content="💾 Update" Click="OnUpdatePaClick" />
+                    <Button Content="Update" Click="OnUpdatePaClick" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -144,15 +123,39 @@
         </Grid>
 
         <Border Grid.Row="5" Classes="servicePanel" Margin="0,6,0,0">
+            <StackPanel Spacing="4">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
+                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
+                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
+                    <ComboBox Name="PetugasCombo" Width="170" />
+                </StackPanel>
+            </WrapPanel>
+        
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
-                <Button Content="🧪 Periksa Baru" Click="OnInputClick" />
-                <Button Content="🗑 Hapus" Click="OnHapusClick" />
-                <Button Content="📋 Semua" Click="OnSemuaClick" />
-                <Button Content="🖨 Cetak" Click="OnCetakClick" />
-                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <Button Content="Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="Periksa Baru" Click="OnInputClick" />
+                <Button Content="Hapus" Click="OnHapusClick" />
+                <Button Content="Semua" Click="OnSemuaClick" />
+                <Button Content="Cetak" Click="OnCetakClick" />
+                <Button Content="Keluar" Click="OnBackClick" />
                 <TextBlock Name="StatusText" VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" IsVisible="False" />
             </WrapPanel>
+        
+            </StackPanel>
         </Border>
     </Grid>
 

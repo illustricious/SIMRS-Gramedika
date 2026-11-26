@@ -9,17 +9,7 @@
             <TextBlock Classes="pageTitle" Text="Data Penjualan Obat &amp; BHP" />
         </Border>
 
-        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
-            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <TextBlock Text="Periode:" VerticalAlignment="Center" />
-                <CalendarDatePicker Name="FromPicker" />
-                <TextBlock Text="s.d." VerticalAlignment="Center" />
-                <CalendarDatePicker Name="ToPicker" />
-                <TextBlock Text="Kata kunci:" VerticalAlignment="Center" />
-                <TextBox Name="KeywordBox" Width="210" PlaceholderText="Nota, barang, keterangan" KeyDown="OnKeywordKeyDown" />
-                <Button Content="Tampilkan" Click="OnTampilkanClick" Classes="accent" />
-            </WrapPanel>
-        </Border>
+        
 
         <DataGrid Grid.Row="2" Name="PenjualanGrid" AutoGenerateColumns="False" IsReadOnly="True"
                   CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
@@ -35,10 +25,23 @@
         </DataGrid>
 
         <Border Grid.Row="3" Classes="servicePanel" Margin="0,6,0,0">
+            <StackPanel Spacing="4">
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+                <TextBlock Text="Periode:" VerticalAlignment="Center" />
+                <CalendarDatePicker Name="FromPicker" />
+                <TextBlock Text="s.d." VerticalAlignment="Center" />
+                <CalendarDatePicker Name="ToPicker" />
+                <TextBlock Text="Kata kunci:" VerticalAlignment="Center" />
+                <TextBox Name="KeywordBox" Width="210" PlaceholderText="Nota, barang, keterangan" KeyDown="OnKeywordKeyDown" />
+                <Button Content="Tampilkan" Click="OnTampilkanClick" Classes="accent" />
+            </WrapPanel>
+        
+            <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
+                <Button Content="Kembali" Click="OnBackClick" />
                 <TextBlock Name="StatusText" VerticalAlignment="Center" TextWrapping="Wrap" />
             </WrapPanel>
+        
+            </StackPanel>
         </Border>
     </Grid>
 

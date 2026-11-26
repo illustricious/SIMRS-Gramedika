@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using QuestPDF.Fluent;
@@ -72,13 +73,19 @@ public partial class RawatJalanView : UserControl
         this.FindControl<ComboBox>("KesadaranCombo")!.ItemsSource = RawatJalanService.Kesadaran;
         this.FindControl<Button>("TemplateButton")!.IsVisible = Akses().TemplateDiizinkan;
         ClearForm();
+        // Panel input terlipat memberi seluruh tinggi kepada daftar kunjungan.
+        var toggle = this.FindControl<ToggleButton>("InputDataToggle")!;
+        toggle.IsCheckedChanged += (_, _) => this.FindControl<Grid>("WorkArea")!.RowDefinitions[0].Height =
+            toggle.IsChecked == true ? new GridLength(3, GridUnitType.Star) : GridLength.Auto;
         if (embedded)
         {
             foreach (var name in new[] { "PageHeading", "QueueFilters", "QueueArea", "PageFooter" })
                 this.FindControl<Control>(name)!.IsVisible = false;
-            var columns = this.FindControl<Grid>("WorkArea")!.ColumnDefinitions;
-            columns[0].Width = new GridLength(0);
-            columns[1].Width = new GridLength(0);
+            // Tertanam di alur kunjungan: hanya form pemeriksaan dan tombolnya.
+            var rows = this.FindControl<Grid>("WorkArea")!.RowDefinitions;
+            rows[0].Height = new GridLength(1, GridUnitType.Star);
+            rows[1].Height = new GridLength(0);
+            this.FindControl<ToggleButton>("InputDataToggle")!.IsVisible = false;
         }
     }
 

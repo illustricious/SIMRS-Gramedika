@@ -39,4 +39,8 @@
     <ProjectReference Include="..\SimrsGramedika.Data\SimrsGramedika.Data.csproj" />
     <ProjectReference Include="..\SimrsGramedika.Config\SimrsGramedika.Config.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="SimrsGramedika.Tests" />
+  </ItemGroup>
+
 </Project>

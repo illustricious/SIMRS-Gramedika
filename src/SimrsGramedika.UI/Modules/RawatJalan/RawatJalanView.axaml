@@ -3,50 +3,38 @@
              xmlns:data="using:SimrsGramedika.Data"
              xmlns:local="using:SimrsGramedika.UI.Modules.RawatJalan"
              x:Class="SimrsGramedika.UI.Modules.RawatJalan.RawatJalanView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Rawat Jalan: kiri daftar kunjungan rawat jalan (status_lanjut Ralan, bukan IGD) per rentang tanggal,
         kanan daftar pemeriksaan (SOAP) kunjungan terpilih dan form tambah/ubah/hapus. Aturan akses mengikuti
         DlgRawatJalan (RawatJalanService): non-Admin Utama hanya data miliknya, ubah/hapus 48 jam.
     -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="12">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12" RowSpacing="6">
 
-        <TextBlock Name="PageHeading" Classes="pageTitle" Grid.Row="0" Text="Rawat Jalan - Pemeriksaan Dokter" Margin="0,0,0,8" />
+        <Border Name="PageHeading" Grid.Row="0" Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Text="Rawat Jalan - Pemeriksaan Dokter" />
+        </Border>
 
-        <Grid Name="QueueFilters" Grid.Row="1" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8" Margin="0,0,0,8">
-            <TextBlock Text="Periode" VerticalAlignment="Center" />
-            <CalendarDatePicker Grid.Column="1" Name="DariPicker" AutomationProperties.Name="Dari tanggal" />
-            <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" />
-            <CalendarDatePicker Grid.Column="3" Name="SampaiPicker" AutomationProperties.Name="Sampai tanggal" />
-            <TextBlock Grid.Column="4" Text="Kata kunci" VerticalAlignment="Center" />
-            <TextBox Grid.Column="5" Name="CariBox" PlaceholderText="No. rawat, no. RM, pasien, poli, atau dokter"
-                     AutomationProperties.Name="Cari kunjungan" KeyDown="OnCariKeyDown" />
-            <Button Grid.Column="6" Content="Cari" Classes="accent" Click="OnCariClick" />
-            <Button Grid.Column="7" Content="Semua" Click="OnSemuaClick" />
-        </Grid>
+        
 
-        <Grid Name="WorkArea" Grid.Row="2" ColumnDefinitions="2*,16,3*">
-
-            <Grid Name="QueueArea" Grid.Column="0" RowDefinitions="Auto,*">
-                <TextBlock Grid.Row="0" Name="QueueCountText" Text="Kunjungan Rawat Jalan" FontWeight="Medium" Margin="0,0,0,4"
-                           Foreground="{DynamicResource ThemeTextBrush}" />
-                <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                          GridLinesVisibility="All" HeadersVisibility="Column"
-                          x:DataType="data:RawatJalanKunjungan"
-                          SelectionChanged="OnQueueSelectionChanged">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal, StringFormat=\{0:yyyy-MM-dd\}}" Width="90" />
-                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="140" />
-                        <DataGridTextColumn Header="Pasien" Binding="{Binding Pasien}" Width="*" />
-                        <DataGridTextColumn Header="Poli" Binding="{Binding Poli}" Width="100" />
-                        <DataGridTextColumn Header="Dokter" Binding="{Binding Dokter}" Width="120" />
-                        <DataGridTextColumn Header="SOAP" Binding="{Binding JumlahPemeriksaan}" Width="52" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-
-            <ScrollViewer Grid.Column="2">
+        <Grid Name="WorkArea" Grid.Row="1" RowDefinitions="3*,2*" RowSpacing="6">
+            <Border Background="{DynamicResource ThemePanelBrush}" Name="InputBorder"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6">
+          <DockPanel>
+            <ToggleButton Name="InputDataToggle" DockPanel.Dock="Bottom" Classes="inputData" IsChecked="True"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                          AutomationProperties.Name="Input Data" Padding="12,4">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Path Width="12" Height="8" Stretch="Uniform" StrokeThickness="1.7"
+                          StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                          Stroke="{DynamicResource ThemeIconBrush}" Data="M2,2 L7,7 L12,2" />
+                    <TextBlock Text="Input Data" VerticalAlignment="Center" />
+                </StackPanel>
+            </ToggleButton>
+            <Border Name="InputDataPanel" Padding="10,7"
+                    IsVisible="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}">
+<ScrollViewer Name="InputScroll" Padding="0,0,24,0">
                 <StackPanel Spacing="6">
                     <Border Background="{DynamicResource ThemeSurfaceBrush}" CornerRadius="4" Padding="10">
                         <TextBlock Name="SelectedPatientText" Text="(belum ada kunjungan dipilih)"
@@ -127,10 +115,50 @@
                     <TextBlock Text="Evaluasi" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,4,0,2" />
                     <TextBox Name="EvaluasiBox" AcceptsReturn="True" Height="40" TextWrapping="Wrap" />
 
-                    <TextBlock Name="SaveStatusText" Margin="0,8,0,0" TextWrapping="Wrap"
-                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    
 
-                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4" Margin="0,8,0,0">
+                    
+                </StackPanel>
+            </ScrollViewer>
+            </Border>
+          </DockPanel>
+        </Border>
+            <Grid Name="QueueArea" Grid.Row="1" RowDefinitions="Auto,*">
+                <TextBlock Grid.Row="0" Name="QueueCountText" Text="Kunjungan Rawat Jalan" FontWeight="Medium" Margin="0,0,0,4"
+                           Foreground="{DynamicResource ThemeTextBrush}" />
+                <DataGrid Grid.Row="1" Name="QueueGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                          GridLinesVisibility="All" HeadersVisibility="Column"
+                          x:DataType="data:RawatJalanKunjungan"
+                          SelectionChanged="OnQueueSelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal, StringFormat=\{0:yyyy-MM-dd\}}" Width="90" />
+                        <DataGridTextColumn Header="No. Rawat" Binding="{Binding NoRawat}" Width="140" />
+                        <DataGridTextColumn Header="Pasien" Binding="{Binding Pasien}" Width="*" />
+                        <DataGridTextColumn Header="Poli" Binding="{Binding Poli}" Width="100" />
+                        <DataGridTextColumn Header="Dokter" Binding="{Binding Dokter}" Width="120" />
+                        <DataGridTextColumn Header="SOAP" Binding="{Binding JumlahPemeriksaan}" Width="52" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="2" Classes="servicePanel">
+            <StackPanel Spacing="4">
+                <Grid Name="QueueFilters" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto" ColumnSpacing="8">
+            <TextBlock Text="Periode" VerticalAlignment="Center" />
+            <CalendarDatePicker Grid.Column="1" Name="DariPicker" AutomationProperties.Name="Dari tanggal" />
+            <TextBlock Grid.Column="2" Text="s.d." VerticalAlignment="Center" />
+            <CalendarDatePicker Grid.Column="3" Name="SampaiPicker" AutomationProperties.Name="Sampai tanggal" />
+            <TextBlock Grid.Column="4" Text="Kata kunci" VerticalAlignment="Center" />
+            <TextBox Grid.Column="5" Name="CariBox" PlaceholderText="No. rawat, no. RM, pasien, poli, atau dokter"
+                     AutomationProperties.Name="Cari kunjungan" KeyDown="OnCariKeyDown" />
+            <Button Grid.Column="6" Content="Cari" Classes="accent" Click="OnCariClick" />
+            <Button Grid.Column="7" Content="Semua" Click="OnSemuaClick" />
+        </Grid>
+                <TextBlock Name="SaveStatusText" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
                         <Button Content="Baru" Click="OnBaruClick" />
                         <Button Content="5 SOAPIE Ralan" Click="OnLimaTerakhirClick" />
                         <Button Content="5 SOAPIE Ranap" Tag="Ranap" Click="OnLimaTerakhirClick" />
@@ -141,13 +169,10 @@
                         <Button Name="HapusButton" Content="Hapus" Click="OnHapusClick" IsEnabled="False" />
                         <Button Name="CetakSoapButton" Content="Simpan PDF" Click="OnCetakSoapClick" IsEnabled="False" />
                     </WrapPanel>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
-
-        <StackPanel Name="PageFooter" Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+                    <Button Name="PageFooter" Grid.Column="1" Content="Kembali ke Menu" Click="OnBackClick" VerticalAlignment="Bottom" />
+                </Grid>
+            </StackPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

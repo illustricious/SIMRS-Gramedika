@@ -21,7 +21,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="No.Rawat :" VerticalAlignment="Center" Margin="0,2,6,2" />
                 <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="200,Auto,*">
                     <TextBox Name="NoRawatBox" KeyUp="OnNoRawatKeyUp" PlaceholderText="2026/11/09/000001" />
-                    <Button Grid.Column="1" Content="🔍 Muat" Click="OnMuatClick" Margin="4,0,0,0" />
+                    <Button Grid.Column="1" Content="Muat" Click="OnMuatClick" Margin="4,0,0,0" />
                     <TextBlock Grid.Column="2" Name="PasienText" VerticalAlignment="Center" Margin="10,0,0,0" FontWeight="Medium" />
                 </Grid>
                 <TextBlock Grid.Row="0" Grid.Column="3" Text="Dokter Perujuk :" VerticalAlignment="Center" Margin="0,2,6,2" />
@@ -53,7 +53,7 @@
         <Grid Grid.Row="2" ColumnDefinitions="Auto,260,Auto,Auto" Margin="0,6,0,4">
             <TextBlock Grid.Column="0" Text="Pemeriksaan :" VerticalAlignment="Center" Margin="0,0,6,0" />
             <TextBox Grid.Column="1" Name="CariBox" KeyUp="OnCariKeyUp" />
-            <Button Grid.Column="2" Content="🔍 Cari" Click="OnCariClick" Margin="4,0,0,0" />
+            <Button Grid.Column="2" Content="Cari" Click="OnCariClick" Margin="4,0,0,0" />
         </Grid>
 
         <Grid Grid.Row="3" ColumnDefinitions="380,8,*">
@@ -143,9 +143,9 @@
 
         <Border Grid.Row="5" Classes="servicePanel" Margin="0,6,0,0">
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="💾 Simpan" Click="OnSimpanClick" Classes="accent" />
-                <Button Content="🆕 Baru" Click="OnBaruClick" />
-                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <Button Content="Simpan" Click="OnSimpanClick" Classes="accent" />
+                <Button Content="Baru" Click="OnBaruClick" />
+                <Button Content="Keluar" Click="OnBackClick" />
             </WrapPanel>
         </Border>
     </Grid>

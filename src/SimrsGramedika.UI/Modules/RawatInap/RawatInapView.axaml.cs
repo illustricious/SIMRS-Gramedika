@@ -179,22 +179,22 @@ public partial class RawatInapView : UserControl
             case ActionMode.Masuk:
                 title.Text = "Masuk — Admit Pasien ke Kamar Inap";
                 subtitle.Text = "";
-                ok.Content = "🛏 Admit";
+                ok.Content = "Admit";
                 break;
             case ActionMode.Pulang:
                 title.Text = "Pulang — Pulangkan Pasien & Hitung Biaya Kamar";
                 subtitle.Text = who;
-                ok.Content = "🚪 Pulangkan";
+                ok.Content = "Pulangkan";
                 break;
             case ActionMode.Pindah:
                 title.Text = "Pindah — Pindah Kamar";
                 subtitle.Text = who;
-                ok.Content = "🔀 Pindahkan";
+                ok.Content = "Pindahkan";
                 break;
             case ActionMode.Ganti:
                 title.Text = "Ganti — Jenis Bayar / Diagnosa";
                 subtitle.Text = who;
-                ok.Content = "💾 Simpan Perubahan";
+                ok.Content = "Simpan Perubahan";
                 break;
         }
     }

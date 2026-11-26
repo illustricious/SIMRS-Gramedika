@@ -1307,6 +1307,20 @@ public partial class MainWindow : Window
 
         switch (request.Action)
         {
+            case PatientMenuAction.Report when request.TileKey is { } reportKey && _user is { } reportUser &&
+                LegacyTilePermissions.CanSeeTile(reportUser, reportKey) &&
+                Modules.Shared.ContextReports.TryGet(reportKey, out var contextReport):
+                var reportView = new Modules.Shared.ReportView(contextReport,
+                    contextReport.VisitSql is null || string.IsNullOrWhiteSpace(request.NoRawat) ? null : request.NoRawat,
+                    Modules.Shared.ContextReports.IsPatientReport(reportKey) ? request.NoRekamMedis : null);
+                reportView.BackRequested += Back;
+                await OpenFeatureAsync(reportView, reportView.ReloadAsync);
+                return;
+
+            case PatientMenuAction.CatatanPasien when _user?.HasPermission("catatan_pasien") == true:
+                await new Modules.Pasien.CatatanPasienWindow(request, _user).ShowDialog(this);
+                return;
+
             case PatientMenuAction.Skrining when request.TileKey is { } key && _user is not null &&
                 !string.IsNullOrWhiteSpace(request.NoRawat) && LegacyTilePermissions.CanSeeTile(_user, key) &&
                 SimrsGramedika.Data.Master.MenuMSpecs.Reports.TryGetValue(key, out var report) && report.VisitSql is not null:

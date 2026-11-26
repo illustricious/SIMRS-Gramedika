@@ -28,7 +28,7 @@ public class PermintaanStokPasienView : PageView
         _grid.SelectionChanged += async (_, _) => await DetailAsync();
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await ReloadListAsync(); };
         _detail.Height = 200;
-        var top = Ui.Bar(_cari, _period, Ui.Btn("🔎 Tampilkan", async (_, _) => await ReloadListAsync()));
+        var top = Ui.Bar(_cari, _period, Ui.Btn("Tampilkan", async (_, _) => await ReloadListAsync()));
         var bottom = new StackPanel
         {
             Spacing = 6,
@@ -36,7 +36,7 @@ public class PermintaanStokPasienView : PageView
             {
                 Ui.Hint("Rincian permintaan terpilih:"),
                 _detail,
-                Ui.Bar(Ui.L("Ambil dari Depo"), _depo, Ui.Btn("✔ Validasi & Buat Stok Pasien", async (_, _) => await ValidasiAsync())),
+                Ui.Bar(Ui.L("Ambil dari Depo"), _depo, Ui.Btn("Validasi & Buat Stok Pasien", async (_, _) => await ValidasiAsync())),
             },
         };
         var body = new DockPanel();

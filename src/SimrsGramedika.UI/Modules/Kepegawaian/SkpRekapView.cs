@@ -43,7 +43,7 @@ public class SkpRekapView : PageView
         _detail.Height = 150;
 
         var left = new DockPanel();
-        var bar = Ui.Bar(_cari, _period, Ui.Btn("🔎 Cari", async (_, _) => await LoadAsync()));
+        var bar = Ui.Bar(_cari, _period, Ui.Btn("Cari", async (_, _) => await LoadAsync()));
         DockPanel.SetDock(bar, Dock.Top);
         left.Children.Add(bar);
         left.Children.Add(_grid);
@@ -61,12 +61,12 @@ public class SkpRekapView : PageView
             Children =
             {
                 Ui.Form(("No.Rekap :", _nomor), ("Tanggal :", _tanggal), ("Yang Dinilai :", _dinilai), ("Penilai :", _penilai)),
-                Ui.Bar(Ui.L("Pengkajian"), _periodeNilai, Ui.Btn("🧮 Hitung", async (_, _) => await HitungAsync())),
+                Ui.Bar(Ui.L("Pengkajian"), _periodeNilai, Ui.Btn("Hitung", async (_, _) => await HitungAsync())),
                 _detail,
                 skpGrid,
                 Ui.Form(("Kesimpulan :", _kesimpulan), ("Rekomendasi :", _rekomendasi)),
-                Ui.Bar(Ui.Btn("➕ Baru", async (_, _) => await NewAsync()), Ui.Btn("💾 Simpan", async (_, _) => await SaveAsync()),
-                    Ui.Btn("🗑 Hapus", async (_, _) => await DeleteAsync())),
+                Ui.Bar(Ui.Btn("Baru", async (_, _) => await NewAsync()), Ui.Btn("Simpan", async (_, _) => await SaveAsync()),
+                    Ui.Btn("Hapus", async (_, _) => await DeleteAsync())),
             },
         };
         var body = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,Auto") };

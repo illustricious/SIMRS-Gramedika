@@ -51,11 +51,9 @@ public sealed class ParkirMasukView : PageView
         _filters = Ui.Bar(_cari, _period, Ui.Btn("Tampilkan", async (_, _) => await DisplayAsync()));
         var body = new DockPanel();
         DockPanel.SetDock(_entry, Dock.Top);
-        DockPanel.SetDock(_filters, Dock.Top);
         body.Children.Add(_entry);
-        body.Children.Add(_filters);
         body.Children.Add(_grid);
-        Build("Parkir Masuk", body, "Pilih jenis parkir, pindai kartu, lalu isi nomor kendaraan.");
+        Build("Parkir Masuk", body, "Pilih jenis parkir, pindai kartu, lalu isi nomor kendaraan.", _filters);
     }
 
     public override async Task ReloadAsync()

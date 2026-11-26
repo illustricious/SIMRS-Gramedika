@@ -38,9 +38,9 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="2" Classes="servicePanel" Margin="0,6,0,0">
+            <Button Content="Kembali ke Menu" Click="OnBackClick" HorizontalAlignment="Right" />
+        </Border>
     </Grid>
 
     <UserControl.Styles>

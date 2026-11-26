@@ -167,6 +167,62 @@ public static class Ui
         return c;
     }
 
+    /// <summary>Panel berbingkai seperti panel input dan bar bawah di Registrasi.</summary>
+    public static Border Panel(Control child, Thickness padding = default) => Themed(Themed(new Border
+    {
+        Child = child, Padding = padding, BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(6),
+    }, Border.BorderBrushProperty, "ThemeBorderBrush"), Border.BackgroundProperty, "ThemePanelBrush");
+
+    /// <summary>Judul layar dengan garis tepi biru, sama dengan Registrasi.</summary>
+    public static Border Heading(string title, string? subtitle = null)
+    {
+        var isi = new StackPanel { Spacing = 1, Children = { Title(title) } };
+        if (subtitle is not null) isi.Children.Add(Hint(subtitle));
+        return new Border { Child = isi, Classes = { "tegasHeading" } };
+    }
+
+    /// <summary>Panel "Input Data" yang bisa dilipat di atas tabel, seperti PanelInput Khanza.</summary>
+    public static (Border Panel, ToggleButton Toggle) InputPanel(Control content)
+    {
+        var body = new Border { Name = "InputDataPanel", Padding = new Thickness(10, 7), Child = content, IsVisible = false };
+        var chevron = new Avalonia.Controls.Shapes.Path
+        {
+            Width = 12, Height = 8, Stretch = Stretch.Uniform, StrokeThickness = 1.7,
+            StrokeLineCap = PenLineCap.Round, StrokeJoin = PenLineJoin.Round, VerticalAlignment = VerticalAlignment.Center,
+            Data = Geometry.Parse("M2,2 L7,7 L12,2"),
+        };
+        chevron.Bind(Avalonia.Controls.Shapes.Shape.StrokeProperty, chevron.GetResourceObservable("ThemeIconBrush"));
+        var toggle = new ToggleButton
+        {
+            Name = "InputDataToggle", Classes = { "inputData" }, Padding = new Thickness(12, 4),
+            HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left,
+            Content = new StackPanel
+            {
+                Orientation = Orientation.Horizontal, Spacing = 7,
+                Children = { chevron, new TextBlock { Text = "Input Data", VerticalAlignment = VerticalAlignment.Center } },
+            },
+        };
+        Avalonia.Automation.AutomationProperties.SetName(toggle, "Input Data");
+        toggle.IsCheckedChanged += (_, _) => body.IsVisible = toggle.IsChecked == true;
+        return (Panel(new StackPanel { Children = { body, toggle } }), toggle);
+    }
+
+    /// <summary>Isian dibagi ke beberapa kolom (urut ke bawah, lalu ke kanan) agar form di atas tabel tetap pendek.</summary>
+    public static Avalonia.Controls.Grid FormColumns(IReadOnlyList<(string Label, Control Control)> rows, int columns)
+    {
+        var grid = new Avalonia.Controls.Grid { ColumnSpacing = 18 };
+        var perColumn = (rows.Count + columns - 1) / columns;
+        for (var i = 0; i < columns; i++)
+        {
+            grid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
+            var form = Form(rows.Skip(i * perColumn).Take(perColumn).ToArray());
+            form.VerticalAlignment = VerticalAlignment.Top;
+            Avalonia.Controls.Grid.SetColumn(form, i);
+            grid.Children.Add(form);
+        }
+        return grid;
+    }
+
     /// <summary>Wraps a TextBlock grid row into a bordered, scrollable box.</summary>
     public static Border Box(Control child) => Themed(new Border
     {
@@ -261,27 +317,38 @@ public abstract class PageView : UserControl
     public event EventHandler? BackRequested;
     protected readonly TextBlock StatusText = Ui.Status();
 
-    protected void Build(string title, Control body, string? hint = null)
+    /// <summary>Susunan seperti Registrasi: judul, isi, lalu bar bawah (filter dan aksi, status, kembali).</summary>
+    protected void Build(string title, Control body, string? hint = null, Control? footer = null)
     {
-        var back = new Button { Content = "‹  Kembali" };
+        var back = new Button { Content = "Kembali", VerticalAlignment = VerticalAlignment.Bottom };
         back.Click += (_, _) => BackRequested?.Invoke(this, EventArgs.Empty);
 
-        var top = new StackPanel { Spacing = 4, Margin = new Thickness(0, 0, 0, 16), Children = { Ui.Title(title) } };
-        if (hint is not null) top.Children.Add(Ui.Hint(hint));
-
-        var root = new DockPanel { Margin = new Thickness(24, 20) };
-        DockPanel.SetDock(top, Dock.Top);
-        var bottom = new DockPanel { Margin = new Thickness(0, 8, 0, 0) };
-        DockPanel.SetDock(back, Dock.Left);
+        // Baris status kosong tidak memakan tinggi bar.
+        StatusText.IsVisible = !string.IsNullOrEmpty(StatusText.Text);
+        StatusText.PropertyChanged += (_, e) =>
+        {
+            if (e.Property == TextBlock.TextProperty) StatusText.IsVisible = !string.IsNullOrEmpty(StatusText.Text);
+        };
+        var left = new StackPanel { Spacing = 4, VerticalAlignment = VerticalAlignment.Bottom };
+        if (footer is not null) left.Children.Add(footer);
+        left.Children.Add(StatusText);
+        var bottom = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,Auto"), ColumnSpacing = 8 };
+        Avalonia.Controls.Grid.SetColumn(back, 1);
+        bottom.Children.Add(left);
         bottom.Children.Add(back);
-        StatusText.Margin = new Thickness(12, 0, 0, 0);
-        bottom.Children.Add(StatusText);
-        DockPanel.SetDock(bottom, Dock.Bottom);
-        root.Children.Add(top);
-        root.Children.Add(bottom);
+
+        var root = new Avalonia.Controls.Grid
+        {
+            RowDefinitions = new RowDefinitions("Auto,*,Auto"), RowSpacing = 6, Margin = new Thickness(16, 12),
+        };
+        var panel = Ui.Panel(bottom, new Thickness(9, 6));
+        Avalonia.Controls.Grid.SetRow(body, 1);
+        Avalonia.Controls.Grid.SetRow(panel, 2);
+        root.Children.Add(Ui.Heading(title, hint));
         root.Children.Add(body);
+        root.Children.Add(panel);
         Content = root;
-        this.Bind(BackgroundProperty, this.GetResourceObservable("ThemeBackgroundBrush"));
+        this.Bind(BackgroundProperty, this.GetResourceObservable("TegasPageBrush"));
     }
 
     public abstract Task ReloadAsync();
@@ -316,7 +383,7 @@ public class FormDialog : Window
         SizeToContent = SizeToContent.Height;
         MaxHeight = 780;
         WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        _ok = new Button { Content = "💾 Simpan", MinWidth = 100 };
+        _ok = new Button { Content = "Simpan", MinWidth = 100 };
         _ok.Click += async (_, _) =>
         {
             _ok.IsEnabled = false;
@@ -338,7 +405,7 @@ public class FormDialog : Window
         };
     }
 
-    protected void SetBody(Control body, string okText = "💾 Simpan")
+    protected void SetBody(Control body, string okText = "Simpan")
     {
         _ok.Content = okText;
         var batal = new Button { Content = "Batal", MinWidth = 90 };

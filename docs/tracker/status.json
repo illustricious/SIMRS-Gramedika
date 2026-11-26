@@ -1609,7 +1609,7 @@
   },
   "aksi|simrskhanza/DlgReg.java|BtnPasien": {
     "status": "sebagian",
-    "bukti": "RegistrasiView menyediakan pencarian dan pemilihan pasien berdasarkan nama atau nomor RM saat registrasi baru, mengisi data pasien dan menolak hasil pencarian lama setelah nomor RM berubah. Tes headless memeriksa mode Baru dan pembersihan isian. Dialog dibatasi 100 hasil; pendaftaran pasien baru dari dialog seperti Java serta uji database dan dialog lengkap belum tersedia."
+    "bukti": "RegistrasiView menyediakan pencarian dan pemilihan pasien berdasarkan nama atau nomor RM saat registrasi baru, mengisi data pasien dan menolak hasil pencarian lama setelah nomor RM berubah. Tes headless memeriksa mode Baru dan pembersihan isian. Dialog dibatasi 100 hasil; pendaftaran pasien baru tersedia lewat tombol Pasien Baru dengan penomoran RM Khanza (PasienBaruService.cs, PasienBaruWindow.cs, PasienBaruTests.cs; diuji pada MariaDB sintetis). Pengelolaan pasien lengkap seperti DlgPasien dan uji dialog dari aplikasi belum tersedia."
   },
   "aksi|simrskhanza/DlgReg.java|btnPenjab1": {
     "status": "sebagian",

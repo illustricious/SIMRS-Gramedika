@@ -13,9 +13,8 @@ public interface IPasienRepository
     /// <summary>Generates a preview of the next no_rkm_medis using Khanza's numbering settings.</summary>
     Task<string> NextNoRekamMedisAsync(CancellationToken ct = default);
 
-    Task SaveNewAsync(Pasien pasien, CancellationToken ct = default);
-
-    Task UpdateAsync(Pasien pasien, CancellationToken ct = default);
+    /// <param name="sebelumSimpan">Langkah tambahan di dalam transaksi yang sama, misalnya kode wilayah.</param>
+    Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default);
 }
 
 public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
@@ -56,7 +55,7 @@ public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
         }
     }
 
-    public async Task SaveNewAsync(Pasien pasien, CancellationToken ct = default)
+    public async Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default)
     {
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, ct);
         var connection = db.Database.GetDbConnection();
@@ -71,6 +70,7 @@ public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
         } while (await db.PasienSet.AnyAsync(p => p.NoRekamMedis == candidate, ct));
 
         pasien.NoRekamMedis = candidate;
+        if (sebelumSimpan is not null) await sebelumSimpan(ct);
         db.PasienSet.Add(pasien);
         await db.SaveChangesAsync(ct);
 
@@ -144,34 +144,4 @@ public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
     }
 
     private sealed record RmNumberingSettings(string Order, bool IncludeYear, bool IncludeMonth, string YearMonthPosition);
-
-    public async Task UpdateAsync(Pasien pasien, CancellationToken ct = default)
-    {
-        var existing = await db.PasienSet.SingleOrDefaultAsync(p => p.NoRekamMedis == pasien.NoRekamMedis, ct)
-            ?? throw new InvalidOperationException($"Pasien dengan No. RM {pasien.NoRekamMedis} tidak ditemukan.");
-
-        // Update only fields exposed by PasienView. Legacy fields that are not
-        // editable there (location codes, nationality, TNI/POLRI references,
-        // and similar columns) keep their existing values.
-        existing.NamaPasien = pasien.NamaPasien;
-        existing.NoKtp = pasien.NoKtp;
-        existing.JenisKelamin = pasien.JenisKelamin;
-        existing.TempatLahir = pasien.TempatLahir;
-        existing.TanggalLahir = pasien.TanggalLahir;
-        existing.NamaIbu = pasien.NamaIbu;
-        existing.Alamat = pasien.Alamat;
-        existing.GolonganDarah = pasien.GolonganDarah;
-        existing.Pekerjaan = pasien.Pekerjaan;
-        existing.StatusPernikahan = pasien.StatusPernikahan;
-        existing.Agama = pasien.Agama;
-        existing.NoTelepon = pasien.NoTelepon;
-        existing.Email = pasien.Email;
-        existing.KodePenjab = pasien.KodePenjab;
-        existing.Keluarga = pasien.Keluarga;
-        existing.NamaKeluarga = pasien.NamaKeluarga;
-        existing.PekerjaanPj = pasien.PekerjaanPj;
-        existing.AlamatPj = pasien.AlamatPj;
-
-        await db.SaveChangesAsync(ct);
-    }
 }

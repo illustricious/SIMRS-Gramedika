@@ -29,10 +29,24 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
         new("Gelang Pasien 5", "rptBarcodeRM14"),
         new("Gelang Pasien 6", "rptBarcodeRM16"),
         new("Gelang Pasien 7", "rptBarcodeRM19"),
+        new("Check List Kelengkapan Pendaftaran Kanan", "rptCheckList"),
+        new("Check List Kelengkapan Pendaftaran Kiri", "rptCheckList2"),
+        new("Check List Kelengkapan Pendaftaran Kanan+Tracker", "rptCheckList4"),
+        new("Check List Kelengkapan Pendaftaran Kiri+Tracker", "rptCheckList3"),
+        new("Lembar Periksa Pasien Kanan", "rptLembarPeriksa"),
+        new("Lembar Periksa Pasien Kiri", "rptLembarPeriksa2"),
+        new("Lembar Periksa Pasien Kanan 2", "rptLembarPeriksa3"),
+        new("Lembar Periksa Pasien Kiri 2", "rptLembarPeriksa4"),
+        new("Lembar Periksa Pasien Kanan 3", "rptLembarPeriksa6"),
+        new("Lembar Periksa Pasien Kiri 3", "rptLembarPeriksa5"),
+        new("Bukti Register 1", "rptBuktiRegister"),
+        new("Bukti Register 2", "rptBuktiRegister2"),
+        new("Bukti Register 3", "rptBuktiRegister3"),
     ];
 
     private static readonly CultureInfo Indonesian = CultureInfo.GetCultureInfo("id-ID");
     private static readonly Regex ExpressionToken = new("""\$(?<kind>[FP])\{(?<key>\w+)\}|(?:"(?<literal>[^"]*)")""");
+    private static readonly Regex JavaReplaceAll = new("""\.replaceAll\("[^"]*",\s*"[^"]*"\)""");
     private static readonly XNamespace Jasper = "http://jasperreports.sourceforge.net/jasperreports";
     public float Width => Number(layout, "pageWidth");
     public float Height => Number(layout, "pageHeight");
@@ -41,9 +55,10 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
     {
         await using var db = await Db.OpenAsync(DatabaseSettings.Load());
         var visit = await db.FirstAsync("""
-            SELECT r.no_rawat, r.no_rkm_medis, r.tgl_registrasi, r.almt_pj,
+            SELECT r.no_rawat, r.no_reg, r.no_rkm_medis, r.kd_dokter, r.tgl_registrasi, r.jam_reg,
+                   r.almt_pj, r.p_jawab, r.biaya_reg, r.stts_daftar, r.hubunganpj,
                    CONCAT_WS(' ', r.umurdaftar, r.sttsumur) AS umur,
-                   p.nm_pasien, p.jk, p.tgl_lahir, p.tmp_lahir, p.nm_ibu, p.no_ktp,
+                   p.nm_pasien, p.jk, p.tgl_lahir, p.tmp_lahir, p.nm_ibu, p.no_ktp, p.no_tlp, p.no_peserta,
                    d.nm_dokter, pl.nm_poli, payer.png_jawab, patient_payer.png_jawab AS pasien_png_jawab
             FROM reg_periksa r
             JOIN pasien p ON p.no_rkm_medis = r.no_rkm_medis
@@ -158,8 +173,9 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
         canvas.Restore();
     }
 
-    private string Evaluate(string expression, string? pattern = null) =>
-        string.Concat(ExpressionToken.Matches(expression).Select(token =>
+    internal string Evaluate(string expression, string? pattern = null) =>
+        // replaceAll (kode J.K. ke teks) diterapkan lewat nilai field; argumennya bukan teks cetak.
+        string.Concat(ExpressionToken.Matches(JavaReplaceAll.Replace(expression, "")).Select(token =>
         {
             var key = token.Groups["key"].Value;
             return token.Groups["kind"].Value switch
@@ -168,10 +184,21 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
                 {
                     "nama" => visit.S("nm_pasien"),
                     "norm" => visit.S("no_rkm_medis"),
+                    // DlgReg mengisi parameter ini dari kolom "Alamat P.J." baris registrasi (TAlmt).
+                    "alamat" when format.Template is "rptCheckList3" or "rptCheckList4" => visit.S("almt_pj"),
                     "alamat" => Date("tgl_lahir", "dd/MM/yyyy"),
-                    "tanggal" => Date("tgl_registrasi", "dd-MM-yyyy"),
+                    "antrian" => visit.S("no_reg"),
+                    "poli" => visit.S("nm_poli"),
+                    "bayar" => visit.S("png_jawab"),
+                    "dokter" => visit.S("nm_dokter"),
+                    "no_rawat" => visit.S("no_rawat"),
+                    "penjab" => visit.S("p_jawab"),
+                    "lahir" => Date("tgl_lahir", "dd-MM-yyyy"),
                     _ => hospital?.S(key) ?? "",
                 },
+                "F" when key == "sekarang" => DateTime.Today.ToString(!string.IsNullOrEmpty(pattern) ? pattern.Replace("MMMMM", "MMMM") : "dd/MM/yyyy", Indonesian),
+                "F" when key == "jk" && format.Template.StartsWith("rptBuktiRegister", StringComparison.Ordinal) => visit.S(key) == "L" ? "Laki-Laki" : "Perempuan",
+                "F" when (key is "tgl_registrasi" or "tgl_lahir") && !string.IsNullOrEmpty(pattern) => Date(key, pattern.Replace("MMMMM", "MMMM")),
                 "F" when key == "tgl_lahir" => Date(key, !string.IsNullOrEmpty(pattern) ? pattern.Replace("MMMMM", "MMMM") :
                     format.Template switch
                     {

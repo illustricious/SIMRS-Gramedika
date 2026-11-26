@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="SimrsGramedika.UI.Modules.Pengaturan.PengaturanView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!--
         Admin-only settings screen. Legacy equivalent: setting/database.ini
@@ -15,10 +15,11 @@
         Access control: Admin Utama only (Setup Aplikasi is admin-only in
         LegacyTilePermissions, and MainWindow re-checks before opening).
     -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12" RowSpacing="6">
 
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Pengaturan — Admin Only"
-                   Margin="0,0,0,8" />
+        <Border Grid.Row="0" Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Text="Pengaturan — Admin Only" />
+        </Border>
 
         <ScrollViewer Grid.Row="1">
             <StackPanel Spacing="8" MaxWidth="560" HorizontalAlignment="Left">
@@ -29,8 +30,8 @@
                            FontSize="11" Foreground="{DynamicResource ThemeTextSecondaryBrush}" TextWrapping="Wrap" />
                 <TextBlock Name="ActiveText" Margin="0,4,0,0" TextWrapping="Wrap" />
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <Button Content="🔌 Tes Koneksi Aktif" Click="OnTestConnectionClick" />
-                    <Button Content="⚙ Kelola Koneksi Database..." Click="OnKoneksiClick" />
+                    <Button Content="Tes Koneksi Aktif" Click="OnTestConnectionClick" />
+                    <Button Content="Kelola Koneksi Database..." Click="OnKoneksiClick" />
                 </StackPanel>
 
                 <TextBlock Text="Farmasi (pengganti AKTIFKANBATCHOBAT &amp; HPPFARMASI di database.xml)" FontWeight="Medium" Margin="0,12,0,0"
@@ -50,7 +51,7 @@
 
                 <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
                     
-                    <Button Content="💾 Simpan Pengaturan Farmasi" Click="OnSaveClick" />
+                    <Button Content="Simpan Pengaturan Farmasi" Click="OnSaveClick" />
                 </StackPanel>
 
                 <TextBlock Text="Identitas &amp; Aset (belum diimplementasikan)" FontWeight="Medium" Margin="0,20,0,0"
@@ -66,9 +67,9 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="2" Classes="servicePanel">
+            <Button Content="Kembali ke Menu" Click="OnBackClick" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        </Border>
     </Grid>
 
     <UserControl.Styles>

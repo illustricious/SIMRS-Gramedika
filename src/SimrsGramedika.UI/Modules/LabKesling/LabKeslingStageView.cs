@@ -250,7 +250,7 @@ public class LabKeslingStageView : PageView
             catch (Exception ex) { Ui.Err(StatusText, ex.Message); }
         })).Cast<Control>().ToArray();
 
-        var filter = Ui.Bar(Ui.L("Periode :"), _from, Ui.L("s.d."), _to, Ui.L("Status :"), _status, _cari, Ui.Btn("🔎 Tampilkan", async (_, _) => await LoadAsync()));
+        var filter = Ui.Bar(Ui.L("Periode :"), _from, Ui.L("s.d."), _to, Ui.L("Status :"), _status, _cari, Ui.Btn("Tampilkan", async (_, _) => await LoadAsync()));
         var body = new Avalonia.Controls.Grid { RowDefinitions = new RowDefinitions(_loadDetail is null ? "Auto,Auto,*,Auto" : "Auto,Auto,2*,Auto,*") };
         void Put(Control c, int row) { Avalonia.Controls.Grid.SetRow(c, row); body.Children.Add(c); }
         Put(filter, 0);

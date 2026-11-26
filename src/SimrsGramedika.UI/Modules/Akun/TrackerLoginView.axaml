@@ -2,23 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:auth="using:SimrsGramedika.Data.Auth"
              x:Class="SimrsGramedika.UI.Modules.Akun.TrackerLoginView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
 
     <!-- Legacy btnTracker: reads the `tracker` table both apps write on login. -->
-    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Tracker Login"
-                   Margin="0,0,0,12" />
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16,12" RowSpacing="6">
+        <Border Grid.Row="0" Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Text="Tracker Login" />
+        </Border>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,8">
-            <TextBlock Text="Periode :" VerticalAlignment="Center" />
-            <CalendarDatePicker Name="FromPicker" />
-            <TextBlock Text="s.d." VerticalAlignment="Center" />
-            <CalendarDatePicker Name="ToPicker" />
-            <TextBox Name="CariBox" PlaceholderText="Cari NIP / nama..." Width="200" />
-            <Button Content="🔎 Tampilkan" Click="OnTampilkanClick" />
-            <TextBlock Name="RingkasanText" VerticalAlignment="Center" Margin="12,0,0,0"
-                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
-        </StackPanel>
+        
 
         <DataGrid Grid.Row="2" Name="Grid" AutoGenerateColumns="False" IsReadOnly="True"
                   GridLinesVisibility="All" HeadersVisibility="Column" x:DataType="auth:KhanzaTrackerRow">
@@ -30,9 +22,21 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="3" Classes="servicePanel">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="4">
+            <TextBlock Text="Periode :" VerticalAlignment="Center" />
+            <CalendarDatePicker Name="FromPicker" />
+            <TextBlock Text="s.d." VerticalAlignment="Center" />
+            <CalendarDatePicker Name="ToPicker" />
+            <TextBox Name="CariBox" PlaceholderText="Cari NIP / nama..." Width="200" />
+            <Button Content="Tampilkan" Click="OnTampilkanClick" />
+            <TextBlock Name="RingkasanText" VerticalAlignment="Center" Margin="12,0,0,0"
+                       Foreground="{DynamicResource ThemeTextSecondaryBrush}" />
+        </WrapPanel>
+                <Button Grid.Column="1" Content="Kembali" Click="OnBackClick" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            </Grid>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

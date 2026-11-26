@@ -54,10 +54,11 @@
 
                 <Grid Grid.Column="1" ColumnDefinitions="111,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="4">
                     <TextBlock Grid.Row="0" Text="No. Rekam Medik" VerticalAlignment="Center" />
-                    <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*,Auto" ColumnSpacing="6">
+                    <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="84,*,Auto,Auto" ColumnSpacing="6">
                         <TextBox Name="InputNoRekamMedisBox" IsReadOnly="True" TextChanged="OnNoRmChanged" LostFocus="OnNoRmLostFocus" KeyDown="OnNoRmKeyDown" AutomationProperties.Name="Nomor rekam medis" />
                         <TextBox Grid.Column="1" Name="InputNamaPasienBox" IsReadOnly="True" AutomationProperties.Name="Nama pasien" />
                         <Button Grid.Column="2" Name="PilihPasienButton" Content="Cari" IsEnabled="False" Click="OnPilihPasienClick" AutomationProperties.Name="Cari pasien" />
+                        <Button Grid.Column="3" Name="PasienBaruButton" Content="Pasien Baru" IsEnabled="False" Click="OnPasienBaruClick" AutomationProperties.Name="Daftarkan pasien baru" />
                     </Grid>
 
                     <TextBlock Grid.Row="1" Text="Penanggung Jawab" VerticalAlignment="Center" />

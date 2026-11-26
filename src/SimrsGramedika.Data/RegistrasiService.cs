@@ -192,6 +192,40 @@ public class RegistrasiService(DatabaseSettings settings)
         await db.ExecAsync("DELETE FROM reg_periksa WHERE no_rawat=@p0", noRawat);
     }
 
+    /// <summary>Set a safe outpatient visit status from the registration context menu.</summary>
+    public async Task SetStatusAsync(string noRawat, string status, RegistrasiAkses akses, DateTime? sekarang = null)
+    {
+        if (status is not ("Sudah" or "Belum" or "Batal"))
+            throw new ArgumentOutOfRangeException(nameof(status), "Status registrasi tidak didukung.");
+        if (!akses.IsAdminUtama && !akses.BolehEdit)
+            throw new InvalidOperationException("Hak ubah registrasi diperlukan untuk mengubah status.");
+
+        await using var db = await Db.OpenAsync(settings);
+        await db.BeginAsync();
+        try
+        {
+            var row = await db.FirstAsync("SELECT no_rkm_medis,kd_poli,biaya_reg,stts,stts_daftar,tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0 FOR UPDATE", noRawat)
+                ?? throw new InvalidOperationException("Registrasi tidak ditemukan lagi. Muat ulang daftar.");
+            if (!akses.IsAdminUtama && MelewatiBatasEdit(Waktu(row), sekarang ?? DateTime.Now))
+                throw new InvalidOperationException("Perubahan registrasi lewat 2 x 24 jam hanya dapat dilakukan Admin Utama.");
+            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
+                throw new InvalidOperationException("Pasien sudah tercatat rawat inap. Ubah status melalui alur Rawat Inap.");
+            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0)
+                throw new InvalidOperationException("Registrasi sudah memiliki billing; status tidak diubah agar billing tetap konsisten.");
+
+            if (status == "Batal")
+                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0,biaya_reg=0 WHERE no_rawat=@p1", status, noRawat);
+            else
+                await db.ExecAsync("UPDATE reg_periksa SET stts=@p0 WHERE no_rawat=@p1", status, noRawat);
+            await db.CommitAsync();
+        }
+        catch
+        {
+            await db.DisposeTxAsync();
+            throw;
+        }
+    }
+
     private static async Task<Row> AmbilAsync(Db db, string noRawat) =>
         await db.FirstAsync("SELECT no_rkm_medis,kd_poli,biaya_reg,stts,stts_daftar,tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0", noRawat)
         ?? throw new InvalidOperationException("Registrasi tidak ditemukan lagi. Muat ulang daftar.");

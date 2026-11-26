@@ -9,12 +9,11 @@
          prescription-writing screen yet either, so this is purely a viewer. -->
     <Grid RowDefinitions="Auto,*,Auto" Margin="16,12">
         <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
-            <TextBlock Classes="pageTitle" Text="Daftar Resep Dokter"
-                   Margin="0,0,0,12" />
+            <TextBlock Classes="pageTitle" Text="Daftar Resep Dokter" />
         </Border>
 
-        <Grid Grid.Row="1" ColumnDefinitions="2*,16,1*">
-            <DataGrid Grid.Column="0" Name="ResepGrid" AutoGenerateColumns="False" IsReadOnly="True"
+        <Grid Grid.Row="1" RowDefinitions="3*,2*" RowSpacing="6">
+            <DataGrid Name="ResepGrid" AutoGenerateColumns="False" IsReadOnly="True"
                       CanUserResizeColumns="True" GridLinesVisibility="All" HeadersVisibility="Column"
                       x:DataType="data:ResepListItem" SelectionChanged="OnResepSelectionChanged">
                 <DataGrid.Columns>
@@ -26,7 +25,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Grid Grid.Column="2" RowDefinitions="Auto,*">
+            <Grid Grid.Row="1" RowDefinitions="Auto,*">
                 <TextBlock Grid.Row="0" Text="Item Resep (pilih baris)" FontWeight="Medium" Margin="0,0,0,4"
                            Foreground="{DynamicResource ThemeTextBrush}" />
                 <DataGrid Grid.Row="1" Name="ItemGrid" AutoGenerateColumns="False" IsReadOnly="True"
@@ -43,7 +42,7 @@
 
         <Border Grid.Row="2" Classes="servicePanel" Margin="0,6,0,0">
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="⬅ Kembali" Click="OnBackClick" Classes="accentText" />
+                <Button Content="Kembali" Click="OnBackClick" />
             </WrapPanel>
         </Border>
     </Grid>

@@ -23,7 +23,7 @@ public class GantiPasswordWindow : Window
         var baru = new TextBox { PasswordChar = '*', PlaceholderText = "Password baru" };
         var ulang = new TextBox { PasswordChar = '*', PlaceholderText = "Ulangi password baru" };
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brush.Parse("#DC2626") };
-        var simpan = new Button { Content = "💾 Simpan", MinWidth = 90 };
+        var simpan = new Button { Content = "Simpan", MinWidth = 90 };
         var batal = new Button { Content = "Batal", MinWidth = 90 };
 
         Content = new StackPanel

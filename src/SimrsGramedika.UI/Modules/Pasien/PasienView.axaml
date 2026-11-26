@@ -2,32 +2,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:data="using:SimrsGramedika.Core.Entities"
              x:Class="SimrsGramedika.UI.Modules.Pasien.PasienView"
-             Background="{DynamicResource ThemeBackgroundBrush}">
+             Background="{DynamicResource TegasPageBrush}">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="16,12" RowSpacing="6">
 
-    <!--
-        "Identitas Pasien" — core field set cross-checked against the legacy
-        src/simrskhanza/DlgPasien.form (NetBeans form XML). The dialog there
-        also bundles BPJS/Dukcapil/SatuSehat web lookups, ~15 print-letter
-        shortcuts, a TNI/POLRI sub-panel, and cascading kelurahan/kecamatan/
-        kabupaten/propinsi pickers — all deferred for v1 (see
-        docs/handover/04-HISTORY.md). Same PageHost / Simpan-Baru-Cari-Keluar
-        pattern as Registrasi and Rawat Jalan.
-    -->
-    <Grid RowDefinitions="Auto,*,Auto" Margin="12">
+        <Border Grid.Row="0" Classes="tegasHeading">
+            <TextBlock Classes="pageTitle" Text="Pasien — Identitas Pasien" />
+        </Border>
 
-        <TextBlock Classes="pageTitle" Grid.Row="0" Text="Pasien — Identitas Pasien"
-                   Margin="0,0,0,8" />
-
-        <Grid Grid.Row="1" ColumnDefinitions="3*,16,2*">
-
-            <!-- Left: identity + PJ form -->
-            <ScrollViewer Grid.Column="0">
+        <Grid Grid.Row="1" RowDefinitions="Auto,*" RowSpacing="6">
+            <Border Background="{DynamicResource ThemePanelBrush}"
+                BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="6">
+          <DockPanel>
+            <ToggleButton Name="InputDataToggle" DockPanel.Dock="Bottom" Classes="inputData" IsChecked="False"
+                          HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                          AutomationProperties.Name="Input Data" Padding="12,4">
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Path Width="12" Height="8" Stretch="Uniform" StrokeThickness="1.7"
+                          StrokeLineCap="Round" StrokeJoin="Round" VerticalAlignment="Center"
+                          Stroke="{DynamicResource ThemeIconBrush}" Data="M2,2 L7,7 L12,2" />
+                    <TextBlock Text="Input Data" VerticalAlignment="Center" />
+                </StackPanel>
+            </ToggleButton>
+            <Border Name="InputDataPanel" Padding="10,7"
+                    IsVisible="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}">
+<ScrollViewer MaxHeight="340" Padding="0,0,24,0">
                 <StackPanel Spacing="6">
-                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="No. Rekam Medis :" VerticalAlignment="Center" />
                         <TextBox Grid.Row="0" Grid.Column="1" Name="NoRmBox" IsReadOnly="True" Margin="4" />
                         <TextBlock Grid.Row="0" Grid.Column="3" Text="Nama Pasien :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="4" Name="NamaBox" Margin="4" />
+                        <TextBox Grid.Row="0" Grid.Column="4" Name="NamaBox" Margin="4" MaxLength="40" />
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="J.K. :" VerticalAlignment="Center" />
                         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="4" Spacing="12">
@@ -38,80 +42,125 @@
                         <ComboBox Grid.Row="1" Grid.Column="4" Name="GolDarahCombo" Margin="4" HorizontalAlignment="Stretch" />
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Tempat Lahir :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="2" Grid.Column="1" Name="TempatLahirBox" Margin="4" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Name="TempatLahirBox" Margin="4" MaxLength="15" />
                         <TextBlock Grid.Row="2" Grid.Column="3" Text="Tgl. Lahir :" VerticalAlignment="Center" />
                         <CalendarDatePicker Grid.Row="2" Grid.Column="4" Name="TglLahirPicker" Margin="4" HorizontalAlignment="Stretch" />
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="Agama :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="3" Grid.Column="1" Name="AgamaBox" Margin="4" />
+                        <ComboBox Grid.Row="3" Grid.Column="1" Name="AgamaCombo" Margin="4" HorizontalAlignment="Stretch" />
                         <TextBlock Grid.Row="3" Grid.Column="3" Text="Stts. Nikah :" VerticalAlignment="Center" />
                         <ComboBox Grid.Row="3" Grid.Column="4" Name="StatusNikahCombo" Margin="4" HorizontalAlignment="Stretch" />
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="No. Telp :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="4" Grid.Column="1" Name="TelpBox" Margin="4" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Name="TelpBox" Margin="4" MaxLength="40" />
                         <TextBlock Grid.Row="4" Grid.Column="3" Text="No. KTP :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="4" Grid.Column="4" Name="KtpBox" Margin="4" />
+                        <TextBox Grid.Row="4" Grid.Column="4" Name="KtpBox" Margin="4" MaxLength="20" />
 
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="Pekerjaan :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="5" Grid.Column="1" Name="PekerjaanBox" Margin="4" />
+                        <TextBox Grid.Row="5" Grid.Column="1" Name="PekerjaanBox" Margin="4" MaxLength="60" />
                         <TextBlock Grid.Row="5" Grid.Column="3" Text="Email :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="5" Grid.Column="4" Name="EmailBox" Margin="4" />
+                        <TextBox Grid.Row="5" Grid.Column="4" Name="EmailBox" Margin="4" MaxLength="50" />
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="Cara Bayar :" VerticalAlignment="Center" />
                         <ComboBox Grid.Row="6" Grid.Column="1" Name="PenjabCombo" Margin="4" HorizontalAlignment="Stretch" />
                         <TextBlock Grid.Row="6" Grid.Column="3" Text="Nama Ibu :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="6" Grid.Column="4" Name="NamaIbuBox" Margin="4" />
+                        <TextBox Grid.Row="6" Grid.Column="4" Name="NamaIbuBox" Margin="4" MaxLength="40" />
+
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Kelurahan :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="7" Grid.Column="1" Name="KelurahanBox" Margin="4" MaxLength="60" />
+                        <TextBlock Grid.Row="7" Grid.Column="3" Text="Kecamatan :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="7" Grid.Column="4" Name="KecamatanBox" Margin="4" MaxLength="60" />
+
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Kabupaten :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="8" Grid.Column="1" Name="KabupatenBox" Margin="4" MaxLength="60" />
+                        <TextBlock Grid.Row="8" Grid.Column="3" Text="Propinsi :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="8" Grid.Column="4" Name="PropinsiBox" Margin="4" MaxLength="30" />
+
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Pendidikan :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="9" Grid.Column="1" Name="PendidikanCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="9" Grid.Column="3" Text="No. Peserta :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="9" Grid.Column="4" Name="PesertaBox" Margin="4" MaxLength="25" />
+
+                        <TextBlock Grid.Row="10" Grid.Column="0" Text="Suku/Bangsa :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="10" Grid.Column="1" Name="SukuCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="10" Grid.Column="3" Text="Bahasa :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="10" Grid.Column="4" Name="BahasaCombo" Margin="4" HorizontalAlignment="Stretch" />
+
+                        <TextBlock Grid.Row="11" Grid.Column="0" Text="Cacat Fisik :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="11" Grid.Column="1" Name="CacatCombo" Margin="4" HorizontalAlignment="Stretch" />
+                        <TextBlock Grid.Row="11" Grid.Column="3" Text="Perusahaan :" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="11" Grid.Column="4" Name="PerusahaanCombo" Margin="4" HorizontalAlignment="Stretch" />
                     </Grid>
 
                     <TextBlock Text="Alamat" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,6,0,2" />
-                    <TextBox Name="AlamatBox" AcceptsReturn="True" Height="44" TextWrapping="Wrap" />
+                    <TextBox Name="AlamatBox" MaxLength="200" AcceptsReturn="True" Height="44" TextWrapping="Wrap" />
 
                     <TextBlock Text="Penanggung Jawab (P.J.)" FontWeight="Medium" Margin="0,10,0,2"
                                Foreground="{DynamicResource ThemePrimaryBrush}" />
-                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto">
+                    <Grid ColumnDefinitions="Auto,*,16,Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Hub. P.J. :" VerticalAlignment="Center" />
                         <ComboBox Grid.Row="0" Grid.Column="1" Name="HubunganPjCombo" Margin="4" HorizontalAlignment="Stretch" />
                         <TextBlock Grid.Row="0" Grid.Column="3" Text="Nama P.J. :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="4" Name="NamaPjBox" Margin="4" />
+                        <TextBox Grid.Row="0" Grid.Column="4" Name="NamaPjBox" Margin="4" MaxLength="50" />
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Pekerjaan P.J. :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="1" Grid.Column="1" Name="PekerjaanPjBox" Margin="4" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Name="PekerjaanPjBox" Margin="4" MaxLength="35" />
                         <TextBlock Grid.Row="1" Grid.Column="3" Text="Alamat P.J. :" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="1" Grid.Column="4" Name="AlamatPjBox" Margin="4" />
+                        <TextBox Grid.Row="1" Grid.Column="4" Name="AlamatPjBox" Margin="4" MaxLength="100" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Kelurahan P.J. :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Name="KelurahanPjBox" Margin="4" MaxLength="60" />
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="Kecamatan P.J. :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="2" Grid.Column="4" Name="KecamatanPjBox" Margin="4" MaxLength="60" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Kabupaten P.J. :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Name="KabupatenPjBox" Margin="4" MaxLength="60" />
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="Propinsi P.J. :" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="3" Grid.Column="4" Name="PropinsiPjBox" Margin="4" MaxLength="30" />
                     </Grid>
 
-                    <TextBlock Name="SaveStatusText" Margin="0,10,0,0" TextWrapping="Wrap"
-                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    
 
-                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,10,0,0">
-                        <Button Name="SavePatientButton" Content="💾 Simpan Pasien" Click="OnSimpanClick" />
-                        <Button Content="🆕 Baru" Click="OnBaruClick" />
-                    </StackPanel>
+                    
                 </StackPanel>
             </ScrollViewer>
-
-            <!-- Right: search + patient list -->
-            <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*">
-                <TextBlock Grid.Row="0" Text="Cari Pasien" FontWeight="Medium" Margin="0,0,0,4"
-                           Foreground="{DynamicResource ThemeTextBrush}" />
-                <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,4">
-                    <TextBox Grid.Column="0" Name="KeyWordBox" PlaceholderText="Nama, No. RM, KTP, telepon, alamat..." KeyDown="OnSearchKeyDown" />
-                    <Button Grid.Column="1" Content="🔎" Click="OnSearchClick" Margin="4,0,0,0" />
-                </Grid>
-                <DataGrid Grid.Row="2" Name="PasienGrid" AutoGenerateColumns="False" IsReadOnly="True"
-                          GridLinesVisibility="All" HeadersVisibility="Column"
-                          x:DataType="data:Pasien" SelectionChanged="OnGridSelectionChanged">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="No. RM" Binding="{Binding NoRekamMedis}" Width="80" />
-                        <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" Width="*" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            </Border>
+          </DockPanel>
+        </Border>
+            <DataGrid Grid.Row="1" Name="PasienGrid" AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserResizeColumns="True" GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+                      x:DataType="data:Pasien" SelectionChanged="OnGridSelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No. RM" Binding="{Binding NoRekamMedis}" Width="110" />
+                    <DataGridTextColumn Header="Nama Pasien" Binding="{Binding NamaPasien}" FontWeight="SemiBold" Width="1.4*" />
+                    <DataGridTextColumn Header="No. KTP" Binding="{Binding NoKtp}" Width="*" />
+                    <DataGridTextColumn Header="Tgl. Lahir" Binding="{Binding TanggalLahir}" Width="110" />
+                    <DataGridTextColumn Header="Nama Ibu" Binding="{Binding NamaIbu}" Width="*" />
+                    <DataGridTextColumn Header="Alamat" Binding="{Binding Alamat}" Width="1.6*" />
+                    <DataGridTextColumn Header="No. Telp" Binding="{Binding NoTelepon}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
-            <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
-        </StackPanel>
+        <Border Grid.Row="2" Classes="servicePanel">
+            <StackPanel Spacing="4">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <TextBlock Text="Kata kunci" Classes="pageSubtitle" VerticalAlignment="Center" />
+                    <TextBox Grid.Column="1" Name="KeyWordBox" PlaceholderText="Nama, No. RM, KTP, telepon, alamat..." KeyDown="OnSearchKeyDown" />
+                    <Button Grid.Column="2" Content="Cari" Classes="accent" Click="OnSearchClick" />
+                </Grid>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <WrapPanel Orientation="Horizontal" ItemSpacing="6" LineSpacing="4">
+                        <Button Content="Baru" Click="OnBaruClick" />
+                        <Button Name="SavePatientButton" Content="Simpan Pasien" Classes="accent" Click="OnSimpanClick"
+                                IsEnabled="{ReflectionBinding #InputDataToggle.IsChecked, FallbackValue=False, TargetNullValue=False}" />
+                        <TextBlock Name="SaveStatusText" VerticalAlignment="Center" TextWrapping="Wrap"
+                               Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
+                    </WrapPanel>
+                    <Button Grid.Column="1" Content="Kembali ke Menu" Click="OnBackClick" />
+                </Grid>
+            </StackPanel>
+        </Border>
     </Grid>
 
     <UserControl.Styles>

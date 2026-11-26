@@ -80,11 +80,11 @@ public class StokTransaksiView : PageView
 
         var actions = new List<Control>
         {
-            Ui.Btn("➖ Hapus Baris", (_, _) => { if (_lines.SelectedItem is StokLine l) { _items.Remove(l); UpdateTotal(); } }),
-            Ui.Btn("✖ Kosongkan", (_, _) => Clear()),
+            Ui.Btn("Hapus Baris", (_, _) => { if (_lines.SelectedItem is StokLine l) { _items.Remove(l); UpdateTotal(); } }),
+            Ui.Btn("Kosongkan", (_, _) => Clear()),
         };
-        if (mode is StokMode.Mutasi or StokMode.StokKeluar) actions.Add(Ui.Btn("📥 Ambil dari Permintaan", async (_, _) => await AmbilPermintaanAsync()));
-        actions.Add(Ui.Btn("💾 Simpan", async (_, _) => await SaveAsync()));
+        if (mode is StokMode.Mutasi or StokMode.StokKeluar) actions.Add(Ui.Btn("Ambil dari Permintaan", async (_, _) => await AmbilPermintaanAsync()));
+        actions.Add(Ui.Btn("Simpan", async (_, _) => await SaveAsync()));
         actions.Add(_total);
 
         var input = new DockPanel();
@@ -94,7 +94,7 @@ public class StokTransaksiView : PageView
             Children =
             {
                 new Border { MaxWidth = 720, HorizontalAlignment = HorizontalAlignment.Left, Child = Ui.Form(header.ToArray()) },
-                Ui.Bar(_cari, Ui.Btn("🔎 Cari Barang", async (_, _) => await CariAsync()), Ui.Btn("➕ Tambah", (_, _) => AddSelected())),
+                Ui.Bar(_cari, Ui.Btn("Cari Barang", async (_, _) => await CariAsync()), Ui.Btn("Tambah", (_, _) => AddSelected())),
                 Ui.Hint(mode == StokMode.Opname
                     ? "Klik dua kali barang untuk menambah; isi kolom Real dengan hasil hitung fisik."
                     : "Klik dua kali barang untuk menambah, lalu isi kolom Jumlah."),
@@ -107,7 +107,7 @@ public class StokTransaksiView : PageView
         input.Children.Add(_lines);
 
         var daftar = new DockPanel();
-        var bar = Ui.Bar(_cariDaftar, _period, Ui.Btn("🔎 Tampilkan", async (_, _) => await DaftarAsync()));
+        var bar = Ui.Bar(_cariDaftar, _period, Ui.Btn("Tampilkan", async (_, _) => await DaftarAsync()));
         DockPanel.SetDock(bar, Dock.Top);
         daftar.Children.Add(bar);
         daftar.Children.Add(_daftar);

@@ -1,6 +1,7 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -22,6 +23,7 @@ public class MasterView : PageView
     private readonly TextBox _cari = Ui.Text("Cari...");
     private readonly PeriodPicker? _period;
     private readonly WrapPanel _commands;
+    private readonly ToggleButton? _input;
     private readonly Dictionary<string, Control> _editors = new();
     private readonly TextBlock _total = new() { VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _score = new() { FontWeight = FontWeight.Bold, VerticalAlignment = VerticalAlignment.Center };
@@ -50,10 +52,15 @@ public class MasterView : PageView
         if (spec.ScoreOf is not null) formRows.Add(("Nilai Kepatuhan :", _score));
 
         var buttons = new List<Control>();
-        if (spec.CanInsert && !spec.Singleton) buttons.Add(Ui.Btn("Baru", async (_, _) => await NewAsync()));
+        Button? save = null;
+        if (spec.CanInsert && !spec.Singleton) buttons.Add(Ui.Btn("Baru", async (_, _) =>
+        {
+            _input!.IsChecked = true;
+            await NewAsync();
+        }));
         if (editable)
         {
-            var save = Ui.Btn("Simpan", async (_, _) => await SaveAsync());
+            save = Ui.Btn("Simpan", async (_, _) => await SaveAsync());
             save.Classes.Add("accent");
             buttons.Add(save);
         }
@@ -61,39 +68,51 @@ public class MasterView : PageView
         foreach (var a in spec.Actions) buttons.Add(Ui.Btn(a.Label, async (_, _) => await RunActionAsync(a)));
 
         _commands = Ui.Bar(buttons.ToArray());
-        var fields = Ui.Form(formRows.ToArray());
-        fields.ColumnDefinitions = new ColumnDefinitions("0.85*,1.15*");
-        var form = new StackPanel
-        {
-            Spacing = 12, Margin = new Thickness(16),
-            Children = { Ui.Section(editable ? "Detail Data" : "Rincian"), fields, _commands },
-        };
+        _commands.Margin = default;
 
         if (spec.Singleton)
         {
             _commands.IsEnabled = false;
-            form.Width = 520;
-            form.HorizontalAlignment = HorizontalAlignment.Left;
-            Build(spec.Title, new ScrollViewer { Content = form }, spec.Hint);
+            var single = Ui.FormColumns(formRows, formRows.Count > 8 ? 2 : 1);
+            if (formRows.Count <= 8)
+            {
+                single.Width = 560;
+                single.HorizontalAlignment = HorizontalAlignment.Left;
+            }
+            Build(spec.Title, Ui.Panel(new ScrollViewer { Content = single, Padding = new Thickness(12, 8, 24, 8) }),
+                spec.Hint, _commands);
             return;
         }
 
         var filters = new List<Control> { _cari };
+        _cari.MinWidth = 260;
         if (_period is not null) filters.Add(_period);
         filters.Add(Ui.Btn("Cari", async (_, _) => await LoadAsync()));
-        var left = new DockPanel();
         var bar = Ui.Bar(filters.ToArray());
-        DockPanel.SetDock(bar, Dock.Top);
-        left.Children.Add(bar);
-        left.Children.Add(_grid);
+        bar.Margin = default;
 
-        var body = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,0.58*") };
-        body.Children.Add(left);
-        var detail = Ui.Box(new ScrollViewer { Content = form, HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto });
-        detail.Bind(Border.BackgroundProperty, this.GetResourceObservable("ThemePanelBrush"));
-        detail.SetValue(Avalonia.Controls.Grid.ColumnProperty, 2);
-        body.Children.Add(detail);
-        Build(spec.Title, body, spec.Hint);
+        // Form di atas tabel, seperti PanelInput Khanza dan layar Registrasi.
+        var columns = formRows.Count <= 3 ? 1 : formRows.Count <= 16 ? 2 : 3;
+        var fields = Ui.FormColumns(formRows, columns);
+        if (columns == 1)
+        {
+            fields.Width = 560;
+            fields.HorizontalAlignment = HorizontalAlignment.Left;
+        }
+        var (panel, toggle) = Ui.InputPanel(new ScrollViewer { Content = fields, MaxHeight = 330, Padding = new Thickness(0, 0, 24, 0) });
+        _input = toggle;
+        // Simpan hanya aktif saat isiannya terlihat, sama dengan Registrasi.
+        if (save is not null)
+        {
+            save.IsEnabled = false;
+            toggle.IsCheckedChanged += (_, _) => save.IsEnabled = toggle.IsChecked == true;
+        }
+
+        var body = new Avalonia.Controls.Grid { RowDefinitions = new RowDefinitions("Auto,*"), RowSpacing = 6 };
+        Avalonia.Controls.Grid.SetRow(_grid, 1);
+        body.Children.Add(panel);
+        body.Children.Add(_grid);
+        Build(spec.Title, body, spec.Hint, new StackPanel { Spacing = 4, Children = { bar, _commands } });
     }
 
     private Control Editor(MasterField f)

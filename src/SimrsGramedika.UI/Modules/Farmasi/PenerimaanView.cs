@@ -65,12 +65,12 @@ public class PenerimaanView : PageView
             Children =
             {
                 header,
-                Ui.Bar(_cari, Ui.Btn("🔎 Cari Barang", async (_, _) => await CariAsync()), Ui.Btn("➕ Tambah", (_, _) => AddSelected())),
+                Ui.Bar(_cari, Ui.Btn("Cari Barang", async (_, _) => await CariAsync()), Ui.Btn("Tambah", (_, _) => AddSelected())),
                 _setInfo,
                 _hasil,
-                Ui.Bar(Ui.Btn("➖ Hapus Baris", (_, _) => { if (_lines.SelectedItem is PenerimaanLine l) { _items.Remove(l); UpdateTotal(); } }),
-                    Ui.Btn("✖ Kosongkan", (_, _) => { _items.Clear(); UpdateTotal(); }),
-                    Ui.Btn("💾 Simpan Penerimaan", async (_, _) => await SaveAsync()), _total),
+                Ui.Bar(Ui.Btn("Hapus Baris", (_, _) => { if (_lines.SelectedItem is PenerimaanLine l) { _items.Remove(l); UpdateTotal(); } }),
+                    Ui.Btn("Kosongkan", (_, _) => { _items.Clear(); UpdateTotal(); }),
+                    Ui.Btn("Simpan Penerimaan", async (_, _) => await SaveAsync()), _total),
             },
         };
         var input = new DockPanel();
@@ -79,7 +79,7 @@ public class PenerimaanView : PageView
         input.Children.Add(_lines);
 
         var daftar = new DockPanel();
-        var bar = Ui.Bar(_cariDaftar, _period, Ui.Btn("🔎 Tampilkan", async (_, _) => await DaftarAsync()));
+        var bar = Ui.Bar(_cariDaftar, _period, Ui.Btn("Tampilkan", async (_, _) => await DaftarAsync()));
         DockPanel.SetDock(bar, Dock.Top);
         daftar.Children.Add(bar);
         daftar.Children.Add(_daftar);

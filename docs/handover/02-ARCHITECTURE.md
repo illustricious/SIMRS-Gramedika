@@ -61,3 +61,12 @@ Tema kompak global di `App.axaml` (Segoe UI 11, header tabel biru). Jendela utam
 ## Kasir dan obat pulang
 
 `KasirRepository` membangun snapshot tagihan, mengunci baris kunjungan di `reg_periksa`, lalu menghitung ulang sebelum menulis. Simpan nota, rincian pembayaran, jurnal, billing, dan status kunjungan dalam transaksi yang sama. `MuatKuitansiAsync` membaca data tersimpan. Input tindakan, perubahan biaya penunjang dan validasi resep pulang memakai kunci kunjungan yang sama. `JurnalPoster` memposting pada transaksi pemanggil. Lihat [audit Ranap](../tracker/AUDIT_RAWAT_INAP.md) untuk rekonsiliasi suspen dan batas penggunaan bersama Java.
+
+## Tata letak layar (26 November 2026)
+
+Acuan: layar Registrasi dan susunan Khanza lama. Urutan dari atas: judul (`Border.tegasHeading`), panel **Input Data** yang bisa dilipat, tabel selebar layar, lalu bar bawah (filter, aksi, status, tombol kembali di kanan). Form tidak diletakkan di samping tabel. Label tombol tanpa emoji.
+
+- Layar kode: `PageView.Build(judul, isi, petunjuk, bar)`, `Ui.InputPanel`, `Ui.FormColumns`. `MasterView` dan `ReportView` sudah mengikuti.
+- Layar AXAML: root `TegasPageBrush`, `Margin="16,12"`, `RowSpacing="6"`, bar bawah `Border.servicePanel`.
+- Ukuran judul dan tabel diatur gaya `biruTegas` di `App.axaml`; jangan menimpa ukuran per layar.
+- Belum disamakan: filter di dalam tab pada layar stok Farmasi, penerimaan, Lab Kesling dan barcode; sidebar menu klinis Rawat Jalan dan dua tabel pilih/hasil Lab tetap berdampingan; jendela dialog dan papan antrian.

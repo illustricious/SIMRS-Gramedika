@@ -13,7 +13,7 @@ public enum PatientMenuAction
 {
     DataRekamMedis, RiwayatPerawatan, KamarInap, TindakanDanPemeriksaan, BillingPembayaran, Skrining,
     TindakanRawatJalan, PeriksaLaboratorium, PeriksaRadiologi, PermintaanLab, PermintaanRadiologi,
-    ResepDokter, PeriksaLaboratoriumPa, PeriksaLaboratoriumMb,
+    ResepDokter, PeriksaLaboratoriumPa, PeriksaLaboratoriumMb, Report, CatatanPasien,
 }
 public enum PatientMenuKind { Visit, Registration, Emergency, Patient, Diagnostic, EmergencyTriage }
 
@@ -24,7 +24,7 @@ public static class PatientContextMenu
 {
     public static ContextMenu Attach<T>(DataGrid grid, Func<T, PatientMenuTarget?> getPatient, Action<PatientMenuRequest> execute,
         PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null, Action<T>? rujukInternal = null,
-        Action<T>? rujukMasuk = null) where T : class
+        Action<T>? rujukMasuk = null, Action<T>? delete = null, Action<T, string>? setStatus = null) where T : class
     {
         var menu = new ContextMenu();
         grid.ContextRequested += (_, e) =>
@@ -56,6 +56,27 @@ public static class PatientContextMenu
                 hasVisit && user is not null && LegacyTilePermissions.CanSeeTile(user, key)
                     ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, PatientMenuAction.Skrining, key)))
                     : null);
+
+            MenuItem PatientReport(string label, string key) => Entry(label,
+                user is not null && LegacyTilePermissions.CanSeeTile(user, key)
+                    ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, PatientMenuAction.Report, key)))
+                    : null);
+
+            MenuItem ReportLink(string label, string permissionKey, string reportKey) => Entry(label,
+                user is not null && LegacyTilePermissions.CanSeeTile(user, permissionKey)
+                    ? () => Run(() => execute(new(patient.NoRawat, patient.NoRekamMedis, patient.NamaPasien, PatientMenuAction.Report, reportKey)))
+                    : null);
+
+            MenuItem PatientNote() => ActionItem("Catatan Pasien", PatientMenuAction.CatatanPasien, Can("catatan_pasien"));
+
+            MenuItem StatusItem(string label, string status) => Entry(label,
+                setStatus is not null && (Can("edit_registrasi") || user?.IsAdminUtama == true)
+                    ? () => Run(() => setStatus(clicked, status)) : null);
+
+            MenuItem PrintFormatGroup(string title, string templatePrefix) => Group(title,
+                PatientLabel.Formats.Where(format => format.Template.StartsWith(templatePrefix, StringComparison.Ordinal))
+                    .Select(format => Entry(format.Title, hasVisit && Can("registrasi")
+                        ? () => Run(() => PatientLabelPreview.Open(grid, patient, format)) : null)).ToArray());
 
             MenuItem ScreeningMenu() => Group("Skrining",
                     Screen("Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah"),
@@ -95,6 +116,22 @@ public static class PatientContextMenu
 
             var history = ActionItem("Riwayat Perawatan", PatientMenuAction.RiwayatPerawatan, Can("resume_pasien"));
             var identity = ActionItem("Identitas Pasien", PatientMenuAction.DataRekamMedis, Can("pasien"));
+            var manageItems = new List<MenuItem>
+            {
+                Entry("Ubah Data Registrasi", edit is not null && Can("registrasi") ? () => Run(() =>
+                {
+                    grid.SelectedItem = clicked;
+                    edit(clicked);
+                }) : null),
+                Entry("Hapus Registrasi", delete is not null && Can("registrasi") ? () => Run(() =>
+                {
+                    grid.SelectedItem = clicked;
+                    delete(clicked);
+                }) : null),
+            };
+            if (kind == PatientMenuKind.Registration)
+                manageItems.Add(Group("Set Status", StatusItem("Sudah Periksa", "Sudah"), StatusItem("Belum Periksa", "Belum"),
+                    StatusItem("Batal Periksa", "Batal")));
             menu.ItemsSource = kind == PatientMenuKind.Diagnostic
                 ? new Control[] { identity, history }
                 : kind == PatientMenuKind.Patient
@@ -139,12 +176,32 @@ public static class PatientContextMenu
                         ActionItem("Billing Total", PatientMenuAction.BillingPembayaran, hasVisit &&
                             (patient.IsInpatient ? Can("billing_ranap") : Can("kasir_ralan") || Can("billing_ralan")))),
                     new Separator(),
-                    Entry("Laporan"), Entry("Grafik Analisa"), Entry("Surat-Surat"),
+                    Group("Laporan",
+                        ReportLink("Kunjungan Rawat Jalan", "btnKunjunganRalan", "btnKunjunganRalan"),
+                        ReportLink("Kunjungan Rawat Inap", "btnKunjunganRanap", "btnKunjunganRanap"),
+                        ReportLink("Sensus Harian Poli", "btnSensusHarianPoli", "btnSensusHarianPoli"),
+                        ReportLink("Rekap Kunjungan", "btnRekapKunjungan", "btnRekapKunjungan"),
+                        Group("Laporan RL & Diagnosa",
+                            ReportLink("RL 3.2 Rawat Darurat", "btnRl32", "btnRl32"),
+                            ReportLink("Frekuensi Penyakit Rawat Jalan", "btnFrekuensiRalan", "btnFrekuensiRalan"),
+                            ReportLink("Registrasi Poli Per Tanggal", "btnRegistrasiPoliPerTanggal", "btnRegistrasiPoliPerTanggal"))),
+                    Group("Grafik Analisa",
+                        ReportLink("Registrasi Per Poli", "btnGrafikKunjunganPoli", "btnGrafikKunjunganPoli"),
+                        ReportLink("Registrasi Per Dokter", "btnGrafikKunjunganPerDokter", "btnGrafikKunjunganPerDokter"),
+                        ReportLink("Registrasi Per Tahun", "btnGrafikKunjunganPerTahun", "btnGrafikKunjunganPerTahun"),
+                        ReportLink("Registrasi Per Bulan", "btnGrafikKunjunganPerBulan", "btnGrafikKunjunganPerBulan"),
+                        ReportLink("Registrasi Per Tanggal", "btnGrafikKunjunganPerTanggal", "btnGrafikKunjunganPerTanggal"),
+                        ReportLink("Demografi Pendaftar", "btnGrafikDemografiRegistrasi", "btnGrafikDemografiRegistrasi")),
+                    Group("Surat-Surat",
+                        PrintFormatGroup("Administrasi - Bukti Register", "rptBuktiRegister")),
                     .. (kind is PatientMenuKind.Emergency or PatientMenuKind.EmergencyTriage
                         ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
-                        : new[] { Entry("Check List Kelengkapan Pendaftaran"), Entry("Lembar Periksa Pasien"),
+                        : new[] { PrintFormatGroup("Check List Kelengkapan Pendaftaran", "rptCheckList"),
+                            PrintFormatGroup("Lembar Periksa Pasien", "rptLembarPeriksa"),
                             kind == PatientMenuKind.Registration
-                                ? Group("Label & Barcode", PatientLabel.Formats.Select(format => Entry(format.Title,
+                                ? Group("Label & Barcode", PatientLabel.Formats.Where(format => !format.Template.StartsWith("rptCheckList", StringComparison.Ordinal)
+                                        && !format.Template.StartsWith("rptLembarPeriksa", StringComparison.Ordinal)
+                                        && !format.Template.StartsWith("rptBuktiRegister", StringComparison.Ordinal)).Select(format => Entry(format.Title,
                                     hasVisit && Can("registrasi")
                                         ? () => Run(() => PatientLabelPreview.Open(grid, patient, format))
                                         : null)).ToArray())
@@ -156,15 +213,12 @@ public static class PatientContextMenu
                         Entry("Poli Internal", hasVisit && RujukanInternalService.BisaMengelola(user)
                             ? () => Run(() => rujukInternal(clicked)) : null)),
                     Entry("Bridging"),
-                    Group("Input Data", Entry("Catatan Pasien"), Entry("Berkas Digital"), Entry("Insiden Keselamatan Pasien")),
+                    Group("Input Data",
+                        PatientNote(),
+                        PatientReport("Berkas Digital Perawatan", "btnBerkasDigitalPerawatan"),
+                        PatientReport("Insiden Keselamatan Pasien", "btnInsidenKeselamatanPasien")),
                     .. (kind == PatientMenuKind.Registration ? new[] { SortMenu(grid) } : Array.Empty<MenuItem>()),
-                    Group("Hapus & Ubah Data",
-                        Entry("Ubah Data Registrasi", edit is not null && Can("registrasi") ? () => Run(() =>
-                        {
-                            grid.SelectedItem = clicked;
-                            edit(clicked);
-                        }) : null),
-                        Entry("Hapus Data")),
+                    Group("Hapus & Ubah Data", [.. manageItems, Entry("Hapus Data")]),
                 ];
             e.Handled = true;
             menu.Open(pointer ? grid : row ?? (Control)grid);

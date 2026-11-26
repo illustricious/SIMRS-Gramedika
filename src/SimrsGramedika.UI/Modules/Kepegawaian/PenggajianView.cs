@@ -24,7 +24,7 @@ public class PenggajianView : PageView
             Children =
             {
                 Ui.Hint("Modul penggajian SIMRS Khanza berupa aplikasi web (folder webapps/penggajian di server web Khanza). Alamat dasarnya diatur di Koneksi Database → Aplikasi Web Khanza."),
-                Ui.Bar(Ui.L("Alamat"), _url, Ui.Btn("🌐 Buka di Browser", (_, _) => Open())),
+                Ui.Bar(Ui.L("Alamat"), _url, Ui.Btn("Buka di Browser", (_, _) => Open())),
             },
         };
         Build("Kepegawaian & Gaji", body);

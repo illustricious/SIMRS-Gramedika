@@ -16,32 +16,7 @@
             <TextBlock Classes="pageTitle" Text="Data Pemeriksaan Radiologi" />
         </Border>
 
-        <Border Grid.Row="1" Classes="servicePanel" Margin="0,0,0,6">
-            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
-                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
-                    <CalendarDatePicker Name="FromPicker" />
-                    <TextBlock Text="s.d." VerticalAlignment="Center" />
-                    <CalendarDatePicker Name="ToPicker" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
-                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
-                    <ComboBox Name="PetugasCombo" Width="170" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="6">
-                    <TextBlock Text="Bacaan" VerticalAlignment="Center" />
-                    <ComboBox Name="HasilCombo" Width="140" />
-                </StackPanel>
-            </WrapPanel>
-        </Border>
+        
 
         <DataGrid Grid.Row="2" Name="NestedGrid" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="All"
                   HeadersVisibility="Column" CanUserResizeColumns="True"
@@ -67,8 +42,8 @@
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="Diagnosis Klinis :" VerticalAlignment="Center" Margin="0,4,4,0" />
                 <TextBox Grid.Row="1" Grid.Column="4" Name="DiagnosisBox" IsReadOnly="True" Margin="0,4,0,0" />
                 <StackPanel Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" Spacing="4">
-                    <Button Content="💾 Update Hasil" Click="OnUpdateHasilClick" />
-                    <Button Content="✏ Ubah P.J./Perujuk/Petugas" Click="OnUbahClick" />
+                    <Button Content="Update Hasil" Click="OnUpdateHasilClick" />
+                    <Button Content="Ubah P.J./Perujuk/Petugas" Click="OnUbahClick" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -82,7 +57,7 @@
                 <ComboBox Grid.Column="4" Name="UbahPerujukCombo" HorizontalAlignment="Stretch" />
                 <TextBlock Grid.Column="6" Text="Petugas :" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <ComboBox Grid.Column="7" Name="UbahPetugasCombo" HorizontalAlignment="Stretch" />
-                <Button Grid.Column="9" Content="💾 Simpan" Click="OnUbahSimpanClick" />
+                <Button Grid.Column="9" Content="Simpan" Click="OnUbahSimpanClick" />
                 <Button Grid.Column="10" Content="Tutup" Click="OnUbahTutupClick" Margin="6,0,0,0" />
             </Grid>
         </Border>
@@ -95,15 +70,43 @@
         </Grid>
 
         <Border Grid.Row="6" Classes="servicePanel" Margin="0,6,0,0">
+            <StackPanel Spacing="4">
+            <WrapPanel Orientation="Horizontal" ItemSpacing="12" LineSpacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. Rawat" VerticalAlignment="Center" />
+                    <TextBox Name="NoRawatBox" Width="150" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Tanggal" VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="FromPicker" />
+                    <TextBlock Text="s.d." VerticalAlignment="Center" />
+                    <CalendarDatePicker Name="ToPicker" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="No. RM" VerticalAlignment="Center" />
+                    <TextBox Name="NoRmBox" Width="100" KeyUp="OnFilterKeyUp" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Petugas" VerticalAlignment="Center" />
+                    <ComboBox Name="PetugasCombo" Width="170" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock Text="Bacaan" VerticalAlignment="Center" />
+                    <ComboBox Name="HasilCombo" Width="140" />
+                </StackPanel>
+            </WrapPanel>
+        
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="🔍 Cari" Click="OnCariClick" Classes="accent" />
-                <Button Content="🩻 Periksa Baru" Click="OnInputClick" />
-                <Button Content="🗑 Hapus" Click="OnHapusClick" />
-                <Button Content="📋 Semua" Click="OnSemuaClick" />
-                <Button Content="🖨 Cetak" Click="OnCetakClick" />
-                <Button Content="❌ Keluar" Click="OnBackClick" Classes="accentText" />
+                <Button Content="Cari" Click="OnCariClick" Classes="accent" />
+                <Button Content="Periksa Baru" Click="OnInputClick" />
+                <Button Content="Hapus" Click="OnHapusClick" />
+                <Button Content="Semua" Click="OnSemuaClick" />
+                <Button Content="Cetak" Click="OnCetakClick" />
+                <Button Content="Keluar" Click="OnBackClick" />
                 <TextBlock Name="StatusText" VerticalAlignment="Center" Margin="12,0,0,0" TextWrapping="Wrap" IsVisible="False" />
             </WrapPanel>
+        
+            </StackPanel>
         </Border>
     </Grid>
 

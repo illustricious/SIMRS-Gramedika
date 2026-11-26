@@ -41,8 +41,7 @@ public enum HubunganPenanggungJawab
 /// "Identitas Pasien" core of the legacy DlgPasien.form; the TNI/POLRI
 /// sub-panel, BPJS/Dukcapil/SatuSehat web lookups, print-letter shortcuts and
 /// cascading kelurahan/kecamatan/kabupaten/propinsi pickers are deferred (see
-/// docs/handover/04-HISTORY.md) — those FK columns are still populated with a
-/// placeholder "-"/0 row so inserts succeed against the real legacy schema.
+/// docs/handover/04-HISTORY.md); region names are typed and resolved to codes.
 /// </summary>
 public class Pasien
 {
@@ -71,14 +70,7 @@ public class Pasien
     public string PekerjaanPj { get; set; } = "-";
     public string AlamatPj { get; set; } = "-";
 
-    // --- Deferred-feature columns ---
-    // These exist in the legacy `pasien` table as NOT NULL with no DB default
-    // and FK-reference master tables (kelurahan/kecamatan/kabupaten/propinsi/
-    // suku_bangsa/bahasa_pasien/cacat_fisik/perusahaan_pasien) that this
-    // scaffold only seeds a single "-"/0 placeholder row into (see
-    // docs/handover/04-HISTORY.md). They're on the entity so inserts satisfy the
-    // real legacy schema, but PasienView doesn't expose them as fields yet —
-    // that's the cascading-picker work noted as deferred for v2.
+    // NOT NULL tanpa default; sebagian merujuk tabel master. Diisi oleh PasienBaruService.
     public string Umur { get; set; } = "-";
     public string Pendidikan { get; set; } = "TS";
     public int KodeKelurahan { get; set; }

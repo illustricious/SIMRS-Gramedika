@@ -18,8 +18,7 @@
     -->
     <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="16,12">
         <Border Grid.Row="0" Classes="tegasHeading" Margin="0,0,0,6">
-            <TextBlock Classes="pageTitle" Text="IGD/UGD — Triase"
-                   Margin="0,0,0,8" />
+            <TextBlock Classes="pageTitle" Text="IGD/UGD — Triase" />
         </Border>
 
         <StackPanel Grid.Row="1" Spacing="0">
@@ -64,7 +63,7 @@
 
                     <TextBlock Name="StatusText" Margin="0,8,0,0" TextWrapping="Wrap"
                                Foreground="{DynamicResource ThemeAccentBrush}" IsVisible="False" />
-                    <Button Name="SimpanButton" Content="💾 Simpan Triase" Click="OnSimpanClick"
+                    <Button Name="SimpanButton" Content="Simpan Triase" Click="OnSimpanClick"
                             HorizontalAlignment="Left" Margin="0,8,0,0" IsEnabled="False" />
                 </StackPanel>
             </Border>
@@ -96,7 +95,7 @@
 
         <Border Grid.Row="4" Classes="servicePanel" Margin="0,6,0,0">
             <WrapPanel Orientation="Horizontal" ItemSpacing="8" LineSpacing="6">
-                <Button Content="⬅ Kembali ke Menu" Click="OnBackClick" Classes="accentText" />
+                <Button Content="Kembali ke Menu" Click="OnBackClick" />
             </WrapPanel>
         </Border>
     </Grid>

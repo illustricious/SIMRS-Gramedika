@@ -21,15 +21,26 @@ public class ReportView : PageView
 
     private readonly string? _visit;
 
-    public ReportView(ReportSpec spec, string? visit = null)
+    private readonly string? _noRekamMedis;
+
+    /// <param name="noRekamMedis">Batasi hasil ke satu pasien (dibuka dari menu klik kanan).</param>
+    public ReportView(ReportSpec spec, string? visit = null, string? noRekamMedis = null)
     {
         _spec = spec;
         _visit = visit;
+        _noRekamMedis = noRekamMedis;
         _cari = Ui.Text(spec.SearchWatermark);
+        // Query dipersempit dengan No. RM; hasilnya masih disaring persis di ReloadAsync.
+        _cari.Text = noRekamMedis;
         _grid = Ui.Grid(spec.Columns.Select(c => new Col(c.Column, c.Header)).ToArray());
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await ReloadAsync(); };
 
         var filters = new List<Control> { _cari };
+        if (noRekamMedis is not null)
+        {
+            // Pencarian tetap berlaku di dalam data pasien ini.
+            filters.Add(Ui.L($"Pasien No. RM: {noRekamMedis}"));
+        }
         if (visit is not null) filters.Add(Ui.L($"No. Rawat: {visit}"));
         else if (spec.Period == ReportPeriod.Year) { filters.Add(Ui.L("Tahun")); filters.Add(_tahun); }
         else if (spec.Period != ReportPeriod.None) filters.Add(_period = new PeriodPicker(spec.Period == ReportPeriod.Month,
@@ -39,23 +50,25 @@ public class ReportView : PageView
         filters.Add(tampilkan);
         filters.Add(Ui.Btn("Ekspor CSV", async (_, _) => await ExportAsync()));
 
-        var body = new DockPanel();
         var bar = Ui.Bar(filters.ToArray());
-        DockPanel.SetDock(bar, Dock.Top);
-        body.Children.Add(bar);
-        body.Children.Add(_grid);
-        Build(spec.Title, body, spec.Hint);
+        bar.Margin = default;
+        Build(spec.Title, _grid, spec.Hint, bar);
     }
 
     public override async Task ReloadAsync() => await RunAsync(async () =>
     {
         _rows = _visit is not null ? await _repo.RunForVisitAsync(_spec, _visit, _cari.Text) : await _repo.RunAsync(_spec, _cari.Text, _period?.From ?? DateTime.Today, _period?.To ?? DateTime.Today,
             (int)(_tahun.Value ?? DateTime.Today.Year));
+        if (_noRekamMedis is not null) _rows = MilikPasien(_rows, _noRekamMedis);
         Ui.Fill(_grid, _rows);
         var totals = _spec.TotalColumns.Select(column =>
             $"{_spec.Columns.First(c => c.Column == column).Header}: {_rows.Sum(row => row.D(column)):N2}");
         Ui.Info(StatusText, string.Join(" | ", new[] { $"{_rows.Count} baris" }.Concat(totals)));
     });
+
+    /// <summary>LIKE pada pencarian bisa mencocokkan No. RM di dalam No. Rawat pasien lain.</summary>
+    internal static List<Row> MilikPasien(IEnumerable<Row> rows, string noRekamMedis) =>
+        rows.Where(row => row.S("no_rkm_medis") == noRekamMedis).ToList();
 
     private async Task ExportAsync()
     {

@@ -35,29 +35,40 @@ public class SkpPenilaianView : PageView
         _grid.SelectionChanged += async (_, _) => { if (Ui.Selected<Row>(_grid) is { } r) await EditAsync(r.S("nomor_penilaian")); };
         _cari.KeyDown += async (_, e) => { if (e.Key == Key.Enter) await LoadAsync(); };
 
-        var left = new DockPanel();
-        var bar = Ui.Bar(_cari, _period, Ui.Btn("🔎 Cari", async (_, _) => await LoadAsync()));
-        DockPanel.SetDock(bar, Dock.Top);
-        left.Children.Add(bar);
-        left.Children.Add(_grid);
-
+        var isian = Ui.FormColumns(
+        [
+            ("No.Pengkajian :", _nomor), ("Tanggal :", _tanggal), ("Yang Dinilai :", _dinilai), ("Penilai :", _penilai),
+            ("Keterangan :", _ket), ("Status :", _status), ("Nilai :", _skor),
+        ], 2);
         var form = new StackPanel
         {
-            Spacing = 6, Width = 520,
+            Spacing = 6,
             Children =
             {
-                Ui.Form(("No.Pengkajian :", _nomor), ("Tanggal :", _tanggal), ("Yang Dinilai :", _dinilai), ("Penilai :", _penilai),
-                    ("Keterangan :", _ket), ("Status :", _status), ("Nilai :", _skor)),
-                Ui.Bar(Ui.Btn("✔ Semua Ya", (_, _) => SetAll("Ya")), Ui.Btn("✖ Kosongkan", (_, _) => SetAll(""))),
-                Ui.Box(new ScrollViewer { Content = _kriteriaPanel, Height = 360, Padding = new Thickness(6) }),
-                Ui.Bar(Ui.Btn("➕ Baru", async (_, _) => await NewAsync()), Ui.Btn("💾 Simpan", async (_, _) => await SaveAsync()),
-                    Ui.Btn("🗑 Hapus", async (_, _) => await DeleteAsync())),
+                isian,
+                Ui.Bar(Ui.Btn("Semua Ya", (_, _) => SetAll("Ya")), Ui.Btn("Kosongkan", (_, _) => SetAll(""))),
+                Ui.Box(new ScrollViewer { Content = _kriteriaPanel, Height = 240, Padding = new Thickness(6) }),
             },
         };
-        var body = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,16,Auto") };
-        body.Children.Add(left);
-        body.Children.Add(new ScrollViewer { Content = form, [Avalonia.Controls.Grid.ColumnProperty] = 2 });
-        Build("Pengkajian SKP Petugas/Dokter", body, "Pengkajian implementasi Sasaran Keselamatan Pasien. " + SkpSasaran.Hint);
+        var (panel, input) = Ui.InputPanel(new ScrollViewer { Content = form, MaxHeight = 330, Padding = new Thickness(0, 0, 24, 0) });
+        var simpan = Ui.Btn("Simpan", async (_, _) => await SaveAsync(), enabled: false);
+        simpan.Classes.Add("accent");
+        input.IsCheckedChanged += (_, _) => simpan.IsEnabled = input.IsChecked == true;
+        var body = new Avalonia.Controls.Grid { RowDefinitions = new RowDefinitions("Auto,*"), RowSpacing = 6 };
+        Avalonia.Controls.Grid.SetRow(_grid, 1);
+        body.Children.Add(panel);
+        body.Children.Add(_grid);
+        var bawah = new StackPanel
+        {
+            Spacing = 4,
+            Children =
+            {
+                Ui.Bar(_cari, _period, Ui.Btn("Cari", async (_, _) => await LoadAsync())),
+                Ui.Bar(Ui.Btn("Baru", async (_, _) => { input.IsChecked = true; await NewAsync(); }), simpan,
+                    Ui.Btn("Hapus", async (_, _) => await DeleteAsync())),
+            },
+        };
+        Build("Pengkajian SKP Petugas/Dokter", body, "Pengkajian implementasi Sasaran Keselamatan Pasien. " + SkpSasaran.Hint, bawah);
     }
 
     public override async Task ReloadAsync()
