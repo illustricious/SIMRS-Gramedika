@@ -2,6 +2,7 @@ using MySqlConnector;
 using SimrsGramedika.Config;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data.Sql;
+using SimrsGramedika.Data.Keuangan;
 
 namespace SimrsGramedika.Data;
 
@@ -209,7 +210,7 @@ public class RegistrasiService(DatabaseSettings settings)
         var row = await AmbilAsync(db, noRawat);
         if (!akses.IsAdminUtama && MelewatiBatasEdit(Waktu(row), sekarang ?? DateTime.Now))
             throw new InvalidOperationException("Maaf, perubahan data / penghapusan data tidak boleh lebih dari 2 x 24 jam !");
-        if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0)
+        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
             throw new InvalidOperationException("Registrasi sudah memiliki billing, tidak bisa dihapus. Hubungi bagian kasir/keuangan..!!");
         await db.ExecAsync("DELETE FROM reg_periksa WHERE no_rawat=@p0", noRawat);
     }
@@ -230,7 +231,7 @@ public class RegistrasiService(DatabaseSettings settings)
         {
             if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
                 throw new InvalidOperationException("Pasien sudah tercatat rawat inap. Ubah status melalui alur Rawat Inap.");
-            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0)
+            if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
                 throw new InvalidOperationException("Registrasi sudah memiliki billing; status tidak diubah agar billing tetap konsisten.");
 
             if (status == "Berkas Diterima")
@@ -293,7 +294,7 @@ public class RegistrasiService(DatabaseSettings settings)
     private static async Task PastikanBolehUbahAsync(Db db, string noRawat, Row row, RegistrasiAkses akses, DateTime sekarang)
     {
         // Sequel.cariRegistrasi: ada billing atau registrasi dibatalkan.
-        if (await db.CountAsync("SELECT COUNT(no_rawat) FROM billing WHERE no_rawat=@p0", noRawat) > 0 || row.S("stts") == "Batal")
+        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat) || row.S("stts") == "Batal")
             throw new InvalidOperationException("Data billing sudah terverifikasi (atau registrasi dibatalkan), data tidak boleh diubah.\nSilahkan hubungi bagian kasir/keuangan ..!!");
         if (!akses.IsAdminUtama && akses.BolehEdit && MelewatiBatasEdit(Waktu(row), sekarang))
             throw new InvalidOperationException("Maaf, perubahan data / penghapusan data tidak boleh lebih dari 2 x 24 jam !");

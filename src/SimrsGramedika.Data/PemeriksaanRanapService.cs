@@ -2,6 +2,7 @@ using MySqlConnector;
 using SimrsGramedika.Config;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data.Sql;
+using SimrsGramedika.Data.Keuangan;
 
 namespace SimrsGramedika.Data;
 
@@ -79,6 +80,7 @@ public sealed class PemeriksaanRanapService(DatabaseSettings settings, string no
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var kunjungan = await KunciKunjunganAsync(db);
+        input = input with { Waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), input.Waktu, asal?.Waktu) };
         if (!user.IsAdminUtama)
             RawatJalanService.PastikanTidakSebelumRegistrasi(Waktu(kunjungan, "tgl_registrasi", "jam_reg"), input.Waktu);
         if (asal is not null) await KunciCatatanAsync(db, asal, kunjungan);
@@ -137,7 +139,7 @@ public sealed class PemeriksaanRanapService(DatabaseSettings settings, string no
             """, noRawat);
         if (row is null || row.S("status_lanjut") != "Ranap" || row.S("stts") == "Batal")
             throw new InvalidOperationException("Kunjungan rawat inap tidak ditemukan atau telah dibatalkan.");
-        if (await db.CountAsync("SELECT EXISTS(SELECT 1 FROM billing WHERE no_rawat=@p0)", noRawat) != 0)
+        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
             throw new InvalidOperationException("Billing telah diverifikasi. Pemeriksaan hanya dapat dilihat.");
         return row;
     }

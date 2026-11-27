@@ -38,6 +38,7 @@ public sealed class PemeriksaanObgynService(DatabaseSettings settings, string no
         Validasi(values);
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
+        waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), waktu);
         await KunciKunjunganAsync(db, waktu);
         var cols = string.Join(",", Fields.Select(f => $"`{f.Name}`"));
         var parameters = string.Join(",", Fields.Select((_, i) => $"@p{i + 3}"));
@@ -86,6 +87,8 @@ public sealed class PemeriksaanObgynService(DatabaseSettings settings, string no
         Izin(); Validasi(values);
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
+        if (KunciTanggal.Aktif(settings, user.IsAdminUtama) && asal.Dt("tgl_perawatan") is { } tanggal && asal["jam_rawat"] is TimeSpan jam)
+            waktu = tanggal.Date + jam;
         await KunciKunjunganAsync(db, waktu);
         await KunciAsalAsync(db, asal);
         var assignments = string.Join(",", Fields.Select((f, i) => $"`{f.Name}`=@p{i + 5}"));

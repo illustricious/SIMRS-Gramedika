@@ -81,6 +81,7 @@ Simpan tindakan dan jurnal satu transaksi di Java (`DlgRawatInap.java:11661`). H
 
 - Farmasi → Resep Pulang → **Retur Validasi Resep** (izin `resep_pulang`). Seluruh baris `resep_pulang` pada waktu validasi dikembalikan ke depo/batch asal dengan riwayat "Resep Pulang/Hapus", lalu dihapus. Permintaan kembali "Belum" sehingga bisa dikoreksi, dibatalkan, atau divalidasi ulang. Seperti `DlgResepPulang.java`, tidak ada jurnal.
 - Ditolak: kunjungan sudah ditagih, validasi sudah berubah, tidak ada baris pengeluaran, ada permintaan lain pada waktu validasi yang sama, atau obat sudah dicatat diserahkan (diarahkan ke Khanza).
-- Retur sebagian jumlah belum tersedia.
+- Retur sebagian: dialog menampilkan setiap baris pengeluaran (obat, depo, batch) dengan jumlah yang bisa dikurangi; 0 berarti tidak diretur. Sisa tetap tercatat dengan total disesuaikan, permintaan tetap "Sudah" dan siap diserahkan. Bila semua habis, hasilnya sama dengan retur seluruhnya. Jumlah yang sudah berubah sejak dialog dibuka ditolak. Khanza hanya menghapus per baris; mengurangi jumlah dalam satu baris adalah tambahan Gramedika. Rincian permintaan dokter tidak diubah.
+- Daftar yang bisa diretur menyaring kunjungan yang sudah punya `billing`, bukan status bayar.
 - Perbaikan: serah terima dan validasi resep pulang membaca No. Rawat sebelum transaksi. Sebelumnya dua pencatatan serah terima bersamaan dapat lolos cek ganda, dan cek billing saat validasi dapat memakai data lama.
 - `ResepPulangTests` lulus pada MariaDB sintetis, termasuk dua retur bersamaan. Database RS, klien Java bersamaan dan klik di aplikasi belum diuji.

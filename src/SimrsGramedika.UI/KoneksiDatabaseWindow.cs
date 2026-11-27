@@ -27,6 +27,7 @@ public sealed class KoneksiDatabaseWindow : Window
     private readonly TextBox _db = Ui.Text("nama database, mis. sik", 64);
     private readonly ComboBox _dbList = new() { MinWidth = 150, IsVisible = false, PlaceholderText = "pilih database" };
     private readonly CheckBox _batch = new() { Content = "Aktifkan batch obat (stok dipotong per No.Batch/No.Faktur)" };
+    private readonly CheckBox _mundur = new() { Content = "Izinkan tanggal mundur (bila mati, hanya Admin Utama yang memilih tanggal & jam)" };
     private readonly CheckBox _bulat = new() { Content = "Bulatkan harga obat ke atas per Rp100" };
     private readonly ComboBox _hpp = Ui.Choice(["dasar", "h_beli"]);
     private readonly TextBox _web = Ui.Text("http://host/webapps");
@@ -130,6 +131,7 @@ public sealed class KoneksiDatabaseWindow : Window
                 Ui.Hint("Sama seperti isian setting/database.xml di SIMRS Khanza lama. Klik 'Ambil daftar' setelah mengisi host, port, user dan password untuk memilih database dari server."),
                 new TextBlock { Text = "Farmasi", FontWeight = FontWeight.SemiBold, Margin = new Thickness(0, 12, 0, 0) },
                 _batch,
+                _mundur,
                 _bulat,
                 Ui.Form(("Kolom HPP farmasi", _hpp)),
                 Ui.Hint("Samakan dengan AKTIFKANBATCHOBAT dan HPPFARMASI di Khanza lama supaya pemotongan stok & HPP sama."),
@@ -206,6 +208,7 @@ public sealed class KoneksiDatabaseWindow : Window
         _db.Text = s.Database;
         _batch.IsChecked = s.AktifkanBatchObat;
         _bulat.IsChecked = s.PembulatanHargaObat;
+        _mundur.IsChecked = s.TanggalMundur;
         _hpp.SelectedIndex = s.HppColumn == "h_beli" ? 1 : 0;
         _web.Text = s.WebUrl;
         _urut.SelectedItem = s.UrutNoReg is "poli" or "dokter + poli" ? s.UrutNoReg : "dokter";
@@ -235,6 +238,7 @@ public sealed class KoneksiDatabaseWindow : Window
             User = (_user.Text ?? "").Trim(), Password = _pass.Text ?? "",
             AktifkanBatchObat = _batch.IsChecked == true,
             PembulatanHargaObat = _bulat.IsChecked == true,
+            TanggalMundur = _mundur.IsChecked == true,
             HppFarmasi = _hpp.SelectedIndex == 1 ? "h_beli" : "dasar",
             WebUrl = (_web.Text ?? "").Trim(),
             UrutNoReg = _urut.SelectedItem as string ?? "dokter",

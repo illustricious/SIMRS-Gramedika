@@ -106,11 +106,11 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | RM Operasi → Skor Bromage Pasca Anestesi | kurang | 19604 |
 | RM Operasi → Catatan Pengkajian Paska Operasi | kurang | 19605 |
 | RM Operasi → Catatan Observasi Ruang Operasi | kurang | 19606 |
-| RM Unit Perawatan Khusus → Check List Kriteria Masuk HCU | kurang | 1938 |
-| RM Unit Perawatan Khusus → Check List Kriteria Masuk ICU | kurang | 1954 |
-| RM Unit Perawatan Khusus → Check List Kriteria Masuk NICU | kurang | 19820 |
-| RM Unit Perawatan Khusus → Check List Kriteria Masuk PICU | kurang | 19821 |
-| RM Unit Perawatan Khusus → Check List Kriteria Masuk Isolasi | kurang | 19822 |
+| RM Unit Perawatan Khusus → Check List Kriteria Masuk HCU | sebagian | 1938 |
+| RM Unit Perawatan Khusus → Check List Kriteria Masuk ICU | sebagian | 1954 |
+| RM Unit Perawatan Khusus → Check List Kriteria Masuk NICU | sebagian | 19820 |
+| RM Unit Perawatan Khusus → Check List Kriteria Masuk PICU | sebagian | 19821 |
+| RM Unit Perawatan Khusus → Check List Kriteria Masuk Isolasi | sebagian | 19822 |
 | RM Rehab Medik → Pengkajian Awal Fisioterapi | kurang | 19762 |
 | RM Rehab Medik → Pengkajian Terapi Wicara | kurang | 19763 |
 | RM Rehab Medik → Penatalaksanaan Terapi Okupasi | kurang | 19764 |

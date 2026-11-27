@@ -3,12 +3,13 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using SimrsGramedika.Config;
+using SimrsGramedika.Data;
 using SimrsGramedika.Data.Master;
 using SimrsGramedika.Data.Sql;
 
 namespace SimrsGramedika.UI.Modules.Shared;
 
-/// <summary>Generic read-only report screen for a <see cref="ReportSpec"/>, with CSV export.</summary>
+/// <summary>Generic read-only report screen for a <see cref="ReportSpec"/>, with CSV export and a letterhead PDF.</summary>
 public class ReportView : PageView
 {
     private readonly ReportSpec _spec;
@@ -18,6 +19,9 @@ public class ReportView : PageView
     private readonly PeriodPicker? _period;
     private readonly NumericUpDown _tahun = new() { Minimum = 2000, Maximum = 2100, Value = DateTime.Today.Year, Width = 110, FormatString = "0" };
     private List<Row> _rows = [];
+    // Keterangan dan total milik data yang sedang tampil, bukan isian filter terkini.
+    private string _keterangan = "";
+    private string[] _total = [];
     private readonly WrapPanel _bar;
 
     private readonly string? _visit;
@@ -50,6 +54,7 @@ public class ReportView : PageView
         tampilkan.Classes.Add("accent");
         filters.Add(tampilkan);
         filters.Add(Ui.Btn("Ekspor CSV", async (_, _) => await ExportAsync()));
+        filters.Add(Ui.Btn("Cetak PDF", async (_, _) => await CetakAsync()));
 
         _bar = Ui.Bar(filters.ToArray());
         _bar.Margin = default;
@@ -65,14 +70,36 @@ public class ReportView : PageView
 
     public override async Task ReloadAsync() => await RunAsync(async () =>
     {
+        var keterangan = Keterangan();
         _rows = _visit is not null ? await _repo.RunForVisitAsync(_spec, _visit, _cari.Text) : await _repo.RunAsync(_spec, _cari.Text, _period?.From ?? DateTime.Today, _period?.To ?? DateTime.Today,
             (int)(_tahun.Value ?? DateTime.Today.Year));
         if (_noRekamMedis is not null) _rows = MilikPasien(_rows, _noRekamMedis);
         Ui.Fill(_grid, _rows);
-        var totals = _spec.TotalColumns.Select(column =>
-            $"{_spec.Columns.First(c => c.Column == column).Header}: {_rows.Sum(row => row.D(column)):N2}");
-        Ui.Info(StatusText, string.Join(" | ", new[] { $"{_rows.Count} baris" }.Concat(totals)));
+        _keterangan = keterangan;
+        _total = _spec.TotalColumns.Select(column =>
+            $"{_spec.Columns.First(c => c.Column == column).Header}: {_rows.Sum(row => row.D(column)):N2}").ToArray();
+        Ui.Info(StatusText, string.Join(" | ", new[] { $"{_rows.Count} baris" }.Concat(_total)));
     });
+
+    private string Keterangan()
+    {
+        var bagian = new List<string>();
+        if (_noRekamMedis is not null) bagian.Add($"No. RM: {_noRekamMedis}");
+        if (_visit is not null) bagian.Add($"No. Rawat: {_visit}");
+        else if (_spec.Period == ReportPeriod.Year) bagian.Add($"Tahun {(int)(_tahun.Value ?? DateTime.Today.Year)}");
+        else if (_period is not null) bagian.Add($"Periode {_period.From:dd/MM/yyyy} s.d. {_period.To:dd/MM/yyyy}");
+        var cari = _cari.Text?.Trim() ?? "";
+        if (cari.Length > 0 && cari != _noRekamMedis) bagian.Add($"Pencarian: {cari}");
+        return string.Join(" | ", bagian);
+    }
+
+    private async Task CetakAsync() => await RunAsync(async () =>
+    {
+        var kolom = _spec.Columns.Select(c => new Col(c.Column, c.Header)).ToArray();
+        var path = ReportPdf.GeneratePdf(_spec.Title, _keterangan, kolom, _rows, _total,
+            await KopInstansi.MuatAsync(DatabaseSettings.Load()));
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+    }, "PDF dibuat.");
 
     /// <summary>LIKE pada pencarian bisa mencocokkan No. RM di dalam No. Rawat pasien lain.</summary>
     internal static List<Row> MilikPasien(IEnumerable<Row> rows, string noRekamMedis) =>

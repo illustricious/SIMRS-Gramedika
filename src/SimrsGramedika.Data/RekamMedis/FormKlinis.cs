@@ -1,10 +1,13 @@
 namespace SimrsGramedika.Data.RekamMedis;
 
-public enum PemilikForm { Petugas, Dokter }
+public enum PemilikForm { Petugas, Dokter, Pegawai }
 
-/// <summary>Satu kolom isian. <paramref name="Otomatis"/> dihitung layanan dari isian lain dan tidak bisa diketik.</summary>
+/// <summary>
+/// Satu kolom isian. <paramref name="Otomatis"/> dihitung layanan dari isian lain dan tidak bisa diketik.
+/// <paramref name="Awal"/> adalah pilihan pada catatan baru bila bukan pilihan pertama.
+/// </summary>
 public sealed record IsianKlinis(string Kolom, string Label, int Maks = 0, string[]? Pilihan = null,
-    bool Wajib = false, string? Bagian = null, bool Otomatis = false);
+    bool Wajib = false, string? Bagian = null, bool Otomatis = false, string? Awal = null);
 
 /// <summary>
 /// Definisi satu formulir rekam medis Khanza berpola "satu tabel, banyak catatan per kunjungan":
@@ -25,6 +28,9 @@ public sealed record FormKlinis(string Tile, string Judul, string Tabel, string 
     /// <summary>Selain Admin Utama hanya boleh mengubah atau menghapus sampai 2 x 24 jam dari waktu catatan.</summary>
     public bool Batas48Jam { get; init; } = true;
 
+    /// <summary>Layar Khanza formulir ini mengunci tanggal bila TANGGALMUNDUR=no.</summary>
+    public bool IkutKunciTanggal { get; init; } = true;
+
     /// <summary>Selain Admin Utama, waktu catatan tidak boleh sebelum waktu registrasi.</summary>
     public bool CekWaktuRegistrasi { get; init; } = true;
 
@@ -34,8 +40,8 @@ public sealed record FormKlinis(string Tile, string Judul, string Tabel, string 
     /// <summary>Penjelasan yang ditampilkan tetapi tidak disimpan.</summary>
     public Func<IReadOnlyDictionary<string, string>, string>? Keterangan { get; init; }
 
-    public string KolomPemilik => Pemilik == PemilikForm.Dokter ? "kd_dokter" : "nip";
-    public string SebutanPemilik => Pemilik == PemilikForm.Dokter ? "dokter" : "petugas";
+    public string KolomPemilik => Pemilik switch { PemilikForm.Dokter => "kd_dokter", PemilikForm.Pegawai => "nik", _ => "nip" };
+    public string SebutanPemilik => Pemilik switch { PemilikForm.Dokter => "dokter", PemilikForm.Pegawai => "pegawai", _ => "petugas" };
 }
 
 public static class FormKlinisKatalog
@@ -129,6 +135,7 @@ public static class FormKlinisKatalog
     {
         Batas48Jam = false,
         CekWaktuRegistrasi = false,
+        IkutKunciTanggal = false,
         Hitung = isi =>
         {
             var total = 0;
@@ -179,7 +186,7 @@ public static class FormKlinisKatalog
     { SatuPerKunjungan = true };
 
     public static readonly IReadOnlyList<FormKlinis> Semua =
-        [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan];
+        [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan, .. FormKriteriaRuang.Semua];
 
     public static FormKlinis? Cari(string? tile) => Semua.FirstOrDefault(f => f.Tile == tile);
 }

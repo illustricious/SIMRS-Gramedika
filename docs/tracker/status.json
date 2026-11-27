@@ -548,24 +548,24 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukHCU": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "status": "sebagian",
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — formulir dibuka dari Data Rekam Medis → Formulir Rekam Medis, bukan submenu per ruang seperti Java. Klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukICU": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "status": "sebagian",
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — formulir dibuka dari Data Rekam Medis → Formulir Rekam Medis, bukan submenu per ruang seperti Java. Klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukNICU": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "status": "sebagian",
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — formulir dibuka dari Data Rekam Medis → Formulir Rekam Medis, bukan submenu per ruang seperti Java. Klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukPICU": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "status": "sebagian",
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — formulir dibuka dari Data Rekam Medis → Formulir Rekam Medis, bukan submenu per ruang seperti Java. Klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRMHCU|MnCheckListKriteriaMasukIsolasi": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Data Rekam Medis di Registrasi."
+    "status": "sebagian",
+    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — formulir dibuka dari Data Rekam Medis → Formulir Rekam Medis, bukan submenu per ruang seperti Java. Klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnDataRM|MnRehabMedik|MnPenilaianFisioterapi": {
     "status": "kurang",
@@ -2113,11 +2113,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukHCU": {
     "status": "sebagian",
-    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukHCU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
+    "bukti": "Menu klinis Rawat Jalan membuka formulir isian (FormKlinisView) untuk kunjungan terpilih. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukICU": {
     "status": "sebagian",
-    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
+    "bukti": "Menu klinis Rawat Jalan membuka formulir isian (FormKlinisView) untuk kunjungan terpilih. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistPreOperasi": {
     "status": "sebagian",
@@ -2553,11 +2553,11 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukNICU": {
     "status": "sebagian",
-    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukNICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
+    "bukti": "Menu klinis Rawat Jalan membuka formulir isian (FormKlinisView) untuk kunjungan terpilih. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukPICU": {
     "status": "sebagian",
-    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukPICU baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
+    "bukti": "Menu klinis Rawat Jalan membuka formulir isian (FormKlinisView) untuk kunjungan terpilih. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningGiziKehamilan": {
     "status": "sebagian",
@@ -2577,7 +2577,7 @@
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnChecklistKriteriaMasukIsolasi": {
     "status": "sebagian",
-    "bukti": "RawatJalanKunjunganView membuka btnChecklistKriteriaMasukIsolasi baca-saja pada area kerja dari kunjungan terpilih. Uji EXPLAIN lulus. Alur tulis Java belum setara."
+    "bukti": "Menu klinis Rawat Jalan membuka formulir isian (FormKlinisView) untuk kunjungan terpilih. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
   },
   "aksi|simrskhanza/DlgRawatJalan.java|BtnSkriningTOLAC": {
     "status": "sebagian",
@@ -3506,5 +3506,165 @@
   "jendela|surat/SuratSakit.java|SuratSakit": {
     "status": "sebagian",
     "bukti": "Tambah, ubah dan satu format cetak per kunjungan tersedia dari Registrasi. Belum: daftar per periode, pencarian, hapus, cetak daftar, empat format cetak lain, dan pembukaan dari menu lain."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukHCU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk HCU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukHCU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk HCU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukHCU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk HCU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukHCU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk HCU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarHCU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar HCU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarHCU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar HCU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarHCU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar HCU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarHCU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar HCU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk ICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk ICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk ICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk ICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar ICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar ICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar ICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar ICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukNICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk NICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukNICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk NICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukNICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk NICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukNICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk NICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarNICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar NICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarNICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar NICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarNICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar NICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarNICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar NICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukPICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk PICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukPICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk PICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukPICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk PICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukPICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk PICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarPICU.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar PICU: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarPICU.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar PICU: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarPICU.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar PICU: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarPICU.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar PICU: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukIsolasi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk Isolasi: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukIsolasi.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk Isolasi: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukIsolasi.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk Isolasi: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaMasukIsolasi.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Masuk Isolasi: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarIsolasi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar Isolasi: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarIsolasi.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar Isolasi: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarIsolasi.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar Isolasi: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pegawai pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMChecklistKriteriaKeluarIsolasi.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Check List Kriteria Keluar Isolasi: cetak umum berkop RS dengan QR pegawai, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
   }
 }

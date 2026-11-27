@@ -29,7 +29,7 @@ public static class FormKlinisReport
         var waktu = catatan.Waktu.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         var qr = KodeQr.Png(TandaTanganSurat.Teks(kop.Nama, kop.Kota, catatan.NamaPemilik, cetak.IdPemilik,
             Tanggal(catatan.Waktu)));
-        var sebutan = form.Pemilik == PemilikForm.Dokter ? "Dokter" : "Petugas";
+        var sebutan = char.ToUpperInvariant(form.SebutanPemilik[0]) + form.SebutanPemilik[1..];
 
         return Document.Create(container => container.Page(page =>
         {

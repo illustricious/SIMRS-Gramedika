@@ -28,7 +28,7 @@ dotnet test
 powershell -ExecutionPolicy Bypass -File tools\uji-fixture.ps1
 ```
 
-Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schema_sik.sql` tanpa data rumah sakit, menjalankan suite fixture registrasi, validasi resep, jurnal penunjang, resep pulang, formulir rekam medis dan alur penunjang rawat jalan, lalu seluruh tes tanpa database. Server dan datanya dihapus setelah selesai. Skrip berhenti bila port sudah dipakai, dan memakai folder konfigurasi kosong agar profil koneksi tersimpan tidak dibaca.
+Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schema_sik.sql` tanpa data rumah sakit, menjalankan suite fixture registrasi, validasi resep, jurnal penunjang, resep pulang, formulir rekam medis, cek tagihan dan alur penunjang rawat jalan, kemudian sepuluh suite pada skema penuh (antrean, diagnosa, kasir farmasi, pasien, pulang, tindakan rawat jalan, rawat inap, rujukan, tindakan rawat inap, kunci tanggal), lalu seluruh tes tanpa database. Server dan datanya dihapus setelah selesai. Skrip berhenti bila port sudah dipakai, dan memakai folder konfigurasi kosong agar profil koneksi tersimpan tidak dibaca.
 
 MariaDB portabel: skrip mengekstrak `dist\mariadb-test-11.4.8.zip` (tidak di git) ke folder TEMP, atau beri `-MariaDb <folder berisi bin\mariadbd.exe>`. Fixture baru ditambahkan ke daftar tabel dan filter di skrip.
 
@@ -80,6 +80,6 @@ Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) mem
 6. **MariaDB lokal** bukan service Windows. Cek prosesnya sebelum bekerja bila memakai DB dev lokal.
 7. Tabel yang dibutuhkan fitur baru tetapi tidak ada di DB dev: ambil `CREATE TABLE`-nya dari `docs/audit/schema_sik.sql` (struktur saja, tanpa data).
 
-## Fixture Kasir dan Rawat Inap (belum masuk skrip)
+## Menjalankan fixture satu per satu
 
-Buat database lokal kosong bernama `simrs_kasir_farmasi_fixture`, `simrs_ralan_fixture`, `simrs_ranap_fixture`, dan `simrs_tindakan_ranap_fixture`. Muat DDL Khanza dari `docs/audit/schema_sik.sql`, tanpa INSERT data, dengan pemeriksaan foreign key dimatikan saat membuat tabel. Jika nama tabel muncul lagi dari skema bridging, gunakan definisi pertama skema inti. Aktifkan fixture dengan `SIMRS_KASIR_FARMASI_FIXTURE_PORT`, `SIMRS_RALAN_FIXTURE_PORT`, `SIMRS_RANAP_FIXTURE_PORT`, dan `SIMRS_TINDAKAN_RANAP_FIXTURE_PORT`. Fixture menyisipkan data sintetis dan membutuhkan skema kosong untuk setiap putaran. Jalankan `dotnet test src/SimrsGramedika.Tests/SimrsGramedika.Tests.csproj -p:NuGetAudit=false -m:1`. Untuk fixture obat pulang, gunakan `simrs_resep_pulang_fixture`, terapkan SQL di `docs/migrations/20261125_serah_resep_pulang.sql`, lalu set `SIMRS_RESEP_PULANG_FIXTURE_PORT`.
+Skrip tes fixture di atas sudah menjalankan semuanya. Untuk menjalankan satu suite secara manual, buat database lokal kosong `simrs_<nama>_fixture` dari `docs/audit/schema_sik.sql` tanpa INSERT data (foreign key dimatikan saat membuat tabel; nama tabel yang berulang memakai definisi pertama), set `SIMRS_<NAMA>_FIXTURE_PORT`, lalu `dotnet test src/SimrsGramedika.Tests/SimrsGramedika.Tests.csproj -p:NuGetAudit=false -m:1`. Fixture menyisipkan data sintetis dan butuh skema kosong setiap putaran. Suite obat pulang juga butuh `docs/migrations/20261125_serah_resep_pulang.sql`.

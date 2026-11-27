@@ -11,6 +11,9 @@ Satu definisi per formulir di `Data/RekamMedis/FormKlinis.cs`; aturan di `FormKl
 | Skrining Gizi Lanjut | `RMDataSkriningGiziLanjut.java` | petugas | ya | ya |
 | Penilaian Lanjutan Risiko Jatuh Dewasa | `RMPenilaianLanjutanRisikoJatuhDewasa.java` | petugas | tidak | tidak |
 | Penilaian Awal Medis Rawat Jalan | `RMPenilaianAwalMedisRalanDewasa.java` | dokter | ya | ya |
+| Check List Kriteria Masuk dan Keluar HCU, ICU, NICU, PICU, Isolasi (10 formulir) | `RMChecklistKriteria*.java` | pegawai | ya | ya |
+
+Definisi sepuluh check list ada di `Data/RekamMedis/FormKriteriaRuang.cs`; label, urutan, pilihan dan isian awal disalin dari layar Java, termasuk salah ketiknya (misalnya "SBP > 08 mmHg" pada Keluar ICU). Isian awal check list Keluar HCU, Keluar ICU dan Keluar Isolasi adalah "Ya", sama seperti Java; konfirmasi ke pengguna klinis belum dilakukan. Keluar Isolasi tidak menawarkan "Tidak Berlaku" walau kolomnya menerima.
 
 Aturan bersama:
 
@@ -24,7 +27,7 @@ Dibuka dari: tile Menu M (tombol **Isi / Ubah Formulir** pada daftar), klik kana
 ## Perbedaan dari Khanza
 
 - Cetakan memakai satu susunan umum, bukan templat Jasper tiap formulir. QR bukan tanda tangan elektronik tersertifikasi.
-- Pengaturan `TANGGALMUNDUR=no` belum diterapkan: akun biasa tetap bisa memilih tanggal dan jam.
+- Pengaturan profil **Izinkan tanggal mundur** (`TANGGALMUNDUR`) berlaku pada empat formulir yang di Java juga menguncinya; Penilaian Lanjutan Risiko Jatuh Dewasa tidak ikut. Lihat [arsitektur](../handover/02-ARCHITECTURE.md#tanggal-mundur).
 - Layar formulir menampilkan satu kunjungan; pencarian dan filter tanggal lintas pasien tetap di daftar Menu M.
 - Isian baru memakai pilihan pertama seperti Khanza, termasuk "Normal" pada pemeriksaan fisik.
 - Uraian catatan keperawatan dibatasi 1000 karakter sesuai kolom; layar Java mengizinkan 2000.
@@ -35,6 +38,6 @@ Dibuka dari: tile Menu M (tombol **Isi / Ubah Formulir** pada daftar), klik kana
 
 ## Menambah formulir
 
-Pencocokan struktur pada 27 November: 171 formulir `rekammedis` tampak hanya menulis satu tabel; selain 5 di atas, **115** punya bentuk kunci, satu pemilik dan tipe kolom yang sudah didukung. Angka itu dari pencocokan pola. Label, isian wajib, pilihan, rumus skor dan aturan tiap formulir tetap harus dibaca dari Java sebelum ditambahkan. Yang belum didukung: pemilik ganda, kunci bentuk lain, kolom tanggal atau desimal, dan formulir yang menulis tabel tambahan.
+Pencocokan struktur pada 27 November: 171 formulir `rekammedis` tampak hanya menulis satu tabel; selain 5 formulir pertama, **115** punya bentuk kunci, satu pemilik dan tipe kolom yang sudah didukung. Angka itu dari pencocokan pola dan dihitung sebelum pemilik `pegawai` didukung, jadi sepuluh check list kriteria tidak mengurangi 115. Label, isian wajib, pilihan, rumus skor dan aturan tiap formulir tetap harus dibaca dari Java sebelum ditambahkan. Yang belum didukung: pemilik ganda, kunci bentuk lain, kolom tanggal atau desimal, dan formulir yang menulis tabel tambahan.
 
 Langkah: tambah satu `FormKlinis` pada katalog, tambahkan tabelnya ke fixture, jalankan `FormKlinisTests`, lalu perbarui `status.json`.

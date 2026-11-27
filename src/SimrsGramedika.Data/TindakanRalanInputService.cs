@@ -52,8 +52,8 @@ public sealed class TindakanRalanInputService(DatabaseSettings settings, string 
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var visit = await KunjunganAsync(db, true);
-        if (visit.S("stts") == "Batal" || visit.S("status_bayar") != "Belum Bayar" ||
-            await db.FirstAsync("SELECT no_rawat FROM billing WHERE no_rawat=@p0 LIMIT 1 FOR UPDATE", noRawat) is not null)
+        if (visit.S("stts") == "Batal" ||
+            await TagihanKunjungan.SudahDitagihAsync(db, noRawat, kunci: true))
             throw new InvalidOperationException("Registrasi batal atau billing sudah terverifikasi. Hubungi kasir atau keuangan.");
         var now = (await db.FirstAsync("SELECT NOW() AS waktu"))!.Dt("waktu")!.Value;
         if (!user.IsAdminUtama && RegistrasiService.MelewatiBatasEdit(asal.Waktu, now))
@@ -82,8 +82,8 @@ public sealed class TindakanRalanInputService(DatabaseSettings settings, string 
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var visit = await KunjunganAsync(db, true);
-        if (visit.S("stts") == "Batal" || visit.S("status_bayar") != "Belum Bayar" ||
-            await db.FirstAsync("SELECT no_rawat FROM billing WHERE no_rawat=@p0 LIMIT 1 FOR UPDATE", noRawat) is not null)
+        if (visit.S("stts") == "Batal" ||
+            await TagihanKunjungan.SudahDitagihAsync(db, noRawat, kunci: true))
             throw new InvalidOperationException("Registrasi batal atau billing sudah terverifikasi. Hubungi kasir atau keuangan.");
         var now = (await db.FirstAsync("SELECT NOW() AS waktu"))!.Dt("waktu")!.Value;
         if (!user.IsAdminUtama)
@@ -96,6 +96,7 @@ public sealed class TindakanRalanInputService(DatabaseSettings settings, string 
         var terbaru = await CariTindakanAsync(db, asal.Jenis, asal.Kode, asal.Dokter, asal.Petugas, asal.Waktu, true);
         if (terbaru != asal) throw new InvalidOperationException("Tindakan telah berubah. Muat ulang daftar.");
         if (terbaru.StatusBayar != "Belum") throw new InvalidOperationException("Tindakan sudah dibayar.");
+        waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), waktu, asal.Waktu);
         if (asal.Jenis != TindakanRalanJenis.Paramedis &&
             (string.IsNullOrWhiteSpace(dokter) || await db.FirstAsync("SELECT kd_dokter FROM dokter WHERE kd_dokter=@p0", dokter) is null))
             throw new ArgumentException("Pilih dokter yang terdaftar.");
@@ -169,8 +170,9 @@ public sealed class TindakanRalanInputService(DatabaseSettings settings, string 
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var visit = await KunjunganAsync(db, kunci: true);
-        if (visit.S("stts") == "Batal" || visit.S("status_bayar") != "Belum Bayar" ||
-            await db.FirstAsync("SELECT no_rawat FROM billing WHERE no_rawat=@p0 LIMIT 1 FOR UPDATE", noRawat) is not null)
+        waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), waktu);
+        if (visit.S("stts") == "Batal" ||
+            await TagihanKunjungan.SudahDitagihAsync(db, noRawat, kunci: true))
             throw new InvalidOperationException("Registrasi batal atau billing sudah terverifikasi. Hubungi kasir atau keuangan.");
 
         if (!user.IsAdminUtama)

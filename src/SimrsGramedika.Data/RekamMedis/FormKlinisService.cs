@@ -56,6 +56,9 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
             $"%{kata.Trim()}%");
     }
 
+    /// <summary>Akun ini tidak boleh memilih tanggal dan jam catatan.</summary>
+    public bool TanggalTerkunci => form.IkutKunciTanggal && KunciTanggal.Aktif(settings, user.IsAdminUtama);
+
     public Task SimpanAsync(DateTime waktu, string pemilik, IReadOnlyDictionary<string, string> isi) =>
         TulisAsync(null, waktu, pemilik, isi);
 
@@ -72,6 +75,7 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         if (lama is not null) await KunciAsync(db, lama);
+        waktu = await KunciTanggal.WaktuAsync(db, TanggalTerkunci, waktu, lama?.Waktu);
         var kunjungan = await KunjunganAsync(db);
         if (pemilik.Length == 0) throw new InvalidOperationException($"Pilih {form.SebutanPemilik} terlebih dahulu.");
         await NamaPemilikAsync(db, pemilik);
@@ -180,8 +184,12 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
         }
     }
 
-    private (string Tabel, string Kode, string Nama) TabelPemilik => form.Pemilik == PemilikForm.Dokter
-        ? ("dokter", "kd_dokter", "nm_dokter") : ("petugas", "nip", "nama");
+    private (string Tabel, string Kode, string Nama) TabelPemilik => form.Pemilik switch
+    {
+        PemilikForm.Dokter => ("dokter", "kd_dokter", "nm_dokter"),
+        PemilikForm.Pegawai => ("pegawai", "nik", "nama"),
+        _ => ("petugas", "nip", "nama"),
+    };
 
     private (string Syarat, object?[] Args) Kunci(CatatanKlinis catatan, int mulai, string awalan = "")
     {

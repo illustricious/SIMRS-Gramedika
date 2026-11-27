@@ -130,9 +130,7 @@ public class TindakanRalanInputTests
         await db.ExecAsync("INSERT INTO billing(noindex,no_rawat,`no`,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya) VALUES (1,@p0,'','Uji','',0,1,0,0)", Rawat);
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(TindakanRalanJenis.Paramedis, Waktu.AddSeconds(2), "", "PET-UJI", [tarifPr]));
         await db.ExecAsync("DELETE FROM billing WHERE no_rawat=@p0", Rawat);
-        await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Sudah Bayar' WHERE no_rawat=@p0", Rawat);
-        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(TindakanRalanJenis.Paramedis, Waktu.AddSeconds(2), "", "PET-UJI", [tarifPr]));
-        await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Belum Bayar',stts='Batal' WHERE no_rawat=@p0", Rawat);
+        await db.ExecAsync("UPDATE reg_periksa SET stts='Batal' WHERE no_rawat=@p0", Rawat);
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(TindakanRalanJenis.Paramedis, Waktu.AddSeconds(2), "", "PET-UJI", [tarifPr]));
         Assert.Equal(3, await db.CountAsync("SELECT COUNT(*) FROM jurnal"));
         await db.ExecAsync("UPDATE reg_periksa SET stts='Belum' WHERE no_rawat=@p0", Rawat);

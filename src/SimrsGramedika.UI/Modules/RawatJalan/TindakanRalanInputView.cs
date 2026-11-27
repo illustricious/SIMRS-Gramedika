@@ -37,6 +37,7 @@ internal sealed class TindakanRalanInputView : UserControl
     {
         _service = new(DatabaseSettings.Load(), noRawat, user);
         _asal = asal;
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), user.IsAdminUtama)) _tanggal.IsEnabled = _jam.IsEnabled = false;
         if (asal is not null)
         {
             _jenis.SelectedIndex = (int)asal.Jenis;

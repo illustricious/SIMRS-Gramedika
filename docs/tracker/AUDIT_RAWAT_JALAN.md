@@ -148,3 +148,10 @@ Bagian ini menggantikan uraian deretan tombol pada bagian sebelumnya. Registrasi
 - Menu klinis di kiri membuka layarnya di area tab; **Kembali ke Tab** mengembalikan tab. Dengan akun Admin Utama pada skema uji, 27 dari 177 entri masih "Belum tersedia"; banyak entri lain masih laporan baca saja.
 - Perbaikan: tab Pemeriksaan tidak memuat kunjungan pada tampilan tertanam, sehingga tombol Simpan SOAPIE nonaktif. Pemuatan kunjungan kini tidak bergantung pada tabel antrean yang tersembunyi.
 - Uji headless sementara pada skema Khanza penuh dengan data sintetis membuka kedelapan tab dan menyimpan satu SOAPIE. Tes tetap hanya memeriksa susunan tab dan hak akses. Belum diuji: klik di aplikasi asli, database RS, dan tata letak isian yang sama persis dengan Java.
+
+## Batal order (27 November 2026)
+
+- **Batalkan order terpilih** di riwayat order: menghapus resep, permintaan lab atau radiologi beserta rinciannya, setelah konfirmasi. Resep racikan ikut bisa dibatalkan.
+- Ditolak bila kunjungan sudah punya billing atau masuk rawat inap, resep sudah divalidasi, sampel sudah diambil, hasil sudah dicatat, ada item yang sudah dibayar, atau pengguna bukan dokter pengirim maupun Admin Utama.
+- Lebih ketat daripada daftar permintaan Khanza: di Java, Admin Utama bisa menghapus order yang sudah diproses, dan penghapusan permintaan tidak memeriksa pengirim.
+- `AlurPenunjangRalanTests` menguji radiologi dan mikrobiologi pada skema tanpa relasi. Resep, PK, PA, order yang ditahan bridging, dan klik di aplikasi belum diuji.

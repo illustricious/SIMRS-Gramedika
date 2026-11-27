@@ -45,11 +45,11 @@ public sealed class TindakanRanapInputService(DatabaseSettings settings, RawatIn
         await db.BeginAsync();
         // Kasir dan operasi kamar mengunci baris registrasi yang sama terlebih dahulu.
         var visit = await KunjunganAsync(db, true);
-        if (visit.S("stts") == "Batal" || visit.S("status_bayar") != "Belum Bayar"
-            || await db.FirstAsync("SELECT no_rawat FROM billing WHERE no_rawat=@p0 LIMIT 1 FOR UPDATE", kamar.NoRawat) is not null
-            || await db.FirstAsync("SELECT no_rawat FROM nota_inap WHERE no_rawat=@p0 LIMIT 1 FOR UPDATE", kamar.NoRawat) is not null)
+        if (visit.S("stts") == "Batal" ||
+            await TagihanKunjungan.SudahDitagihAsync(db, kamar.NoRawat, kunci: true))
             throw new InvalidOperationException("Registrasi batal atau tagihan sudah disimpan. Periksa di Kasir.");
         var ruang = await KamarAsync(db, true);
+        waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), waktu);
         var sekarang = (await db.FirstAsync("SELECT NOW() waktu"))!.Dt("waktu")!.Value;
         if (waktu < kamar.TanggalMasuk.ToDateTime(kamar.JamMasuk) || waktu > sekarang)
             throw new ArgumentException("Waktu tindakan harus antara waktu masuk kamar dan waktu server saat ini.");

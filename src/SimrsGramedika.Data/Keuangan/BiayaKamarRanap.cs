@@ -48,10 +48,7 @@ internal static class KunjunganRanap
     internal static async Task PastikanBelumDitagihAsync(SimrsGramedikaDbContext db, RegPeriksa reg, CancellationToken ct)
     {
         if (reg.Status == StatusRegistrasi.Batal) throw new InvalidOperationException("Registrasi pasien sudah dibatalkan.");
-        if (reg.StatusBayar == StatusBayar.SudahBayar || await db.Database.SqlQuery<bool>($"""
-            SELECT (EXISTS(SELECT 1 FROM billing WHERE no_rawat={reg.NoRawat})
-                OR EXISTS(SELECT 1 FROM nota_inap WHERE no_rawat={reg.NoRawat})) AS Value
-            """).SingleAsync(ct))
+        if (await TagihanKunjungan.SudahDitagihAsync(db, reg.NoRawat, ct))
             throw new InvalidOperationException("Tagihan pasien sudah disimpan. Periksa di Kasir sebelum mengubah data rawat inap.");
     }
 }

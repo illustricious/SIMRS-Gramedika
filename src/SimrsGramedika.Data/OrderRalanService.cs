@@ -3,6 +3,7 @@ using MySqlConnector;
 using SimrsGramedika.Config;
 using SimrsGramedika.Core.Auth;
 using SimrsGramedika.Data.Sql;
+using SimrsGramedika.Data.Keuangan;
 
 namespace SimrsGramedika.Data;
 
@@ -126,8 +127,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             SELECT kd_dokter,status_bayar,NOW() waktu FROM reg_periksa
             WHERE no_rawat=@p0 AND no_rkm_medis=@p1 AND status_lanjut='Ralan' AND stts<>'Batal' FOR UPDATE
             """, noRawat, noRm) ?? throw new InvalidOperationException("Kunjungan rawat jalan tidak aktif.");
-        if (visit.S("status_bayar") != "Belum Bayar" ||
-            await db.CountAsync("SELECT COUNT(*) FROM billing WHERE no_rawat=@p0", noRawat) > 0 ||
+        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat) ||
             await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
             throw new InvalidOperationException("Kunjungan telah masuk billing atau rawat inap.");
         return visit;
@@ -173,7 +173,35 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         await db.CommitAsync();
     }
 
-    private async Task<DrafOrderRalan> BacaOrderAsync(Db db, string nomor)
+    /// <summary>
+    /// Menghapus order yang belum diproses unit tujuan, seperti tombol Hapus pada daftar permintaan Khanza.
+    /// Syaratnya sama dengan perubahan order: kunjungan belum ditagih, belum dibayar, dan oleh dokter pengirim atau Admin Utama.
+    /// </summary>
+    public async Task BatalkanAsync(string nomor)
+    {
+        PastikanIzin();
+        await using var db = await Db.OpenAsync(settings);
+        await db.BeginAsync();
+        await KunciKunjunganAsync(db);
+        await BacaOrderAsync(db, nomor, untukUbah: false);
+        // Baris anak dihapus eksplisit supaya tidak bergantung pada ON DELETE CASCADE database setempat.
+        string[] anak = Resep ? ["resep_dokter_racikan_detail", "resep_dokter_racikan", "resep_dokter"]
+            : _format.Template is { } template ? [template, _format.Detail] : [_format.Detail];
+        var kunci = Resep ? "no_resep" : "noorder";
+        try
+        {
+            foreach (var tabel in anak)
+                await db.ExecAsync($"DELETE FROM {tabel} WHERE {kunci}=@p0", nomor);
+            await db.ExecAsync($"DELETE FROM {_format.Header} WHERE {kunci}=@p0", nomor);
+        }
+        catch (MySqlException ex) when (ex.Number == 1451)
+        {
+            throw new InvalidOperationException("Order sudah dipakai data lain, misalnya bridging, sehingga tidak bisa dibatalkan.");
+        }
+        await db.CommitAsync();
+    }
+
+    private async Task<DrafOrderRalan> BacaOrderAsync(Db db, string nomor, bool untukUbah = true)
     {
         DrafOrderRalan draf;
         if (Resep)
@@ -182,15 +210,15 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                 SELECT kd_dokter,IF(tgl_perawatan>'0000-00-00' OR tgl_penyerahan>'0000-00-00',1,0) proses
                 FROM resep_obat WHERE no_resep=@p0 AND no_rawat=@p1 AND status='ralan' AND tgl_peresepan>'0000-00-00' FOR UPDATE
                 """, nomor, noRawat) ?? throw new InvalidOperationException("Resep tidak ditemukan pada kunjungan ini.");
-            if (h.D("proses") != 0) throw new InvalidOperationException("Resep sudah divalidasi Farmasi dan tidak bisa diubah.");
-            if (await db.CountAsync("SELECT COUNT(*) FROM resep_dokter_racikan WHERE no_resep=@p0", nomor) > 0)
+            if (h.D("proses") != 0) throw new InvalidOperationException("Resep sudah divalidasi Farmasi dan tidak bisa diubah atau dibatalkan.");
+            if (untukUbah && await db.CountAsync("SELECT COUNT(*) FROM resep_dokter_racikan WHERE no_resep=@p0", nomor) > 0)
                 throw new InvalidOperationException("Resep berisi racikan. Ubah lewat Khanza.");
             var obat = await db.QueryAsync("""
                 SELECT d.kode_brng,d.jml,d.aturan_pakai,m.nama_brng FROM resep_dokter d
                 LEFT JOIN databarang m ON m.kode_brng=d.kode_brng WHERE d.no_resep=@p0
                 ORDER BY d.kode_brng,d.jml,d.aturan_pakai FOR UPDATE
                 """, nomor);
-            if (obat.Select(r => r.S("kode_brng")).Distinct(StringComparer.OrdinalIgnoreCase).Count() != obat.Count)
+            if (untukUbah && obat.Select(r => r.S("kode_brng")).Distinct(StringComparer.OrdinalIgnoreCase).Count() != obat.Count)
                 throw new InvalidOperationException("Resep memuat obat ganda. Ubah lewat Khanza.");
             draf = new(nomor, h.S("kd_dokter"), "", "", null, obat.Select(r =>
                 new BarisOrderRalan(r.S("kode_brng"), r.S("nama_brng"), (decimal)r.D("jml"), r.S("aturan_pakai"))).ToList());
@@ -202,7 +230,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                 FROM {_format.Header} WHERE noorder=@p0 AND no_rawat=@p1 AND status='ralan' FOR UPDATE
                 """, nomor, noRawat) ?? throw new InvalidOperationException("Permintaan tidak ditemukan pada kunjungan ini.");
             if (h.D("proses") != 0)
-                throw new InvalidOperationException("Permintaan sudah diproses unit penunjang dan tidak bisa diubah.");
+                throw new InvalidOperationException("Permintaan sudah diproses unit penunjang dan tidak bisa diubah atau dibatalkan.");
             var items = await db.QueryAsync($"""
                 SELECT d.kd_jenis_prw,d.stts_bayar,m.nm_perawatan FROM {_format.Detail} d
                 LEFT JOIN {MasterPemeriksaan} m ON m.kd_jenis_prw=d.kd_jenis_prw WHERE d.noorder=@p0
@@ -231,7 +259,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                     : rincian.Where(d => d.S("kd_jenis_prw") == r.S("kd_jenis_prw")).Select(d => (int)d.D("id_template")).ToArray())).ToList());
         }
         if (!user.IsAdminUtama && !user.UserId.Equals(draf.Dokter, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidOperationException("Order hanya dapat diubah oleh dokter pengirimnya atau Admin Utama.");
+            throw new InvalidOperationException("Order hanya dapat diubah atau dibatalkan oleh dokter pengirimnya atau Admin Utama.");
         return draf;
     }
 

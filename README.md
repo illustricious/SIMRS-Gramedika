@@ -87,15 +87,15 @@ each category where they appear.
 ### 2. Feature parity: the long road
 
 The [feature tracker](docs/tracker/README.md) inventories the Java source and records evidence for every item that has been assessed.
-Status at commit `ec33aad`:
+Status on 27 November 2026:
 
 | Item type | Total | Complete | Partial | Missing | Deferred | Not yet audited |
 |---|---:|---:|---:|---:|---:|---:|
-| Actions (buttons and controls) | 10,673 | 13 | 238 | 201 | 1 | 10,220 |
-| Popup menu entries | 2,652 | 0 | 156 | 242 | 0 | 2,254 |
+| Actions (buttons and controls) | 10,673 | 13 | 300 | 199 | 1 | 10,160 |
+| Popup menu entries | 2,652 | 0 | 161 | 237 | 0 | 2,254 |
 | Windows | 1,294 | 0 | 6 | 0 | 0 | 1,288 |
 
-That is **856 of 14,619 non-tile items assessed (about 6%)**, and only 13 marked complete. "Complete" requires evidence for the whole
+That is **917 of 14,619 non-tile items assessed (about 6%)**, and only 13 marked complete. "Complete" requires evidence for the whole
 flow, so working features often stay "partial". Current numbers are in the [generated summary](docs/tracker/RINGKASAN.md); the
 [chart view](docs/tracker/GRAFIK.html) can be opened locally in a browser.
 
@@ -108,13 +108,17 @@ have limits that are described in the audit documents.
 |---|---|
 | Registration ([audit](docs/tracker/AUDIT_REGISTRASI.md)) | Register visits with Khanza queue numbering; new patients with Khanza medical record numbers; patient notes and status; deceased record; internal, incoming and outgoing referrals; sick-leave letter; letterhead printing |
 | Emergency | Registration and triage entry |
-| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send and edit prescriptions (non-compounded), lab and radiology requests; write and print the medical resume |
-| Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals; discharge summary and room release; discharge prescriptions from request to validation, handover or return |
-| Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print five record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment |
+| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send, edit and cancel prescriptions (editing is non-compounded only), lab and radiology requests; write and print the medical resume |
+| Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals; discharge summary and room release; discharge prescriptions from request to validation, handover, and full or partial return |
+| Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print 15 record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment, and admission and discharge criteria checklists for HCU, ICU, NICU, PICU and isolation |
 | Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
 | Laboratory and radiology | Record results; post journals on save and reverse them on delete |
 | Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, surgery, returns and adjustments are still settled in Khanza |
 | Finance | Manual balanced journal, tariffs and accounts |
+
+Generic report screens can be exported to CSV or printed as a letterhead PDF. A connection profile setting mirrors Khanza's
+`TANGGALMUNDUR`: when backdating is off, only the main administrator can choose the date and time on clinical entries.
+As in Khanza, a visit is locked for billing purposes only once it has billing rows.
 
 Right-clicking a patient row in the main patient lists opens a context menu filtered by Khanza permissions.
 
@@ -125,7 +129,7 @@ Referral letters, sick-leave letters and the outpatient resume carry a QR code i
 
 1. Run the transactions on a safe copy of a real hospital database and compare journals and stock with Khanza Java.
 2. Test concurrent use alongside Java clients.
-3. Close gaps in the core care flows: order cancellation, partial returns, room corrections, cashier settlement cases.
+3. Close gaps in the core care flows: room corrections, cashier settlement cases.
 4. Continue the per-action audit, then printing and report parity.
 5. Bridging (menu L), once specifications and test credentials are available.
 
@@ -196,11 +200,10 @@ On first start the app asks for the database connection (host, port, user, passw
 
 ### Tests
 
-Latest local run (27 November 2026, 256 tests):
+Latest local run (27 November 2026, 263 tests):
 
-- Without a database: **216 passed, 0 failed, 40 skipped** because they need one.
-- Against synthetic MariaDB databases, the registration, prescription validation, lab/radiology journal, discharge prescription, record
-  form and outpatient order suites passed (77 tests). The other fixture suites were not re-run in that pass.
+- Without a database: **221 passed, 0 failed, 42 skipped** because they need one.
+- Against synthetic MariaDB databases, all fixture suites run by the script passed (106 tests).
 
 On Windows, `tools\uji-fixture.ps1` starts a temporary MariaDB and runs those suites and then the whole test project.
 Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the

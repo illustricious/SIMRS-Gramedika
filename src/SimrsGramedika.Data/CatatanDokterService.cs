@@ -47,6 +47,7 @@ public sealed class CatatanDokterService(DatabaseSettings settings, string noRaw
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var kunjungan = await KunciKunjunganAsync(db);
+        waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, user.IsAdminUtama), waktu, awal?.Waktu);
         if (!user.IsAdminUtama)
             RawatJalanService.PastikanTidakSebelumRegistrasi(
                 BacaWaktu(kunjungan, "tgl_registrasi", "jam_reg") ?? throw new InvalidOperationException("Waktu registrasi tidak valid."), waktu);

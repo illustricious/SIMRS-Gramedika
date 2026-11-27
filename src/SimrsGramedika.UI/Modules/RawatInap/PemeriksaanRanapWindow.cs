@@ -89,6 +89,7 @@ internal sealed class PemeriksaanRanapWindow : Window
         }
         Content = _content;
         _pegawai.IsEnabled = user.IsAdminUtama;
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), user.IsAdminUtama)) _date.IsEnabled = _time.IsEnabled = false;
         Closing += (_, e) => e.Cancel = _busy;
         IsiForm(null);
         Opened += async (_, _) => await JalankanAsync(async () =>

@@ -31,6 +31,7 @@ internal sealed class CatatanDokterView : UserControl
         _service = new(DatabaseSettings.Load(), noRawat, user);
         _user = user;
         _dokter.IsEnabled = user.IsAdminUtama;
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), user.IsAdminUtama)) _date.IsEnabled = _time.IsEnabled = false;
         _hapus = Ui.Btn("Hapus", async (_, _) => await JalankanAsync(HapusAsync), false);
         _simpan = Ui.Btn("Simpan Catatan Baru", async (_, _) => await JalankanAsync(SimpanAsync));
         _simpan.Classes.Add("accent");

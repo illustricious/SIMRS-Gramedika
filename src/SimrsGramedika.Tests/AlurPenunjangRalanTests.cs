@@ -145,9 +145,27 @@ public sealed class AlurPenunjangRalanTests
         Assert.Equal("Info baru", await db.StrAsync("SELECT informasi_tambahan FROM permintaan_radiologi WHERE noorder=@p0", noRad));
         drafRad = await rad.MuatOrderAsync(noRad);
 
-        await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Sudah Bayar' WHERE no_rawat=@p0", rawat);
+        await db.ExecAsync("INSERT INTO billing(noindex,no_rawat,`no`,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya) VALUES (1,@p0,'','Uji','',0,1,0,0)", rawat);
         await Assert.ThrowsAsync<InvalidOperationException>(() => rad.UbahAsync(drafRad, drafRad.Baris, "Uji", ""));
         await Assert.ThrowsAsync<InvalidOperationException>(() => lab.SimpanAsync([pk], "Diagnosis uji", ""));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => rad.BatalkanAsync(noRad));
+        await db.ExecAsync("DELETE FROM billing WHERE no_rawat=@p0", rawat);
+
+        // Batal order: ditolak bila sudah diproses atau bukan pengirim; berhasil menghapus header dan rincian.
+        await db.ExecAsync("UPDATE permintaan_radiologi SET tgl_sampel=CURRENT_DATE WHERE noorder=@p0", noRad);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => rad.BatalkanAsync(noRad));
+        await db.ExecAsync("UPDATE permintaan_radiologi SET tgl_sampel='0000-00-00' WHERE noorder=@p0", noRad);
+        var radLain = new OrderRalanService(settings, rawat, rm,
+            new AuthenticatedUser { UserId = "DR", Permissions = user.Permissions }, JenisOrderRalan.Radiologi);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => radLain.BatalkanAsync(noRad));
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM permintaan_radiologi WHERE noorder=@p0", noRad));
+        await rad.BatalkanAsync(noRad);
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM permintaan_radiologi WHERE noorder=@p0", noRad));
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM permintaan_pemeriksaan_radiologi WHERE noorder=@p0", noRad));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => rad.BatalkanAsync(noRad));
+        await mb.BatalkanAsync(noMb);
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM permintaan_detail_permintaan_labmb WHERE noorder=@p0", noMb));
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM permintaan_labmb WHERE noorder=@p0", noMb));
         var wrongPatient = new OrderRalanService(settings, rawat, "RM-LAIN", user, JenisOrderRalan.Resep);
         await Assert.ThrowsAsync<InvalidOperationException>(() => wrongPatient.SimpanAsync([obat with { Jumlah = 1, Aturan = "Uji" }], "", ""));
     }

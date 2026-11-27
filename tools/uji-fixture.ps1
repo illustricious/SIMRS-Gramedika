@@ -60,7 +60,9 @@ $sql += New-SqlFixture simrs_resep_fixture ('pasien dokter poliklinik penjab reg
 $sql += New-SqlFixture simrs_penunjang_fixture ('pasien reg_periksa kamar_inap kamar billing periksa_lab detail_periksa_lab detail_periksa_labpa detail_periksa_labpa_gambar saran_kesan_lab periksa_radiologi hasil_radiologi gambar_radiologi beri_bhp_radiologi permintaan_lab permintaan_pemeriksaan_lab permintaan_detail_permintaan_lab permintaan_labpa permintaan_pemeriksaan_labpa permintaan_radiologi permintaan_pemeriksaan_radiologi antrilabpk2 antrilabpa2 antriradiologi2 set_akun_ralan set_akun_ranap rekening jurnal detailjurnal' -split ' ') -TanpaRelasi
 $sql += New-SqlFixture simrs_resep_pulang_fixture ('pasien dokter bangsal kamar reg_periksa kamar_inap databarang data_batch gudangbarang permintaan_resep_pulang detail_permintaan_resep_pulang resep_pulang riwayat_barang_medis billing set_harga_obat_ranap' -split ' ') -TanpaRelasi
 $sql += ((Get-Content docs\migrations\20261125_serah_resep_pulang.sql -Raw -Encoding UTF8) -replace $relasi, '') + "`n"
-$sql += New-SqlFixture simrs_formklinis_fixture ('pasien reg_periksa petugas dokter pegawai sidikjari setting catatan_keperawatan_ralan catatan_observasi_igd skrining_gizi penilaian_lanjutan_resiko_jatuh_dewasa penilaian_medis_ralan' -split ' ') -TanpaRelasi
+$sql += New-SqlFixture simrs_formklinis_fixture ('pasien reg_periksa petugas dokter pegawai sidikjari setting catatan_keperawatan_ralan catatan_observasi_igd skrining_gizi penilaian_lanjutan_resiko_jatuh_dewasa penilaian_medis_ralan checklist_kriteria_masuk_hcu checklist_kriteria_keluar_hcu checklist_kriteria_masuk_icu checklist_kriteria_keluar_icu checklist_kriteria_masuk_nicu checklist_kriteria_keluar_nicu checklist_kriteria_masuk_picu checklist_kriteria_keluar_picu checklist_kriteria_masuk_isolasi checklist_kriteria_keluar_isolasi' -split ' ') -TanpaRelasi
+
+$sql += New-SqlFixture simrs_tagihan_fixture ('billing nota_inap' -split ' ') -TanpaRelasi
 
 # AlurPenunjangRalanTests memakai nama database yang sama dengan tes jurnal, tetapi butuh skema penuh yang masih kosong.
 $penuh = "DROP DATABASE IF EXISTS simrs_penunjang_fixture;`nCREATE DATABASE simrs_penunjang_fixture;`nUSE simrs_penunjang_fixture;`nSET FOREIGN_KEY_CHECKS=0;`n"
@@ -68,6 +70,24 @@ $sudah = New-Object 'System.Collections.Generic.HashSet[string]'
 foreach ($c in [regex]::Matches($schema, '(?s)CREATE TABLE `\w+` \(.*?ENGINE=[^;]*;')) {
     $nama = [regex]::Match($c.Value, 'CREATE TABLE `(\w+)`').Groups[1].Value
     if ($sudah.Add($nama)) { $penuh += ($c.Value -replace $relasi, '') + "`n" }  # nama berulang berasal dari skema bridging
+}
+
+# Suite lain mensyaratkan skema penuh berelasi yang masih kosong, satu database per suite.
+$lain = [ordered]@{
+    ANTREAN = 'NomorAntreanTests'; DIAGNOSA = 'DiagnosaRalanTests'; KASIR_FARMASI = 'PelunasanPenjualanTests'
+    PASIEN = 'PasienBaruTests'; PULANG = 'PulangRanapTests'; RALAN = 'TindakanRalanInputTests'
+    RANAP = 'BillingRanapTests'; RUJUKAN = 'RujukanInternalTests'; TINDAKAN_RANAP = 'TindakanRanapInputTests'
+    KUNCI = 'KunciTanggalTests'
+}
+$tabelPenuh = New-Object 'System.Collections.Generic.HashSet[string]'
+$ddlPenuh = ''
+foreach ($c in [regex]::Matches($schema, '(?s)CREATE TABLE `\w+` \(.*?ENGINE=[^;]*;')) {
+    if ($tabelPenuh.Add([regex]::Match($c.Value, 'CREATE TABLE `(\w+)`').Groups[1].Value)) { $ddlPenuh += $c.Value + "`n" }
+}
+$sqlLain = ''
+foreach ($n in $lain.Keys) {
+    $db = "simrs_$($n.ToLower())_fixture"
+    $sqlLain += "DROP DATABASE IF EXISTS $db;`nCREATE DATABASE $db;`nUSE $db;`nSET FOREIGN_KEY_CHECKS=0;`n" + $ddlPenuh
 }
 
 $server = $null
@@ -95,8 +115,8 @@ try {
     $proyek = 'src\SimrsGramedika.Tests\SimrsGramedika.Tests.csproj'
     $saring = ' error |\[FAIL\]|Failed |Error Message|Expected|Actual|Exception|Passed!|Failed!|at Simrs'
 
-    foreach ($n in 'REGISTRASI', 'RESEP', 'PENUNJANG', 'RESEP_PULANG', 'FORMKLINIS') { Set-Item "Env:SIMRS_${n}_FIXTURE_PORT" "$Port" }
-    $kelas = 'RegistrasiMenuTests', 'ValidasiResepTests', 'JurnalPenunjangTests', 'ResepPulangTests', 'FormKlinisTests'
+    foreach ($n in 'REGISTRASI', 'RESEP', 'PENUNJANG', 'RESEP_PULANG', 'FORMKLINIS', 'TAGIHAN') { Set-Item "Env:SIMRS_${n}_FIXTURE_PORT" "$Port" }
+    $kelas = 'RegistrasiMenuTests', 'ValidasiResepTests', 'JurnalPenunjangTests', 'ResepPulangTests', 'FormKlinisTests', 'TagihanKunjunganTests'
     '== fixture'
     dotnet test $proyek @umum --filter (($kelas | ForEach-Object { "FullyQualifiedName~$_" }) -join '|') | Select-String $saring
     if ($LASTEXITCODE -ne 0) { $gagal += 'fixture' }
@@ -105,6 +125,13 @@ try {
     Import-Sql $penuh 'penuh'
     dotnet test $proyek @umum --filter 'FullyQualifiedName~AlurPenunjangRalanTests' | Select-String $saring
     if ($LASTEXITCODE -ne 0) { $gagal += 'alur' }
+
+    '== fixture skema penuh'
+    Get-ChildItem Env:SIMRS_*_FIXTURE_PORT | ForEach-Object { Remove-Item "Env:$($_.Name)" }
+    Import-Sql $sqlLain 'lain'
+    foreach ($n in $lain.Keys) { Set-Item "Env:SIMRS_${n}_FIXTURE_PORT" "$Port" }
+    dotnet test $proyek @umum --filter (($lain.Values | ForEach-Object { "FullyQualifiedName~$_" }) -join '|') | Select-String $saring
+    if ($LASTEXITCODE -ne 0) { $gagal += 'skema-penuh' }
 
     '== seluruh tes tanpa database'
     Get-ChildItem Env:SIMRS_*_FIXTURE_PORT | ForEach-Object { Remove-Item "Env:$($_.Name)" }

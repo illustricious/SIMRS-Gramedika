@@ -11,6 +11,8 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
 
     public const string IzinFarmasi = "resep_pulang";
 
+    private const double Toleransi = 0.0000001;
+
     public Task<IReadOnlyList<Row>> CariDokterAsync(AuthenticatedUser user, string query)
         => CariMasterAsync(user, """
             SELECT kd_dokter AS kode,nm_dokter AS nama FROM dokter
@@ -260,19 +262,59 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
             JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis
             JOIN resep_pulang d ON d.no_rawat=h.no_rawat AND d.tanggal=h.tgl_validasi AND d.jam=h.jam_validasi
             JOIN databarang b ON b.kode_brng=d.kode_brng
-            WHERE h.status='Sudah' AND r.stts<>'Batal' AND r.status_bayar<>'Sudah Bayar' {belumSerah}
+            WHERE h.status='Sudah' AND r.stts<>'Batal' {belumSerah}
+              AND NOT EXISTS (SELECT 1 FROM billing t WHERE t.no_rawat=h.no_rawat)
               AND CONCAT_WS(' ',h.no_permintaan,h.no_rawat,r.no_rkm_medis,p.nm_pasien) LIKE @p0
             GROUP BY h.no_permintaan,h.no_rawat,h.tgl_validasi,h.jam_validasi,p.nm_pasien
             ORDER BY h.tgl_validasi DESC,h.jam_validasi DESC,h.no_permintaan DESC LIMIT 100
             """, $"%{query.Trim()}%");
     }
 
+    /// <summary>Satu baris pengeluaran: <paramref name="Jumlah"/> adalah sisa yang tercatat saat dibaca.</summary>
+    public sealed record BarisKeluar(string Kode, string Nama, string Depo, string NoBatch, string NoFaktur, double Jumlah);
+
+    public sealed record BarisRetur(BarisKeluar Asal, double Jumlah);
+
+    public async Task<IReadOnlyList<BarisKeluar>> BarisValidasiAsync(AuthenticatedUser user, string noRawat,
+        string tanggalValidasi, string jamValidasi)
+    {
+        PastikanIzin(user, IzinFarmasi);
+        await using var db = await Db.OpenAsync(settings);
+        var rows = await db.QueryAsync("""
+            SELECT d.kode_brng,b.nama_brng,d.kd_bangsal,d.no_batch,d.no_faktur,d.jml_barang
+            FROM resep_pulang d LEFT JOIN databarang b ON b.kode_brng=d.kode_brng
+            WHERE d.no_rawat=@p0 AND d.tanggal=@p1 AND d.jam=@p2 ORDER BY b.nama_brng,d.kode_brng,d.no_batch,d.no_faktur
+            """, noRawat, tanggalValidasi, jamValidasi);
+        return rows.Select(r => new BarisKeluar(r.S("kode_brng"), r.S("nama_brng"), r.S("kd_bangsal"), r.S("no_batch"),
+            r.S("no_faktur"), r.D("jml_barang"))).ToList();
+    }
+
     /// <summary>
     /// Retur seluruh obat satu validasi: stok kembali ke depo/batch asal, baris pengeluaran dihapus, dan permintaan
     /// kembali berstatus "Belum" agar bisa dikoreksi, dibatalkan, atau divalidasi ulang. Seperti Khanza, tanpa jurnal.
     /// </summary>
-    public async Task ReturValidasiAsync(AuthenticatedUser user, string noRawat, string nomor,
-        string tanggalValidasi, string jamValidasi)
+    public Task ReturValidasiAsync(AuthenticatedUser user, string noRawat, string nomor,
+        string tanggalValidasi, string jamValidasi) =>
+        ReturAsync(user, noRawat, nomor, tanggalValidasi, jamValidasi, null);
+
+    /// <summary>
+    /// Retur sebagian: hanya jumlah yang dipilih kembali ke stok, sisanya tetap tercatat dan permintaan tetap
+    /// "Sudah". Bila tidak ada sisa, hasilnya sama dengan retur seluruhnya.
+    /// </summary>
+    public Task ReturSebagianAsync(AuthenticatedUser user, string noRawat, string nomor,
+        string tanggalValidasi, string jamValidasi, IReadOnlyList<BarisRetur> pilihan)
+    {
+        if (pilihan.Count == 0 || pilihan.Any(p => !double.IsFinite(p.Jumlah) || p.Jumlah <= 0 || p.Jumlah > p.Asal.Jumlah)
+            || pilihan.Select(p => KunciBaris(p.Asal.Kode, p.Asal.NoBatch, p.Asal.NoFaktur)).Distinct().Count() != pilihan.Count)
+            throw new InvalidOperationException("Isi jumlah retur lebih dari nol dan tidak melebihi jumlah yang keluar.");
+        return ReturAsync(user, noRawat, nomor, tanggalValidasi, jamValidasi, pilihan);
+    }
+
+    private static (string, string, string) KunciBaris(string kode, string batch, string faktur) =>
+        (kode.ToUpperInvariant(), batch.ToUpperInvariant(), faktur.ToUpperInvariant());
+
+    private async Task ReturAsync(AuthenticatedUser user, string noRawat, string nomor,
+        string tanggalValidasi, string jamValidasi, IReadOnlyList<BarisRetur>? pilihan)
     {
         PastikanIzin(user, IzinFarmasi);
         await using var db = await Db.OpenAsync(settings);
@@ -300,19 +342,44 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
         if (baris.Count == 0)
             throw new InvalidOperationException("Data pengeluaran obat untuk validasi ini tidak ditemukan. Periksa lewat Khanza.");
 
+        var diminta = pilihan?.ToDictionary(p => KunciBaris(p.Asal.Kode, p.Asal.NoBatch, p.Asal.NoFaktur));
+        var tersisa = 0;
+        var cocok = 0;
         foreach (var row in baris)
         {
+            var kunci = KunciBaris(row.S("kode_brng"), row.S("no_batch"), row.S("no_faktur"));
+            var keluar = row.D("jml_barang");
+            var kembali = keluar;
+            if (diminta is not null)
+            {
+                if (!diminta.TryGetValue(kunci, out var p)) { tersisa++; continue; }
+                if (Math.Abs(p.Asal.Jumlah - keluar) > Toleransi || p.Asal.Depo != row.S("kd_bangsal"))
+                    throw new InvalidOperationException("Jumlah obat sudah berubah. Muat ulang daftar.");
+                kembali = p.Jumlah;
+                cocok++;
+            }
             var item = new StokItem(row.S("kode_brng"), "", "", "", row.S("no_batch"), row.S("no_faktur"), 0, 0, null);
-            await MenuAWrites.MutasiResepAsync(db, item, row.S("kd_bangsal"), row.D("jml_barang"), masuk: true,
+            await MenuAWrites.MutasiResepAsync(db, item, row.S("kd_bangsal"), kembali, masuk: true,
                 $"{noRawat} {pasien.S("nm_pasien")}", user.KodeLegacy);
+            const string SatuBaris = "no_rawat=@p0 AND tanggal=@p1 AND jam=@p2 AND kode_brng=@p3 AND no_batch=@p4 AND no_faktur=@p5";
+            object?[] kunciSql = [noRawat, tanggalValidasi, jamValidasi, row.S("kode_brng"), row.S("no_batch"), row.S("no_faktur")];
+            if (keluar - kembali <= Toleransi)
+                await db.ExecAsync($"DELETE FROM resep_pulang WHERE {SatuBaris}", kunciSql);
+            else
+            {
+                await db.ExecAsync($"UPDATE resep_pulang SET jml_barang=@p6,total=harga*@p6 WHERE {SatuBaris}",
+                    [.. kunciSql, keluar - kembali]);
+                tersisa++;
+            }
         }
+        if (diminta is not null && cocok != diminta.Count)
+            throw new InvalidOperationException("Jumlah obat sudah berubah. Muat ulang daftar.");
 
-        await db.ExecAsync("DELETE FROM resep_pulang WHERE no_rawat=@p0 AND tanggal=@p1 AND jam=@p2",
-            noRawat, tanggalValidasi, jamValidasi);
-        await db.ExecAsync("""
-            UPDATE permintaan_resep_pulang SET status='Belum',tgl_validasi='1000-01-01',jam_validasi='00:00:00'
-            WHERE no_permintaan=@p0
-            """, nomor);
+        if (tersisa == 0)
+            await db.ExecAsync("""
+                UPDATE permintaan_resep_pulang SET status='Belum',tgl_validasi='1000-01-01',jam_validasi='00:00:00'
+                WHERE no_permintaan=@p0
+                """, nomor);
         await db.CommitAsync();
     }
 

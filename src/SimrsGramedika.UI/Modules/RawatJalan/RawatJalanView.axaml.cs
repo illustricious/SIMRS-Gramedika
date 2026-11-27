@@ -62,6 +62,11 @@ public partial class RawatJalanView : UserControl
     {
         _embedded = embedded;
         InitializeComponent();
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), AppSession.CurrentUser?.IsAdminUtama == true))
+        {
+            this.FindControl<CalendarDatePicker>("TanggalPicker")!.IsEnabled = false;
+            this.FindControl<TextBox>("JamBox")!.IsEnabled = false;
+        }
 
         PatientContextMenu.Attach<RawatJalanKunjungan>(this.FindControl<DataGrid>("QueueGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.Pasien),

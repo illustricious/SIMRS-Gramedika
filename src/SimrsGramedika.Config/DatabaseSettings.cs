@@ -21,6 +21,9 @@ public class DatabaseSettings
     /// <summary>Legacy database.xml AKTIFKANBATCHOBAT: obat/BHP dipotong per no_batch/no_faktur.</summary>
     public bool AktifkanBatchObat { get; init; }
 
+    /// <summary>Legacy database.xml TANGGALMUNDUR: false mengunci tanggal dan jam bagi selain Admin Utama.</summary>
+    public bool TanggalMundur { get; init; } = true;
+
     /// <summary>Legacy database.xml HPPFARMASI: databarang/data_batch column used as HPP (dasar | h_beli).</summary>
     public string HppFarmasi { get; init; } = "dasar";
 
@@ -69,7 +72,7 @@ public class DatabaseSettings
         Name = name ?? Name, Host = Host, Port = Port, Database = Database, User = User, Password = Password,
         AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi, WebUrl = web ?? WebUrl,
         UrutNoReg = UrutNoReg, BaseNoReg = BaseNoReg, JadwalDokterDiRegistrasi = JadwalDokterDiRegistrasi,
-        PembulatanHargaObat = PembulatanHargaObat,
+        PembulatanHargaObat = PembulatanHargaObat, TanggalMundur = TanggalMundur,
     };
 
     /// <summary>

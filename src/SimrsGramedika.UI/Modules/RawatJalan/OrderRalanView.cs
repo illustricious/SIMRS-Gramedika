@@ -75,7 +75,8 @@ internal sealed class OrderRalanView : UserControl
             actions.Children.Insert(1, Ui.Btn("Ganti jumlah & aturan", async (_, _) => await JalankanAsync(GantiBarisAsync)));
         _layout = new Grid { Margin = new Thickness(10), RowSpacing = 6, RowDefinitions = new("Auto,Auto,Auto,*,Auto,*,Auto,*,Auto") };
         var judulRiwayat = Ui.Bar(Ui.Section("Riwayat kunjungan"),
-            Ui.Btn("Ubah order terpilih", async (_, _) => await JalankanAsync(UbahTerpilihAsync)));
+            Ui.Btn("Ubah order terpilih", async (_, _) => await JalankanAsync(UbahTerpilihAsync)),
+            Ui.Btn("Batalkan order terpilih", async (_, _) => await JalankanAsync(BatalkanTerpilihAsync)));
         Control[] controls = [Ui.Title(Resep ? "Input Resep" : jenis == JenisOrderRalan.Radiologi ? "Permintaan Radiologi" : "Permintaan Laboratorium"),
             toolbar, input, _hasil, actions, _draf, judulRiwayat, _riwayat, _status];
         for (var i = 0; i < controls.Length; i++) { Grid.SetRow(controls[i], i); _layout.Children.Add(controls[i]); }
@@ -119,6 +120,18 @@ internal sealed class OrderRalanView : UserControl
         _batalUbah.IsVisible = true;
         IsiDraf();
         Ui.Ok(_status, $"Mengubah order {draf.Nomor}.");
+    }
+
+    private async Task BatalkanTerpilihAsync()
+    {
+        var nomor = (Ui.Selected<Row>(_riwayat) ?? throw new ArgumentException("Pilih order pada riwayat kunjungan.")).S("nomor");
+        if (!await Dialogs.ConfirmAsync(this, "Batalkan order",
+                $"Hapus order {nomor} beserta seluruh itemnya? Tindakan ini tidak bisa diurungkan.")) return;
+        await Service.BatalkanAsync(nomor);
+        if (_diubah?.Nomor == nomor) SelesaiUbah();
+        Ui.Ok(_status, $"Order {nomor} dibatalkan.");
+        try { await MuatRiwayatAsync(); }
+        catch (Exception) { Ui.Ok(_status, $"Order {nomor} dibatalkan. Riwayat belum bisa dimuat ulang."); }
     }
 
     private void SelesaiUbah()

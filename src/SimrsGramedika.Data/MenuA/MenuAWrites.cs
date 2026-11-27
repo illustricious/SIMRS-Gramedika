@@ -27,8 +27,8 @@ internal static class MenuAWrites
             """, noRawat) ?? throw new InvalidOperationException("No. Rawat tidak ditemukan.");
         if (row.S("stts") == "Batal")
             throw new InvalidOperationException("Registrasi pasien sudah dibatalkan.");
-        if (cekBilling && (row.S("status_bayar") == "Sudah Bayar" ||
-            await db.CountAsync("SELECT COUNT(*) FROM billing WHERE no_rawat=@p0", noRawat) > 0))
+        if (cekBilling &&
+            await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
             throw new InvalidOperationException("Billing pasien sudah diverifikasi. Hubungi bagian kasir/keuangan.");
         return row;
     }

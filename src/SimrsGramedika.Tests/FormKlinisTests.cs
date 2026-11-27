@@ -79,7 +79,13 @@ public sealed class FormKlinisTests
             {
                 var (tipe, rinci) = kolom[isian.Kolom];
                 if (tipe == "enum")
-                    Assert.Equal(Regex.Matches(rinci, "'([^']*)'").Select(m => m.Groups[1].Value), isian.Pilihan!);
+                {
+                    var enumDb = Regex.Matches(rinci, "'([^']*)'").Select(m => m.Groups[1].Value).ToArray();
+                    // Layar Java kriteria keluar isolasi tidak menawarkan "Tidak Berlaku" walau kolomnya menerima.
+                    if (form.Tabel == "checklist_kriteria_keluar_isolasi") Assert.Subset(enumDb.ToHashSet(), isian.Pilihan!.ToHashSet());
+                    else Assert.Equal(enumDb, isian.Pilihan!);
+                    if (isian.Awal is not null) Assert.Contains(isian.Awal, isian.Pilihan!);
+                }
                 else Assert.Null(isian.Pilihan);
                 if (tipe == "varchar" && !isian.Otomatis) Assert.InRange(isian.Maks, 1, int.Parse(rinci));
             }
@@ -100,6 +106,7 @@ public sealed class FormKlinisTests
             """);
         await db.ExecAsync("INSERT INTO petugas(nip,nama) VALUES ('P1','Petugas Satu'),('P2','Petugas Dua')");
         await db.ExecAsync("INSERT INTO dokter(kd_dokter,nm_dokter) VALUES ('D1','Dokter Satu')");
+        await db.ExecAsync("INSERT INTO pegawai(nik,nama) VALUES ('P1','Pegawai Satu'),('P2','Pegawai Dua')");
 
         var sekarang = (DateTime)(await db.ScalarAsync("SELECT NOW()"))!;
         sekarang = sekarang.AddTicks(-(sekarang.Ticks % TimeSpan.TicksPerSecond));
@@ -125,9 +132,9 @@ public sealed class FormKlinisTests
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(bukan).SimpanAsync(sekarang, akun.UserId, isi));
             if (form.Isian.FirstOrDefault(i => i.Wajib) is { } wajib)
                 await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "", new Dictionary<string, string>(isi) { [wajib.Kolom] = "  " }));
-            var panjang = form.Isian.First(i => i.Maks > 0);
-            await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "",
-                new Dictionary<string, string>(isi) { [panjang.Kolom] = new string('x', panjang.Maks + 1) }));
+            if (form.Isian.FirstOrDefault(i => i.Maks > 0) is { } panjang)
+                await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "",
+                    new Dictionary<string, string>(isi) { [panjang.Kolom] = new string('x', panjang.Maks + 1) }));
             if (form.Isian.FirstOrDefault(i => i.Pilihan is not null) is { } pilih)
                 await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "",
                     new Dictionary<string, string>(isi) { [pilih.Kolom] = "Di luar daftar" }));
@@ -147,13 +154,15 @@ public sealed class FormKlinisTests
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(sekarang, "", isi));
 
             // Bukan pemilik ditolak, termasuk bila ia berhak atas menunya.
-            var kolomUbah = form.Isian.First(i => i is { Otomatis: false, Pilihan: null });
-            var baru = new Dictionary<string, string>(isi) { [kolomUbah.Kolom] = "2" };
+            // Formulir tanpa isian teks diubah lewat pilihan pertamanya.
+            var kolomUbah = form.Isian.FirstOrDefault(i => i is { Otomatis: false, Pilihan: null }) ?? form.Isian[0];
+            var nilaiBaru = kolomUbah.Pilihan?[0] ?? "2";
+            var baru = new Dictionary<string, string>(isi) { [kolomUbah.Kolom] = nilaiBaru };
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(lain).UbahAsync(catatan, sekarang, "", baru));
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(lain).HapusAsync(catatan));
             await service.UbahAsync(catatan, sekarang.AddMinutes(-1), "", baru);
             var diubah = Assert.Single((await service.MuatAsync()).Catatan);
-            Assert.Equal(("2", form.SatuPerKunjungan ? diubah.Waktu : sekarang.AddMinutes(-1)), (diubah.Isi[kolomUbah.Kolom], diubah.Waktu));
+            Assert.Equal((nilaiBaru, form.SatuPerKunjungan ? diubah.Waktu : sekarang.AddMinutes(-1)), (diubah.Isi[kolomUbah.Kolom], diubah.Waktu));
             // Data lama dari layar yang belum dimuat ulang tidak menimpa perubahan terbaru.
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.UbahAsync(catatan, sekarang, "", isi));
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.HapusAsync(catatan));
@@ -196,5 +205,25 @@ public sealed class FormKlinisTests
             catch (InvalidOperationException) { return false; }
         }));
         Assert.Single(hasil, ok => ok);
+        await keperawatan.HapusAsync(Assert.Single((await keperawatan.MuatAsync()).Catatan));
+
+        // TANGGALMUNDUR=no: waktu pilihan akun biasa diganti waktu server, dan tidak bisa digeser saat diubah.
+        var terkunci = new DatabaseSettings { Host = settings.Host, User = settings.User, Database = settings.Database,
+            Port = settings.Port, TanggalMundur = false };
+        var catatanForm = FormKlinisKatalog.CatatanKeperawatanRalan;
+        var dikunci = new FormKlinisService(terkunci, petugas, catatanForm, "R1");
+        Assert.True(dikunci.TanggalTerkunci);
+        Assert.False(keperawatan.TanggalTerkunci);
+        Assert.False(new FormKlinisService(terkunci, admin, catatanForm, "R1").TanggalTerkunci);
+        Assert.False(new FormKlinisService(terkunci, petugas, FormKlinisKatalog.Semua.Single(f => !f.IkutKunciTanggal), "R1").TanggalTerkunci);
+        await dikunci.SimpanAsync(sekarang.AddDays(-1), "", new Dictionary<string, string> { ["uraian"] = "kunci" });
+        var tercatat = Assert.Single((await dikunci.MuatAsync()).Catatan);
+        Assert.InRange(tercatat.Waktu, sekarang, sekarang.AddMinutes(5));
+        await dikunci.UbahAsync(tercatat, sekarang.AddDays(-1), "", new Dictionary<string, string> { ["uraian"] = "ubah" });
+        var sesudah = Assert.Single((await dikunci.MuatAsync()).Catatan);
+        Assert.Equal((tercatat.Waktu, "ubah"), (sesudah.Waktu, sesudah.Isi["uraian"]));
+        // Admin Utama tetap bisa memilih waktu.
+        await new FormKlinisService(terkunci, admin, catatanForm, "R1").UbahAsync(sesudah, sekarang.AddDays(-1), "P1", sesudah.Isi);
+        Assert.Equal(sekarang.AddDays(-1), Assert.Single((await dikunci.MuatAsync()).Catatan).Waktu);
     }
 }

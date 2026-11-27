@@ -28,6 +28,7 @@ internal sealed class TindakanRanapWindow : Window
     {
         _service = new(DatabaseSettings.Load(), visit.Key, visit.NoRekamMedis, user);
         Title = "Input Tindakan Rawat Inap";
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), user.IsAdminUtama)) _tanggal.IsEnabled = _jam.IsEnabled = false;
         Width = 810;
         Height = 630;
         WindowStartupLocation = WindowStartupLocation.CenterOwner;

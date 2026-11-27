@@ -418,9 +418,8 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
     private async Task EnsureNotLockedAsync(string noRawat, string action, CancellationToken ct)
     {
         var visit = await KunjunganRanap.KunciAsync(db, noRawat, ct);
-        var billed = await ScalarAsync("select count(*) as Value from billing where no_rawat={0}", [noRawat], ct);
-        if (billed > 0 || visit.Status == SimrsGramedika.Core.Entities.StatusRegistrasi.Batal ||
-            visit.StatusBayar == SimrsGramedika.Core.Entities.StatusBayar.SudahBayar)
+        if (visit.Status == SimrsGramedika.Core.Entities.StatusRegistrasi.Batal ||
+            await TagihanKunjungan.SudahDitagihAsync(db, visit.NoRawat, ct))
             throw new InvalidOperationException($"Data billing sudah terverifikasi (atau registrasi batal), {action}.\nSilahkan hubungi bagian kasir/keuangan.");
     }
 

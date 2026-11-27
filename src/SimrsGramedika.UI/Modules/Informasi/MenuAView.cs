@@ -161,13 +161,61 @@ public sealed class MenuAView : MasterView
             q => repo.CariBisaDireturAsync(user, q),
             r => $"{r.S("no_permintaan")} · {r.S("no_rawat")} · {r.S("nm_pasien")} · {r.S("obat")}");
         if (row is null) return;
-        if (!await Dialogs.ConfirmAsync(this, "Retur Validasi Resep Pulang",
-                $"Kembalikan seluruh obat {row.S("nm_pasien")} ke depo asal?\n{row.S("obat")}\n\n" +
-                "Pastikan obat belum diterima pasien. Permintaan kembali berstatus Belum.")) return;
-        await repo.ReturValidasiAsync(user, row.S("no_rawat"), row.S("no_permintaan"),
-            row.S("tgl_validasi"), row.S("jam_validasi"));
+        var baris = await repo.BarisValidasiAsync(user, row.S("no_rawat"), row.S("tgl_validasi"), row.S("jam_validasi"));
+        var dialog = new ReturResepDialog(repo, user, row, baris);
+        await dialog.ShowDialog(owner);
+        if (!dialog.Saved) return;
         await ReloadAsync();
-        Ui.Ok(StatusText, "Obat sudah dikembalikan ke stok. Permintaan bisa dikoreksi, dibatalkan, atau divalidasi ulang.");
+        Ui.Ok(StatusText, dialog.Seluruhnya
+            ? "Obat sudah dikembalikan ke stok. Permintaan bisa dikoreksi, dibatalkan, atau divalidasi ulang."
+            : "Sebagian obat sudah dikembalikan ke stok. Sisanya siap diserahkan.");
+    }
+
+    private sealed class ReturResepDialog : FormDialog
+    {
+        private readonly ResepPulangRepository _repo;
+        private readonly AuthenticatedUser _user;
+        private readonly Row _row;
+        private readonly List<(ResepPulangRepository.BarisKeluar Asal, TextBox Jumlah)> _isian = [];
+
+        public bool Seluruhnya { get; private set; }
+
+        public ReturResepDialog(ResepPulangRepository repo, AuthenticatedUser user, Row row,
+            IReadOnlyList<ResepPulangRepository.BarisKeluar> baris) : base("Retur Validasi Resep Pulang")
+        {
+            _repo = repo;
+            _user = user;
+            _row = row;
+            var panel = new StackPanel { Spacing = 8 };
+            panel.Children.Add(Ui.Hint($"{row.S("nm_pasien")} · {row.S("no_rawat")} · {row.S("no_permintaan")}"));
+            panel.Children.Add(Ui.Hint("Isi jumlah yang kembali ke depo asal; 0 berarti tidak diretur. Pastikan obat itu belum diterima pasien."));
+            foreach (var item in baris)
+            {
+                var jumlah = new TextBox { Text = item.Jumlah.ToString(System.Globalization.CultureInfo.CurrentCulture), Width = 110 };
+                var label = $"{item.Nama} · keluar {item.Jumlah} · depo {item.Depo}" +
+                    (item.NoBatch.Length > 0 ? $" · batch {item.NoBatch} / {item.NoFaktur}" : "");
+                Avalonia.Automation.AutomationProperties.SetName(jumlah, $"Jumlah retur {item.Nama}");
+                panel.Children.Add(new TextBlock { Text = label, TextWrapping = Avalonia.Media.TextWrapping.Wrap });
+                panel.Children.Add(jumlah);
+                _isian.Add((item, jumlah));
+            }
+            SetBody(panel, "Retur ke Depo");
+        }
+
+        protected override async Task OnSaveAsync()
+        {
+            var pilihan = new List<ResepPulangRepository.BarisRetur>();
+            foreach (var (asal, isian) in _isian)
+            {
+                if (!double.TryParse(isian.Text, System.Globalization.NumberStyles.AllowDecimalPoint,
+                        System.Globalization.CultureInfo.CurrentCulture, out var jumlah))
+                    throw new InvalidOperationException($"Jumlah retur {asal.Nama} harus berupa angka nol atau lebih.");
+                if (jumlah > 0) pilihan.Add(new(asal, jumlah));
+            }
+            Seluruhnya = pilihan.Count == _isian.Count && pilihan.All(p => p.Jumlah == p.Asal.Jumlah);
+            await _repo.ReturSebagianAsync(_user, _row.S("no_rawat"), _row.S("no_permintaan"),
+                _row.S("tgl_validasi"), _row.S("jam_validasi"), pilihan);
+        }
     }
 
     private sealed class SerahResepDialog : FormDialog

@@ -42,9 +42,9 @@ public sealed class FormKlinisView : PageView
         _settings = settings ?? DatabaseSettings.Load();
         _service = new(_settings, user, form, noRawat);
 
-        _kolomDaftar = form.Isian.Where(i => i.Kolom.Contains("total") || i.Kolom == "hasil_skrining")
+        _kolomDaftar = form.Isian.Where(i => i.Kolom.Contains("total") || i.Kolom is "hasil_skrining" or "keputusan" or "indikasi_isolasi")
             .Concat(form.Isian.Where(i => !i.Otomatis)).Distinct().Take(6).ToArray();
-        var sebutan = form.Pemilik == PemilikForm.Dokter ? "Dokter" : "Petugas";
+        var sebutan = char.ToUpperInvariant(form.SebutanPemilik[0]) + form.SebutanPemilik[1..];
         _grid = Ui.Grid([new("waktu", "Waktu", 145), new("pemilik", sebutan, 160),
             .. _kolomDaftar.Select(i => new Col(i.Kolom, i.Label, 150))]);
         _grid.SelectionChanged += (_, _) => { if (Ui.Selected<CatatanKlinis>(_grid) is { } c) Tampilkan(c); };
@@ -53,8 +53,9 @@ public sealed class FormKlinisView : PageView
         isi.Children.Add(_pasien);
         AutomationProperties.SetName(_tanggal, "Tanggal catatan");
         AutomationProperties.SetName(_jam, "Jam catatan");
-        var kepala = Ui.Bar(Ui.L("Tanggal"), _tanggal, Ui.L("Jam"), _jam,
-            Ui.Btn("Sekarang", (_, _) => AturWaktu(DateTime.Now)), Ui.L($"{sebutan} :"), _pemilikNama);
+        var sekarang = Ui.Btn("Sekarang", (_, _) => AturWaktu(DateTime.Now));
+        if (_service.TanggalTerkunci) _tanggal.IsEnabled = _jam.IsEnabled = sekarang.IsEnabled = false;
+        var kepala = Ui.Bar(Ui.L("Tanggal"), _tanggal, Ui.L("Jam"), _jam, sekarang, Ui.L($"{sebutan} :"), _pemilikNama);
         if (user.IsAdminUtama)
             kepala.Children.Add(Ui.Btn($"Pilih {sebutan}", async (_, _) => await JalankanAsync(PilihPemilikAsync)));
         isi.Children.Add(kepala);
@@ -100,6 +101,8 @@ public sealed class FormKlinisView : PageView
             pendek.Clear();
         }
 
+        var perBaris = _form.Isian.Any(f => f.Pilihan is not null && !f.Kolom.StartsWith("penilaian_", StringComparison.Ordinal)
+            && f.Label.Length > PanjangLabel);
         for (var i = 0; i < _form.Isian.Length; i++)
         {
             var f = _form.Isian[i];
@@ -118,6 +121,13 @@ public sealed class FormKlinisView : PageView
                 isi.Children.Add(Ui.Section(bagian));
             }
             var kontrol = Buat(f);
+            // Formulir berisi kalimat panjang (check list kriteria) ditulis satu pilihan per baris agar tidak bertumpuk.
+            if (f.Pilihan is not null && perBaris)
+            {
+                Tuang();
+                isi.Children.Add(Baris(f.Label, kontrol));
+                continue;
+            }
             if (!Panjang(f))
             {
                 pendek.Add((f.Label + " :", kontrol));
@@ -128,6 +138,17 @@ public sealed class FormKlinisView : PageView
             isi.Children.Add(kontrol);
         }
         Tuang();
+    }
+
+    private const int PanjangLabel = 45;
+
+    private static Avalonia.Controls.Grid Baris(string label, Control kontrol)
+    {
+        var baris = new Avalonia.Controls.Grid { ColumnDefinitions = new ColumnDefinitions("*,260"), ColumnSpacing = 12 };
+        baris.Children.Add(new TextBlock { Text = label, TextWrapping = TextWrapping.Wrap, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center });
+        Avalonia.Controls.Grid.SetColumn(kontrol, 1);
+        baris.Children.Add(kontrol);
+        return baris;
     }
 
     private static bool Panjang(IsianKlinis f) => f.Pilihan is null && f.Maks >= 200;
@@ -208,7 +229,7 @@ public sealed class FormKlinisView : PageView
     {
         _grid.SelectedItem = null;
         _mengisi = true;
-        foreach (var f in _form.Isian) Atur(f, f.Pilihan?[0] ?? "");
+        foreach (var f in _form.Isian) Atur(f, f.Awal ?? f.Pilihan?[0] ?? "");
         _mengisi = false;
         AturWaktu(DateTime.Now);
         AturPemilik(_akun?.Kode ?? "", _akun?.Nama ?? "");

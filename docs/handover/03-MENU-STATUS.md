@@ -42,6 +42,6 @@ Fitur klinis di luar katalog menu (toolbar): Registrasi, Rawat Jalan (pemeriksaa
 ## Keterbatasan lintas menu
 
 - Kasir mendukung pelunasan dan Farmasi mendukung jual bebas nonbatch. Batas per cabang ada di [audit pelayanan inti](../tracker/AUDIT_PELAYANAN_INTI.md).
-- PDF tersedia antara lain untuk daftar Registrasi, kuitansi Kasir dan bukti serah obat pulang.
+- PDF tersedia antara lain untuk layar laporan generik, daftar Registrasi, kuitansi Kasir dan bukti serah obat pulang.
 - Pemetaan tile ke hak akses mengikuti Khanza. Tile tanpa hak akses tidak tampil.
 - Penyimpanan password: tabel legacy `user`/`admin` menyimpan plaintext di versi lama. Rencana "rehash saat login pertama" belum diselesaikan (lihat [04-HISTORY.md](04-HISTORY.md), bagian `LegacyUserRepository`).

@@ -54,6 +54,14 @@ Formulir berpola "satu tabel, catatan per kunjungan" tidak dibuat sebagai layar 
 
 Kunci baris `reg_periksa` (`FOR UPDATE`), periksa billing dan data terkini, kunci dokumen, lalu stok. Jangan melakukan baca biasa di dalam transaksi sebelum kunci pertama: pada REPEATABLE READ itu membekukan snapshot lama.
 
+## Cek kunjungan sudah ditagih
+
+Penolakan karena tagihan lewat `TagihanKunjungan.SudahDitagihAsync` (`Data/Keuangan/TagihanKunjungan.cs`). Aturannya `Sequel.cariRegistrasi` Khanza: kunjungan dianggap sudah ditagih bila punya baris `billing`; `status_bayar` dan `nota_inap` tidak dilihat. Jangan menulis query `billing` sendiri di layanan baru. Pemanggil tetap mengunci `reg_periksa` lebih dulu, menangani registrasi batal, dan menulis pesannya sendiri. Kasir menambah ceknya sendiri karena Kasir yang menulis tagihan.
+
+## Tanggal mundur
+
+Pengaturan profil koneksi **Izinkan tanggal mundur** (`DatabaseSettings.TanggalMundur`, bawaan aktif) meniru `TANGGALMUNDUR` Khanza. Bila dimatikan, selain Admin Utama tidak bisa memilih tanggal dan jam: kontrolnya nonaktif, dan layanan memaksa catatan baru memakai waktu server serta mempertahankan waktu tersimpan saat diubah (`Data/KunciTanggal.cs`). Berlaku pada tindakan rawat jalan dan inap, SOAPIE rawat jalan dan inap, catatan dokter, obstetri/ginekologi, dan empat formulir rekam medis (`FormKlinis.IkutKunciTanggal`). Layar baru yang menerima waktu dari pengguna perlu memakai kelas yang sama. Layar lain, termasuk transaksi stok dan farmasi, belum dikunci. Pengaturan ini tersimpan per profil di komputer pengguna, bukan di database.
+
 ## Data dan jurnal
 
 - `Db` (`Data/Sql/Db.cs`): koneksi MySql, `QueryAsync`/`ExecAsync`/`CountAsync`/`ScalarAsync`, transaksi `BeginAsync`/`CommitAsync`, penomoran `AutoNomorAsync`. Parameter bernama `@p0..`.

@@ -171,6 +171,8 @@ public class RawatJalanService(DatabaseSettings settings)
         ValidasiDasar(input);
         PastikanMilikSendiri(akses, input.Nip);
         await using var db = await Db.OpenAsync(settings);
+        var waktu = await KunciTanggal.WaktuAsync(db, KunciTanggal.Aktif(settings, akses.IsAdminUtama), input.Tanggal.Date + input.Jam);
+        input = input with { Tanggal = waktu.Date, Jam = waktu.TimeOfDay };
         var registrasi = await WaktuRegistrasiAsync(db, input.NoRawat);
         if (!akses.IsAdminUtama) PastikanTidakSebelumRegistrasi(registrasi, input.Tanggal.Date + input.Jam);
         await PastikanPegawaiAsync(db, input.Nip);
@@ -192,6 +194,8 @@ public class RawatJalanService(DatabaseSettings settings)
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         var lama = await KunciPemeriksaanAsync(db, asal);
+        if (KunciTanggal.Aktif(settings, akses.IsAdminUtama))
+            input = input with { Tanggal = asal.Tanggal, Jam = asal.Jam };
         if (!akses.IsAdminUtama)
         {
             PastikanMilikSendiri(akses, lama.S("nip"));

@@ -148,6 +148,10 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         await using var tx = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, dilihat.NoRawat, ct);
         await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
+        if (reg.StatusBayar == StatusBayar.SudahBayar || await db.Database.SqlQuery<bool>($"""
+            SELECT EXISTS(SELECT 1 FROM nota_inap WHERE no_rawat={reg.NoRawat}) AS Value
+            """).SingleAsync(ct))
+            throw new InvalidOperationException("Tagihan pasien sudah disimpan. Periksa di Kasir sebelum mengubah data rawat inap.");
         var visit = await KunjunganQuery.SingleAsync(r => r.Reg.NoRawat == reg.NoRawat, ct);
         var bill = (await BuatRingkasanAsync([visit], ct)).Single();
         if (!bill.Ranap) throw new InvalidOperationException("Kunjungan ini bukan rawat inap.");

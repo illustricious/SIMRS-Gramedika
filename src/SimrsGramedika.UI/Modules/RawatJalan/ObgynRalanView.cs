@@ -28,6 +28,7 @@ internal sealed class ObgynRalanView : UserControl
     public ObgynRalanView(string noRawat, AuthenticatedUser user, bool obstetri)
     {
         _noRawat = noRawat;
+        if (KunciTanggal.Aktif(DatabaseSettings.Load(), user.IsAdminUtama)) _date.IsEnabled = _time.IsEnabled = false;
         _title = obstetri ? "Pemeriksaan Obstetri" : "Pemeriksaan Ginekologi";
         _service = new(DatabaseSettings.Load(), noRawat, user, obstetri);
         _fields = _service.Fields.Select(f => f.Choices is { } choices

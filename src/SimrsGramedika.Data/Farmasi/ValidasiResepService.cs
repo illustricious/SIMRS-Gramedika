@@ -367,9 +367,8 @@ public sealed class ValidasiResepService(DatabaseSettings settings, Authenticate
             await db.QueryAsync("SELECT stok FROM gudangbarang WHERE kode_brng=@p0 FOR UPDATE", kode);
     }
 
-    private static async Task<bool> SudahBillingAsync(Db db, Row r) =>
-        r.S("status_bayar") == "Sudah Bayar" ||
-        await db.CountAsync("SELECT COUNT(*) FROM billing WHERE no_rawat=@p0", r.S("no_rawat")) > 0;
+    private static Task<bool> SudahBillingAsync(Db db, Row r) =>
+        TagihanKunjungan.SudahDitagihAsync(db, r.S("no_rawat"));
 
     private async Task JurnalAsync(Db db, ResepFarmasi resep, double jual, double hpp, bool batal)
     {
