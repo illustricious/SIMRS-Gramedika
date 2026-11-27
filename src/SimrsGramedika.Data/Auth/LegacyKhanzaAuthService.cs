@@ -44,14 +44,8 @@ public class LegacyKhanzaAuthService(DatabaseSettings settings) : IAuthService
         }
 
         var permissions = await GetUserPermissionsAsync(conn, userId, password, ct);
-        if (permissions is null)
-        {
-            // Legacy shows one message for both cases; distinguish only when cheap & safe.
-            var known = await ExistsAsync(conn,
-                "SELECT (SELECT COUNT(*) FROM admin WHERE usere=AES_ENCRYPT(@u,'nur')) + (SELECT COUNT(*) FROM `user` WHERE id_user=AES_ENCRYPT(@u,'nur'))",
-                userId, null, ct);
-            return LoginResult.Fail(known ? LoginFailureReason.WrongPassword : LoginFailureReason.UserNotFound);
-        }
+        // Satu alasan untuk keduanya, seperti Khanza, supaya layar login tidak membocorkan User ID yang terdaftar.
+        if (permissions is null) return LoginResult.Fail(LoginFailureReason.InvalidCredentials);
 
         await TrackAsync(conn, userId, ct);
         var nama = await GetNamaAsync(conn, userId, ct);
@@ -80,11 +74,11 @@ public class LegacyKhanzaAuthService(DatabaseSettings settings) : IAuthService
         }
     }
 
-    private static async Task<bool> ExistsAsync(MySqlConnection conn, string sql, string user, string? pass, CancellationToken ct)
+    private static async Task<bool> ExistsAsync(MySqlConnection conn, string sql, string user, string pass, CancellationToken ct)
     {
         await using var cmd = new MySqlCommand(sql, conn);
         cmd.Parameters.AddWithValue("@u", user);
-        if (pass is not null) cmd.Parameters.AddWithValue("@p", pass);
+        cmd.Parameters.AddWithValue("@p", pass);
         var n = Convert.ToInt64(await cmd.ExecuteScalarAsync(ct) ?? 0L);
         return n > 0;
     }

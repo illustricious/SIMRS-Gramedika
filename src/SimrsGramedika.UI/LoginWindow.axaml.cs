@@ -127,8 +127,7 @@ public partial class LoginWindow : Window
 
             errorText.Text = result.FailureReason switch
             {
-                LoginFailureReason.UserNotFound => "User tidak ditemukan.",
-                LoginFailureReason.WrongPassword => "Password salah.",
+                LoginFailureReason.InvalidCredentials => "User ID atau password salah.",
                 LoginFailureReason.AccountInactive => "Akun tidak aktif.",
                 LoginFailureReason.DatabaseUnavailable =>
                     $"Tidak bisa terhubung ke database {DatabaseSettings.Load().Summary}. Klik ⚙ untuk mengatur koneksi.",

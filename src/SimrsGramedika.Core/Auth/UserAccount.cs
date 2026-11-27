@@ -29,8 +29,8 @@ public static class AppSession
 public enum LoginFailureReason
 {
     None,
-    UserNotFound,
-    WrongPassword,
+    /// <summary>User ID atau password tidak cocok. Sengaja tidak dibedakan.</summary>
+    InvalidCredentials,
     AccountInactive,
     DatabaseUnavailable
 }

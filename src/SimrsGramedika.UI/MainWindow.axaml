@@ -171,6 +171,10 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Padding" Value="9,4" />
+            <!-- Button dan ToggleButton berbeda tinggi dan perataan bawaan; samakan supaya teksnya segaris. -->
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="CornerRadius" Value="5" />
         </Style>
