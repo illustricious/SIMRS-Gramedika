@@ -26,4 +26,4 @@ Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
 - Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 28 fixture; tanpa database 221 lulus, 42 dilewati).
-- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. Pre-release GitHub tertinggal dari source.
+- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611271423` (dari `16a8761`). Pre-release GitHub tertinggal dari source.
