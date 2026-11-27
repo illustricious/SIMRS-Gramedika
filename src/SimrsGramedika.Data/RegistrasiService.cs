@@ -229,7 +229,7 @@ public class RegistrasiService(DatabaseSettings settings)
             throw new ArgumentOutOfRangeException(nameof(status), "Status registrasi tidak didukung.");
         return UbahStatusAsync(noRawat, akses, sekarang, async db =>
         {
-            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
+            if (await db.CountAsync("SELECT COUNT(no_rawat) FROM kamar_inap WHERE no_rawat=" + RawatGabungService.PemilikKamar("@p0"), noRawat) > 0)
                 throw new InvalidOperationException("Pasien sudah tercatat rawat inap. Ubah status melalui alur Rawat Inap.");
             if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
                 throw new InvalidOperationException("Registrasi sudah memiliki billing; status tidak diubah agar billing tetap konsisten.");

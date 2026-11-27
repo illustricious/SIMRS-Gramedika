@@ -57,10 +57,10 @@ public class BarcodeRepository(DatabaseSettings settings)
                 reg.S("kd_poli"), reg.S("nm_poli"), "", depo, kenaikan, Yes("poli_ralan") == "Yes", Yes("cara_bayar_ralan") == "Yes");
         }
 
-        var kamar = await db.FirstAsync("""
+        var kamar = await db.FirstAsync($"""
             SELECT b.kd_bangsal, b.nm_bangsal, k.kelas FROM kamar_inap ki
             JOIN kamar k ON k.kd_kamar=ki.kd_kamar JOIN bangsal b ON b.kd_bangsal=k.kd_bangsal
-            WHERE ki.no_rawat=@p0 AND ki.stts_pulang='-'
+            WHERE ki.no_rawat={RawatGabungService.PemilikKamar("@p0")} AND ki.stts_pulang='-'
             ORDER BY STR_TO_DATE(CONCAT(ki.tgl_masuk,' ',ki.jam_masuk),'%Y-%m-%d %H:%i:%s') DESC LIMIT 1
             """, noRawat) ?? throw new InvalidOperationException("Pasien ini tidak sedang dirawat inap (tidak ada kamar aktif).");
         var bangsal = kamar.S("kd_bangsal");

@@ -6,7 +6,8 @@ namespace SimrsGramedika.Data;
 
 public sealed record ObgynField(string Name, string Label, int Max, string[]? Choices = null);
 
-public sealed class PemeriksaanObgynService(DatabaseSettings settings, string noRawat, AuthenticatedUser user, bool obstetri)
+/// <summary>Pemeriksaan obstetri atau ginekologi; <paramref name="ranap"/> memilih tabel, hak akses dan jenis kunjungan rawat inap.</summary>
+public sealed class PemeriksaanObgynService(DatabaseSettings settings, string noRawat, AuthenticatedUser user, bool obstetri, bool ranap = false)
 {
     private static readonly string[] PlusMinus = ["-", "+"];
     public static readonly ObgynField[] Obstetri = [
@@ -23,8 +24,18 @@ public sealed class PemeriksaanObgynService(DatabaseSettings settings, string no
         new("cavum_uteri","Cavum uteri",50), new("mobilitas","Mobilitas",0,PlusMinus), new("ukuran","Ukuran",50), new("nyeri_tekan","Nyeri tekan",0,PlusMinus),
         new("adnexa_kanan","Adnexa kanan",50), new("adnexa_kiri","Adnexa kiri",50), new("cavum_douglas","Cavum Douglas",50)];
     public ObgynField[] Fields => obstetri ? Obstetri : Ginekologi;
-    private string Table => obstetri ? "pemeriksaan_obstetri_ralan" : "pemeriksaan_ginekologi_ralan";
-    private void Izin() { if (!user.HasPermission("tindakan_ralan")) throw new InvalidOperationException("Akun tidak memiliki hak tindakan rawat jalan."); }
+    private string Table => (obstetri, ranap) switch
+    {
+        (true, false) => "pemeriksaan_obstetri_ralan",
+        (false, false) => "pemeriksaan_ginekologi_ralan",
+        (true, true) => "pemeriksaan_obstetri_ranap",
+        (false, true) => "pemeriksaan_ginekologi_ranap",
+    };
+    private void Izin()
+    {
+        if (!user.HasPermission(ranap ? TindakanRanapInputService.Izin : TindakanRalanInputService.Izin))
+            throw new InvalidOperationException($"Akun tidak memiliki hak tindakan rawat {(ranap ? "inap" : "jalan")}.");
+    }
 
     public async Task<List<Row>> DaftarAsync()
     {
@@ -60,7 +71,8 @@ public sealed class PemeriksaanObgynService(DatabaseSettings settings, string no
 
     private async Task KunciKunjunganAsync(Db db, DateTime waktu)
     {
-        var visit = await db.FirstAsync("SELECT tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0 AND status_lanjut='Ralan' AND stts<>'Batal' FOR UPDATE", noRawat)
+        var visit = await db.FirstAsync("SELECT tgl_registrasi,jam_reg FROM reg_periksa WHERE no_rawat=@p0 AND status_lanjut=@p1 AND stts<>'Batal' FOR UPDATE",
+                noRawat, ranap ? "Ranap" : "Ralan")
             ?? throw new InvalidOperationException("Kunjungan tidak ditemukan atau dibatalkan.");
         if (!user.IsAdminUtama)
         {

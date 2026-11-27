@@ -46,8 +46,12 @@ public partial class RawatInapView : UserControl
         this.FindControl<Button>("PemeriksaanButton")!.IsVisible =
             AppSession.CurrentUser?.HasPermission(PemeriksaanRanapService.Izin) == true;
         this.FindControl<Button>("TindakanButton")!.IsVisible =
+            this.FindControl<Button>("ObgynButton")!.IsVisible =
             AppSession.CurrentUser?.HasPermission(TindakanRanapInputService.Izin) == true;
-        this.FindControl<Button>("PulangButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("kamar_inap") == true;
+        this.FindControl<Button>("PulangButton")!.IsVisible = this.FindControl<Button>("HapusDataSalahButton")!.IsVisible =
+            this.FindControl<Button>("RanapGabungButton")!.IsVisible =
+            AppSession.CurrentUser?.HasPermission("kamar_inap") == true;
+        this.FindControl<Button>("OperasiButton")!.IsVisible = AppSession.CurrentUser?.HasPermission(OperasiService.Izin) == true;
         this.FindControl<Button>("ResumePulangButton")!.IsVisible = AppSession.CurrentUser?.HasPermission(ResumePulangRanapService.Izin) == true;
         this.FindControl<Button>("BuatResepPulangButton")!.IsVisible =
             this.FindControl<Button>("ResepPulangButton")!.IsVisible =
@@ -209,7 +213,7 @@ public partial class RawatInapView : UserControl
 
     private void OnPulangClick(object? sender, RoutedEventArgs e)
     {
-        if (_saving || AppSession.CurrentUser?.HasPermission("kamar_inap") != true || !RequireSelected(mustBeActive: true)) return;
+        if (_saving || AppSession.CurrentUser?.HasPermission("kamar_inap") != true || !RequireSelected(mustBeActive: true) || !RequireBarisIbu()) return;
         var patient = Selected!;
         ShowAction(ActionMode.Pulang, patient);
         this.FindControl<TextBox>("DiagnosaAkhirBox")!.Text = patient.DiagnosaAkhir;
@@ -409,7 +413,7 @@ public partial class RawatInapView : UserControl
 
     private async void OnPindahClick(object? sender, RoutedEventArgs e)
     {
-        if (_saving || !RequireSelected(mustBeActive: true)) return;
+        if (_saving || !RequireSelected(mustBeActive: true) || !RequireBarisIbu()) return;
         var patient = Selected!;
         ShowAction(ActionMode.Pindah, patient);
         await LoadKamarKosongAsync("PindahKamarCombo", patient.NoRawat, patient);
@@ -441,6 +445,9 @@ public partial class RawatInapView : UserControl
     private void OnBillingClick(object? sender, RoutedEventArgs e)
     {
         if (!RequireSelected(mustBeActive: false) || Selected is not { } s) return;
+        // Tagihan bayi rawat gabung ada pada No. Rawat ibu.
+        if (s.NoRawatIbu is { } noRawatIbu)
+            s = (Grid().ItemsSource as IEnumerable<RawatInapListItem>)?.FirstOrDefault(r => r.NoRawat == noRawatIbu) ?? s;
         PatientMenuRequested?.Invoke(this, new(s.NoRawat, s.NoRekamMedis, s.NamaPasien, PatientMenuAction.BillingPembayaran));
     }
 
@@ -457,14 +464,71 @@ public partial class RawatInapView : UserControl
     {
         if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(TindakanRanapInputService.Izin))
             return;
-        if (!RequireSelected(mustBeActive: true) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
             return;
         await new TindakanRanapWindow(visit, user).ShowDialog(owner);
     }
 
+    private async void OnObgynClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(TindakanRanapInputService.Izin))
+            return;
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+            return;
+        await new ObgynRanapWindow(visit, user).ShowDialog(owner);
+    }
+
+    private async void OnOperasiClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(OperasiService.Izin)) return;
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+            return;
+        await new OperasiWindow(visit, user).ShowDialog(owner);
+    }
+
+    private async void OnRanapGabungClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission(RawatGabungService.Izin)) return;
+        if (!RequireSelected(mustBeActive: true) || !RequireBarisIbu() || Selected is not { } visit ||
+            TopLevel.GetTopLevel(this) is not Window owner) return;
+        ShowAction(ActionMode.None);
+        await new RanapGabungWindow(visit, user).ShowDialog(owner);
+        await ReloadAsync();
+    }
+
+    /// <summary>Kamar, pulang dan jenis bayar bayi rawat gabung mengikuti ibunya.</summary>
+    private bool RequireBarisIbu()
+    {
+        if (Selected is not { BayiGabung: true } bayi) return true;
+        ShowStatus($"Ini baris bayi rawat gabung. Lakukan pada baris ibu (No. Rawat {bayi.NoRawatIbu}).", isError: true);
+        return false;
+    }
+
+    private async void OnHapusDataSalahClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user || !user.HasPermission("kamar_inap")) return;
+        if (!RequireSelected(mustBeActive: false) || !RequireBarisIbu() || Selected is not { } s ||
+            TopLevel.GetTopLevel(this) is not Window owner) return;
+        ShowAction(ActionMode.None);
+        _saving = true;
+        try
+        {
+            if (!await Dialogs.ConfirmAsync(owner, "Hapus data salah",
+                    $"Hapus baris kamar {s.Kamar} milik {s.NamaPasien} ({s.NoRawat}), masuk {s.TglMasuk} {s.JamMasukText}? " +
+                    "Baris kamar sebelumnya tidak dibuka kembali. Bila ini satu-satunya baris, kunjungan kembali menjadi rawat jalan.")) return;
+            using var db = SimrsGramedikaDbContextFactory.Create(DatabaseSettings.Load());
+            var jadiRalan = await new RawatInapRepository(db).HapusDataSalahAsync(s.Key, user.IsAdminUtama);
+            await ReloadAsync();
+            ShowStatus(jadiRalan ? $"Data kamar dihapus. Kunjungan {s.NoRawat} kembali menjadi rawat jalan."
+                : $"Satu baris kamar {s.NoRawat} dihapus.", isError: false);
+        }
+        catch (Exception ex) { ShowStatus($"Gagal: {ex.Message}", isError: true); }
+        finally { _saving = false; }
+    }
+
     private async void OnGantiClick(object? sender, RoutedEventArgs e)
     {
-        if (_saving || !RequireSelected(mustBeActive: false)) return;
+        if (_saving || !RequireSelected(mustBeActive: false) || !RequireBarisIbu()) return;
         var s = Selected!;
         ShowAction(ActionMode.Ganti, s);
         this.FindControl<TextBox>("GantiDiagnosaAwalBox")!.Text = s.DiagnosaAwal;

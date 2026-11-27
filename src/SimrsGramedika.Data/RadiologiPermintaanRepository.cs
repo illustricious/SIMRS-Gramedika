@@ -119,7 +119,7 @@ public class RadiologiPermintaanRepository(SimrsGramedikaDbContext db) : IRadiol
             sb.Append($@"left join (select ki.no_rawat, ki.kd_kamar from kamar_inap ki
                 inner join (select no_rawat, max(concat(tgl_masuk,' ',jam_masuk)) as max_masuk from kamar_inap {open}group by no_rawat) latest
                 on ki.no_rawat=latest.no_rawat and concat(ki.tgl_masuk,' ',ki.jam_masuk)=latest.max_masuk {openOuter}) ki_last
-                on r.no_rawat=ki_last.no_rawat
+                on ki_last.no_rawat=coalesce((select rg.no_rawat from ranap_gabung rg where rg.no_rawat2=r.no_rawat limit 1),r.no_rawat)
                 left join kamar km on ki_last.kd_kamar=km.kd_kamar
                 left join bangsal bg on km.kd_bangsal=bg.kd_bangsal ");
         }

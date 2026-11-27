@@ -344,7 +344,7 @@ public class FarmasiStokRepository(DatabaseSettings settings)
             SELECT h.no_permintaan, h.tgl_permintaan, h.jam, h.no_rawat, p.no_rkm_medis, p.nm_pasien, d.nm_dokter, h.status,
             IF(h.status='Sudah',CONCAT(h.tgl_validasi,' ',h.jam_validasi),'') AS validasi,
             (SELECT CONCAT(k.kd_kamar,' ',bs.nm_bangsal) FROM kamar_inap ki JOIN kamar k ON k.kd_kamar=ki.kd_kamar JOIN bangsal bs ON bs.kd_bangsal=k.kd_bangsal
-             WHERE ki.no_rawat=h.no_rawat ORDER BY ki.tgl_masuk DESC, ki.jam_masuk DESC LIMIT 1) AS kamar,
+             WHERE ki.no_rawat=COALESCE((SELECT rg.no_rawat FROM ranap_gabung rg WHERE rg.no_rawat2=h.no_rawat LIMIT 1),h.no_rawat) ORDER BY ki.tgl_masuk DESC, ki.jam_masuk DESC LIMIT 1) AS kamar,
             (SELECT COUNT(*) FROM detail_permintaan_stok_obat_pasien x WHERE x.no_permintaan=h.no_permintaan) AS item
             FROM permintaan_stok_obat_pasien h JOIN reg_periksa g ON g.no_rawat=h.no_rawat JOIN pasien p ON p.no_rkm_medis=g.no_rkm_medis
             LEFT JOIN dokter d ON d.kd_dokter=h.kd_dokter

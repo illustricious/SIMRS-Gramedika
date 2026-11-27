@@ -26,6 +26,7 @@ internal sealed class OrderRalanView : UserControl
         new("nama", "Item", 215), new("detail", "Rincian", 200), new("status", "Status", 130));
     private readonly TextBlock _status = Ui.Status();
     private readonly List<BarisOrderRalan> _baris = [];
+    private readonly List<RacikanOrder> _racikan = [];
     private readonly Grid _layout;
     private readonly JenisOrderRalan _jenis;
     private BahanPaRalan? _bahanPa;
@@ -70,9 +71,15 @@ internal sealed class OrderRalanView : UserControl
         var actions = Ui.Bar(Ui.Btn("Lepas item", (_, _) =>
         {
             if (Ui.Selected<BarisOrderRalan>(_draf) is { } row) { _baris.Remove(row); IsiDraf(); }
+            else if (Ui.Selected<RacikanOrder>(_draf) is { } racik) { _racikan.Remove(racik); IsiDraf(); }
         }), _kirim, _batalUbah);
         if (Resep)
+        {
             actions.Children.Insert(1, Ui.Btn("Ganti jumlah & aturan", async (_, _) => await JalankanAsync(GantiBarisAsync)));
+            actions.Children.Insert(2, Ui.Btn("Racikan baru", async (_, _) => await JalankanAsync(() => IsiRacikanAsync(null))));
+            actions.Children.Insert(3, Ui.Btn("Ubah racikan", async (_, _) => await JalankanAsync(() => IsiRacikanAsync(
+                Ui.Selected<RacikanOrder>(_draf) ?? throw new ArgumentException("Pilih racikan pada draf.")))));
+        }
         _layout = new Grid { Margin = new Thickness(10), RowSpacing = 6, RowDefinitions = new("Auto,Auto,Auto,*,Auto,*,Auto,*,Auto") };
         var judulRiwayat = Ui.Bar(Ui.Section("Riwayat kunjungan"),
             Ui.Btn("Ubah order terpilih", async (_, _) => await JalankanAsync(UbahTerpilihAsync)),
@@ -100,19 +107,36 @@ internal sealed class OrderRalanView : UserControl
     private void IsiDraf()
     {
         Ui.FillRows(_draf, _baris.Select(row => new GridRow([row.Kode, row.Nama,
-            Resep ? $"{row.Jumlah} · {row.Aturan}" : row.Template is { Count: > 0 } selected ? $"{selected.Count} rincian" : ""], row)));
+            Resep ? $"{row.Jumlah} · {row.Aturan}" : row.Template is { Count: > 0 } selected ? $"{selected.Count} rincian" : ""], row))
+            .Concat(_racikan.Select((r, i) => new GridRow([$"Racikan {i + 1}", $"{r.Nama} ({r.Metode})",
+                $"{r.Jumlah} · {r.Aturan} · {string.Join(", ", r.Bahan.Select(b => $"{b.Nama} {b.Jumlah}"))}"], r))));
         _kategori.IsEnabled = _baris.Count == 0 && _diubah is null;
+    }
+
+    private async Task IsiRacikanAsync(RacikanOrder? awal)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window owner) return;
+        var metode = await Service.MetodeRacikAsync();
+        if (metode.Count == 0) throw new InvalidOperationException("Metode racik belum diisi di database.");
+        var dialog = new RacikanWindow(Service, metode, awal);
+        if (await dialog.ShowDialog<RacikanOrder?>(owner) is not { } hasil) return;
+        var posisi = awal is null ? -1 : _racikan.IndexOf(awal);
+        if (posisi < 0) _racikan.Add(hasil);
+        else _racikan[posisi] = hasil;
+        IsiDraf();
     }
 
     private async Task UbahTerpilihAsync()
     {
         var terpilih = Ui.Selected<Row>(_riwayat) ?? throw new ArgumentException("Pilih order pada riwayat kunjungan.");
-        if (_diubah is null && _baris.Count > 0 &&
+        if (_diubah is null && _baris.Count + _racikan.Count > 0 &&
             !await Dialogs.ConfirmAsync(this, "Ubah order", "Draf yang belum dikirim akan dibuang. Lanjutkan?")) return;
         var draf = await Service.MuatOrderAsync(terpilih.S("nomor"));
         _diubah = draf;
         _baris.Clear();
         _baris.AddRange(draf.Baris);
+        _racikan.Clear();
+        _racikan.AddRange(draf.Racikan);
         _bahanPa = draf.Bahan;
         _diagnosa.Text = draf.Diagnosa;
         _informasi.Text = draf.Informasi;
@@ -138,6 +162,7 @@ internal sealed class OrderRalanView : UserControl
     {
         _diubah = null;
         _baris.Clear();
+        _racikan.Clear();
         _bahanPa = null;
         _diagnosa.Clear();
         _informasi.Clear();
@@ -202,23 +227,25 @@ internal sealed class OrderRalanView : UserControl
 
     private async Task SimpanAsync()
     {
-        if (_baris.Count == 0) throw new ArgumentException("Tambahkan item sebelum mengirim.");
+        var jumlahItem = _baris.Count + _racikan.Count;
+        if (jumlahItem == 0) throw new ArgumentException("Tambahkan item sebelum mengirim.");
         var pa = _jenis == JenisOrderRalan.LabPk && _kategori.SelectedIndex == 1;
         if (pa && _bahanPa is null && !await IsiBahanPaAsync()) return;
         if (_diubah is { } awal)
         {
             if (!await Dialogs.ConfirmAsync(this, "Simpan perubahan",
-                    $"Ganti isi order {awal.Nomor} menjadi {_baris.Count} item?")) return;
-            await Service.UbahAsync(awal, _baris, _diagnosa.Text ?? "", _informasi.Text ?? "", pa ? _bahanPa : null);
+                    $"Ganti isi order {awal.Nomor} menjadi {jumlahItem} item?")) return;
+            await Service.UbahAsync(awal, _baris, _diagnosa.Text ?? "", _informasi.Text ?? "", pa ? _bahanPa : null, _racikan);
             SelesaiUbah();
             Ui.Ok(_status, $"Order {awal.Nomor} diperbarui.");
             try { await MuatRiwayatAsync(); }
             catch (Exception) { Ui.Ok(_status, $"Order {awal.Nomor} diperbarui. Riwayat belum bisa dimuat ulang."); }
             return;
         }
-        if (!await Dialogs.ConfirmAsync(this, "Kirim order", $"Kirim {_baris.Count} item untuk kunjungan {_noRawat}?")) return;
-        var nomor = await Service.SimpanAsync(_baris, _diagnosa.Text ?? "", _informasi.Text ?? "", pa ? _bahanPa : null);
+        if (!await Dialogs.ConfirmAsync(this, "Kirim order", $"Kirim {jumlahItem} item untuk kunjungan {_noRawat}?")) return;
+        var nomor = await Service.SimpanAsync(_baris, _diagnosa.Text ?? "", _informasi.Text ?? "", pa ? _bahanPa : null, _racikan);
         _baris.Clear();
+        _racikan.Clear();
         _bahanPa = null;
         IsiDraf();
         _diagnosa.Clear();

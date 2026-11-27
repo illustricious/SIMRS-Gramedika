@@ -85,3 +85,21 @@ Simpan tindakan dan jurnal satu transaksi di Java (`DlgRawatInap.java:11661`). H
 - Daftar yang bisa diretur menyaring kunjungan yang sudah punya `billing`, bukan status bayar.
 - Perbaikan: serah terima dan validasi resep pulang membaca No. Rawat sebelum transaksi. Sebelumnya dua pencatatan serah terima bersamaan dapat lolos cek ganda, dan cek billing saat validasi dapat memakai data lama.
 - `ResepPulangTests` lulus pada MariaDB sintetis, termasuk dua retur bersamaan. Database RS, klien Java bersamaan dan klik di aplikasi belum diuji.
+
+## Koreksi tindakan, obstetri/ginekologi dan hapus data kamar (27 November 2026)
+
+Bagian ini menggantikan keterangan "belum tersedia" di atas untuk tiga alur berikut.
+
+- Ubah dan hapus tindakan dokter, petugas dan gabungan dengan jurnal pembalik (`TindakanRanapInputService`), mengikuti `DlgRawatInap.java:4412` dan `:5317`.
+- Tab Obstetri dan Ginekologi dari baris kamar (`ObgynRanapWindow`, tabel `pemeriksaan_obstetri_ranap` dan `pemeriksaan_ginekologi_ranap`).
+- Hapus Data Salah (`RawatInapRepository.HapusDataSalahAsync`), mengikuti `DlgKamarInap.java:7464` dengan dua pengaman tambahan yang dijelaskan di [log 12](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap).
+
+Diuji pada fixture MariaDB sintetis. Penguncian dengan dua koneksi hanya diuji pada simpan tindakan, belum pada ubah dan hapus. Klik di aplikasi dengan database, dan penggunaan bersama Khanza belum diuji atau belum tersedia.
+
+## Rawat gabung (27 November 2026)
+
+`RawatGabungService` mengikuti `DlgKamarInap.java:8349` dan `:8483`; tagihan gabungan mengikuti `DlgBilingRanap.java:4935`. Rincian, perbedaan dan batasnya di [log 12](../handover/12-SESSION-2026-11-27.md#rawat-gabung-ibu-dan-bayi). Belum dibandingkan dengan nota Khanza pada data rumah sakit.
+
+## Operasi/VK (27 November 2026)
+
+`OperasiService` mengikuti `DlgTagihanOperasi.java:2906` dan `DlgCariTagihanOperasi.java:1832`; baris tagihan mengikuti `DlgBilingRanap.prosesCariOperasi`. Rincian, perbedaan dan batasnya di [log 12](../handover/12-SESSION-2026-11-27.md#operasi-rawat-inap). Jurnal belum dibandingkan dengan Khanza pada data rumah sakit.

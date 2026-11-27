@@ -102,7 +102,8 @@ internal static class MenuAWrites
     {
         await KunciKunjunganAsync(db, values["no_rawat"]);
         if (await db.CountAsync("""
-            SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0 AND kd_kamar=@p1
+            SELECT COUNT(*) FROM kamar_inap
+            WHERE no_rawat=COALESCE((SELECT rg.no_rawat FROM ranap_gabung rg WHERE rg.no_rawat2=@p0 LIMIT 1),@p0) AND kd_kamar=@p1
             AND tgl_masuk<=@p2 AND (stts_pulang='-' OR tgl_keluar>=@p2)
             """, values["no_rawat"], values["kd_kamar"], values["tanggal"]) == 0)
             throw new InvalidOperationException("Pasien tidak tercatat menempati kamar tersebut pada tanggal diet.");
@@ -111,7 +112,7 @@ internal static class MenuAWrites
     internal static async Task CekPerkiraanBiayaAsync(Db db, Dictionary<string, object?> values, Dictionary<string, object?>? keys)
     {
         await KunciKunjunganAsync(db, values["no_rawat"]);
-        if (await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0", values["no_rawat"]) == 0)
+        if (await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=" + RawatGabungService.PemilikKamar("@p0"), values["no_rawat"]) == 0)
             throw new InvalidOperationException("Pilih pasien yang sudah tercatat masuk rawat inap.");
         _ = Positif(values, "tarif", "Perkiraan biaya");
     }

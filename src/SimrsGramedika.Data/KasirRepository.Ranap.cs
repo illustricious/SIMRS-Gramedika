@@ -12,16 +12,10 @@ public partial class KasirRepository
     {
         var rawat = bill.NoRawat;
         var rows = bill.Rincian.ToList();
-        rows.AddRange(await MuatRincianTindakanObatAsync(rawat, true, ct));
-        rows.AddRange(await MuatPenunjangAsync(rawat, true, ct));
-        rows.AddRange(await db.Database.SqlQuery<KasirRincian>($"""
-            SELECT 'Resep Pulang' AS Jenis,b.nama_brng AS Nama,CAST(r.harga AS DECIMAL(20,4)) AS Tarif,
-                   CAST(SUM(r.jml_barang) AS DECIMAL(20,4)) AS Jumlah,CAST(SUM(r.total) AS DECIMAL(20,4)) AS Total
-            FROM resep_pulang r JOIN databarang b ON b.kode_brng=r.kode_brng
-            WHERE r.no_rawat={rawat}
-            GROUP BY b.kode_brng,b.nama_brng,r.harga
-            ORDER BY b.nama_brng,r.harga,b.kode_brng
-            """).ToListAsync(ct));
+        rows.AddRange(await MuatLayananRanapAsync(rawat, ct));
+        var bayi = await BayiGabungAsync(rawat, ct);
+        foreach (var anak in bayi)
+            rows.AddRange((await MuatLayananRanapAsync(anak, ct)).Select(r => r with { Nama = "Bayi · " + r.Nama }));
 
         var obat = rows.Where(r => r.Jenis == Obat).Sum(r => r.Total);
         if (obat > 0 && await db.Database.SqlQuery<bool>($"""
@@ -32,13 +26,45 @@ public partial class KasirRepository
             if (ppn > 0) rows.Add(new(Obat, PpnObat, ppn, 1, ppn));
         }
 
-        var alasan = bill.AlasanBelumBisaBayar ?? await CekKomponenLainAsync(rawat, ct);
-        if (alasan is null && (await AdaPermintaanTertundaAsync(rawat, true, ct) || await db.Database.SqlQuery<bool>($"""
-            SELECT EXISTS(SELECT 1 FROM permintaan_resep_pulang WHERE no_rawat={rawat} AND status='Belum') AS Value
-            """).SingleAsync(ct)))
-            alasan = "Masih ada permintaan penunjang atau resep yang menunggu. Selesaikan atau batalkan sebelum pelunasan.";
+        var alasan = bill.AlasanBelumBisaBayar;
+        // Khanza hanya menagih satu bayi per ibu; data dengan lebih dari satu diselesaikan di sana.
+        if (alasan is null && bayi.Count > 1) alasan = BayarDiKhanza;
+        foreach (var kunjungan in bayi.Prepend(rawat))
+        {
+            alasan ??= await CekKomponenLainAsync(kunjungan, ct);
+            if (alasan is null && kunjungan != rawat && await db.Database.SqlQuery<bool>($"""
+                SELECT (EXISTS(SELECT 1 FROM kamar_inap WHERE no_rawat={kunjungan}) OR
+                    EXISTS(SELECT 1 FROM billing WHERE no_rawat={kunjungan})) AS Value
+                """).SingleAsync(ct))
+                alasan = BayarDiKhanza; // Bayi dengan kamar atau billing sendiri tidak dihitung di sini.
+            if (alasan is null && (await AdaPermintaanTertundaAsync(kunjungan, true, ct) || await db.Database.SqlQuery<bool>($"""
+                SELECT EXISTS(SELECT 1 FROM permintaan_resep_pulang WHERE no_rawat={kunjungan} AND status='Belum') AS Value
+                """).SingleAsync(ct)))
+                alasan = "Masih ada permintaan penunjang atau resep yang menunggu. Selesaikan atau batalkan sebelum pelunasan.";
+        }
 
         return bill with { Rincian = rows, Total = rows.Sum(r => r.Total), AlasanBelumBisaBayar = alasan };
+    }
+
+    private Task<List<string>> BayiGabungAsync(string noRawatIbu, CancellationToken ct) =>
+        db.Database.SqlQuery<string>($"SELECT no_rawat2 AS Value FROM ranap_gabung WHERE no_rawat={noRawatIbu}")
+            .OrderBy(nomor => nomor).ToListAsync(ct);
+
+    private async Task<List<KasirRincian>> MuatLayananRanapAsync(string noRawat, CancellationToken ct)
+    {
+        var rows = new List<KasirRincian>();
+        rows.AddRange(await MuatRincianTindakanObatAsync(noRawat, true, ct));
+        rows.AddRange(await MuatPenunjangAsync(noRawat, true, ct));
+        rows.AddRange(await db.Database.SqlQuery<KasirRincian>($"""
+            SELECT 'Resep Pulang' AS Jenis,b.nama_brng AS Nama,CAST(r.harga AS DECIMAL(20,4)) AS Tarif,
+                   CAST(SUM(r.jml_barang) AS DECIMAL(20,4)) AS Jumlah,CAST(SUM(r.total) AS DECIMAL(20,4)) AS Total
+            FROM resep_pulang r JOIN databarang b ON b.kode_brng=r.kode_brng
+            WHERE r.no_rawat={noRawat}
+            GROUP BY b.kode_brng,b.nama_brng,r.harga
+            ORDER BY b.nama_brng,r.harga,b.kode_brng
+            """).ToListAsync(ct));
+        rows.AddRange(await MuatOperasiAsync(noRawat, ct));
+        return rows;
     }
 
     private async Task TambahJurnalLayananRanapAsync(KasirBillItem bill, List<JurnalLine> lines,
@@ -55,13 +81,15 @@ public partial class KasirRepository
             bill.Rincian.Where(r => r.Jenis == ResepPulang).Sum(r => r.Total));
 
         var akunRalan = await JurnalPoster.ReadAkunAsync(conn, tx, "set_akun_ralan", ct);
+        var bhpOperasi = bill.Rincian.Where(r => r.Jenis == Obat && r.Nama.Contains(BhpOperasi)).Sum(r => r.Total);
         var layanan = new (string Nama, decimal Biaya)[]
         {
             ("Tindakan", bill.Rincian.Where(r => r.Jenis is "Ranap Dokter" or "Ranap Paramedis" or "Ranap Dokter Paramedis"
                 or "Ralan Dokter" or "Ralan Paramedis" or RalanDokterParamedis).Sum(r => r.Total)),
             (Laborat, bill.Rincian.Where(r => r.Jenis == Laborat).Sum(r => r.Total)),
             (Radiologi, bill.Rincian.Where(r => r.Jenis == Radiologi).Sum(r => r.Total)),
-            (Obat, bill.Rincian.Where(r => r.Jenis == Obat).Sum(r => r.Total) - ppn)
+            (Obat, bill.Rincian.Where(r => r.Jenis == Obat).Sum(r => r.Total) - ppn - bhpOperasi),
+            (Operasi, bill.Rincian.Where(r => r.Jenis == Operasi).Sum(r => r.Total) + bhpOperasi)
         };
         var suspenLayanan = layanan.SelectMany(item => new[]
         {
@@ -70,12 +98,14 @@ public partial class KasirRepository
         }).Where(x => !string.IsNullOrWhiteSpace(x.Rekening))
             .GroupBy(x => x.Rekening, StringComparer.OrdinalIgnoreCase);
         var saldoLayanan = new Dictionary<string, decimal>();
+        // Tindakan bayi rawat gabung dijurnal atas No. Rawat bayi.
+        var bayi = (await BayiGabungAsync(bill.NoRawat, ct)).FirstOrDefault() ?? bill.NoRawat;
         foreach (var rekening in suspenLayanan)
         {
             var saldo = await db.Database.SqlQuery<decimal>($"""
                 SELECT CAST(COALESCE(SUM(d.debet-d.kredit),0) AS DECIMAL(20,4)) AS Value
                 FROM jurnal j JOIN detailjurnal d ON d.no_jurnal=j.no_jurnal
-                WHERE j.no_bukti={bill.NoRawat} AND d.kd_rek={rekening.Key}
+                WHERE j.no_bukti IN ({bill.NoRawat},{bayi}) AND d.kd_rek={rekening.Key}
                 """).SingleAsync(ct);
             if (saldo == 0) continue;
 

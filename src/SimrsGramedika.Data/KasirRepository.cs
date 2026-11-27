@@ -21,6 +21,8 @@ public record KasirBillItem(
     public bool RincianTersimpan { get; init; }
     public string? NoNota { get; init; }
     public string? AlasanBelumBisaBayar { get; init; }
+    /// <summary>Terisi untuk bayi rawat gabung: seluruh tagihannya ada pada No. Rawat ibu.</summary>
+    public string? NoRawatIbu { get; init; }
 }
 
 public interface IKasirRepository
@@ -64,7 +66,7 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             return await LengkapiTagihanRalanAsync(result, ct);
         }
 
-        if (result.StatusBayar == "Sudah Bayar" || result.RincianTersimpan
+        if (result.NoRawatIbu is not null || result.StatusBayar == "Sudah Bayar" || result.RincianTersimpan
             || result.NoNota is not null || visit.Reg.Status == StatusRegistrasi.Batal)
             return result;
 
@@ -147,6 +149,11 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             throw new ArgumentException("Pilih akun bayar dan pastikan petugas sudah login.");
         await using var tx = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, dilihat.NoRawat, ct);
+        // Kunci bayi rawat gabung sebelum pembacaan biasa, agar transaksi bayi tidak menyusul tagihan yang sedang disimpan.
+        var bayi = new List<RegPeriksa>();
+        foreach (var noRawatBayi in await db.Database.SqlQuery<string>(
+                     $"SELECT no_rawat2 AS Value FROM ranap_gabung WHERE no_rawat={reg.NoRawat} FOR UPDATE").ToListAsync(ct))
+            bayi.Add(await KunjunganRanap.KunciAsync(db, noRawatBayi, ct));
         await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
         if (reg.StatusBayar == StatusBayar.SudahBayar || await db.Database.SqlQuery<bool>($"""
             SELECT EXISTS(SELECT 1 FROM nota_inap WHERE no_rawat={reg.NoRawat}) AS Value
@@ -216,6 +223,7 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             VALUES ({reg.NoRawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},'Pelunasan',{bill.Total},{bill.Total},'Sudah',{petugas})
             """, ct);
         reg.StatusBayar = StatusBayar.SudahBayar;
+        foreach (var anak in bayi) anak.StatusBayar = StatusBayar.SudahBayar;
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
         return noNota;
@@ -232,15 +240,14 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             SELECT (
                 EXISTS(SELECT 1 FROM deposit WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM piutang_pasien WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM operasi WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM beri_obat_operasi WHERE no_rawat={noRawat}) OR
+                (EXISTS(SELECT 1 FROM beri_obat_operasi WHERE no_rawat={noRawat}) AND
+                    EXISTS(SELECT 1 FROM set_nota WHERE centangobatranap='No')) OR
                 EXISTS(SELECT 1 FROM tagihan_obat_langsung WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM returpasien WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM penjualan WHERE LEFT(nota_jual,17)={noRawat}) OR
                 EXISTS(SELECT 1 FROM tambahan_biaya WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM pengurangan_biaya WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM temporary_tambahan_potongan WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM ranap_gabung WHERE no_rawat={noRawat} OR no_rawat2={noRawat}) OR
                 EXISTS(SELECT 1 FROM set_service_ranap WHERE besar<>0 AND (kamar='Yes' OR registrasi='Yes' OR harian='Yes'
                     OR laborat='Yes' OR radiologi='Yes' OR operasi='Yes' OR obat='Yes' OR resep_Pulang='Yes'
                     OR ranap_dokter='Yes' OR ranap_paramedis='Yes' OR ralan_dokter='Yes' OR ralan_paramedis='Yes'
@@ -318,6 +325,11 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         var registrasiRanap = ranapIds.Count > 0 && await db.Database.SqlQuery<bool>($"""
             SELECT (tampilkan_administrasi_di_billingranap='Yes') AS Value FROM set_nota LIMIT 1
             """).FirstOrDefaultAsync(ct);
+        var gabung = ranapIds.Count == 0 ? [] : await db.Database.SqlQuery<GabungSimpan>($"""
+            SELECT no_rawat AS NoRawatIbu,no_rawat2 AS NoRawat FROM ranap_gabung
+            """).Where(g => ranapIds.Contains(g.NoRawat) || ranapIds.Contains(g.NoRawatIbu)).ToListAsync(ct);
+        var ibuDari = gabung.GroupBy(g => g.NoRawat).ToDictionary(g => g.Key, g => g.First().NoRawatIbu);
+        var punyaBayi = gabung.Select(g => g.NoRawatIbu).ToHashSet();
         var now = DateTime.Now;
         var fees = rooms.Count == 0 ? [] : await db.Database.SqlQuery<TarifTambahan>($"""
             SELECT kd_kamar AS KodeKamar,nama_biaya AS Nama,CAST(besar_biaya AS DECIMAL(20,4)) AS Tarif,
@@ -346,10 +358,17 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             var lunas = reg.StatusBayar == StatusBayar.SudahBayar;
             var ranap = reg.StatusLanjut == StatusLanjut.RawatInap || periode.Length > 0;
             perNota.TryGetValue(reg.NoRawat, out var nota);
+            if (historis.Length == 0 && ibuDari.TryGetValue(reg.NoRawat, out var noRawatIbu))
+                return new KasirBillItem(reg.NoRawat, reg.NoRekamMedis, v.Pasien, 0, 0, 0, null)
+                {
+                    Ranap = true, NoRawatIbu = noRawatIbu,
+                    AlasanBelumBisaBayar = $"Rawat gabung: tagihan digabung pada No. Rawat ibu {noRawatIbu}.",
+                };
             var rows = historis.Length > 0
                 ? historis.Where(r => r.Jenis != "-" && r.Jenis != "Tagihan" && !r.Jenis.StartsWith("Ttl", StringComparison.Ordinal))
                     .Select(r => new KasirRincian(r.Jenis == Kamar && r.Label == BiayaMasuk ? BiayaMasuk : r.Jenis, r.Nama, r.Tarif, r.Jumlah, r.Total)).ToList()
-                : HitungRincian(reg, periode, perKamar, aturan, now, lunas, !ranap || lunas || registrasiRanap);
+                : HitungRincian(reg, periode, perKamar, aturan, now, lunas, !ranap || lunas || registrasiRanap,
+                    punyaBayi.Contains(reg.NoRawat) ? aturan.PersenKamarBayi : 0);
             var totalDisimpan = historis.LastOrDefault(r => r.Jenis == "Tagihan" && r.Total != 0)?.Total;
             var alasan = reg.Status == StatusRegistrasi.Batal ? "Registrasi pasien sudah dibatalkan."
                 : ranap && !lunas && (historis.Length > 0 || nota is not null) ? "Tagihan sudah tercatat di Khanza. Periksa status pelunasannya."
@@ -367,7 +386,8 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
     }
 
     private static List<KasirRincian> HitungRincian(RegPeriksa reg, KamarInap[] periode,
-        ILookup<string, TarifTambahan> fees, AturanLamaRawat aturan, DateTime now, bool lunas, bool tagihRegistrasi)
+        ILookup<string, TarifTambahan> fees, AturanLamaRawat aturan, DateTime now, bool lunas, bool tagihRegistrasi,
+        int persenKamarBayi)
     {
         var biayaReg = reg.BiayaReg ?? 0m;
         var rows = new List<KasirRincian>();
@@ -377,7 +397,11 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         {
             var (lama, biaya) = lunas ? (stay.Lama ?? 0m, stay.TotalBiaya ?? 0m) : aturan.Rincian(stay, now);
             var judul = $"{stay.KodeKamar} · {stay.TanggalMasuk:dd/MM/yyyy} {stay.JamMasuk:HH:mm}";
-            rows.Add(new(Kamar, judul, Bulatkan(stay.TarifKamar ?? 0m), Bulatkan(lama), Bulatkan(biaya)));
+            var tambahBayi = persenKamarBayi > 0 && !lunas;
+            rows.Add(new(Kamar, tambahBayi ? $"{judul} (Ibu)" : judul, Bulatkan(stay.TarifKamar ?? 0m), Bulatkan(lama), Bulatkan(biaya)));
+            if (tambahBayi) // Khanza menambah persentase hanya pada tarif kamar, bukan biaya masuk atau harian.
+                rows.Add(new(Kamar, $"{judul} (Bayi)", Bulatkan((stay.TarifKamar ?? 0m) * persenKamarBayi / 100), Bulatkan(lama),
+                    Bulatkan(biaya * persenKamarBayi / 100)));
             if (lunas) continue; // Payments marked by earlier versions have no stored fee lines.
             foreach (var fee in fees[stay.KodeKamar])
             {
@@ -409,6 +433,12 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         public decimal Tarif { get; set; }
         public decimal Jumlah { get; set; }
         public decimal Total { get; set; }
+    }
+
+    private sealed class GabungSimpan
+    {
+        public string NoRawatIbu { get; set; } = "";
+        public string NoRawat { get; set; } = "";
     }
 
     private sealed class NotaSimpan

@@ -50,7 +50,7 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
                 try
                 {
                     await MenuAWrites.KunciKunjunganAsync(db, noRawat, cekBilling: true);
-                    if (await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0", noRawat) == 0)
+                    if (await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=" + RawatGabungService.PemilikKamar("@p0"), noRawat) == 0)
                         throw new InvalidOperationException("Kunjungan tidak memiliki riwayat kamar rawat inap.");
                     if (await db.CountAsync("SELECT COUNT(*) FROM dokter WHERE kd_dokter=@p0 AND status='1'", dokter) != 1)
                         throw new InvalidOperationException("Pilih dokter yang masih aktif.");
@@ -487,7 +487,7 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
                        END END)/100)*100 AS harga
             FROM reg_periksa r
             LEFT JOIN kamar k ON k.kd_kamar=(
-                SELECT i.kd_kamar FROM kamar_inap i WHERE i.no_rawat=r.no_rawat
+                SELECT i.kd_kamar FROM kamar_inap i WHERE i.no_rawat={RawatGabungService.PemilikKamar("r.no_rawat")}
                 ORDER BY (i.stts_pulang='-') DESC,i.tgl_masuk DESC,i.jam_masuk DESC LIMIT 1)
             LEFT JOIN set_harga_obat_ranap h ON h.kd_pj=r.kd_pj AND h.kelas=k.kelas
             JOIN gudangbarang g ON g.kd_bangsal=@p1 JOIN databarang b ON b.kode_brng=g.kode_brng

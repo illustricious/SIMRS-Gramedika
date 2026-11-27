@@ -139,8 +139,12 @@
             <Button Name="BuatResepPulangButton" Content="Buat Resep Pulang" Click="OnBuatResepPulangClick" />
             <Button Name="ResepPulangButton" Content="Status Resep Pulang" Click="OnResepPulangClick" />
             <Button Name="ResumePulangButton" Content="Resume Pulang" Click="OnResumePulangClick" />
-            <Button Name="TindakanButton" Content="Input Tindakan" Click="OnTindakanClick" />
+            <Button Name="TindakanButton" Content="Tindakan" Click="OnTindakanClick" />
+            <Button Name="ObgynButton" Content="Obstetri / Ginekologi" Click="OnObgynClick" />
+            <Button Name="OperasiButton" Content="Operasi" Click="OnOperasiClick" />
             <Button Name="GantiButton" Content="Ganti" Click="OnGantiClick" />
+            <Button Name="RanapGabungButton" Content="Rawat Gabung" Click="OnRanapGabungClick" />
+            <Button Name="HapusDataSalahButton" Content="Hapus Data Salah" Click="OnHapusDataSalahClick" />
             <TextBlock Name="RecordText" Text="Record : 0" VerticalAlignment="Center" Margin="24,0,24,0"
                        Foreground="{DynamicResource ThemeTextBrush}" FontWeight="SemiBold" />
             <Button Content="Cetak" Click="OnCetakClick" />

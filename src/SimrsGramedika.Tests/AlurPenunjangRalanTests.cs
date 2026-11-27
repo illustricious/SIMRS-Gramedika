@@ -112,6 +112,43 @@ public sealed class AlurPenunjangRalanTests
         await resep.UbahAsync(drafResep, [baru], "", "");
         Assert.Equal(5, await db.CountAsync("SELECT jml FROM resep_dokter WHERE no_resep=@p0", noResep));
         await Assert.ThrowsAsync<InvalidOperationException>(() => resep.UbahAsync(drafResep, [baru], "", ""));
+
+        // Racikan dari dokter: resep boleh hanya racikan; metode atau obat yang tidak tersedia membatalkan semuanya.
+        await db.ExecAsync("INSERT INTO metode_racik(kd_racik,nm_racik) VALUES ('R01','Puyer')");
+        await db.ExecAsync("UPDATE databarang SET kapasitas=500 WHERE kode_brng='OB'");
+        Assert.Equal("Puyer", Assert.Single(await resep.MetodeRacikAsync()).Nama);
+        var bahanRacik = Assert.Single(await resep.CariBahanAsync("")) with { Jumlah = 5, P1 = 1, P2 = 2, Kandungan = "250" };
+        Assert.Equal(500, bahanRacik.Kapasitas);
+        var racik = new RacikanOrder("Puyer batuk", "R01", "Puyer", 10, "3x1", "Sesudah makan", [bahanRacik]);
+        Task<string> Kirim(RacikanOrder r) => resep.SimpanAsync([], "", "", racikan: [r]);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => Kirim(racik with { KodeMetode = "XXX" }));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => Kirim(racik with { Bahan = [bahanRacik with { Kode = "NON" }] }));
+        await Assert.ThrowsAsync<ArgumentException>(() => Kirim(racik with { Bahan = [bahanRacik, bahanRacik] }));
+        await Assert.ThrowsAsync<ArgumentException>(() => Kirim(racik with { Bahan = [bahanRacik with { Jumlah = 0 }] }));
+        await Assert.ThrowsAsync<ArgumentException>(() => Kirim(racik with { Aturan = " " }));
+        await Assert.ThrowsAsync<ArgumentException>(() => lab.SimpanAsync([pk], "Diagnosis uji", "", racikan: [racik]));
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM resep_obat"));
+        var noRacik = await Kirim(racik);
+        var barisRiwayat = Assert.Single(await resep.RiwayatAsync(), r => r.S("nomor") == noRacik);
+        Assert.Equal(("Racikan 1: Puyer batuk (Puyer)", "3x1"), (barisRiwayat.S("nama"), barisRiwayat.S("aturan")));
+        var drafRacik = await resep.MuatOrderAsync(noRacik);
+        Assert.Empty(drafRacik.Baris);
+        Assert.Equal(bahanRacik, Assert.Single(Assert.Single(drafRacik.Racikan).Bahan));
+        // Ubah menambah obat biasa dan racikan kedua; draf lama sesudahnya ditolak.
+        var kedua = racik with { Nama = "Salep", Bahan = [bahanRacik with { Jumlah = 1, Kandungan = "10%" }] };
+        await resep.UbahAsync(drafRacik, [baru], "", "", racikan: [racik with { Jumlah = 20 }, kedua]);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => resep.UbahAsync(drafRacik, [baru], "", ""));
+        Assert.Equal(3, (await resep.RiwayatAsync()).Count(r => r.S("nomor") == noRacik));
+        Assert.Equal("1:20,2:10", await db.StrAsync(
+            "SELECT GROUP_CONCAT(CONCAT(no_racik,':',jml_dr) ORDER BY no_racik) FROM resep_dokter_racikan WHERE no_resep=@p0", noRacik));
+        // Detail tanpa kepala racikan tidak boleh diubah dari aplikasi ini supaya tidak hilang diam-diam.
+        await db.ExecAsync("INSERT INTO resep_dokter_racikan_detail(no_resep,no_racik,kode_brng,jml) VALUES (@p0,'9','OB',1)", noRacik);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => resep.MuatOrderAsync(noRacik));
+        await resep.BatalkanAsync(noRacik);
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM resep_dokter_racikan"));
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM resep_dokter_racikan_detail"));
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM resep_obat"));
+
         await db.ExecAsync("UPDATE resep_obat SET tgl_perawatan=CURRENT_DATE WHERE no_resep=@p0", noResep);
         await Assert.ThrowsAsync<InvalidOperationException>(() => resep.MuatOrderAsync(noResep));
 

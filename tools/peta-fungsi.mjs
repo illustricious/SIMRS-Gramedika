@@ -178,10 +178,15 @@ const manual = {
   'SimrsGramedika.Data/OrderRalanService.cs': [
     ['permintaan_lab permintaan_labpa permintaan_labmb permintaan_radiologi', [T, U, H]],
     ['permintaan_pemeriksaan_lab permintaan_pemeriksaan_labpa permintaan_pemeriksaan_labmb permintaan_pemeriksaan_radiologi permintaan_detail_permintaan_lab permintaan_detail_permintaan_labmb', [T, H]],
-    ['resep_obat resep_dokter resep_dokter_racikan resep_dokter_racikan_detail', [H]]],
+    ['resep_obat', [H]],
+    // Ubah resep dilakukan dengan hapus lalu sisip dalam satu transaksi.
+    ['resep_dokter resep_dokter_racikan resep_dokter_racikan_detail', [U, H]]],
   'SimrsGramedika.Data/TindakanRalanInputService.cs': [['rawat_jl_dr rawat_jl_pr rawat_jl_drpr', [H]]],
   'SimrsGramedika.Data/Farmasi/ValidasiResepService.cs': [['detail_obat_racikan obat_racikan detail_pemberian_obat', [H]]],
-  'SimrsGramedika.Data/PemeriksaanObgynService.cs': [['pemeriksaan_obstetri_ralan pemeriksaan_ginekologi_ralan', [T, U, H]]],
+  'SimrsGramedika.Data/PemeriksaanObgynService.cs': [
+    ['pemeriksaan_obstetri_ralan pemeriksaan_ginekologi_ralan pemeriksaan_obstetri_ranap pemeriksaan_ginekologi_ranap', [T, U, H]]],
+  // Ubah dilakukan dengan hapus lalu sisip dalam satu transaksi.
+  'SimrsGramedika.Data/TindakanRanapInputService.cs': [['rawat_inap_dr rawat_inap_pr rawat_inap_drpr', [U, H]]],
   'SimrsGramedika.Data/Pengaturan/MenuURepository.cs': [['runtext runtextapotek', [T, U]]],
   'SimrsGramedika.Data/PasienBaruService.cs': [['pasien', [T, U]], ['kelurahan kecamatan kabupaten propinsi', [T]]],
   'SimrsGramedika.Data/PasienRepository.cs': [['pasien', [T]]],
@@ -193,7 +198,7 @@ const manual = {
   'SimrsGramedika.Data/LabPermintaanRepository.cs': [
     ['permintaan_lab permintaan_labpa permintaan_labmb', [U, H]],
     ['permintaan_pemeriksaan_lab permintaan_pemeriksaan_labpa permintaan_pemeriksaan_labmb permintaan_detail_permintaan_lab permintaan_detail_permintaan_labmb', [H]]],
-  'SimrsGramedika.Data/RawatInapRepository.cs': [['kamar_inap', [T, U]], ['reg_periksa kamar', [U]]],
+  'SimrsGramedika.Data/RawatInapRepository.cs': [['kamar_inap', [T, U, H]], ['reg_periksa kamar', [U]]],
   'SimrsGramedika.Data/RegistrasiRepository.cs': [['reg_periksa', [U]]],
   'SimrsGramedika.Data/KasirRepository.cs': [['reg_periksa', [U]]],
 };

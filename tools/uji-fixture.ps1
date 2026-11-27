@@ -39,7 +39,8 @@ $relasi = ',\s*CONSTRAINT [^\r\n]*?(?=,?\r?\n)'
 # Satu database fixture berisi tabel terpilih dari skema Khanza, tanpa data.
 function New-SqlFixture([string]$Nama, [string[]]$Tabel, [switch]$TanpaRelasi) {
     $sql = "DROP DATABASE IF EXISTS $Nama;`nCREATE DATABASE $Nama;`nUSE $Nama;`nSET FOREIGN_KEY_CHECKS=0;`n"
-    foreach ($t in $Tabel) {
+    # ranap_gabung dibaca oleh cek tagihan dan pencarian kamar, jadi selalu disertakan.
+    foreach ($t in @($Tabel) + 'ranap_gabung' | Select-Object -Unique) {
         $c = [regex]::Match($schema, '(?s)CREATE TABLE `' + $t + '` \(.*?ENGINE=[^;]*;')
         if (-not $c.Success) { throw "tabel $t tidak ditemukan di schema_sik.sql" }
         $ddl = if ($TanpaRelasi) { $c.Value -replace $relasi, '' } else { $c.Value }
@@ -77,7 +78,7 @@ $lain = [ordered]@{
     ANTREAN = 'NomorAntreanTests'; DIAGNOSA = 'DiagnosaRalanTests'; KASIR_FARMASI = 'PelunasanPenjualanTests'
     PASIEN = 'PasienBaruTests'; PULANG = 'PulangRanapTests'; RALAN = 'TindakanRalanInputTests'
     RANAP = 'BillingRanapTests'; RUJUKAN = 'RujukanInternalTests'; TINDAKAN_RANAP = 'TindakanRanapInputTests'
-    KUNCI = 'KunciTanggalTests'
+    KUNCI = 'KunciTanggalTests'; GABUNG = 'RawatGabungTests'; OPERASI = 'OperasiTests'
 }
 $tabelPenuh = New-Object 'System.Collections.Generic.HashSet[string]'
 $ddlPenuh = ''

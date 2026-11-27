@@ -24,8 +24,10 @@ public record RawatInapListItem(
     string KodeKamar, string Kamar, string TarifKamar, string DiagnosaAwal, string DiagnosaAkhir,
     DateOnly TanggalMasuk, TimeOnly JamMasuk, string TglMasuk, string JamMasukText,
     string TglKeluar, string JamKeluar, string TotalBiaya, string StatusPulang, string Lama,
-    string DokterPj, string StatusBayar, string Agama, string KodePenjab)
+    string DokterPj, string StatusBayar, string Agama, string KodePenjab, string? NoRawatIbu = null)
 {
+    /// <summary>Baris bayi rawat gabung: No. Rawat bayi, tetapi segmen kamar milik ibu.</summary>
+    public bool BayiGabung => NoRawatIbu is not null;
     public RawatInapKey Key => new(NoRawat, KodeKamar, TanggalMasuk, JamMasuk);
     public bool BelumPulang => StatusPulang == "-";
 }
@@ -67,6 +69,9 @@ public interface IRawatInapRepository
     /// Returns the room bill of the closed stay.
     /// </summary>
     Task<decimal> PindahKamarAsync(RawatInapKey key, string kodeKamarBaru, CancellationToken ct = default);
+
+    /// <summary>"Hapus Data Salah": hapus satu baris kamar inap. True bila kunjungan kembali menjadi rawat jalan.</summary>
+    Task<bool> HapusDataSalahAsync(RawatInapKey key, bool adminUtama, CancellationToken ct = default);
 
     /// <summary>Saves the changed payer and diagnosis fields from one edit panel together.</summary>
     Task GantiDataKamarAsync(RawatInapListItem original, string kodePenjab, string? diagnosaAwal,
@@ -178,7 +183,7 @@ public class RawatInapRepository(SimrsGramedikaDbContext db, TimeProvider? clock
             })
             .ToListAsync(ct);
 
-        return rows.Select(x => new RawatInapListItem(
+        var daftar = rows.Select(x => new RawatInapListItem(
             x.NoRawat, x.NoRekamMedis,
             $"{x.NamaPasien} ({UmurText(x.TanggalLahir, x.TanggalRegistrasi)})",
             x.Alamat ?? "", x.PenanggungJawab ?? "", x.HubunganPj ?? "", x.JenisBayar ?? "",
@@ -190,6 +195,38 @@ public class RawatInapRepository(SimrsGramedikaDbContext db, TimeProvider? clock
             x.DokterPj ?? "",
             x.StatusBayar switch { StatusBayar.SudahBayar => "Sudah Bayar", StatusBayar.BelumBayar => "Belum Bayar", _ => "" },
             x.Agama ?? "", x.KodePenjab)).ToList();
+        return await SisipkanBayiAsync(daftar, ct);
+    }
+
+    private sealed class BayiBaris
+    {
+        public string NoRawatIbu { get; set; } = "";
+        public string NoRawat { get; set; } = "";
+        public string NoRekamMedis { get; set; } = "";
+        public string Nama { get; set; } = "";
+        public DateOnly? Lahir { get; set; }
+        public DateOnly? Daftar { get; set; }
+    }
+
+    /// <summary>Seperti DlgKamarInap, bayi rawat gabung tampil tepat di bawah baris kamar ibunya.</summary>
+    private async Task<IReadOnlyList<RawatInapListItem>> SisipkanBayiAsync(List<RawatInapListItem> daftar, CancellationToken ct)
+    {
+        if (daftar.Count == 0) return daftar;
+        var ids = daftar.Select(d => d.NoRawat).Distinct().ToList();
+        var bayi = (await db.Database.SqlQuery<BayiBaris>($"""
+                SELECT g.no_rawat AS NoRawatIbu,g.no_rawat2 AS NoRawat,r.no_rkm_medis AS NoRekamMedis,p.nm_pasien AS Nama,
+                       p.tgl_lahir AS Lahir,r.tgl_registrasi AS Daftar
+                FROM ranap_gabung g JOIN reg_periksa r ON r.no_rawat=g.no_rawat2
+                JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis
+                """).Where(b => ids.Contains(b.NoRawatIbu)).ToListAsync(ct))
+            .OrderBy(b => b.NoRawat, StringComparer.Ordinal).ToLookup(b => b.NoRawatIbu);
+        return daftar.SelectMany(ibu => bayi[ibu.NoRawat].Select(b => ibu with
+        {
+            NoRawat = b.NoRawat, NoRekamMedis = b.NoRekamMedis,
+            NamaPasien = $"↳ Bayi: {b.Nama} ({UmurText(b.Lahir, b.Daftar)})",
+            Kamar = $"{ibu.Kamar} (rawat gabung)", TarifKamar = "", TotalBiaya = "",
+            DiagnosaAwal = "", DiagnosaAkhir = "", NoRawatIbu = ibu.NoRawat,
+        }).Prepend(ibu)).ToList();
     }
 
     // Legacy stores "not yet discharged" as '0000-00-00' / '00:00:00'; with
@@ -213,6 +250,8 @@ public class RawatInapRepository(SimrsGramedikaDbContext db, TimeProvider? clock
         await using var transaction = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, noRawat, ct);
         await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
+        if (await db.Database.SqlQuery<bool>($"SELECT EXISTS(SELECT 1 FROM ranap_gabung WHERE no_rawat2={noRawat}) AS Value").SingleAsync(ct))
+            throw new InvalidOperationException("No. Rawat ini bayi rawat gabung dan memakai kamar ibunya. Lepas rawat gabung dulu.");
         var kamar = await KunciKamarAsync(kodeKamar, ct);
         var dipesanPasien = kamar.Status == StatusKamar.Dibooking && await db.Database.SqlQuery<long>(
             $"SELECT COUNT(*) AS Value FROM permintaan_ranap WHERE no_rawat={noRawat} AND kd_kamar={kodeKamar}").SingleAsync(ct) == 1;
@@ -343,6 +382,47 @@ public class RawatInapRepository(SimrsGramedikaDbContext db, TimeProvider? clock
         var rows = await db.KamarSet
             .FromSqlInterpolated($"SELECT * FROM kamar WHERE kd_kamar={kodeKamar} FOR UPDATE").ToListAsync(ct);
         return rows.SingleOrDefault() ?? throw new InvalidOperationException($"Kamar '{kodeKamar}' tidak ditemukan.");
+    }
+
+    /// <summary>
+    /// "Hapus Data Salah" DlgKamarInap: hapus satu baris kamar inap. Bila tidak ada baris tersisa, kunjungan kembali menjadi
+    /// rawat jalan berstatus Sudah. Ditolak bila sudah ditagih; selain Admin Utama memerlukan Set Kamar Inap "Aktifkan Hapus Data Salah".
+    /// Segmen sebelumnya tidak dibuka kembali. Berbeda dengan Khanza, status kamar hanya diubah bila baris yang dihapus masih aktif.
+    /// </summary>
+    /// <returns>True bila kunjungan kembali menjadi rawat jalan.</returns>
+    public async Task<bool> HapusDataSalahAsync(RawatInapKey key, bool adminUtama, CancellationToken ct = default)
+    {
+        await using var transaction = await db.Database.BeginTransactionAsync(ct);
+        var reg = await KunjunganRanap.KunciAsync(db, key.NoRawat, ct);
+        await KunjunganRanap.PastikanBelumDitagihAsync(db, reg, ct);
+        if (!adminUtama && !await db.Database.SqlQuery<bool>($"""
+                SELECT EXISTS(SELECT 1 FROM set_jam_minimal WHERE aktifkan_hapus_data_salah='Yes') AS Value
+                """).SingleAsync(ct))
+            throw new InvalidOperationException("Hapus Data Salah tidak diaktifkan di Set Kamar Inap. Hubungi Admin Utama.");
+        var stay = await FindActiveStayAsync(key, ct);
+        var kamar = await KunciKamarAsync(stay.KodeKamar, ct);
+        var sisa = await db.KamarInapSet.CountAsync(s => s.NoRawat == key.NoRawat, ct) - 1;
+        if (sisa == 0 && await db.Database.SqlQuery<bool>($"""
+                SELECT EXISTS(SELECT 1 FROM ranap_gabung WHERE no_rawat={key.NoRawat}) AS Value
+                """).SingleAsync(ct))
+            throw new InvalidOperationException("Pasien masih memiliki rawat gabung. Lepas rawat gabung sebelum menghapus data kamarnya.");
+
+        db.KamarInapSet.Remove(stay);
+        if (stay.StatusPulang == StatusPulang.BelumPulang)
+        {
+            var masihTerisi = await db.KamarInapSet.AnyAsync(s => s.KodeKamar == key.KodeKamar &&
+                s.StatusPulang == StatusPulang.BelumPulang &&
+                (s.NoRawat != key.NoRawat || s.TanggalMasuk != key.TanggalMasuk || s.JamMasuk != key.JamMasuk), ct);
+            kamar.Status = masihTerisi ? StatusKamar.Isi : StatusKamar.Kosong;
+        }
+        if (sisa == 0)
+        {
+            reg.StatusLanjut = StatusLanjut.RawatJalan;
+            reg.Status = StatusRegistrasi.Sudah;
+        }
+        await db.SaveChangesAsync(ct);
+        await transaction.CommitAsync(ct);
+        return sisa == 0;
     }
 
     public async Task GantiDataKamarAsync(RawatInapListItem original, string kodePenjab, string? diagnosaAwal,

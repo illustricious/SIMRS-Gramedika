@@ -109,5 +109,121 @@ public sealed class TindakanRanapInputTests
         var alasan = await Assert.ThrowsAsync<InvalidOperationException>(() => kasir.BayarRanapAsync(tagihan, "Tunai", user));
         Assert.Contains("hak billing rawat inap", alasan.Message);
         Assert.Equal("Belum Bayar", await sql.StrAsync("SELECT status_bayar FROM reg_periksa WHERE no_rawat='RANAP-UJI'"));
+
+        await KoreksiPasienPulangAsync(sql, settings, key, user, dr);
+        await KoreksiDanObgynPasienDirawatAsync(sql, settings, user);
+    }
+
+    private static Task<long> SaldoPiutangAsync(Db sql, string noRawat) => sql.CountAsync("""
+        SELECT COALESCE(SUM(d.debet-d.kredit),0) FROM detailjurnal d JOIN jurnal j ON j.no_jurnal=d.no_jurnal
+        WHERE d.kd_rek='A0' AND j.no_bukti=@p0
+        """, noRawat);
+
+    private static async Task KoreksiPasienPulangAsync(Db sql, DatabaseSettings settings, RawatInapKey key, AuthenticatedUser user,
+        TarifTindakanRanap tarif)
+    {
+        var admin = new AuthenticatedUser { IsAdminUtama = true };
+        var biasa = new TindakanRanapInputService(settings, key, "RM", user);
+        var utama = new TindakanRanapInputService(settings, key, "RM", admin);
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new TindakanRanapInputService(settings, key, "RM", new AuthenticatedUser()).DaftarAsync());
+        var daftar = await biasa.DaftarAsync();
+        Assert.Equal(3, daftar.Count);
+        var dokter = daftar.Single(b => b.Isi.Jenis == TindakanRalanJenis.Dokter);
+        Assert.Equal(("Tindakan Uji", "Dokter Uji", ""), (dokter.Nama, dokter.NamaDokter, dokter.NamaPetugas));
+
+        var lewat = await Assert.ThrowsAsync<InvalidOperationException>(() => biasa.HapusAsync([dokter.Isi]));
+        Assert.Contains("2 x 24 jam", lewat.Message);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => biasa.UbahAsync(dokter.Isi, dokter.Isi.Waktu.AddMinutes(5), "DR", ""));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => utama.UbahAsync(dokter.Isi, dokter.Isi.Waktu, "DR", ""));
+        await Assert.ThrowsAsync<ArgumentException>(() => utama.UbahAsync(dokter.Isi, dokter.Isi.Waktu, "SALAH", ""));
+        var tutup = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            utama.UbahAsync(dokter.Isi, dokter.Isi.Waktu.AddMinutes(5), "DR", "", tarif));
+        Assert.Contains("Segmen kamar", tutup.Message);
+        await utama.UbahAsync(dokter.Isi, dokter.Isi.Waktu.AddMinutes(5), "DR", "");
+        Assert.Equal("09:05:00", await sql.StrAsync("SELECT jam_rawat FROM rawat_inap_dr WHERE no_rawat='RANAP-UJI'"));
+        Assert.Equal(170, await sql.CountAsync("SELECT biaya_rawat FROM rawat_inap_dr WHERE no_rawat='RANAP-UJI'"));
+        Assert.Equal(560, await SaldoPiutangAsync(sql, "RANAP-UJI"));
+        var basi = await Assert.ThrowsAsync<InvalidOperationException>(() => utama.HapusAsync([dokter.Isi]));
+        Assert.Contains("sudah berubah", basi.Message);
+
+        // Satu baris basi membatalkan seluruh pilihan.
+        var baru = (await utama.DaftarAsync()).Select(b => b.Isi).ToArray();
+        await Assert.ThrowsAsync<InvalidOperationException>(() => utama.HapusAsync([.. baru, dokter.Isi]));
+        Assert.Equal(560, await SaldoPiutangAsync(sql, "RANAP-UJI"));
+        Assert.Equal(1, await sql.CountAsync("SELECT COUNT(*) FROM rawat_inap_pr WHERE no_rawat='RANAP-UJI'"));
+
+        await utama.HapusAsync(baru);
+        foreach (var tabel in new[] { "rawat_inap_dr", "rawat_inap_pr", "rawat_inap_drpr" })
+            Assert.Equal(0, await sql.CountAsync($"SELECT COUNT(*) FROM {tabel} WHERE no_rawat='RANAP-UJI'"));
+        Assert.Equal(0, await SaldoPiutangAsync(sql, "RANAP-UJI"));
+        Assert.Equal(0, await sql.CountAsync("SELECT COUNT(*) FROM (SELECT no_jurnal FROM detailjurnal GROUP BY no_jurnal HAVING SUM(debet)<>SUM(kredit)) x"));
+
+        await sql.ExecAsync("""
+            INSERT INTO rawat_inap_dr(no_rawat,kd_jenis_prw,kd_dokter,tgl_perawatan,jam_rawat,material,bhp,tarif_tindakandr,kso,menejemen,biaya_rawat)
+            VALUES('RANAP-BILL','T','DR','2026-01-01','09:00:00',10,20,30,50,60,170)
+            """);
+        var ditagih = new TindakanRanapInputService(settings, key with { NoRawat = "RANAP-BILL" }, "RM", admin);
+        var baris = Assert.Single(await ditagih.DaftarAsync()).Isi;
+        var alasan = await Assert.ThrowsAsync<InvalidOperationException>(() => ditagih.HapusAsync([baris]));
+        Assert.Contains("tagihan", alasan.Message);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => ditagih.UbahAsync(baris, baris.Waktu.AddMinutes(1), "DR", ""));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => utama.HapusAsync([baris]));
+        Assert.Equal(1, await sql.CountAsync("SELECT COUNT(*) FROM rawat_inap_dr WHERE no_rawat='RANAP-BILL'"));
+    }
+
+    private static async Task KoreksiDanObgynPasienDirawatAsync(Db sql, DatabaseSettings settings, AuthenticatedUser user)
+    {
+        var masuk = DateTime.Today.AddDays(-1).AddHours(8);
+        await sql.ExecAsync("""
+            INSERT INTO reg_periksa(no_rawat,no_rkm_medis,kd_pj,status_lanjut,stts,status_bayar,tgl_registrasi,jam_reg)
+            VALUES ('RANAP-BARU','RM','PJ','Ranap','Belum','Belum Bayar',@p0,@p1)
+            """, masuk.Date, masuk.TimeOfDay);
+        await sql.ExecAsync("INSERT INTO kamar_inap(no_rawat,kd_kamar,tgl_masuk,jam_masuk,stts_pulang) VALUES ('RANAP-BARU','KM',@p0,@p1,'-')",
+            masuk.Date, masuk.TimeOfDay);
+        await sql.ExecAsync("""
+            INSERT INTO jns_perawatan_inap(kd_jenis_prw,nm_perawatan,kd_kategori,kd_pj,kd_bangsal,kelas,status,material,bhp,
+                tarif_tindakandr,tarif_tindakanpr,kso,menejemen,total_byrdr,total_byrpr,total_byrdrpr) VALUES
+            ('U','Tindakan Lain','K','PJ','BG','Kelas 1','1',1,2,3,0,4,5,15,0,0)
+            """);
+        var key = new RawatInapKey("RANAP-BARU", "KM", DateOnly.FromDateTime(masuk), TimeOnly.FromDateTime(masuk));
+        var terkunci = new DatabaseSettings { Host = settings.Host, Database = settings.Database, User = settings.User,
+            Port = settings.Port, Password = settings.Password, TanggalMundur = false };
+        var service = new TindakanRanapInputService(terkunci, key, "RM", user);
+        var tarif = (await service.CariAsync(TindakanRalanJenis.Dokter, "")).ToDictionary(t => t.Kode);
+        await service.SimpanAsync(TindakanRalanJenis.Dokter, masuk, "DR", "", [tarif["T"]]);
+        var asal = Assert.Single(await service.DaftarAsync()).Isi;
+
+        // Non-admin dengan kunci tanggal: waktu yang diminta diabaikan, tindakan boleh diganti.
+        await service.UbahAsync(asal, asal.Waktu.AddHours(-3), "DR", "", tarif["U"]);
+        var ganti = Assert.Single(await service.DaftarAsync()).Isi;
+        Assert.Equal(("U", 15d, asal.Waktu), (ganti.Kode, ganti.Biaya, ganti.Waktu));
+        Assert.Equal(15, await SaldoPiutangAsync(sql, "RANAP-BARU"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.UbahAsync(ganti, ganti.Waktu, "DR", "", tarif["T"] with { Total = 1 }));
+        await service.HapusAsync([ganti]);
+        Assert.Empty(await service.DaftarAsync());
+        Assert.Equal(0, await SaldoPiutangAsync(sql, "RANAP-BARU"));
+
+        foreach (var obstetri in new[] { true, false })
+        {
+            var tabel = obstetri ? "pemeriksaan_obstetri_ranap" : "pemeriksaan_ginekologi_ranap";
+            var periksa = new PemeriksaanObgynService(settings, "RANAP-BARU", user, obstetri, ranap: true);
+            var isian = periksa.Fields.Select(f => f.Choices?[0] ?? "uji").ToArray();
+            await Assert.ThrowsAsync<InvalidOperationException>(() => new PemeriksaanObgynService(settings, "RANAP-BARU",
+                new AuthenticatedUser { Permissions = new HashSet<string> { "tindakan_ralan" } }, obstetri, ranap: true).DaftarAsync());
+            // Layanan rawat jalan tidak menulis ke kunjungan rawat inap.
+            await Assert.ThrowsAsync<InvalidOperationException>(() => new PemeriksaanObgynService(settings, "RANAP-BARU",
+                new AuthenticatedUser { IsAdminUtama = true }, obstetri).SimpanAsync(DateTime.Now, isian));
+            await periksa.SimpanAsync(DateTime.Now, isian);
+            var tersimpan = Assert.Single(await periksa.DaftarAsync());
+            isian[0] = "ubah";
+            await periksa.UbahAsync(tersimpan, DateTime.Now, isian);
+            tersimpan = Assert.Single(await periksa.DaftarAsync());
+            Assert.Equal("ubah", tersimpan.S(periksa.Fields[0].Name));
+            Assert.Equal(1, await sql.CountAsync($"SELECT COUNT(*) FROM {tabel} WHERE no_rawat='RANAP-BARU'"));
+            await periksa.HapusAsync(tersimpan);
+            Assert.Empty(await periksa.DaftarAsync());
+        }
     }
 }

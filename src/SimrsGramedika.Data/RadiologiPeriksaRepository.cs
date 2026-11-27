@@ -150,7 +150,7 @@ public class RadiologiPeriksaRepository(SimrsGramedikaDbContext db) : IRadiologi
 
     private const string KamarSub =
         "(select concat(ki.kd_kamar,', ',b.nm_bangsal) from kamar_inap ki inner join kamar k on k.kd_kamar=ki.kd_kamar " +
-        "inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat=h.no_rawat order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1)";
+        "inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat=coalesce((select rg.no_rawat from ranap_gabung rg where rg.no_rawat2=h.no_rawat limit 1),h.no_rawat) order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1)";
 
     private static string FilterSql(RadPeriksaFilter f, SqlParams ps)
     {

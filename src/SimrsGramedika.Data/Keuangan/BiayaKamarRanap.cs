@@ -8,6 +8,8 @@ public sealed class AturanLamaRawat
     public int JamMinimal { get; set; }
     public bool HitungHariAwal { get; set; }
     public bool DiagnosaAkhirWajib { get; set; }
+    /// <summary>Persen tarif kamar yang ditambahkan untuk bayi rawat gabung (kolom set_jam_minimal.bayi).</summary>
+    public int PersenKamarBayi { get; set; }
 
     public static int HitungHari(DateTime masuk, DateTime keluar, int jamMinimal, bool hariAwal)
     {
@@ -20,7 +22,7 @@ public sealed class AturanLamaRawat
     internal static async Task<AturanLamaRawat> LoadAsync(SimrsGramedikaDbContext db, CancellationToken ct) =>
         await db.Database.SqlQuery<AturanLamaRawat>($"""
             SELECT lamajam AS JamMinimal, (hariawal='Yes') AS HitungHariAwal,
-                   COALESCE(diagnosaakhir='Yes',0) AS DiagnosaAkhirWajib
+                   COALESCE(diagnosaakhir='Yes',0) AS DiagnosaAkhirWajib, COALESCE(bayi,0) AS PersenKamarBayi
             FROM set_jam_minimal LIMIT 1
             """).FirstOrDefaultAsync(ct) ?? new();
 

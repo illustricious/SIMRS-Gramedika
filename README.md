@@ -108,12 +108,12 @@ have limits that are described in the audit documents.
 |---|---|
 | Registration ([audit](docs/tracker/AUDIT_REGISTRASI.md)) | Register visits with Khanza queue numbering; new patients with Khanza medical record numbers; patient notes and status; deceased record; internal, incoming and outgoing referrals; sick-leave letter; letterhead printing |
 | Emergency | Registration and triage entry |
-| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send, edit and cancel prescriptions (editing is non-compounded only), lab and radiology requests; write and print the medical resume |
-| Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals; discharge summary and room release; discharge prescriptions from request to validation, handover, and full or partial return |
+| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send, edit and cancel prescriptions including compounded ones, lab and radiology requests; write and print the medical resume |
+| Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals, including correction and deletion; obstetric and gynaecology exams; removal of wrongly entered room stays; mother and baby rooming-in with a combined bill; surgery charges with theatre drugs and operative reports; discharge summary and room release; discharge prescriptions from request to validation, handover, and full or partial return |
 | Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print 15 record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment, and admission and discharge criteria checklists for HCU, ICU, NICU, PICU and isolation |
 | Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
 | Laboratory and radiology | Record results; post journals on save and reverse them on delete |
-| Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, surgery, returns and adjustments are still settled in Khanza |
+| Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, outpatient surgery, returns and adjustments are still settled in Khanza |
 | Finance | Manual balanced journal, tariffs and accounts |
 
 Generic report screens can be exported to CSV or printed as a letterhead PDF. A connection profile setting mirrors Khanza's

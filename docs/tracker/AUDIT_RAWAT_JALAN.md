@@ -118,7 +118,7 @@ Form `ObgynRalanView` dan `PemeriksaanObgynService` menyediakan simpan, ubah, ha
 ## Order penunjang dan resume medis (25 November 2026)
 
 - Dari daftar pemeriksaan Rawat Jalan, pilih kunjungan lalu **Alur Kunjungan**. Jalur klik kanan Registrasi **Tindakan & Pemeriksaan → Tindakan Rawat Jalan** membuka area kerja yang sama. Empat menu disaring dengan izin `resep_dokter`, `permintaan_lab`, `permintaan_radiologi` dan `data_resume_pasien`.
-- **Input Resep** mengirim obat nonracikan dengan jumlah dan aturan pakai ke Daftar Resep Farmasi. Akun dokter dicatat sebagai penulis. Admin Utama memakai dokter kunjungan. Racikan, verifikasi/penyerahan, pembatalan resep dan perhitungan stok serta tarif obat dinamis belum tersedia dari alur ini.
+- **Input Resep** mengirim obat dan racikan dengan jumlah dan aturan pakai ke Daftar Resep Farmasi. Akun dokter dicatat sebagai penulis. Admin Utama memakai dokter kunjungan. Verifikasi/penyerahan serta perhitungan stok dan tarif obat dinamis belum tersedia dari alur ini; rincian racikan di [log 12](../handover/12-SESSION-2026-11-27.md#resep-racikan-dari-dokter).
 - **Permintaan Lab** menerima Patologi Klinik, Patologi Anatomi dan Mikrobiologi. Pilihan tarif mengikuti `set_tarif`. PK/MB mendukung pilihan rincian pemeriksaan dan PA mendukung metadata bahan. **Permintaan Radiologi** mengirim daftar pemeriksaan. Keduanya menyimpan diagnosis klinis dan informasi tambahan, lalu menampilkan status penerimaan dari waktu sampel/hasil. Order ditolak untuk kunjungan yang batal, masuk rawat inap atau sudah masuk billing. Edit order terkirim dari Rawat Jalan dan alur billing parsial masih terbuka.
 - **Resume Pasien** menambah dan mengubah narasi kunjungan serta menampilkan diagnosis/prosedur yang tercatat. Simpan pertama mengisi kode dan nama dari diagnosis/prosedur kunjungan. Perubahan narasi memeriksa kepemilikan dan data lama. Cetak, hapus dan penarikan narasi hasil secara otomatis masih terbuka.
 - Fixture `AlurPenunjangRalanTests` memakai skema Khanza kosong pada MariaDB 11.4.8 dengan `SIMRS_PENUNJANG_FIXTURE_PORT` dan database `simrs_penunjang_fixture`. Tes membaca order dari repository Farmasi, Laboratorium dan Radiologi yang digunakan layar penerima. Cakupan meliputi rollback order, kategori lab, pembatasan akses dan konsistensi resume. Interaksi visual aplikasi, pengolahan hasil aktual dan penggunaan bersamaan dengan klien Java belum diuji.
@@ -133,8 +133,8 @@ Tombol Template Pemeriksaan juga mulai tersedia untuk akun dengan izin `template
 
 ## Ubah order dan cetak resume (27 November 2026)
 
-- **Ubah order terpilih** di riwayat Alur Kunjungan: resep nonracikan, permintaan lab PK/PA/MB dan radiologi. Nomor, waktu dan dokter pengirim tetap; isi diganti dalam satu transaksi dan ditolak bila order berubah sejak dibuka.
-- Ditolak: resep sudah divalidasi atau berisi racikan; permintaan sudah diambil sampel/berhasil atau ada item berstatus bayar; kunjungan sudah ditagih atau masuk rawat inap; pengubah bukan dokter pengirim atau Admin Utama. Pembatasan dokter lebih ketat daripada Java.
+- **Ubah order terpilih** di riwayat Alur Kunjungan: resep (termasuk racikan), permintaan lab PK/PA/MB dan radiologi. Nomor, waktu dan dokter pengirim tetap; isi diganti dalam satu transaksi dan ditolak bila order berubah sejak dibuka.
+- Ditolak: resep sudah divalidasi atau data racikannya tidak lengkap; permintaan sudah diambil sampel/berhasil atau ada item berstatus bayar; kunjungan sudah ditagih atau masuk rawat inap; pengubah bukan dokter pengirim atau Admin Utama. Pembatasan dokter lebih ketat daripada Java.
 - Pembatalan/penghapusan order belum tersedia.
 - **Cetak Resume** mencetak resume tersimpan berkop RS dengan isi `rptLaporanResume.jrxml` dan QR identitas dokter (bukan tanda tangan elektronik tersertifikasi).
 - `AlurPenunjangRalanTests` lulus pada skema sintetis; tata letak PDF diperiksa dari gambar hasil render. Klik di aplikasi, database RS dan klien Java bersamaan belum diuji.

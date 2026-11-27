@@ -8,7 +8,7 @@ A	btnBookingMCUPerusahaan	Booking MCU Perusahaan	DlgBookingMCUPerusahaan	ya	khus
 A	btnIGD	IGD/UGD	DlgIGD	ya	khusus	tulis sebagian
 A	btnRalan	Tindakan Ralan	DlgRawatJalan	ya	khusus	tulis ada
 A	btnPermintaanRanap	Permintaan Rawat Inap	DlgPermintaanRanap	ya	master	tulis ada
-A	btnKamarInap	Rawat Inap	DlgKamarInap	ya	khusus	tulis sebagian
+A	btnKamarInap	Rawat Inap	DlgKamarInap	ya	khusus	tulis ada
 A	btnJadwalOperasi	Jadwal Operasi	DlgBookingOperasi	ya	master	tulis ada
 A	btnPermintaanLab	Permintaan Lab PK	DlgCariPermintaanLab	ya	khusus	tulis sebagian
 A	btnPermintaanLabPA	Permintaan Lab PA	DlgCariPermintaanLabPA	ya	khusus	tulis ada
@@ -16,8 +16,8 @@ A	btnPermintaanLabMB	Permintaan Lab MB	DlgCariPermintaanLabMB	ya	khusus	tulis ad
 A	btnPermintaanRadiologi	Permintaan Radiologi	DlgCariPermintaanRadiologi	ya	khusus	tulis sebagian
 A	btnPermintaanLayananProgramKFR	Permintaan Layanan Program KFR	DlgCariPermintaanLayananProgramKFR	ya	baca saja	tulis ada
 A	BtnDpjp	DPJP Ranap	DlgDpjp	ya	khusus	tulis ada
-A	btnRanap	Tindakan Ranap	DlgRawatInap	ya	khusus	tulis sebagian
-A	btnTagihanOperasi	Operasi/VK	DlgCariTagihanOperasi	ya	khusus	hanya baca
+A	btnRanap	Tindakan Ranap	DlgRawatInap	ya	khusus	tulis ada
+A	btnTagihanOperasi	Operasi/VK	DlgCariTagihanOperasi	ya	khusus	tulis sebagian
 A	btnRujukPasien	Rujukan Keluar	DlgRujuk	ya	khusus	tulis ada
 A	btnRujukMasuk	Rujukan Masuk	DlgRujukMasuk	ya	khusus	tulis sebagian
 A	btnBeriObat	Beri Obat/BHP	DlgPemberianObat	ya	khusus	tulis ada

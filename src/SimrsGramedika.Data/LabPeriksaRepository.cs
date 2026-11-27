@@ -213,7 +213,7 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
 
     private const string KamarSub =
         "(select concat(ki.kd_kamar,', ',b.nm_bangsal) from kamar_inap ki inner join kamar k on k.kd_kamar=ki.kd_kamar " +
-        "inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat={R}.no_rawat order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1)";
+        "inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat=coalesce((select rg.no_rawat from ranap_gabung rg where rg.no_rawat2={R}.no_rawat limit 1),{R}.no_rawat) order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1)";
 
     private static string FilterSql(LabPeriksaFilter f, SqlParams ps, string cat)
     {
@@ -640,9 +640,9 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
                      r.kd_pj as KodePj, pj.png_jawab as CaraBayar, r.kd_dokter as KodeDokter, dk.nm_dokter as NamaDokter,
                      r.status_lanjut as Status, r.stts as Stts, pl.nm_poli as NmPoli,
                      (select concat(ki.kd_kamar,', ',b.nm_bangsal) from kamar_inap ki inner join kamar k on k.kd_kamar=ki.kd_kamar
-                        inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat=r.no_rawat order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1) as Kamar,
+                        inner join bangsal b on b.kd_bangsal=k.kd_bangsal where ki.no_rawat=coalesce((select rg.no_rawat from ranap_gabung rg where rg.no_rawat2=r.no_rawat limit 1),r.no_rawat) order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1) as Kamar,
                      (select k.kelas from kamar_inap ki inner join kamar k on k.kd_kamar=ki.kd_kamar
-                        where ki.no_rawat=r.no_rawat order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1) as Kelas
+                        where ki.no_rawat=coalesce((select rg.no_rawat from ranap_gabung rg where rg.no_rawat2=r.no_rawat limit 1),r.no_rawat) order by ki.tgl_masuk desc, ki.jam_masuk desc limit 1) as Kelas
               from reg_periksa r inner join pasien pas on r.no_rkm_medis=pas.no_rkm_medis
               left join kelurahan kl on pas.kd_kel=kl.kd_kel left join kecamatan kc on pas.kd_kec=kc.kd_kec left join kabupaten kb on pas.kd_kab=kb.kd_kab
               left join penjab pj on r.kd_pj=pj.kd_pj left join dokter dk on r.kd_dokter=dk.kd_dokter left join poliklinik pl on r.kd_poli=pl.kd_poli

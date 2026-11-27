@@ -22,9 +22,13 @@ Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 
 - Farmasi memvalidasi, membatalkan dan menyerahkan resep, serta meretur obat pulang seluruhnya atau sebagian. Lab dan Radiologi memposting dan membalik jurnal.
 - Halaman Tindakan Rawat Jalan bertab seperti Java, dengan menu klinis di kiri. Lima belas formulir rekam medis bisa diisi, diubah, dihapus dan dicetak.
+- Rawat inap: tindakan bisa diubah dan dihapus dengan jurnal pembalik, pemeriksaan obstetri dan ginekologi bisa diisi, dan ada Hapus Data Salah untuk baris kamar ([log 12](12-SESSION-2026-11-27.md#fitur-rawat-inap)).
+- Rawat gabung ibu dan bayi bisa dibuat dan dilepas, bayi tampil di bawah ibunya, dan Kasir menagih keduanya dalam satu nota ([log 12](12-SESSION-2026-11-27.md#rawat-gabung-ibu-dan-bayi)).
+- Operasi/VK rawat inap bisa diinput dan dihapus beserta obat kamar operasi, laporan dan jurnalnya, dan ikut tagihan rawat inap ([log 12](12-SESSION-2026-11-27.md#operasi-rawat-inap)).
+- Dokter bisa mengirim dan mengubah resep racikan rawat jalan ([log 12](12-SESSION-2026-11-27.md#resep-racikan-dari-dokter)).
 - Cek "kunjungan sudah ditagih" disatukan di `TagihanKunjungan` dan mengikuti Khanza (hanya baris `billing`).
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
-- Peta fungsi: paling banyak 33% pasangan tabel-aksi tulis jendela Java punya padanan (725 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
-- Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 28 fixture; tanpa database 221 lulus, 42 dilewati).
+- Peta fungsi: paling banyak 34% pasangan tabel-aksi tulis jendela Java punya padanan (748 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
+- Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 30 fixture; tanpa database 223 lulus, 45 dilewati).
 - Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611271423` (dari `16a8761`). Pre-release GitHub tertinggal dari source.

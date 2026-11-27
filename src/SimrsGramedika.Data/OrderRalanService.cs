@@ -16,6 +16,8 @@ public sealed record BahanPaRalan(DateTime? Diambil, string Cara, string Lokasi,
 public sealed record DrafOrderRalan(string Nomor, string Dokter, string Diagnosa, string Informasi, BahanPaRalan? Bahan,
     IReadOnlyList<BarisOrderRalan> Baris)
 {
+    public IReadOnlyList<RacikanOrder> Racikan { get; init; } = [];
+
     internal string Sidik => System.Text.Json.JsonSerializer.Serialize(this);
 }
 
@@ -78,6 +80,25 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         return rows.Select(r => new BarisOrderRalan(r.S("kode"), r.S("nama"))).ToList();
     }
 
+    public async Task<List<MetodeRacik>> MetodeRacikAsync()
+    {
+        PastikanIzin();
+        await using var db = await Db.OpenAsync(settings);
+        return (await db.QueryAsync("SELECT kd_racik,nm_racik FROM metode_racik ORDER BY nm_racik,kd_racik"))
+            .Select(r => new MetodeRacik(r.S("kd_racik"), r.S("nm_racik"))).ToList();
+    }
+
+    public async Task<IReadOnlyList<BahanRacikan>> CariBahanAsync(string kata)
+    {
+        PastikanIzin();
+        await using var db = await Db.OpenAsync(settings);
+        return (await db.QueryAsync("""
+                SELECT kode_brng,nama_brng,IFNULL(kapasitas,0) kapasitas FROM databarang
+                WHERE status='1' AND (kode_brng LIKE @p0 OR nama_brng LIKE @p0) ORDER BY nama_brng,kode_brng LIMIT 100
+                """, "%" + kata.Trim() + "%"))
+            .Select(r => new BahanRacikan(r.S("kode_brng"), r.S("nama_brng"), 0, Kapasitas: (decimal)r.D("kapasitas"))).ToList();
+    }
+
     public async Task<List<Row>> RiwayatAsync()
     {
         PastikanIzin();
@@ -89,7 +110,15 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                 FROM resep_obat h JOIN reg_periksa r ON r.no_rawat=h.no_rawat
                 LEFT JOIN resep_dokter d ON d.no_resep=h.no_resep LEFT JOIN databarang m ON m.kode_brng=d.kode_brng
                 WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status='ralan' AND h.tgl_peresepan>'0000-00-00'
-                ORDER BY h.no_resep DESC,m.nama_brng
+                    AND (d.no_resep IS NOT NULL OR NOT EXISTS(SELECT 1 FROM resep_dokter_racikan x WHERE x.no_resep=h.no_resep))
+                UNION ALL
+                SELECT h.no_resep,h.tgl_peresepan,
+                    CONCAT('Racikan ',x.no_racik,': ',x.nama_racik,' (',IFNULL(c.nm_racik,x.kd_racik),')'),x.jml_dr,x.aturan_pakai,
+                    IF(h.tgl_penyerahan>'0000-00-00','Diserahkan',IF(h.tgl_perawatan>'0000-00-00','Diverifikasi','Menunggu farmasi'))
+                FROM resep_obat h JOIN reg_periksa r ON r.no_rawat=h.no_rawat
+                JOIN resep_dokter_racikan x ON x.no_resep=h.no_resep LEFT JOIN metode_racik c ON c.kd_racik=x.kd_racik
+                WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status='ralan' AND h.tgl_peresepan>'0000-00-00'
+                ORDER BY 1 DESC,3
                 """, noRawat, noRm);
         return await db.QueryAsync($"""
             SELECT h.noorder nomor,h.tgl_permintaan tanggal,m.nm_perawatan nama,h.diagnosa_klinis diagnosa,
@@ -100,9 +129,12 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             """, noRawat, noRm);
     }
 
-    private void Periksa(IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi, BahanPaRalan? bahan)
+    private void Periksa(IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi, BahanPaRalan? bahan,
+        IReadOnlyList<RacikanOrder> racikan)
     {
-        if (baris.Count == 0 || baris.Any(r => string.IsNullOrWhiteSpace(r.Kode)) ||
+        if (!Resep && racikan.Count > 0) throw new ArgumentException("Racikan hanya ada pada resep.");
+        PeriksaRacikan(racikan);
+        if (baris.Count == 0 && racikan.Count == 0 || baris.Any(r => string.IsNullOrWhiteSpace(r.Kode)) ||
             baris.Select(r => r.Kode).Distinct(StringComparer.OrdinalIgnoreCase).Count() != baris.Count)
             throw new ArgumentException("Pilih paling sedikit satu item dan hindari kode ganda.");
         if (Resep && baris.Any(r => r.Jumlah <= 0 || string.IsNullOrWhiteSpace(r.Aturan) || r.Aturan.Length > 150))
@@ -112,6 +144,44 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         if (jenis == JenisOrderRalan.LabPa && (bahan is null || bahan.Cara.Length > 40 || bahan.Lokasi.Length > 40 ||
             bahan.Pengawet.Length > 40 || bahan.TempatSebelumnya.Length > 100 || bahan.NomorSebelumnya.Length > 20 || bahan.DiagnosisSebelumnya.Length > 100))
             throw new ArgumentException("Lengkapi informasi bahan PA sesuai panjang kolom.");
+    }
+
+    private static void PeriksaRacikan(IReadOnlyList<RacikanOrder> racikan)
+    {
+        if (racikan.Count > 98) throw new ArgumentException("Satu resep paling banyak 98 racikan.");
+        foreach (var r in racikan)
+        {
+            var nama = r.Nama.Trim();
+            if (nama.Length is 0 or > 100 || string.IsNullOrWhiteSpace(r.KodeMetode))
+                throw new ArgumentException("Isi nama racikan (maksimum 100 karakter) dan metode racik.");
+            if (r.Jumlah <= 0 || r.Aturan.Trim().Length is 0 or > 150 || r.Keterangan.Trim().Length > 50)
+                throw new ArgumentException($"Racikan {nama}: isi jumlah positif dan aturan pakai. Keterangan maksimum 50 karakter.");
+            if (r.Bahan.Count == 0 || r.Bahan.Any(b => string.IsNullOrWhiteSpace(b.Kode)) ||
+                r.Bahan.Select(b => b.Kode).Distinct(StringComparer.OrdinalIgnoreCase).Count() != r.Bahan.Count)
+                throw new ArgumentException($"Racikan {nama}: pilih paling sedikit satu obat dan hindari obat ganda.");
+            if (r.Bahan.Any(b => b.Jumlah <= 0 || b.P1 < 0 || b.P2 < 0 || b.Kandungan.Trim().Length > 10))
+                throw new ArgumentException($"Racikan {nama}: jumlah tiap obat harus positif dan kandungan maksimum 10 karakter.");
+        }
+    }
+
+    private static async Task SimpanRacikanAsync(Db db, string nomor, IReadOnlyList<RacikanOrder> racikan)
+    {
+        for (var i = 0; i < racikan.Count; i++)
+        {
+            var r = racikan[i];
+            var urut = (i + 1).ToString(CultureInfo.InvariantCulture);
+            if (await db.ExecAsync("""
+                    INSERT INTO resep_dokter_racikan(no_resep,no_racik,nama_racik,kd_racik,jml_dr,aturan_pakai,keterangan)
+                    SELECT @p0,@p1,@p2,kd_racik,@p4,@p5,@p6 FROM metode_racik WHERE kd_racik=@p3
+                    """, nomor, urut, r.Nama.Trim(), r.KodeMetode, r.Jumlah, r.Aturan.Trim(), r.Keterangan.Trim()) != 1)
+                throw new InvalidOperationException($"Metode racik {r.KodeMetode} sudah tidak tersedia.");
+            foreach (var b in r.Bahan)
+                if (await db.ExecAsync("""
+                        INSERT INTO resep_dokter_racikan_detail(no_resep,no_racik,kode_brng,p1,p2,kandungan,jml)
+                        SELECT @p0,@p1,kode_brng,@p3,@p4,@p5,@p6 FROM databarang WHERE kode_brng=@p2 AND status='1'
+                        """, nomor, urut, b.Kode, b.P1, b.P2, b.Kandungan.Trim(), b.Jumlah) != 1)
+                    throw new InvalidOperationException($"Item {b.Kode} sudah tidak tersedia untuk kunjungan ini.");
+        }
     }
 
     // Kolom waktu layanan Khanza memakai tanggal nol sampai unit penunjang memproses order.
@@ -146,10 +216,11 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
 
     /// <summary>Mengganti isi order yang belum diproses. Nomor, waktu dan dokter pengirim tetap.</summary>
     public async Task UbahAsync(DrafOrderRalan awal, IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi,
-        BahanPaRalan? bahan = null)
+        BahanPaRalan? bahan = null, IReadOnlyList<RacikanOrder>? racikan = null)
     {
         PastikanIzin();
-        Periksa(baris, diagnosa, informasi, bahan);
+        racikan ??= [];
+        Periksa(baris, diagnosa, informasi, bahan, racikan);
         await using var db = await Db.OpenAsync(settings);
         await IzinkanTanggalNolAsync(db);
         await db.BeginAsync();
@@ -158,7 +229,8 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         if (kini.Sidik != awal.Sidik)
             throw new InvalidOperationException("Order sudah diubah. Buka ulang untuk melihat isi terbaru.");
         if (Resep)
-            await db.ExecAsync("DELETE FROM resep_dokter WHERE no_resep=@p0", awal.Nomor);
+            foreach (var tabel in new[] { "resep_dokter_racikan_detail", "resep_dokter_racikan", "resep_dokter" })
+                await db.ExecAsync($"DELETE FROM {tabel} WHERE no_resep=@p0", awal.Nomor);
         else
         {
             await db.ExecAsync($"UPDATE {_format.Header} SET diagnosa_klinis=@p1,informasi_tambahan=@p2 WHERE noorder=@p0",
@@ -170,6 +242,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         }
         foreach (var row in baris)
             await SimpanBarisAsync(db, awal.Nomor, row);
+        await SimpanRacikanAsync(db, awal.Nomor, racikan);
         await db.CommitAsync();
     }
 
@@ -211,8 +284,6 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                 FROM resep_obat WHERE no_resep=@p0 AND no_rawat=@p1 AND status='ralan' AND tgl_peresepan>'0000-00-00' FOR UPDATE
                 """, nomor, noRawat) ?? throw new InvalidOperationException("Resep tidak ditemukan pada kunjungan ini.");
             if (h.D("proses") != 0) throw new InvalidOperationException("Resep sudah divalidasi Farmasi dan tidak bisa diubah atau dibatalkan.");
-            if (untukUbah && await db.CountAsync("SELECT COUNT(*) FROM resep_dokter_racikan WHERE no_resep=@p0", nomor) > 0)
-                throw new InvalidOperationException("Resep berisi racikan. Ubah lewat Khanza.");
             var obat = await db.QueryAsync("""
                 SELECT d.kode_brng,d.jml,d.aturan_pakai,m.nama_brng FROM resep_dokter d
                 LEFT JOIN databarang m ON m.kode_brng=d.kode_brng WHERE d.no_resep=@p0
@@ -221,7 +292,10 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             if (untukUbah && obat.Select(r => r.S("kode_brng")).Distinct(StringComparer.OrdinalIgnoreCase).Count() != obat.Count)
                 throw new InvalidOperationException("Resep memuat obat ganda. Ubah lewat Khanza.");
             draf = new(nomor, h.S("kd_dokter"), "", "", null, obat.Select(r =>
-                new BarisOrderRalan(r.S("kode_brng"), r.S("nama_brng"), (decimal)r.D("jml"), r.S("aturan_pakai"))).ToList());
+                new BarisOrderRalan(r.S("kode_brng"), r.S("nama_brng"), (decimal)r.D("jml"), r.S("aturan_pakai"))).ToList())
+            {
+                Racikan = await BacaRacikanAsync(db, nomor, untukUbah),
+            };
         }
         else
         {
@@ -263,6 +337,27 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         return draf;
     }
 
+    private static async Task<List<RacikanOrder>> BacaRacikanAsync(Db db, string nomor, bool untukUbah)
+    {
+        var kepala = await db.QueryAsync("""
+            SELECT x.no_racik,x.nama_racik,x.kd_racik,IFNULL(m.nm_racik,x.kd_racik) metode,x.jml_dr,x.aturan_pakai,x.keterangan
+            FROM resep_dokter_racikan x LEFT JOIN metode_racik m ON m.kd_racik=x.kd_racik
+            WHERE x.no_resep=@p0 ORDER BY CAST(x.no_racik AS UNSIGNED),x.no_racik FOR UPDATE
+            """, nomor);
+        var bahan = await db.QueryAsync("""
+            SELECT d.no_racik,d.kode_brng,b.nama_brng,IFNULL(b.kapasitas,0) kapasitas,IFNULL(d.jml,0) jml,
+                   IFNULL(d.p1,1) p1,IFNULL(d.p2,1) p2,IFNULL(d.kandungan,'') kandungan
+            FROM resep_dokter_racikan_detail d LEFT JOIN databarang b ON b.kode_brng=d.kode_brng
+            WHERE d.no_resep=@p0 ORDER BY d.no_racik,d.kode_brng FOR UPDATE
+            """, nomor);
+        if (untukUbah && bahan.Any(b => kepala.All(k => k.S("no_racik") != b.S("no_racik"))))
+            throw new InvalidOperationException("Data racikan pada resep tidak lengkap. Ubah lewat Khanza.");
+        return kepala.Select(k => new RacikanOrder(k.S("nama_racik"), k.S("kd_racik"), k.S("metode"), (int)k.D("jml_dr"),
+            k.S("aturan_pakai"), k.S("keterangan"), bahan.Where(b => b.S("no_racik") == k.S("no_racik")).Select(b =>
+                new BahanRacikan(b.S("kode_brng"), b.S("nama_brng"), (decimal)b.D("jml"), (decimal)b.D("p1"), (decimal)b.D("p2"),
+                    b.S("kandungan"), (decimal)b.D("kapasitas"))).ToList())).ToList();
+    }
+
     private static Task<int> SimpanBahanAsync(Db db, string nomor, BahanPaRalan bahan) => db.ExecAsync("""
         UPDATE permintaan_labpa SET pengambilan_bahan=COALESCE(@p1,'0000-00-00'),diperoleh_dengan=@p2,
         lokasi_jaringan=@p3,diawetkan_dengan=@p4,pernah_dilakukan_di=@p5,tanggal_pa_sebelumnya=COALESCE(@p6,'0000-00-00'),
@@ -270,10 +365,12 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         """, nomor, bahan.Diambil?.Date, bahan.Cara, bahan.Lokasi, bahan.Pengawet, bahan.TempatSebelumnya,
         bahan.TanggalSebelumnya?.Date, bahan.NomorSebelumnya, bahan.DiagnosisSebelumnya);
 
-    public async Task<string> SimpanAsync(IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi, BahanPaRalan? bahan = null)
+    public async Task<string> SimpanAsync(IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi,
+        BahanPaRalan? bahan = null, IReadOnlyList<RacikanOrder>? racikan = null)
     {
         PastikanIzin();
-        Periksa(baris, diagnosa, informasi, bahan);
+        racikan ??= [];
+        Periksa(baris, diagnosa, informasi, bahan, racikan);
         await using var db = await Db.OpenAsync(settings);
         await IzinkanTanggalNolAsync(db);
         for (int percobaan = 1; ; percobaan++)
@@ -292,6 +389,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                     await SimpanBahanAsync(db, nomor, bahan);
                 foreach (var row in baris)
                     await SimpanBarisAsync(db, nomor, row);
+                await SimpanRacikanAsync(db, nomor, racikan);
                 await db.CommitAsync();
                 return nomor;
             }

@@ -478,9 +478,9 @@ public sealed class ValidasiResepService(DatabaseSettings settings, Authenticate
         }
         else
         {
-            var kamar = await db.FirstAsync("""
+            var kamar = await db.FirstAsync($"""
                 SELECT k.kd_bangsal,k.kelas FROM kamar_inap i JOIN kamar k ON k.kd_kamar=i.kd_kamar
-                WHERE i.no_rawat=@p0 ORDER BY (i.stts_pulang='-') DESC,i.tgl_masuk DESC,i.jam_masuk DESC LIMIT 1
+                WHERE i.no_rawat={RawatGabungService.PemilikKamar("@p0")} ORDER BY (i.stts_pulang='-') DESC,i.tgl_masuk DESC,i.jam_masuk DESC LIMIT 1
                 """, resep.NoRawat);
             if (kamar is null)
             {
