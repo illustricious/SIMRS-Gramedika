@@ -749,10 +749,10 @@ M	btnSkriningGiziLanjut	Skrining Gizi Lanjut	RMDataSkriningGiziLanjut	ya	formuli
 M	btnAsuhanGizi	Asuhan Gizi	RMDataAsuhanGizi	ya	baca saja	hanya baca
 M	btnMonitoringAsuhanGizi	Monitoring Asuhan Gizi	RMDataMonitoringAsuhanGizi	ya	formulir	tulis ada
 M	btnCatatanADIMEGizi	Catatan ADIME Gizi	RMCatatanADIMEGizi	ya	baca saja	hanya baca
-M	btnSkriningNutrisiDewasa	Skrining Nutrisi Pasien Dewasa	RMSkriningNutrisiDewasa	ya	baca saja	hanya baca
-M	btnSkriningNutrisiLansia	Skrining Nutrisi Pasien Lansia	RMSkriningNutrisiLansia	ya	baca saja	hanya baca
-M	btnSkriningNutrisiAnak	Skrining Nutrisi Pasien Anak	RMSkriningNutrisiAnak	ya	baca saja	hanya baca
-M	btnSkriningGiziKehamilan	Skrining Gizi Kehamilan	RMDataSkriningGiziKehamilan	ya	baca saja	hanya baca
+M	btnSkriningNutrisiDewasa	Skrining Nutrisi Pasien Dewasa	RMSkriningNutrisiDewasa	ya	formulir	tulis ada
+M	btnSkriningNutrisiLansia	Skrining Nutrisi Pasien Lansia	RMSkriningNutrisiLansia	ya	formulir	tulis ada
+M	btnSkriningNutrisiAnak	Skrining Nutrisi Pasien Anak	RMSkriningNutrisiAnak	ya	formulir	tulis ada
+M	btnSkriningGiziKehamilan	Skrining Gizi Kehamilan	RMDataSkriningGiziKehamilan	ya	formulir	tulis ada
 M	btnMasterTemplateHasilRadiologi	Master Template Hasil Radiologi	MasterTemplateHasilRadiologi	ya	master	tulis ada
 M	btnMasterTemplateLaporanOperasi	Master Template Laporan Operasi	MasterTemplateLaporanOperasi	ya	master	tulis ada
 M	btnMasterTemplatePemeriksaanDokter	Master Template Pemeriksaan	MasterTemplatePemeriksaanDokter	ya	master	tulis sebagian
@@ -893,16 +893,16 @@ M	btnChecklistKriteriaMasukIsolasi	Check List Kriteria Masuk Isolasi	RMChecklist
 M	btnChecklistKriteriaKeluarIsolasi	Check List Kriteria Keluar Isolasi	RMChecklistKriteriaKeluarIsolasi	ya	formulir	tulis ada
 M	btnPerencanaanPemulangan	Perencanaan Pemulangan	RMPerencanaanPemulangan	ya	baca saja	hanya baca
 M	btnPenilaianRisikoJatuhDewasa	Pengkajian Lanjutan Risiko Jatuh Dewasa	RMPenilaianLanjutanRisikoJatuhDewasa	ya	formulir	tulis ada
-M	btnPenilaianRisikoJatuhAnak	Pengkajian Lanjutan Risiko Jatuh Anak	RMPenilaianLanjutanRisikoJatuhAnak	ya	baca saja	hanya baca
-M	btnPenilaianRisikoJatuhLansia	Pengkajian Lanjutan Risiko Jatuh Lansia	RMPenilaianLanjutanRisikoJatuhLansia	ya	baca saja	hanya baca
-M	btnPenilaianRisikoJatuhGeriatri	Pengkajian Lanjutan Risiko Jatuh Geriatri	RMPenilaianLanjutanRisikoJatuhGeriatri	ya	baca saja	hanya baca
-M	btnPenilaianRisikoJatuhNeonatus	Pengkajian Lanjutan Risiko Jatuh Neonatus	RMPenilaianRisikoJatuhNeonatus	ya	baca saja	hanya baca
-M	btnPenilaianRisikoJatuhPsikiatri	Pengkajian Lanjutan Risiko Jatuh Psikiatri	RMPenilaianLanjutanRisikoJatuhPsikiatri	ya	baca saja	hanya baca
-M	btnPenilaianLanjutanSkriningFungsional	Pengkajian Lanjutan Skrining Fungsional	RMPenilaianLanjutanSkriningFungsional	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhAnak	Pengkajian Lanjutan Risiko Jatuh Anak	RMPenilaianLanjutanRisikoJatuhAnak	ya	formulir	tulis ada
+M	btnPenilaianRisikoJatuhLansia	Pengkajian Lanjutan Risiko Jatuh Lansia	RMPenilaianLanjutanRisikoJatuhLansia	ya	formulir	tulis ada
+M	btnPenilaianRisikoJatuhGeriatri	Pengkajian Lanjutan Risiko Jatuh Geriatri	RMPenilaianLanjutanRisikoJatuhGeriatri	ya	formulir	tulis ada
+M	btnPenilaianRisikoJatuhNeonatus	Pengkajian Lanjutan Risiko Jatuh Neonatus	RMPenilaianRisikoJatuhNeonatus	ya	formulir	tulis ada
+M	btnPenilaianRisikoJatuhPsikiatri	Pengkajian Lanjutan Risiko Jatuh Psikiatri	RMPenilaianLanjutanRisikoJatuhPsikiatri	ya	formulir	tulis ada
+M	btnPenilaianLanjutanSkriningFungsional	Pengkajian Lanjutan Skrining Fungsional	RMPenilaianLanjutanSkriningFungsional	ya	formulir	tulis ada
 M	btnPenilaianUlangNyeri	Pengkajian Ulang Nyeri	RMPenilaianUlangNyeri	ya	baca saja	hanya baca
 M	btnIntervensiNyeriFarmakologi	Intervensi Nyeri Farmakologi	RMDataIntervensiNyeriFarmakologi	ya	formulir	tulis ada
 M	btnIntervensiNyeriNonFarmakologi	Intervensi Nyeri Non Farmakologi	RMDataIntervensiNyeriNonFarmakologi	ya	formulir	tulis ada
-M	btnPenilaianRisikoDekubitus	Pengkajian Risiko Dekubitus	RMPenilaianRisikoDekubitus	ya	baca saja	hanya baca
+M	btnPenilaianRisikoDekubitus	Pengkajian Risiko Dekubitus	RMPenilaianRisikoDekubitus	ya	formulir	tulis ada
 M	btnLayananKedokteranFisikRehabilitasi	Layanan Kedokteran Fisik & Rehabilitasi	RMLayananKedokteranFisikRehabilitasi	ya	baca saja	tulis sebagian
 M	btnLayananProgramKFR	Layanan Program KFR	RMLayananProgramKFR	ya	baca saja	tulis sebagian
 M	btnUjiFungsiKFR	Uji Fungsi/Prosedur KFR	RMUjiFungsiKFR	ya	baca saja	hanya baca
@@ -918,41 +918,41 @@ M	btnPengkajianRestrain	Pengkajian Restrain	RMPengkajianRestrain	ya	baca saja	ha
 M	btnCatatanCekGDS	Catatan Cek GDS	RMDataCatatanCekGDS	ya	formulir	tulis ada
 M	btnRekonsiliasiObat	Rekonsiliasi Obat	RMCariRekonsiliasiObat	ya	baca saja	hanya baca
 M	btnChecklistPemberianFibrinolitik	Check List Pemberian Fibrinolitik	RMChecklistPemberianFibrinolitik	ya	baca saja	hanya baca
-M	btnSkriningManagerPelayananPasien	Skrining Manajer Pelayanan Pasien	RMSkriningMPP	ya	baca saja	hanya baca
+M	btnSkriningManagerPelayananPasien	Skrining Manajer Pelayanan Pasien	RMSkriningMPP	ya	formulir	tulis ada
 M	btnSkriningMPPFormA	Evaluasi Awal Manajer Pelayanan Pasien	RMSkriningMPPFormA	ya	baca saja	hanya baca
 M	btnSkriningMPPFormB	Catatan Implementasi Manajer Pelayanan Pasien	RMSkriningMPPFormB	ya	baca saja	hanya baca
 M	btnEdukasiPasienKeluargaRJ	Edukasi Pasien & Keluarga Rawat Jalan	RMEdukasiPasienKeluargaRawatJalan	ya	baca saja	hanya baca
 M	btnPelaksanaanInformasiEdukasi	Pelaksanaan Informasi & Edukasi	RMPelaksanaanInformasiEdukasi	ya	baca saja	hanya baca
 M	btnSkriningMerokokUsiaSekolah	Skrining Merokok Usia Sekolah & Remaja	RMSkriningMerokokUsiaSekolahRemaja	ya	baca saja	hanya baca
-M	btnSkriningKekerasanPadaPerempuan	Skrining Kekerasan Pada Perempuan	RMSkriningKekerasanPadaPerempuan	ya	baca saja	hanya baca
-M	btnSkriningObesitas	Skrining Obesitas	RMSkriningObesitas	ya	baca saja	hanya baca
-M	btnSkriningRisikoKankerPayudara	Skrining Risiko Kanker Payudara	RMSkriningRisikoKankerPayudara	ya	baca saja	hanya baca
-M	btnSkriningRisikoKankerParu	Skrining Risiko Kanker Paru	RMSkriningRisikoKankerParu	ya	baca saja	hanya baca
-M	btnSkriningRisikoKankerServiks	Skrining Risiko Kanker Serviks	RMSkriningRisikoKankerServiks	ya	baca saja	hanya baca
-M	btnSkriningKesehatanGigiMulutRemaja	Skrining Kesehatan Gigi Mulut Remaja	RMSkriningKesehatanGigiMulutRemaja	ya	baca saja	hanya baca
-M	btnSkriningKesehatanGigiMulutBalita	Skrining Kesehatan Gigi Mulut Balita	RMSkriningKesehatanGigiMulutBalita	ya	baca saja	hanya baca
-M	btnSkriningKesehatanGigiMulutLansia	Skrining Kesehatan Gigi Mulut Lansia	RMSkriningKesehatanGigiMulutLansia	ya	baca saja	hanya baca
-M	btnSkriningKesehatanGigiMulutDewasa	Skrining Kesehatan Gigi Mulut Dewasa	RMSkriningKesehatanGigiMulutDewasa	ya	baca saja	hanya baca
-M	btnSkriningAnemia	Skrining Anemia	RMSkriningAnemia	ya	baca saja	hanya baca
-M	btnSkriningHipertensi	Skrining Hipertensi	RMSkriningHipertensi	ya	baca saja	hanya baca
-M	btnSkriningKesehatanPenglihatan	Skrining Kesehatan Penglihatan	RMSkriningKesehatanPenglihatan	ya	baca saja	hanya baca
-M	btnSkriningIndraPendengaran	Skrining Indra Pendengaran	RMSkriningIndraPendengaran	ya	baca saja	hanya baca
-M	btnSkriningTBC	Skrining TBC	RMSkriningTBC	ya	baca saja	hanya baca
-M	btnSkriningPUMA	Skrining PUMA	RMSkriningPUMA	ya	baca saja	hanya baca
-M	btnSkriningAdiksiNikotin	Skrining Adiksi Nikotin	RMSkriningAdiksiNikotin	ya	baca saja	hanya baca
-M	btnSkriningThalassemia	Skrining Thalassemia	RMSkriningTalasemia	ya	baca saja	hanya baca
-M	btnSkriningInstrumenSDQ	Skrining Instrumen SDQ	RMSkriningInstrumenSDQ	ya	baca saja	hanya baca
-M	btnSkriningInstrumenSRQ	Skrining Instrumen SRQ	RMSkriningSRQ	ya	baca saja	hanya baca
-M	btnSkriningInstrumenACRS	Skrining Instrumen ACRS	RMSkriningInstrumenACRS	ya	baca saja	hanya baca
-M	btnSkriningInstrumenMentalEmosional	Skrining Instrumen Mental Emosional Anak	RMSkriningInstrumenMentalEmosional	ya	baca saja	hanya baca
-M	btnSkriningInstrumenAMT	Skrining Instrumen AMT	RMSkriningInstrumenAMT	ya	baca saja	hanya baca
-M	btnSkriningInstrumenESAT	Skrining Instrumen ESAT	RMSkriningInstrumenESAT	ya	baca saja	hanya baca
-M	btnSkriningPneumoniaSeverityIndex	Skrining Pneumonia Severity Index	RMSkriningPneumoniaSeverityIndex	ya	baca saja	hanya baca
-M	btnSkriningCURB65	Skrining CURB-65	RMSkriningCURB65	ya	baca saja	hanya baca
-M	btnSkriningKankerKolorektal	Skrining Kanker Kolorektal	RMSkriningKankerKolorektal	ya	baca saja	hanya baca
-M	btnSkriningDiabetesMelitus	Skrining Diabetes Melitus	RMSkriningDiabetesMelitus	ya	baca saja	hanya baca
-M	btnSkriningFrailtySyndrome	Skrining Frailty Syndrome	RMSkriningFrailtySyndrome	ya	baca saja	hanya baca
-M	btnSkriningTOLAC	Skrining TOLAC	RMSkriningTOLAC	ya	baca saja	hanya baca
+M	btnSkriningKekerasanPadaPerempuan	Skrining Kekerasan Pada Perempuan	RMSkriningKekerasanPadaPerempuan	ya	formulir	tulis ada
+M	btnSkriningObesitas	Skrining Obesitas	RMSkriningObesitas	ya	formulir	tulis ada
+M	btnSkriningRisikoKankerPayudara	Skrining Risiko Kanker Payudara	RMSkriningRisikoKankerPayudara	ya	formulir	tulis ada
+M	btnSkriningRisikoKankerParu	Skrining Risiko Kanker Paru	RMSkriningRisikoKankerParu	ya	formulir	tulis ada
+M	btnSkriningRisikoKankerServiks	Skrining Risiko Kanker Serviks	RMSkriningRisikoKankerServiks	ya	formulir	tulis ada
+M	btnSkriningKesehatanGigiMulutRemaja	Skrining Kesehatan Gigi Mulut Remaja	RMSkriningKesehatanGigiMulutRemaja	ya	formulir	tulis ada
+M	btnSkriningKesehatanGigiMulutBalita	Skrining Kesehatan Gigi Mulut Balita	RMSkriningKesehatanGigiMulutBalita	ya	formulir	tulis ada
+M	btnSkriningKesehatanGigiMulutLansia	Skrining Kesehatan Gigi Mulut Lansia	RMSkriningKesehatanGigiMulutLansia	ya	formulir	tulis ada
+M	btnSkriningKesehatanGigiMulutDewasa	Skrining Kesehatan Gigi Mulut Dewasa	RMSkriningKesehatanGigiMulutDewasa	ya	formulir	tulis ada
+M	btnSkriningAnemia	Skrining Anemia	RMSkriningAnemia	ya	formulir	tulis ada
+M	btnSkriningHipertensi	Skrining Hipertensi	RMSkriningHipertensi	ya	formulir	tulis ada
+M	btnSkriningKesehatanPenglihatan	Skrining Kesehatan Penglihatan	RMSkriningKesehatanPenglihatan	ya	formulir	tulis ada
+M	btnSkriningIndraPendengaran	Skrining Indra Pendengaran	RMSkriningIndraPendengaran	ya	formulir	tulis ada
+M	btnSkriningTBC	Skrining TBC	RMSkriningTBC	ya	formulir	tulis ada
+M	btnSkriningPUMA	Skrining PUMA	RMSkriningPUMA	ya	formulir	tulis ada
+M	btnSkriningAdiksiNikotin	Skrining Adiksi Nikotin	RMSkriningAdiksiNikotin	ya	formulir	tulis ada
+M	btnSkriningThalassemia	Skrining Thalassemia	RMSkriningTalasemia	ya	formulir	tulis ada
+M	btnSkriningInstrumenSDQ	Skrining Instrumen SDQ	RMSkriningInstrumenSDQ	ya	formulir	tulis ada
+M	btnSkriningInstrumenSRQ	Skrining Instrumen SRQ	RMSkriningSRQ	ya	formulir	tulis ada
+M	btnSkriningInstrumenACRS	Skrining Instrumen ACRS	RMSkriningInstrumenACRS	ya	formulir	tulis ada
+M	btnSkriningInstrumenMentalEmosional	Skrining Instrumen Mental Emosional Anak	RMSkriningInstrumenMentalEmosional	ya	baca saja	tulis ada
+M	btnSkriningInstrumenAMT	Skrining Instrumen AMT	RMSkriningInstrumenAMT	ya	formulir	tulis ada
+M	btnSkriningInstrumenESAT	Skrining Instrumen ESAT	RMSkriningInstrumenESAT	ya	formulir	tulis ada
+M	btnSkriningPneumoniaSeverityIndex	Skrining Pneumonia Severity Index	RMSkriningPneumoniaSeverityIndex	ya	formulir	tulis ada
+M	btnSkriningCURB65	Skrining CURB-65	RMSkriningCURB65	ya	formulir	tulis ada
+M	btnSkriningKankerKolorektal	Skrining Kanker Kolorektal	RMSkriningKankerKolorektal	ya	formulir	tulis ada
+M	btnSkriningDiabetesMelitus	Skrining Diabetes Melitus	RMSkriningDiabetesMelitus	ya	formulir	tulis ada
+M	btnSkriningFrailtySyndrome	Skrining Frailty Syndrome	RMSkriningFrailtySyndrome	ya	formulir	tulis ada
+M	btnSkriningTOLAC	Skrining TOLAC	RMSkriningTOLAC	ya	formulir	tulis ada
 M	btnAdmisiSkoringTOLAC	Admisi & Skoring TOLAC	RMAdmisiSkoringTOLAC	ya	baca saja	hanya baca
 M	btnMonitoringTOLAC	Monitoring Selama TOLAC	RMDataMonitoringTOLAC	ya	formulir	tulis ada
 M	btnHasilPersalinanTOLAC	Resume Hasil Persalinan TOLAC	RMHasilPersalinanTOLAC	ya	baca saja	hanya baca

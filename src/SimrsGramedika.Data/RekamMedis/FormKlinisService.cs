@@ -7,7 +7,17 @@ using SimrsGramedika.Data.Sql;
 namespace SimrsGramedika.Data.RekamMedis;
 
 public sealed record KunjunganKlinis(string NoRawat, string NoRekamMedis, string Pasien, string JenisKelamin,
-    DateTime? TanggalLahir, string Umur, DateTime Registrasi);
+    DateTime? TanggalLahir, string Umur, DateTime Registrasi)
+{
+    /// <summary>Menambahkan jenis kelamin dan umur untuk rumus formulir.</summary>
+    public void IsiKonteks(IDictionary<string, string> isi)
+    {
+        var umur = Umur.Split(' ', 2);
+        isi[FormKlinis.KunciJk] = JenisKelamin == "Perempuan" ? "P" : "L";
+        isi[FormKlinis.KunciUmur] = umur[0];
+        isi[FormKlinis.KunciSatuanUmur] = umur.Length > 1 ? umur[1] : "";
+    }
+}
 
 /// <summary>Satu catatan tersimpan; dipakai juga sebagai pembanding agar perubahan orang lain tidak tertimpa.</summary>
 public sealed record CatatanKlinis(DateTime Waktu, string Pemilik, string NamaPemilik,
@@ -70,20 +80,20 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
         PastikanIzin();
         waktu = waktu.AddTicks(-(waktu.Ticks % TimeSpan.TicksPerSecond));
         pemilik = (user.IsAdminUtama ? pemilik : user.UserId).Trim();
-        var nilai = Periksa(isi, lama);
 
         await using var db = await Db.OpenAsync(settings);
         await db.BeginAsync();
         if (lama is not null) await KunciAsync(db, lama);
         waktu = await KunciTanggal.WaktuAsync(db, TanggalTerkunci, waktu, lama?.Waktu);
         var kunjungan = await KunjunganAsync(db);
+        var nilai = Periksa(isi, lama, kunjungan);
         if (pemilik.Length == 0) throw new InvalidOperationException($"Pilih {form.SebutanPemilik} terlebih dahulu.");
         await NamaPemilikAsync(db, pemilik);
         if (!user.IsAdminUtama && form.CekWaktuRegistrasi && waktu < kunjungan.Registrasi)
             throw new InvalidOperationException($"Waktu catatan minimal {kunjungan.Registrasi:dd-MM-yyyy HH:mm:ss}, sesuai waktu registrasi.");
 
         var kolom = new List<string> { "no_rawat", form.KolomTanggal };
-        var args = new List<object?> { noRawat, form.KolomJam is null ? waktu : waktu.Date };
+        var args = new List<object?> { noRawat, form.KolomJam is null && !form.TanggalSaja ? waktu : waktu.Date };
         if (form.KolomJam is { } jam)
         {
             kolom.Add(jam);
@@ -115,6 +125,7 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
         {
             throw new InvalidOperationException(form.SatuPerKunjungan
                 ? "Kunjungan ini sudah punya penilaian. Pilih data yang ada untuk mengubahnya."
+                : form.TanggalSaja ? "Sudah ada catatan pada tanggal tersebut. Ganti tanggalnya."
                 : "Sudah ada catatan pada waktu tersebut. Ganti jamnya.", ex);
         }
         await db.CommitAsync();
@@ -158,9 +169,11 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
             throw new InvalidOperationException("Perubahan atau penghapusan data tidak boleh lebih dari 2 x 24 jam.");
     }
 
-    private Dictionary<string, string> Periksa(IReadOnlyDictionary<string, string> isi, CatatanKlinis? lama)
+    private Dictionary<string, string> Periksa(IReadOnlyDictionary<string, string> isi, CatatanKlinis? lama,
+        KunjunganKlinis kunjungan)
     {
         var nilai = form.Isian.ToDictionary(i => i.Kolom, i => (isi.GetValueOrDefault(i.Kolom) ?? "").Trim());
+        kunjungan.IsiKonteks(nilai);
         form.Hitung?.Invoke(nilai);
         foreach (var isian in form.Isian.Where(i => !i.Otomatis))
         {

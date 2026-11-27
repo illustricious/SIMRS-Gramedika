@@ -22,6 +22,9 @@ public sealed record FormKlinis(string Tile, string Judul, string Tabel, string 
 
     public string? KolomJam { get; init; }
 
+    /// <summary>Kolom tanggalnya bertipe date tanpa jam: satu catatan per tanggal.</summary>
+    public bool TanggalSaja { get; init; }
+
     /// <summary>Kunci tabel hanya no_rawat.</summary>
     public bool SatuPerKunjungan { get; init; }
 
@@ -34,8 +37,20 @@ public sealed record FormKlinis(string Tile, string Judul, string Tabel, string 
     /// <summary>Selain Admin Utama, waktu catatan tidak boleh sebelum waktu registrasi.</summary>
     public bool CekWaktuRegistrasi { get; init; } = true;
 
+    /// <summary>
+    /// Data kunjungan yang ikut dibaca <see cref="Hitung"/> dan <see cref="Usul"/> tetapi tidak disimpan: jenis kelamin
+    /// ("L"/"P"), umur saat daftar dan satuannya ("Th", "Bl", "Hr").
+    /// </summary>
+    public const string KunciJk = "@jk", KunciUmur = "@umur", KunciSatuanUmur = "@sttsumur";
+
     /// <summary>Mengisi kolom otomatis (skor) dari isian lain.</summary>
     public Action<IDictionary<string, string>>? Hitung { get; init; }
+
+    /// <summary>
+    /// Isian yang disarankan dari isian lain atau data pasien, tetapi tetap bisa diganti. Layar hanya menerapkannya
+    /// saat sarannya berubah; layanan menyimpan apa pun yang tertulis.
+    /// </summary>
+    public Func<IReadOnlyDictionary<string, string>, Dictionary<string, string>>? Usul { get; init; }
 
     /// <summary>Penjelasan yang ditampilkan tetapi tidak disimpan.</summary>
     public Func<IReadOnlyDictionary<string, string>, string>? Keterangan { get; init; }
@@ -62,6 +77,8 @@ public static class FormKlinisKatalog
     public const string Pengkajian = "Pengkajian & Catatan";
     public const string Observasi = "Observasi & Pemantauan";
     public const string KriteriaRuang = "Kriteria Ruang Rawat";
+    public const string Skrining = "Skrining";
+    public const string Risiko = "Risiko Jatuh, Dekubitus & Fungsional";
 
     private static readonly string[] Organ = ["Normal", "Abnormal", "Tidak Diperiksa"];
 
@@ -204,7 +221,7 @@ public static class FormKlinisKatalog
 
     public static readonly IReadOnlyList<FormKlinis> Semua =
         [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan, .. FormKriteriaRuang.Semua,
-            .. FormObservasi.Semua];
+            .. FormObservasi.Semua, .. FormSkrining.Semua];
 
     public static FormKlinis? Cari(string? tile) => Semua.FirstOrDefault(f => f.Tile == tile);
 }

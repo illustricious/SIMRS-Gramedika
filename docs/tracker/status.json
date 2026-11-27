@@ -3970,5 +3970,645 @@
   "aksi|rekammedis/RMDataIntervensiNyeriNonFarmakologi.java|BtnPrint": {
     "status": "sebagian",
     "bukti": "Intervensi Nyeri Non Farmakologi: cetak umum satu catatan berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Kehamilan/Obstetri/Nifas: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Kehamilan/Obstetri/Nifas: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Kehamilan/Obstetri/Nifas: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Kehamilan/Obstetri/Nifas: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Geriatri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Geriatri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Geriatri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Geriatri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Psikiatri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Psikiatri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Psikiatri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Psikiatri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Skrining Fungsional: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Skrining Fungsional: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Skrining Fungsional: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Skrining Fungsional: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Risiko Dekubitus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Risiko Dekubitus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Risiko Dekubitus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Risiko Dekubitus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Neonatus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Neonatus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Neonatus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Neonatus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Adiksi Nikotin (Fagerstrom): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Adiksi Nikotin (Fagerstrom): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Adiksi Nikotin (Fagerstrom): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Adiksi Nikotin (Fagerstrom): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAnemia.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Anemia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAnemia.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Anemia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAnemia.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Anemia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningAnemia.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Anemia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningCURB65.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining CURB-65: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningCURB65.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining CURB-65: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningCURB65.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining CURB-65: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningCURB65.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining CURB-65: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Diabetes Melitus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Diabetes Melitus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Diabetes Melitus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Diabetes Melitus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Frailty Syndrome: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Frailty Syndrome: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Frailty Syndrome: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Frailty Syndrome: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningHipertensi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Hipertensi: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningHipertensi.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Hipertensi: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningHipertensi.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Hipertensi: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningHipertensi.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Hipertensi: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Indra Pendengaran: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Indra Pendengaran: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Indra Pendengaran: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Indra Pendengaran: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ACRS: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ACRS: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ACRS: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ACRS: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen AMT: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen AMT: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen AMT: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen AMT: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ESAT: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ESAT: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ESAT: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen ESAT: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SDQ (Usia 11-18 Tahun): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SDQ (Usia 11-18 Tahun): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SDQ (Usia 11-18 Tahun): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SDQ (Usia 11-18 Tahun): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kanker Kolorektal: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kanker Kolorektal: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kanker Kolorektal: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kanker Kolorektal: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kekerasan Pada Perempuan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kekerasan Pada Perempuan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kekerasan Pada Perempuan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kekerasan Pada Perempuan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Balita: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Balita: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Balita: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Balita: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Penglihatan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Penglihatan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Penglihatan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Kesehatan Penglihatan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningMPP.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Manager Pelayanan Pasien: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningMPP.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Manager Pelayanan Pasien: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningMPP.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Manager Pelayanan Pasien: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningMPP.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Manager Pelayanan Pasien: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Nutrisi Pasien Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningObesitas.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Obesitas: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningObesitas.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Obesitas: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningObesitas.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Obesitas: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningObesitas.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Obesitas: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPUMA.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining PUMA: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPUMA.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining PUMA: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPUMA.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining PUMA: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPUMA.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining PUMA: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Pneumonia Severity Index: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Pneumonia Severity Index: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Pneumonia Severity Index: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Pneumonia Severity Index: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Paru: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Paru: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Paru: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Paru: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Payudara: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Payudara: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Payudara: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Payudara: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Serviks: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Serviks: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Serviks: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Risiko Kanker Serviks: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningSRQ.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SRQ: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningSRQ.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SRQ: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningSRQ.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SRQ: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningSRQ.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Instrumen SRQ: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTBC.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining TBC: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTBC.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining TBC: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTBC.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining TBC: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTBC.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining TBC: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTOLAC.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining TOLAC (Poli Kebidanan): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTOLAC.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining TOLAC (Poli Kebidanan): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTOLAC.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining TOLAC (Poli Kebidanan): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTOLAC.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining TOLAC (Poli Kebidanan): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTalasemia.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Thalassemia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTalasemia.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Thalassemia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTalasemia.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Thalassemia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMSkriningTalasemia.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Thalassemia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
   }
 }

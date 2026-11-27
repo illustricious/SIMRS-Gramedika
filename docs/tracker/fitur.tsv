@@ -8131,11 +8131,11 @@ aksi|rekammedis/RMDataResumePasienRanap.java|BtnDokter20	aksi	BtnDokter20	rekamm
 aksi|rekammedis/RMDataResumePasienRanap.java|BtnDokter6	aksi	BtnDokter6	rekammedis/RMDataResumePasienRanap.java:1861	belum diaudit	
 jendela|rekammedis/RMDataResumePasienRanap.java|RMDataResumePasienRanap	jendela	RMDataResumePasienRanap	rekammedis/RMDataResumePasienRanap.java:1	belum diaudit	
 popup|rekammedis/RMDataSkriningGiziKehamilan.java|jPopupMenu1|MnSkriningGizi	popup	jPopupMenu1 > Formulir Skrining Gizi Kehamilan	rekammedis/RMDataSkriningGiziKehamilan.java:240	belum diaudit	
-aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnSimpan	aksi	Simpan	rekammedis/RMDataSkriningGiziKehamilan.java:301	belum diaudit	
+aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnSimpan	aksi	Simpan	rekammedis/RMDataSkriningGiziKehamilan.java:301	sebagian	Skrining Gizi Kehamilan/Obstetri/Nifas: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnBatal	aksi	Baru	rekammedis/RMDataSkriningGiziKehamilan.java:319	belum diaudit	
-aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnHapus	aksi	Hapus	rekammedis/RMDataSkriningGiziKehamilan.java:337	belum diaudit	
-aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnEdit	aksi	Ganti	rekammedis/RMDataSkriningGiziKehamilan.java:355	belum diaudit	
-aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnPrint	aksi	Cetak	rekammedis/RMDataSkriningGiziKehamilan.java:373	belum diaudit	
+aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnHapus	aksi	Hapus	rekammedis/RMDataSkriningGiziKehamilan.java:337	sebagian	Skrining Gizi Kehamilan/Obstetri/Nifas: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnEdit	aksi	Ganti	rekammedis/RMDataSkriningGiziKehamilan.java:355	sebagian	Skrining Gizi Kehamilan/Obstetri/Nifas: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnPrint	aksi	Cetak	rekammedis/RMDataSkriningGiziKehamilan.java:373	sebagian	Skrining Gizi Kehamilan/Obstetri/Nifas: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnKeluar	aksi	Keluar	rekammedis/RMDataSkriningGiziKehamilan.java:402	belum diaudit	
 aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnCari	aksi	BtnCari	rekammedis/RMDataSkriningGiziKehamilan.java:466	belum diaudit	
 aksi|rekammedis/RMDataSkriningGiziKehamilan.java|BtnAll	aksi	BtnAll	rekammedis/RMDataSkriningGiziKehamilan.java:483	belum diaudit	
@@ -9296,11 +9296,11 @@ aksi|rekammedis/RMPenilaianKorbanKekerasan.java|BtnDokter	aksi	BtnDokter	rekamme
 aksi|rekammedis/RMPenilaianKorbanKekerasan.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianKorbanKekerasan.java:1108	belum diaudit	
 jendela|rekammedis/RMPenilaianKorbanKekerasan.java|RMPenilaianKorbanKekerasan	jendela	RMPenilaianKorbanKekerasan	rekammedis/RMPenilaianKorbanKekerasan.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|jPopupMenu1|MnPenilaianLanjutanRisikoJatuh	popup	jPopupMenu1 > Formulir Pengkajian Lanjutan Risiko Jatuh Anak	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:253	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:308	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:308	sebagian	Penilaian Lanjutan Risiko Jatuh Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:326	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:344	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:362	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:380	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:344	sebagian	Penilaian Lanjutan Risiko Jatuh Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:362	sebagian	Penilaian Lanjutan Risiko Jatuh Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:380	sebagian	Penilaian Lanjutan Risiko Jatuh Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:409	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:473	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianLanjutanRisikoJatuhAnak.java:490	belum diaudit	
@@ -9320,11 +9320,11 @@ aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|ChkInput	aksi	.: Input
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java:661	belum diaudit	
 jendela|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|RMPenilaianLanjutanRisikoJatuhDewasa	jendela	RMPenilaianLanjutanRisikoJatuhDewasa	rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|jPopupMenu1|MnPenilaianLanjutanRisikoGeriatri	popup	jPopupMenu1 > Formulir Pengkajian Lanjutan Risiko Jatuh Geriatri	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:341	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:399	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:399	sebagian	Penilaian Lanjutan Risiko Jatuh Geriatri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:417	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:435	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:453	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:471	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:435	sebagian	Penilaian Lanjutan Risiko Jatuh Geriatri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:453	sebagian	Penilaian Lanjutan Risiko Jatuh Geriatri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:471	sebagian	Penilaian Lanjutan Risiko Jatuh Geriatri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:500	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:564	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:581	belum diaudit	
@@ -9332,11 +9332,11 @@ aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|ChkInput	aksi	.: Inp
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:748	belum diaudit	
 jendela|rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java|RMPenilaianLanjutanRisikoJatuhGeriatri	jendela	RMPenilaianLanjutanRisikoJatuhGeriatri	rekammedis/RMPenilaianLanjutanRisikoJatuhGeriatri.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|jPopupMenu1|MnPenilaianLanjutanRisikoJatuh	popup	jPopupMenu1 > Formulir Pengkajian Lanjutan Risiko Jatuh Lansia	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:259	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:314	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:314	sebagian	Penilaian Lanjutan Risiko Jatuh Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:332	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:350	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:368	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:386	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:350	sebagian	Penilaian Lanjutan Risiko Jatuh Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:368	sebagian	Penilaian Lanjutan Risiko Jatuh Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:386	sebagian	Penilaian Lanjutan Risiko Jatuh Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:415	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:479	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:496	belum diaudit	
@@ -9344,11 +9344,11 @@ aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|ChkInput	aksi	.: Input
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:663	belum diaudit	
 jendela|rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java|RMPenilaianLanjutanRisikoJatuhLansia	jendela	RMPenilaianLanjutanRisikoJatuhLansia	rekammedis/RMPenilaianLanjutanRisikoJatuhLansia.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|jPopupMenu1|MnPenilaianLanjutanRisikoJatuh	popup	jPopupMenu1 > Formulir Pengkajian Lanjutan Risiko Jatuh Psikiatri	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:257	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:312	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:312	sebagian	Penilaian Lanjutan Risiko Jatuh Psikiatri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:330	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:348	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:366	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:384	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:348	sebagian	Penilaian Lanjutan Risiko Jatuh Psikiatri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:366	sebagian	Penilaian Lanjutan Risiko Jatuh Psikiatri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:384	sebagian	Penilaian Lanjutan Risiko Jatuh Psikiatri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:413	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:477	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:494	belum diaudit	
@@ -9356,11 +9356,11 @@ aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|ChkInput	aksi	.: In
 aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:660	belum diaudit	
 jendela|rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java|RMPenilaianLanjutanRisikoJatuhPsikiatri	jendela	RMPenilaianLanjutanRisikoJatuhPsikiatri	rekammedis/RMPenilaianLanjutanRisikoJatuhPsikiatri.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|jPopupMenu1|MnPenilaianLanjutanRisikoJatuh	popup	jPopupMenu1 > Formulir Pengkajian Lanjutan Skrining Fungsional	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:297	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:355	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:355	sebagian	Penilaian Lanjutan Skrining Fungsional: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:373	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:391	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:409	belum diaudit	
-aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:427	belum diaudit	
+aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:391	sebagian	Penilaian Lanjutan Skrining Fungsional: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:409	sebagian	Penilaian Lanjutan Skrining Fungsional: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:427	sebagian	Penilaian Lanjutan Skrining Fungsional: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:456	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:520	belum diaudit	
 aksi|rekammedis/RMPenilaianLanjutanSkriningFungsional.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianLanjutanSkriningFungsional.java:537	belum diaudit	
@@ -9480,11 +9480,11 @@ aksi|rekammedis/RMPenilaianPsikologiKlinis.java|BtnPetugas	aksi	BtnPetugas	rekam
 aksi|rekammedis/RMPenilaianPsikologiKlinis.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianPsikologiKlinis.java:1947	belum diaudit	
 jendela|rekammedis/RMPenilaianPsikologiKlinis.java|RMPenilaianPsikologiKlinis	jendela	RMPenilaianPsikologiKlinis	rekammedis/RMPenilaianPsikologiKlinis.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianRisikoDekubitus.java|jPopupMenu1|MnPenilaianRisikoDekubitus	popup	jPopupMenu1 > Formulir Pengkajian Risiko Dekubitus	rekammedis/RMPenilaianRisikoDekubitus.java:233	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianRisikoDekubitus.java:288	belum diaudit	
+aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianRisikoDekubitus.java:288	sebagian	Penilaian Risiko Dekubitus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianRisikoDekubitus.java:306	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianRisikoDekubitus.java:324	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianRisikoDekubitus.java:342	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianRisikoDekubitus.java:360	belum diaudit	
+aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianRisikoDekubitus.java:324	sebagian	Penilaian Risiko Dekubitus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianRisikoDekubitus.java:342	sebagian	Penilaian Risiko Dekubitus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianRisikoDekubitus.java:360	sebagian	Penilaian Risiko Dekubitus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianRisikoDekubitus.java:389	belum diaudit	
 aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianRisikoDekubitus.java:453	belum diaudit	
 aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianRisikoDekubitus.java:470	belum diaudit	
@@ -9492,11 +9492,11 @@ aksi|rekammedis/RMPenilaianRisikoDekubitus.java|ChkInput	aksi	.: Input Data	reka
 aksi|rekammedis/RMPenilaianRisikoDekubitus.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMPenilaianRisikoDekubitus.java:636	belum diaudit	
 jendela|rekammedis/RMPenilaianRisikoDekubitus.java|RMPenilaianRisikoDekubitus	jendela	RMPenilaianRisikoDekubitus	rekammedis/RMPenilaianRisikoDekubitus.java:1	belum diaudit	
 popup|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|jPopupMenu1|MnPenilaianRisikoJatuh	popup	jPopupMenu1 > Formulir Pengkajian Risiko Jatuh Neonatus	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:275	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:333	belum diaudit	
+aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:333	sebagian	Penilaian Lanjutan Risiko Jatuh Neonatus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnBatal	aksi	Baru	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:351	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:369	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:387	belum diaudit	
-aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:405	belum diaudit	
+aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnHapus	aksi	Hapus	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:369	sebagian	Penilaian Lanjutan Risiko Jatuh Neonatus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnEdit	aksi	Ganti	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:387	sebagian	Penilaian Lanjutan Risiko Jatuh Neonatus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnPrint	aksi	Cetak	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:405	sebagian	Penilaian Lanjutan Risiko Jatuh Neonatus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnKeluar	aksi	Keluar	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:434	belum diaudit	
 aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnCari	aksi	BtnCari	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:498	belum diaudit	
 aksi|rekammedis/RMPenilaianRisikoJatuhNeonatus.java|BtnAll	aksi	BtnAll	rekammedis/RMPenilaianRisikoJatuhNeonatus.java:515	belum diaudit	
@@ -9675,11 +9675,11 @@ aksi|rekammedis/RMSignOutSebelumMenutupLuka.java|btnDokterAnestesi	aksi	btnDokte
 aksi|rekammedis/RMSignOutSebelumMenutupLuka.java|btnPetugasOK	aksi	btnPetugasOK	rekammedis/RMSignOutSebelumMenutupLuka.java:758	belum diaudit	
 jendela|rekammedis/RMSignOutSebelumMenutupLuka.java|RMSignOutSebelumMenutupLuka	jendela	RMSignOutSebelumMenutupLuka	rekammedis/RMSignOutSebelumMenutupLuka.java:1	belum diaudit	
 popup|rekammedis/RMSkriningAdiksiNikotin.java|jPopupMenu1|MnSkriningAdiksiNikotin	popup	jPopupMenu1 > Formulir Skrining Adiksi Nikotin	rekammedis/RMSkriningAdiksiNikotin.java:295	belum diaudit	
-aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningAdiksiNikotin.java:358	belum diaudit	
+aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningAdiksiNikotin.java:358	sebagian	Skrining Adiksi Nikotin (Fagerstrom): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningAdiksiNikotin.java:376	belum diaudit	
-aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningAdiksiNikotin.java:394	belum diaudit	
-aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningAdiksiNikotin.java:412	belum diaudit	
-aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningAdiksiNikotin.java:430	belum diaudit	
+aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningAdiksiNikotin.java:394	sebagian	Skrining Adiksi Nikotin (Fagerstrom): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningAdiksiNikotin.java:412	sebagian	Skrining Adiksi Nikotin (Fagerstrom): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningAdiksiNikotin.java:430	sebagian	Skrining Adiksi Nikotin (Fagerstrom): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningAdiksiNikotin.java:459	belum diaudit	
 aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningAdiksiNikotin.java:523	belum diaudit	
 aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningAdiksiNikotin.java:540	belum diaudit	
@@ -9687,11 +9687,11 @@ aksi|rekammedis/RMSkriningAdiksiNikotin.java|ChkInput	aksi	.: Input Data	rekamme
 aksi|rekammedis/RMSkriningAdiksiNikotin.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningAdiksiNikotin.java:711	belum diaudit	
 jendela|rekammedis/RMSkriningAdiksiNikotin.java|RMSkriningAdiksiNikotin	jendela	RMSkriningAdiksiNikotin	rekammedis/RMSkriningAdiksiNikotin.java:1	belum diaudit	
 popup|rekammedis/RMSkriningAnemia.java|jPopupMenu1|MnSkriningAnemia	popup	jPopupMenu1 > Formulir Skrining Anemia	rekammedis/RMSkriningAnemia.java:344	belum diaudit	
-aksi|rekammedis/RMSkriningAnemia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningAnemia.java:408	belum diaudit	
+aksi|rekammedis/RMSkriningAnemia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningAnemia.java:408	sebagian	Skrining Anemia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningAnemia.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningAnemia.java:426	belum diaudit	
-aksi|rekammedis/RMSkriningAnemia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningAnemia.java:444	belum diaudit	
-aksi|rekammedis/RMSkriningAnemia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningAnemia.java:462	belum diaudit	
-aksi|rekammedis/RMSkriningAnemia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningAnemia.java:480	belum diaudit	
+aksi|rekammedis/RMSkriningAnemia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningAnemia.java:444	sebagian	Skrining Anemia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningAnemia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningAnemia.java:462	sebagian	Skrining Anemia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningAnemia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningAnemia.java:480	sebagian	Skrining Anemia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningAnemia.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningAnemia.java:509	belum diaudit	
 aksi|rekammedis/RMSkriningAnemia.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningAnemia.java:573	belum diaudit	
 aksi|rekammedis/RMSkriningAnemia.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningAnemia.java:590	belum diaudit	
@@ -9699,11 +9699,11 @@ aksi|rekammedis/RMSkriningAnemia.java|ChkInput	aksi	.: Input Data	rekammedis/RMS
 aksi|rekammedis/RMSkriningAnemia.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningAnemia.java:756	belum diaudit	
 jendela|rekammedis/RMSkriningAnemia.java|RMSkriningAnemia	jendela	RMSkriningAnemia	rekammedis/RMSkriningAnemia.java:1	belum diaudit	
 popup|rekammedis/RMSkriningCURB65.java|jPopupMenu1|MnSkriningInstrumenCURB65	popup	jPopupMenu1 > Formulir Skrining CURB-65	rekammedis/RMSkriningCURB65.java:279	belum diaudit	
-aksi|rekammedis/RMSkriningCURB65.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningCURB65.java:341	belum diaudit	
+aksi|rekammedis/RMSkriningCURB65.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningCURB65.java:341	sebagian	Skrining CURB-65: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningCURB65.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningCURB65.java:359	belum diaudit	
-aksi|rekammedis/RMSkriningCURB65.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningCURB65.java:377	belum diaudit	
-aksi|rekammedis/RMSkriningCURB65.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningCURB65.java:395	belum diaudit	
-aksi|rekammedis/RMSkriningCURB65.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningCURB65.java:413	belum diaudit	
+aksi|rekammedis/RMSkriningCURB65.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningCURB65.java:377	sebagian	Skrining CURB-65: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningCURB65.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningCURB65.java:395	sebagian	Skrining CURB-65: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningCURB65.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningCURB65.java:413	sebagian	Skrining CURB-65: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningCURB65.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningCURB65.java:442	belum diaudit	
 aksi|rekammedis/RMSkriningCURB65.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningCURB65.java:506	belum diaudit	
 aksi|rekammedis/RMSkriningCURB65.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningCURB65.java:523	belum diaudit	
@@ -9711,11 +9711,11 @@ aksi|rekammedis/RMSkriningCURB65.java|ChkInput	aksi	.: Input Data	rekammedis/RMS
 aksi|rekammedis/RMSkriningCURB65.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningCURB65.java:694	belum diaudit	
 jendela|rekammedis/RMSkriningCURB65.java|RMSkriningCURB65	jendela	RMSkriningCURB65	rekammedis/RMSkriningCURB65.java:1	belum diaudit	
 popup|rekammedis/RMSkriningDiabetesMelitus.java|jPopupMenu1|MnSkriningDiabetes	popup	jPopupMenu1 > Formulir Skrining Diabetes Melitus	rekammedis/RMSkriningDiabetesMelitus.java:368	belum diaudit	
-aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningDiabetesMelitus.java:430	belum diaudit	
+aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningDiabetesMelitus.java:430	sebagian	Skrining Diabetes Melitus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningDiabetesMelitus.java:448	belum diaudit	
-aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningDiabetesMelitus.java:466	belum diaudit	
-aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningDiabetesMelitus.java:484	belum diaudit	
-aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningDiabetesMelitus.java:502	belum diaudit	
+aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningDiabetesMelitus.java:466	sebagian	Skrining Diabetes Melitus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningDiabetesMelitus.java:484	sebagian	Skrining Diabetes Melitus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningDiabetesMelitus.java:502	sebagian	Skrining Diabetes Melitus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningDiabetesMelitus.java:531	belum diaudit	
 aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningDiabetesMelitus.java:595	belum diaudit	
 aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningDiabetesMelitus.java:612	belum diaudit	
@@ -9723,11 +9723,11 @@ aksi|rekammedis/RMSkriningDiabetesMelitus.java|ChkInput	aksi	.: Input Data	rekam
 aksi|rekammedis/RMSkriningDiabetesMelitus.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningDiabetesMelitus.java:778	belum diaudit	
 jendela|rekammedis/RMSkriningDiabetesMelitus.java|RMSkriningDiabetesMelitus	jendela	RMSkriningDiabetesMelitus	rekammedis/RMSkriningDiabetesMelitus.java:1	belum diaudit	
 popup|rekammedis/RMSkriningFrailtySyndrome.java|jPopupMenu1|MnSkriningFrailtySyndrome	popup	jPopupMenu1 > Formulir Skrining Frailty Syndrome	rekammedis/RMSkriningFrailtySyndrome.java:329	belum diaudit	
-aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningFrailtySyndrome.java:391	belum diaudit	
+aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningFrailtySyndrome.java:391	sebagian	Skrining Frailty Syndrome: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningFrailtySyndrome.java:409	belum diaudit	
-aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningFrailtySyndrome.java:427	belum diaudit	
-aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningFrailtySyndrome.java:445	belum diaudit	
-aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningFrailtySyndrome.java:463	belum diaudit	
+aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningFrailtySyndrome.java:427	sebagian	Skrining Frailty Syndrome: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningFrailtySyndrome.java:445	sebagian	Skrining Frailty Syndrome: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningFrailtySyndrome.java:463	sebagian	Skrining Frailty Syndrome: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningFrailtySyndrome.java:492	belum diaudit	
 aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningFrailtySyndrome.java:556	belum diaudit	
 aksi|rekammedis/RMSkriningFrailtySyndrome.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningFrailtySyndrome.java:573	belum diaudit	
@@ -9747,11 +9747,11 @@ aksi|rekammedis/RMSkriningFrailtySyndrome.java|ChkPenyakitGinjal	aksi	Penyakit G
 aksi|rekammedis/RMSkriningFrailtySyndrome.java|ChkStroke	aksi	Stroke	rekammedis/RMSkriningFrailtySyndrome.java:1091	belum diaudit	
 jendela|rekammedis/RMSkriningFrailtySyndrome.java|RMSkriningFrailtySyndrome	jendela	RMSkriningFrailtySyndrome	rekammedis/RMSkriningFrailtySyndrome.java:1	belum diaudit	
 popup|rekammedis/RMSkriningHipertensi.java|jPopupMenu1|MnSkriningHipertensi	popup	jPopupMenu1 > Formulir Skrining Hipertensi	rekammedis/RMSkriningHipertensi.java:325	belum diaudit	
-aksi|rekammedis/RMSkriningHipertensi.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningHipertensi.java:389	belum diaudit	
+aksi|rekammedis/RMSkriningHipertensi.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningHipertensi.java:389	sebagian	Skrining Hipertensi: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningHipertensi.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningHipertensi.java:407	belum diaudit	
-aksi|rekammedis/RMSkriningHipertensi.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningHipertensi.java:425	belum diaudit	
-aksi|rekammedis/RMSkriningHipertensi.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningHipertensi.java:443	belum diaudit	
-aksi|rekammedis/RMSkriningHipertensi.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningHipertensi.java:461	belum diaudit	
+aksi|rekammedis/RMSkriningHipertensi.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningHipertensi.java:425	sebagian	Skrining Hipertensi: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningHipertensi.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningHipertensi.java:443	sebagian	Skrining Hipertensi: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningHipertensi.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningHipertensi.java:461	sebagian	Skrining Hipertensi: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningHipertensi.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningHipertensi.java:490	belum diaudit	
 aksi|rekammedis/RMSkriningHipertensi.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningHipertensi.java:554	belum diaudit	
 aksi|rekammedis/RMSkriningHipertensi.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningHipertensi.java:571	belum diaudit	
@@ -9759,11 +9759,11 @@ aksi|rekammedis/RMSkriningHipertensi.java|ChkInput	aksi	.: Input Data	rekammedis
 aksi|rekammedis/RMSkriningHipertensi.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningHipertensi.java:737	belum diaudit	
 jendela|rekammedis/RMSkriningHipertensi.java|RMSkriningHipertensi	jendela	RMSkriningHipertensi	rekammedis/RMSkriningHipertensi.java:1	belum diaudit	
 popup|rekammedis/RMSkriningIndraPendengaran.java|jPopupMenu1|MnSkriningIndraPendengaran	popup	jPopupMenu1 > Formulir Skrining Indra Pendengaran	rekammedis/RMSkriningIndraPendengaran.java:296	belum diaudit	
-aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningIndraPendengaran.java:360	belum diaudit	
+aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningIndraPendengaran.java:360	sebagian	Skrining Indra Pendengaran: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningIndraPendengaran.java:378	belum diaudit	
-aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningIndraPendengaran.java:396	belum diaudit	
-aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningIndraPendengaran.java:414	belum diaudit	
-aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningIndraPendengaran.java:432	belum diaudit	
+aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningIndraPendengaran.java:396	sebagian	Skrining Indra Pendengaran: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningIndraPendengaran.java:414	sebagian	Skrining Indra Pendengaran: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningIndraPendengaran.java:432	sebagian	Skrining Indra Pendengaran: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningIndraPendengaran.java:461	belum diaudit	
 aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningIndraPendengaran.java:525	belum diaudit	
 aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningIndraPendengaran.java:542	belum diaudit	
@@ -9771,11 +9771,11 @@ aksi|rekammedis/RMSkriningIndraPendengaran.java|ChkInput	aksi	.: Input Data	reka
 aksi|rekammedis/RMSkriningIndraPendengaran.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningIndraPendengaran.java:708	belum diaudit	
 jendela|rekammedis/RMSkriningIndraPendengaran.java|RMSkriningIndraPendengaran	jendela	RMSkriningIndraPendengaran	rekammedis/RMSkriningIndraPendengaran.java:1	belum diaudit	
 popup|rekammedis/RMSkriningInstrumenACRS.java|jPopupMenu1|MnSkriningInstrumenACRS	popup	jPopupMenu1 > Formulir Skrining ACRS	rekammedis/RMSkriningInstrumenACRS.java:325	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenACRS.java:387	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenACRS.java:387	sebagian	Skrining Instrumen ACRS: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningInstrumenACRS.java:405	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenACRS.java:423	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenACRS.java:441	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenACRS.java:459	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenACRS.java:423	sebagian	Skrining Instrumen ACRS: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenACRS.java:441	sebagian	Skrining Instrumen ACRS: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenACRS.java:459	sebagian	Skrining Instrumen ACRS: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningInstrumenACRS.java:488	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningInstrumenACRS.java:552	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningInstrumenACRS.java:569	belum diaudit	
@@ -9783,11 +9783,11 @@ aksi|rekammedis/RMSkriningInstrumenACRS.java|ChkInput	aksi	.: Input Data	rekamme
 aksi|rekammedis/RMSkriningInstrumenACRS.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningInstrumenACRS.java:740	belum diaudit	
 jendela|rekammedis/RMSkriningInstrumenACRS.java|RMSkriningInstrumenACRS	jendela	RMSkriningInstrumenACRS	rekammedis/RMSkriningInstrumenACRS.java:1	belum diaudit	
 popup|rekammedis/RMSkriningInstrumenAMT.java|jPopupMenu1|MnSkriningInstrumenAMT	popup	jPopupMenu1 > Formulir Skrining AMT	rekammedis/RMSkriningInstrumenAMT.java:325	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenAMT.java:387	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenAMT.java:387	sebagian	Skrining Instrumen AMT: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningInstrumenAMT.java:405	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenAMT.java:423	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenAMT.java:441	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenAMT.java:459	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenAMT.java:423	sebagian	Skrining Instrumen AMT: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenAMT.java:441	sebagian	Skrining Instrumen AMT: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenAMT.java:459	sebagian	Skrining Instrumen AMT: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningInstrumenAMT.java:488	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningInstrumenAMT.java:552	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningInstrumenAMT.java:569	belum diaudit	
@@ -9795,11 +9795,11 @@ aksi|rekammedis/RMSkriningInstrumenAMT.java|ChkInput	aksi	.: Input Data	rekammed
 aksi|rekammedis/RMSkriningInstrumenAMT.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningInstrumenAMT.java:740	belum diaudit	
 jendela|rekammedis/RMSkriningInstrumenAMT.java|RMSkriningInstrumenAMT	jendela	RMSkriningInstrumenAMT	rekammedis/RMSkriningInstrumenAMT.java:1	belum diaudit	
 popup|rekammedis/RMSkriningInstrumenESAT.java|jPopupMenu1|MnSkriningInstrumenESAT	popup	jPopupMenu1 > Formulir Skrining ESAT	rekammedis/RMSkriningInstrumenESAT.java:287	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenESAT.java:349	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenESAT.java:349	sebagian	Skrining Instrumen ESAT: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningInstrumenESAT.java:367	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenESAT.java:385	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenESAT.java:403	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenESAT.java:421	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenESAT.java:385	sebagian	Skrining Instrumen ESAT: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenESAT.java:403	sebagian	Skrining Instrumen ESAT: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenESAT.java:421	sebagian	Skrining Instrumen ESAT: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningInstrumenESAT.java:450	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningInstrumenESAT.java:514	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenESAT.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningInstrumenESAT.java:531	belum diaudit	
@@ -9819,11 +9819,11 @@ aksi|rekammedis/RMSkriningInstrumenMentalEmosional.java|ChkInput	aksi	.: Input D
 aksi|rekammedis/RMSkriningInstrumenMentalEmosional.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningInstrumenMentalEmosional.java:747	belum diaudit	
 jendela|rekammedis/RMSkriningInstrumenMentalEmosional.java|RMSkriningInstrumenMentalEmosional	jendela	RMSkriningInstrumenMentalEmosional	rekammedis/RMSkriningInstrumenMentalEmosional.java:1	belum diaudit	
 popup|rekammedis/RMSkriningInstrumenSDQ.java|jPopupMenu1|MnFormulirSkriningInstrumenSDQ	popup	jPopupMenu1 > Formulir Skrining Instrumen SDQ	rekammedis/RMSkriningInstrumenSDQ.java:511	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenSDQ.java:573	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningInstrumenSDQ.java:573	sebagian	Skrining Instrumen SDQ (Usia 11-18 Tahun): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningInstrumenSDQ.java:591	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenSDQ.java:609	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenSDQ.java:627	belum diaudit	
-aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenSDQ.java:645	belum diaudit	
+aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningInstrumenSDQ.java:609	sebagian	Skrining Instrumen SDQ (Usia 11-18 Tahun): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningInstrumenSDQ.java:627	sebagian	Skrining Instrumen SDQ (Usia 11-18 Tahun): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningInstrumenSDQ.java:645	sebagian	Skrining Instrumen SDQ (Usia 11-18 Tahun): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningInstrumenSDQ.java:674	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningInstrumenSDQ.java:738	belum diaudit	
 aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningInstrumenSDQ.java:755	belum diaudit	
@@ -9831,11 +9831,11 @@ aksi|rekammedis/RMSkriningInstrumenSDQ.java|ChkInput	aksi	.: Input Data	rekammed
 aksi|rekammedis/RMSkriningInstrumenSDQ.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningInstrumenSDQ.java:922	belum diaudit	
 jendela|rekammedis/RMSkriningInstrumenSDQ.java|RMSkriningInstrumenSDQ	jendela	RMSkriningInstrumenSDQ	rekammedis/RMSkriningInstrumenSDQ.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKankerKolorektal.java|jPopupMenu1|MnSkriningKankerKolorektal	popup	jPopupMenu1 > Formulir Skrining Kanker Kolorektal	rekammedis/RMSkriningKankerKolorektal.java:266	belum diaudit	
-aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKankerKolorektal.java:327	belum diaudit	
+aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKankerKolorektal.java:327	sebagian	Skrining Kanker Kolorektal: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKankerKolorektal.java:345	belum diaudit	
-aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKankerKolorektal.java:363	belum diaudit	
-aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKankerKolorektal.java:381	belum diaudit	
-aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKankerKolorektal.java:399	belum diaudit	
+aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKankerKolorektal.java:363	sebagian	Skrining Kanker Kolorektal: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKankerKolorektal.java:381	sebagian	Skrining Kanker Kolorektal: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKankerKolorektal.java:399	sebagian	Skrining Kanker Kolorektal: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKankerKolorektal.java:428	belum diaudit	
 aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKankerKolorektal.java:492	belum diaudit	
 aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKankerKolorektal.java:509	belum diaudit	
@@ -9844,11 +9844,11 @@ aksi|rekammedis/RMSkriningKankerKolorektal.java|BtnPetugas	aksi	BtnPetugas	rekam
 aksi|rekammedis/RMSkriningKankerKolorektal.java|Umur	aksi	Umur	rekammedis/RMSkriningKankerKolorektal.java:757	belum diaudit	
 jendela|rekammedis/RMSkriningKankerKolorektal.java|RMSkriningKankerKolorektal	jendela	RMSkriningKankerKolorektal	rekammedis/RMSkriningKankerKolorektal.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKekerasanPadaPerempuan.java|jPopupMenu1|MnSkriningKekerasanPadaPerempuan	popup	jPopupMenu1 > Formulir Skrining Kekerasan Pada Perempuan	rekammedis/RMSkriningKekerasanPadaPerempuan.java:308	belum diaudit	
-aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKekerasanPadaPerempuan.java:370	belum diaudit	
+aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKekerasanPadaPerempuan.java:370	sebagian	Skrining Kekerasan Pada Perempuan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKekerasanPadaPerempuan.java:388	belum diaudit	
-aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKekerasanPadaPerempuan.java:406	belum diaudit	
-aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKekerasanPadaPerempuan.java:424	belum diaudit	
-aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKekerasanPadaPerempuan.java:442	belum diaudit	
+aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKekerasanPadaPerempuan.java:406	sebagian	Skrining Kekerasan Pada Perempuan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKekerasanPadaPerempuan.java:424	sebagian	Skrining Kekerasan Pada Perempuan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKekerasanPadaPerempuan.java:442	sebagian	Skrining Kekerasan Pada Perempuan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKekerasanPadaPerempuan.java:471	belum diaudit	
 aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKekerasanPadaPerempuan.java:535	belum diaudit	
 aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKekerasanPadaPerempuan.java:552	belum diaudit	
@@ -9856,11 +9856,11 @@ aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|ChkInput	aksi	.: Input Dat
 aksi|rekammedis/RMSkriningKekerasanPadaPerempuan.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningKekerasanPadaPerempuan.java:713	belum diaudit	
 jendela|rekammedis/RMSkriningKekerasanPadaPerempuan.java|RMSkriningKekerasanPadaPerempuan	jendela	RMSkriningKekerasanPadaPerempuan	rekammedis/RMSkriningKekerasanPadaPerempuan.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|jPopupMenu1|MnSkriningKesehatanGigiMulutBalita	popup	jPopupMenu1 > Formulir Skrining Kesehatan Gigi & Mulut Balita	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:283	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:345	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:345	sebagian	Skrining Kesehatan Gigi & Mulut Balita: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:363	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:381	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:399	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:417	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:381	sebagian	Skrining Kesehatan Gigi & Mulut Balita: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:399	sebagian	Skrining Kesehatan Gigi & Mulut Balita: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:417	sebagian	Skrining Kesehatan Gigi & Mulut Balita: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:446	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:510	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:527	belum diaudit	
@@ -9868,11 +9868,11 @@ aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|ChkInput	aksi	.: Input D
 aksi|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:698	belum diaudit	
 jendela|rekammedis/RMSkriningKesehatanGigiMulutBalita.java|RMSkriningKesehatanGigiMulutBalita	jendela	RMSkriningKesehatanGigiMulutBalita	rekammedis/RMSkriningKesehatanGigiMulutBalita.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|jPopupMenu1|MnSkriningKesehatanGigiMulutDewasa	popup	jPopupMenu1 > Formulir Skrining Kesehatan Gigi & Mulut Dewasa	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:252	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:314	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:314	sebagian	Skrining Kesehatan Gigi & Mulut Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:332	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:350	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:368	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:386	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:350	sebagian	Skrining Kesehatan Gigi & Mulut Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:368	sebagian	Skrining Kesehatan Gigi & Mulut Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:386	sebagian	Skrining Kesehatan Gigi & Mulut Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:415	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:479	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:496	belum diaudit	
@@ -9880,11 +9880,11 @@ aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|ChkInput	aksi	.: Input D
 aksi|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:667	belum diaudit	
 jendela|rekammedis/RMSkriningKesehatanGigiMulutDewasa.java|RMSkriningKesehatanGigiMulutDewasa	jendela	RMSkriningKesehatanGigiMulutDewasa	rekammedis/RMSkriningKesehatanGigiMulutDewasa.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|jPopupMenu1|MnSkriningKesehatanGigiMulutLansia	popup	jPopupMenu1 > Formulir Skrining Kesehatan Gigi & Mulut Lansia	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:263	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:325	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:325	sebagian	Skrining Kesehatan Gigi & Mulut Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:343	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:361	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:379	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:397	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:361	sebagian	Skrining Kesehatan Gigi & Mulut Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:379	sebagian	Skrining Kesehatan Gigi & Mulut Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:397	sebagian	Skrining Kesehatan Gigi & Mulut Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:426	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:490	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:507	belum diaudit	
@@ -9892,11 +9892,11 @@ aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|ChkInput	aksi	.: Input D
 aksi|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:678	belum diaudit	
 jendela|rekammedis/RMSkriningKesehatanGigiMulutLansia.java|RMSkriningKesehatanGigiMulutLansia	jendela	RMSkriningKesehatanGigiMulutLansia	rekammedis/RMSkriningKesehatanGigiMulutLansia.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|jPopupMenu1|MnSkriningKesehatanGigiMulutRemaja	popup	jPopupMenu1 > Formulir Skrining Kesehatan Gigi & Mulut Usia Remaja	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:293	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:355	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:355	sebagian	Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:373	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:391	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:409	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:427	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:391	sebagian	Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:409	sebagian	Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:427	sebagian	Skrining Kesehatan Gigi & Mulut Anak Sekolah & Remaja: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:456	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:520	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:537	belum diaudit	
@@ -9904,11 +9904,11 @@ aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|ChkInput	aksi	.: Input D
 aksi|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:708	belum diaudit	
 jendela|rekammedis/RMSkriningKesehatanGigiMulutRemaja.java|RMSkriningKesehatanGigiMulutRemaja	jendela	RMSkriningKesehatanGigiMulutRemaja	rekammedis/RMSkriningKesehatanGigiMulutRemaja.java:1	belum diaudit	
 popup|rekammedis/RMSkriningKesehatanPenglihatan.java|jPopupMenu1|MnSkriningPenglihatan	popup	jPopupMenu1 > Formulir Skrining Penglihatan	rekammedis/RMSkriningKesehatanPenglihatan.java:302	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanPenglihatan.java:366	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningKesehatanPenglihatan.java:366	sebagian	Skrining Kesehatan Penglihatan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningKesehatanPenglihatan.java:384	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanPenglihatan.java:402	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanPenglihatan.java:420	belum diaudit	
-aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanPenglihatan.java:438	belum diaudit	
+aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningKesehatanPenglihatan.java:402	sebagian	Skrining Kesehatan Penglihatan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningKesehatanPenglihatan.java:420	sebagian	Skrining Kesehatan Penglihatan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningKesehatanPenglihatan.java:438	sebagian	Skrining Kesehatan Penglihatan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningKesehatanPenglihatan.java:467	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningKesehatanPenglihatan.java:531	belum diaudit	
 aksi|rekammedis/RMSkriningKesehatanPenglihatan.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningKesehatanPenglihatan.java:548	belum diaudit	
@@ -9918,11 +9918,11 @@ jendela|rekammedis/RMSkriningKesehatanPenglihatan.java|RMSkriningKesehatanPengli
 popup|rekammedis/RMSkriningMPP.java|jPopupMenu1|MnCetakLembarSkrining	popup	jPopupMenu1 > Form Skrining Manager Pelayanan Pasien	rekammedis/RMSkriningMPP.java:265	belum diaudit	
 popup|rekammedis/RMSkriningMPP.java|jPopupMenu1|MnEvaluasiFormA	popup	jPopupMenu1 > Form - A Evaluasi Awal	rekammedis/RMSkriningMPP.java:279	belum diaudit	
 popup|rekammedis/RMSkriningMPP.java|jPopupMenu1|MnEvaluasiFormB	popup	jPopupMenu1 > Form - B Catatan Implementasi	rekammedis/RMSkriningMPP.java:293	belum diaudit	
-aksi|rekammedis/RMSkriningMPP.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningMPP.java:347	belum diaudit	
+aksi|rekammedis/RMSkriningMPP.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningMPP.java:347	sebagian	Skrining Manager Pelayanan Pasien: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningMPP.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningMPP.java:365	belum diaudit	
-aksi|rekammedis/RMSkriningMPP.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningMPP.java:383	belum diaudit	
-aksi|rekammedis/RMSkriningMPP.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningMPP.java:401	belum diaudit	
-aksi|rekammedis/RMSkriningMPP.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningMPP.java:419	belum diaudit	
+aksi|rekammedis/RMSkriningMPP.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningMPP.java:383	sebagian	Skrining Manager Pelayanan Pasien: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningMPP.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningMPP.java:401	sebagian	Skrining Manager Pelayanan Pasien: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningMPP.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningMPP.java:419	sebagian	Skrining Manager Pelayanan Pasien: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningMPP.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningMPP.java:448	belum diaudit	
 aksi|rekammedis/RMSkriningMPP.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningMPP.java:512	belum diaudit	
 aksi|rekammedis/RMSkriningMPP.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningMPP.java:529	belum diaudit	
@@ -9971,11 +9971,11 @@ aksi|rekammedis/RMSkriningMerokokUsiaSekolahRemaja.java|BtnPetugas	aksi	BtnPetug
 aksi|rekammedis/RMSkriningMerokokUsiaSekolahRemaja.java|btnAsalSekolah	aksi	btnAsalSekolah	rekammedis/RMSkriningMerokokUsiaSekolahRemaja.java:857	belum diaudit	
 jendela|rekammedis/RMSkriningMerokokUsiaSekolahRemaja.java|RMSkriningMerokokUsiaSekolahRemaja	jendela	RMSkriningMerokokUsiaSekolahRemaja	rekammedis/RMSkriningMerokokUsiaSekolahRemaja.java:1	belum diaudit	
 popup|rekammedis/RMSkriningNutrisiAnak.java|jPopupMenu1|MnSkriningNutrisi	popup	jPopupMenu1 > Formulir Skrining Nutrisi Pasien Anak	rekammedis/RMSkriningNutrisiAnak.java:314	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiAnak.java:369	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiAnak.java:369	sebagian	Skrining Nutrisi Pasien Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningNutrisiAnak.java:387	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiAnak.java:405	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiAnak.java:423	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiAnak.java:441	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiAnak.java:405	sebagian	Skrining Nutrisi Pasien Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiAnak.java:423	sebagian	Skrining Nutrisi Pasien Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiAnak.java:441	sebagian	Skrining Nutrisi Pasien Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningNutrisiAnak.java:470	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningNutrisiAnak.java:534	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningNutrisiAnak.java:551	belum diaudit	
@@ -9983,11 +9983,11 @@ aksi|rekammedis/RMSkriningNutrisiAnak.java|ChkInput	aksi	.: Input Data	rekammedi
 aksi|rekammedis/RMSkriningNutrisiAnak.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningNutrisiAnak.java:722	belum diaudit	
 jendela|rekammedis/RMSkriningNutrisiAnak.java|RMSkriningNutrisiAnak	jendela	RMSkriningNutrisiAnak	rekammedis/RMSkriningNutrisiAnak.java:1	belum diaudit	
 popup|rekammedis/RMSkriningNutrisiDewasa.java|jPopupMenu1|MnSkriningNutrisi	popup	jPopupMenu1 > Formulir Skrining Nutrisi Pasien Dewasa	rekammedis/RMSkriningNutrisiDewasa.java:251	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiDewasa.java:303	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiDewasa.java:303	sebagian	Skrining Nutrisi Pasien Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningNutrisiDewasa.java:321	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiDewasa.java:339	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiDewasa.java:357	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiDewasa.java:375	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiDewasa.java:339	sebagian	Skrining Nutrisi Pasien Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiDewasa.java:357	sebagian	Skrining Nutrisi Pasien Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiDewasa.java:375	sebagian	Skrining Nutrisi Pasien Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningNutrisiDewasa.java:404	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningNutrisiDewasa.java:468	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningNutrisiDewasa.java:485	belum diaudit	
@@ -9995,11 +9995,11 @@ aksi|rekammedis/RMSkriningNutrisiDewasa.java|BtnPetugas	aksi	BtnPetugas	rekammed
 aksi|rekammedis/RMSkriningNutrisiDewasa.java|ChkInput	aksi	.: Input Data	rekammedis/RMSkriningNutrisiDewasa.java:934	belum diaudit	
 jendela|rekammedis/RMSkriningNutrisiDewasa.java|RMSkriningNutrisiDewasa	jendela	RMSkriningNutrisiDewasa	rekammedis/RMSkriningNutrisiDewasa.java:1	belum diaudit	
 popup|rekammedis/RMSkriningNutrisiLansia.java|jPopupMenu1|MnSkriningNutrisi	popup	jPopupMenu1 > Formulir Skrining Nutrisi Pasien Lansia	rekammedis/RMSkriningNutrisiLansia.java:322	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiLansia.java:377	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningNutrisiLansia.java:377	sebagian	Skrining Nutrisi Pasien Lansia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningNutrisiLansia.java:395	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiLansia.java:413	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiLansia.java:431	belum diaudit	
-aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiLansia.java:449	belum diaudit	
+aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningNutrisiLansia.java:413	sebagian	Skrining Nutrisi Pasien Lansia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningNutrisiLansia.java:431	sebagian	Skrining Nutrisi Pasien Lansia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningNutrisiLansia.java:449	sebagian	Skrining Nutrisi Pasien Lansia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningNutrisiLansia.java:478	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningNutrisiLansia.java:542	belum diaudit	
 aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningNutrisiLansia.java:559	belum diaudit	
@@ -10007,11 +10007,11 @@ aksi|rekammedis/RMSkriningNutrisiLansia.java|ChkInput	aksi	.: Input Data	rekamme
 aksi|rekammedis/RMSkriningNutrisiLansia.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningNutrisiLansia.java:730	belum diaudit	
 jendela|rekammedis/RMSkriningNutrisiLansia.java|RMSkriningNutrisiLansia	jendela	RMSkriningNutrisiLansia	rekammedis/RMSkriningNutrisiLansia.java:1	belum diaudit	
 popup|rekammedis/RMSkriningObesitas.java|jPopupMenu1|MnSkriningObesitas	popup	jPopupMenu1 > Formulir Skrining Obesitas	rekammedis/RMSkriningObesitas.java:361	belum diaudit	
-aksi|rekammedis/RMSkriningObesitas.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningObesitas.java:423	belum diaudit	
+aksi|rekammedis/RMSkriningObesitas.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningObesitas.java:423	sebagian	Skrining Obesitas: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningObesitas.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningObesitas.java:441	belum diaudit	
-aksi|rekammedis/RMSkriningObesitas.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningObesitas.java:459	belum diaudit	
-aksi|rekammedis/RMSkriningObesitas.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningObesitas.java:477	belum diaudit	
-aksi|rekammedis/RMSkriningObesitas.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningObesitas.java:495	belum diaudit	
+aksi|rekammedis/RMSkriningObesitas.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningObesitas.java:459	sebagian	Skrining Obesitas: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningObesitas.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningObesitas.java:477	sebagian	Skrining Obesitas: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningObesitas.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningObesitas.java:495	sebagian	Skrining Obesitas: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningObesitas.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningObesitas.java:524	belum diaudit	
 aksi|rekammedis/RMSkriningObesitas.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningObesitas.java:588	belum diaudit	
 aksi|rekammedis/RMSkriningObesitas.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningObesitas.java:605	belum diaudit	
@@ -10019,11 +10019,11 @@ aksi|rekammedis/RMSkriningObesitas.java|ChkInput	aksi	.: Input Data	rekammedis/R
 aksi|rekammedis/RMSkriningObesitas.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningObesitas.java:776	belum diaudit	
 jendela|rekammedis/RMSkriningObesitas.java|RMSkriningObesitas	jendela	RMSkriningObesitas	rekammedis/RMSkriningObesitas.java:1	belum diaudit	
 popup|rekammedis/RMSkriningPUMA.java|jPopupMenu1|MnSkriningPuma	popup	jPopupMenu1 > Formulir Skrining PUMA	rekammedis/RMSkriningPUMA.java:312	belum diaudit	
-aksi|rekammedis/RMSkriningPUMA.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningPUMA.java:375	belum diaudit	
+aksi|rekammedis/RMSkriningPUMA.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningPUMA.java:375	sebagian	Skrining PUMA: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningPUMA.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningPUMA.java:393	belum diaudit	
-aksi|rekammedis/RMSkriningPUMA.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningPUMA.java:411	belum diaudit	
-aksi|rekammedis/RMSkriningPUMA.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningPUMA.java:429	belum diaudit	
-aksi|rekammedis/RMSkriningPUMA.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningPUMA.java:447	belum diaudit	
+aksi|rekammedis/RMSkriningPUMA.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningPUMA.java:411	sebagian	Skrining PUMA: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningPUMA.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningPUMA.java:429	sebagian	Skrining PUMA: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningPUMA.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningPUMA.java:447	sebagian	Skrining PUMA: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningPUMA.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningPUMA.java:476	belum diaudit	
 aksi|rekammedis/RMSkriningPUMA.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningPUMA.java:540	belum diaudit	
 aksi|rekammedis/RMSkriningPUMA.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningPUMA.java:557	belum diaudit	
@@ -10031,11 +10031,11 @@ aksi|rekammedis/RMSkriningPUMA.java|ChkInput	aksi	.: Input Data	rekammedis/RMSkr
 aksi|rekammedis/RMSkriningPUMA.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningPUMA.java:718	belum diaudit	
 jendela|rekammedis/RMSkriningPUMA.java|RMSkriningPUMA	jendela	RMSkriningPUMA	rekammedis/RMSkriningPUMA.java:1	belum diaudit	
 popup|rekammedis/RMSkriningPneumoniaSeverityIndex.java|jPopupMenu1|MnSkriningPSI	popup	jPopupMenu1 > Formulir Skrining PSI	rekammedis/RMSkriningPneumoniaSeverityIndex.java:423	belum diaudit	
-aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningPneumoniaSeverityIndex.java:483	belum diaudit	
+aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningPneumoniaSeverityIndex.java:483	sebagian	Skrining Pneumonia Severity Index: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningPneumoniaSeverityIndex.java:501	belum diaudit	
-aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningPneumoniaSeverityIndex.java:519	belum diaudit	
-aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningPneumoniaSeverityIndex.java:537	belum diaudit	
-aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningPneumoniaSeverityIndex.java:555	belum diaudit	
+aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningPneumoniaSeverityIndex.java:519	sebagian	Skrining Pneumonia Severity Index: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningPneumoniaSeverityIndex.java:537	sebagian	Skrining Pneumonia Severity Index: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningPneumoniaSeverityIndex.java:555	sebagian	Skrining Pneumonia Severity Index: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningPneumoniaSeverityIndex.java:584	belum diaudit	
 aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningPneumoniaSeverityIndex.java:648	belum diaudit	
 aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningPneumoniaSeverityIndex.java:665	belum diaudit	
@@ -10043,11 +10043,11 @@ aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|ChkInput	aksi	.: Input Dat
 aksi|rekammedis/RMSkriningPneumoniaSeverityIndex.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningPneumoniaSeverityIndex.java:831	belum diaudit	
 jendela|rekammedis/RMSkriningPneumoniaSeverityIndex.java|RMSkriningPneumoniaSeverityIndex	jendela	RMSkriningPneumoniaSeverityIndex	rekammedis/RMSkriningPneumoniaSeverityIndex.java:1	belum diaudit	
 popup|rekammedis/RMSkriningRisikoKankerParu.java|jPopupMenu1|MnSkriningRisikoKankerParu	popup	jPopupMenu1 > Formulir Skrining Risiko Kanker Paru	rekammedis/RMSkriningRisikoKankerParu.java:322	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerParu.java:384	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerParu.java:384	sebagian	Skrining Risiko Kanker Paru: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningRisikoKankerParu.java:402	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerParu.java:420	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerParu.java:438	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerParu.java:456	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerParu.java:420	sebagian	Skrining Risiko Kanker Paru: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerParu.java:438	sebagian	Skrining Risiko Kanker Paru: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerParu.java:456	sebagian	Skrining Risiko Kanker Paru: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningRisikoKankerParu.java:485	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningRisikoKankerParu.java:549	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningRisikoKankerParu.java:566	belum diaudit	
@@ -10055,11 +10055,11 @@ aksi|rekammedis/RMSkriningRisikoKankerParu.java|ChkInput	aksi	.: Input Data	reka
 aksi|rekammedis/RMSkriningRisikoKankerParu.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningRisikoKankerParu.java:727	belum diaudit	
 jendela|rekammedis/RMSkriningRisikoKankerParu.java|RMSkriningRisikoKankerParu	jendela	RMSkriningRisikoKankerParu	rekammedis/RMSkriningRisikoKankerParu.java:1	belum diaudit	
 popup|rekammedis/RMSkriningRisikoKankerPayudara.java|jPopupMenu1|MnSkriningRisikoKankerPayudara	popup	jPopupMenu1 > Formulir Skrining Risiko Kanker Payudara	rekammedis/RMSkriningRisikoKankerPayudara.java:586	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerPayudara.java:648	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerPayudara.java:648	sebagian	Skrining Risiko Kanker Payudara: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningRisikoKankerPayudara.java:666	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerPayudara.java:684	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerPayudara.java:702	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerPayudara.java:720	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerPayudara.java:684	sebagian	Skrining Risiko Kanker Payudara: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerPayudara.java:702	sebagian	Skrining Risiko Kanker Payudara: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerPayudara.java:720	sebagian	Skrining Risiko Kanker Payudara: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningRisikoKankerPayudara.java:749	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningRisikoKankerPayudara.java:813	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningRisikoKankerPayudara.java:830	belum diaudit	
@@ -10067,11 +10067,11 @@ aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|ChkInput	aksi	.: Input Data	
 aksi|rekammedis/RMSkriningRisikoKankerPayudara.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningRisikoKankerPayudara.java:991	belum diaudit	
 jendela|rekammedis/RMSkriningRisikoKankerPayudara.java|RMSkriningRisikoKankerPayudara	jendela	RMSkriningRisikoKankerPayudara	rekammedis/RMSkriningRisikoKankerPayudara.java:1	belum diaudit	
 popup|rekammedis/RMSkriningRisikoKankerServiks.java|jPopupMenu1|MnSkriningRisikoKanker	popup	jPopupMenu1 > Formulir Skrining Risiko Kanker Serviks	rekammedis/RMSkriningRisikoKankerServiks.java:286	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerServiks.java:350	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningRisikoKankerServiks.java:350	sebagian	Skrining Risiko Kanker Serviks: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningRisikoKankerServiks.java:368	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerServiks.java:386	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerServiks.java:404	belum diaudit	
-aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerServiks.java:422	belum diaudit	
+aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningRisikoKankerServiks.java:386	sebagian	Skrining Risiko Kanker Serviks: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningRisikoKankerServiks.java:404	sebagian	Skrining Risiko Kanker Serviks: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningRisikoKankerServiks.java:422	sebagian	Skrining Risiko Kanker Serviks: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningRisikoKankerServiks.java:451	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningRisikoKankerServiks.java:515	belum diaudit	
 aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningRisikoKankerServiks.java:532	belum diaudit	
@@ -10079,11 +10079,11 @@ aksi|rekammedis/RMSkriningRisikoKankerServiks.java|ChkInput	aksi	.: Input Data	r
 aksi|rekammedis/RMSkriningRisikoKankerServiks.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningRisikoKankerServiks.java:698	belum diaudit	
 jendela|rekammedis/RMSkriningRisikoKankerServiks.java|RMSkriningRisikoKankerServiks	jendela	RMSkriningRisikoKankerServiks	rekammedis/RMSkriningRisikoKankerServiks.java:1	belum diaudit	
 popup|rekammedis/RMSkriningSRQ.java|jPopupMenu1|MnSkriningInstrumenSRQ	popup	jPopupMenu1 > Formulir Skrining SRQ	rekammedis/RMSkriningSRQ.java:417	belum diaudit	
-aksi|rekammedis/RMSkriningSRQ.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningSRQ.java:480	belum diaudit	
+aksi|rekammedis/RMSkriningSRQ.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningSRQ.java:480	sebagian	Skrining Instrumen SRQ: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningSRQ.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningSRQ.java:498	belum diaudit	
-aksi|rekammedis/RMSkriningSRQ.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningSRQ.java:516	belum diaudit	
-aksi|rekammedis/RMSkriningSRQ.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningSRQ.java:534	belum diaudit	
-aksi|rekammedis/RMSkriningSRQ.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningSRQ.java:552	belum diaudit	
+aksi|rekammedis/RMSkriningSRQ.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningSRQ.java:516	sebagian	Skrining Instrumen SRQ: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningSRQ.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningSRQ.java:534	sebagian	Skrining Instrumen SRQ: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningSRQ.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningSRQ.java:552	sebagian	Skrining Instrumen SRQ: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningSRQ.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningSRQ.java:581	belum diaudit	
 aksi|rekammedis/RMSkriningSRQ.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningSRQ.java:645	belum diaudit	
 aksi|rekammedis/RMSkriningSRQ.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningSRQ.java:662	belum diaudit	
@@ -10091,11 +10091,11 @@ aksi|rekammedis/RMSkriningSRQ.java|ChkInput	aksi	.: Input Data	rekammedis/RMSkri
 aksi|rekammedis/RMSkriningSRQ.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningSRQ.java:833	belum diaudit	
 jendela|rekammedis/RMSkriningSRQ.java|RMSkriningSRQ	jendela	RMSkriningSRQ	rekammedis/RMSkriningSRQ.java:1	belum diaudit	
 popup|rekammedis/RMSkriningTBC.java|jPopupMenu1|MnSkriningTBC	popup	jPopupMenu1 > Formulir Skrining TBC	rekammedis/RMSkriningTBC.java:434	belum diaudit	
-aksi|rekammedis/RMSkriningTBC.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTBC.java:498	belum diaudit	
+aksi|rekammedis/RMSkriningTBC.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTBC.java:498	sebagian	Skrining TBC: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTBC.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningTBC.java:516	belum diaudit	
-aksi|rekammedis/RMSkriningTBC.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTBC.java:534	belum diaudit	
-aksi|rekammedis/RMSkriningTBC.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTBC.java:552	belum diaudit	
-aksi|rekammedis/RMSkriningTBC.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTBC.java:570	belum diaudit	
+aksi|rekammedis/RMSkriningTBC.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTBC.java:534	sebagian	Skrining TBC: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTBC.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTBC.java:552	sebagian	Skrining TBC: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTBC.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTBC.java:570	sebagian	Skrining TBC: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTBC.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningTBC.java:599	belum diaudit	
 aksi|rekammedis/RMSkriningTBC.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningTBC.java:663	belum diaudit	
 aksi|rekammedis/RMSkriningTBC.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningTBC.java:680	belum diaudit	
@@ -10103,11 +10103,11 @@ aksi|rekammedis/RMSkriningTBC.java|ChkInput	aksi	.: Input Data	rekammedis/RMSkri
 aksi|rekammedis/RMSkriningTBC.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMSkriningTBC.java:846	belum diaudit	
 jendela|rekammedis/RMSkriningTBC.java|RMSkriningTBC	jendela	RMSkriningTBC	rekammedis/RMSkriningTBC.java:1	belum diaudit	
 popup|rekammedis/RMSkriningTOLAC.java|jPopupMenu1|MnSkriningTOLAC	popup	jPopupMenu1 > Formulir Skrining TOLAC	rekammedis/RMSkriningTOLAC.java:317	belum diaudit	
-aksi|rekammedis/RMSkriningTOLAC.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTOLAC.java:377	belum diaudit	
+aksi|rekammedis/RMSkriningTOLAC.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTOLAC.java:377	sebagian	Skrining TOLAC (Poli Kebidanan): Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTOLAC.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningTOLAC.java:395	belum diaudit	
-aksi|rekammedis/RMSkriningTOLAC.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTOLAC.java:413	belum diaudit	
-aksi|rekammedis/RMSkriningTOLAC.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTOLAC.java:431	belum diaudit	
-aksi|rekammedis/RMSkriningTOLAC.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTOLAC.java:449	belum diaudit	
+aksi|rekammedis/RMSkriningTOLAC.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTOLAC.java:413	sebagian	Skrining TOLAC (Poli Kebidanan): Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTOLAC.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTOLAC.java:431	sebagian	Skrining TOLAC (Poli Kebidanan): Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTOLAC.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTOLAC.java:449	sebagian	Skrining TOLAC (Poli Kebidanan): cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTOLAC.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningTOLAC.java:478	belum diaudit	
 aksi|rekammedis/RMSkriningTOLAC.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningTOLAC.java:540	belum diaudit	
 aksi|rekammedis/RMSkriningTOLAC.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningTOLAC.java:557	belum diaudit	
@@ -10122,11 +10122,11 @@ aksi|rekammedis/RMSkriningTOLAC.java|Eksklusi2	aksi	Eksklusi2	rekammedis/RMSkrin
 aksi|rekammedis/RMSkriningTOLAC.java|Eksklusi3	aksi	Eksklusi3	rekammedis/RMSkriningTOLAC.java:1696	belum diaudit	
 jendela|rekammedis/RMSkriningTOLAC.java|RMSkriningTOLAC	jendela	RMSkriningTOLAC	rekammedis/RMSkriningTOLAC.java:1	belum diaudit	
 popup|rekammedis/RMSkriningTalasemia.java|jPopupMenu1|MnSkriningThalassemia	popup	jPopupMenu1 > Formulir Skrining Thalassemia	rekammedis/RMSkriningTalasemia.java:292	belum diaudit	
-aksi|rekammedis/RMSkriningTalasemia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTalasemia.java:354	belum diaudit	
+aksi|rekammedis/RMSkriningTalasemia.java|BtnSimpan	aksi	Simpan	rekammedis/RMSkriningTalasemia.java:354	sebagian	Skrining Thalassemia: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTalasemia.java|BtnBatal	aksi	Baru	rekammedis/RMSkriningTalasemia.java:372	belum diaudit	
-aksi|rekammedis/RMSkriningTalasemia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTalasemia.java:390	belum diaudit	
-aksi|rekammedis/RMSkriningTalasemia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTalasemia.java:408	belum diaudit	
-aksi|rekammedis/RMSkriningTalasemia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTalasemia.java:426	belum diaudit	
+aksi|rekammedis/RMSkriningTalasemia.java|BtnHapus	aksi	Hapus	rekammedis/RMSkriningTalasemia.java:390	sebagian	Skrining Thalassemia: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTalasemia.java|BtnEdit	aksi	Ganti	rekammedis/RMSkriningTalasemia.java:408	sebagian	Skrining Thalassemia: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan aturan waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMSkriningTalasemia.java|BtnPrint	aksi	Cetak	rekammedis/RMSkriningTalasemia.java:426	sebagian	Skrining Thalassemia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMSkriningTalasemia.java|BtnKeluar	aksi	Keluar	rekammedis/RMSkriningTalasemia.java:455	belum diaudit	
 aksi|rekammedis/RMSkriningTalasemia.java|BtnCari	aksi	BtnCari	rekammedis/RMSkriningTalasemia.java:519	belum diaudit	
 aksi|rekammedis/RMSkriningTalasemia.java|BtnAll	aksi	BtnAll	rekammedis/RMSkriningTalasemia.java:536	belum diaudit	

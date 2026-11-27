@@ -53,8 +53,12 @@ public class DatabaseSettings
     [JsonIgnore]
     public string Summary => $"{Host}:{Port}/{Database}";
 
+    /// <remarks>
+    /// GuidFormat=None: skema Khanza tidak menyimpan GUID, tetapi bawaan driver membaca kolom selebar 36 karakter
+    /// (termasuk enum berpilihan terpanjang 36 huruf) sebagai GUID dan gagal.
+    /// </remarks>
     public string ToConnectionString()
-        => $"Server={Q(Host)};Port={Port};Database={Q(Database)};User={Q(User)};Password={Q(Password)};ConvertZeroDateTime=True;Connection Timeout=10;";
+        => $"Server={Q(Host)};Port={Port};Database={Q(Database)};User={Q(User)};Password={Q(Password)};ConvertZeroDateTime=True;GuidFormat=None;Connection Timeout=10;";
 
     /// <summary>Server-only connection (no database selected) — used to list databases.</summary>
     public string ToServerConnectionString()

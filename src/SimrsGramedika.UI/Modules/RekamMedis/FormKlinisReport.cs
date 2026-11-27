@@ -26,7 +26,7 @@ public static class FormKlinisReport
         QuestPDF.Settings.License = LicenseType.Community;
         static string Tanggal(DateTime? t) => t?.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture) ?? "";
         var (kunjungan, catatan) = (cetak.Kunjungan, cetak.Catatan);
-        var waktu = catatan.Waktu.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        var waktu = catatan.Waktu.ToString(form.TanggalSaja ? "dd-MM-yyyy" : "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
         var qr = KodeQr.Png(TandaTanganSurat.Teks(kop.Nama, kop.Kota, catatan.NamaPemilik, cetak.IdPemilik,
             Tanggal(catatan.Waktu)));
         var sebutan = char.ToUpperInvariant(form.SebutanPemilik[0]) + form.SebutanPemilik[1..];

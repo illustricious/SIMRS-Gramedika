@@ -3,7 +3,7 @@
 Pemetaan seluruh jendela dan tile Khanza terhadap Gramedika. Angka ada di [PETA_FUNGSI.md](PETA_FUNGSI.md) (dibuat otomatis),
 rincian di [peta-fungsi.tsv](peta-fungsi.tsv) per jendela Java dan [peta-tile.tsv](peta-tile.tsv) per tile.
 
-Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi, resep racikan dokter, piutang pasien dan lembar observasi; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
+Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi, resep racikan dokter, piutang pasien, lembar observasi serta skrining dan penilaian risiko; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
 
 ## Cara kerja
 
@@ -54,10 +54,10 @@ Perlakukan angka "tulis ada" sebagai langit-langit.
 
 ## Temuan utama
 
-1. **Sepertiga lebih aksi tulis Java punya padanan.** 811 dari 2.202 pasangan tabel-aksi (37%), sebelum dikoreksi ke bawah.
-2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 276 jendela "tulis ada" tercakup layar master satu tabel.
-3. **301 tile hanya menampilkan** data yang di Java bisa diisi; 165 di antaranya Menu M (rekam medis).
-4. **Rekam medis adalah kelompok terbesar yang tersisa:** 128 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
+1. **Sepertiga lebih aksi tulis Java punya padanan.** 931 dari 2.202 pasangan tabel-aksi (42%), sebelum dikoreksi ke bawah.
+2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 317 jendela "tulis ada" tercakup layar master satu tabel.
+3. **261 tile hanya menampilkan** data yang di Java bisa diisi; 125 di antaranya Menu M (rekam medis).
+4. **Rekam medis adalah kelompok terbesar yang tersisa:** 87 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
    isi" belum berarti muat di mesin formulir; pemilik ganda, bentuk kunci dan tipe kolom harus dicek per formulir.
 5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** pengurangan dan tambahan
    biaya, data bayi lahir, pengadaan farmasi,

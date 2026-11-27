@@ -4,7 +4,7 @@ Per 22 November 2026, **255 dari 255 kemunculan tile** sudah membuka layar: tile
 
 ## Formulir isian (28 November 2026)
 
-Sebagian tile catatan klinis kini punya formulir isian lewat tombol **Isi / Ubah Formulir** (34 formulir, termasuk 19 lembar observasi dan pemantauan). Daftar dan batasnya di [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md). Bagian di bawah yang menyebut catatan klinis hanya-baca ditulis sebelum formulir itu ada.
+Sebagian tile catatan klinis kini punya formulir isian lewat tombol **Isi / Ubah Formulir** (74 formulir, termasuk 19 lembar observasi dan pemantauan serta 40 skrining dan penilaian risiko). Daftar dan batasnya di [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md). Bagian di bawah yang menyebut catatan klinis hanya-baca ditulis sebelum formulir itu ada.
 
 ## Identitas pasien — perubahan 26 November 2026
 

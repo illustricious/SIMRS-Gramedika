@@ -98,28 +98,24 @@ public sealed class FormKlinisTests
     [Fact]
     public void DefinisiCocokDenganSkemaKhanza()
     {
-        var folder = new DirectoryInfo(AppContext.BaseDirectory);
-        while (folder is not null && !File.Exists(Path.Combine(folder.FullName, "docs", "audit", "schema_sik.sql"))) folder = folder.Parent;
-        Assert.NotNull(folder);
-        var skema = File.ReadAllText(Path.Combine(folder.FullName, "docs", "audit", "schema_sik.sql"));
+        var skema = Skema();
 
         foreach (var form in FormKlinisKatalog.Semua)
         {
             var ddl = Regex.Match(skema, $@"CREATE TABLE `{form.Tabel}` \((.*?)\) ENGINE", RegexOptions.Singleline).Groups[1].Value;
-            var kolom = Regex.Matches(ddl, @"^\s*`(\w+)` (\w+)(?:\((.*)\))?[ ,]", RegexOptions.Multiline)
-                .ToDictionary(m => m.Groups[1].Value, m => (Tipe: m.Groups[2].Value, Rinci: m.Groups[3].Value));
+            var kolom = Kolom(skema, form.Tabel);
             string[] kunci = ["no_rawat", form.KolomTanggal, form.KolomPemilik, .. form.KolomJam is { } jam ? new[] { jam } : []];
             Assert.Equal(kolom.Keys.Order(), kunci.Concat(form.Isian.Select(i => i.Kolom)).Order());
-            Assert.Equal(form.KolomJam is null ? "datetime" : "date", kolom[form.KolomTanggal].Tipe);
+            Assert.Equal(form.KolomJam is null && !form.TanggalSaja ? "datetime" : "date", kolom[form.KolomTanggal].Tipe);
             var utama = Regex.Match(ddl, @"PRIMARY KEY \(([^)]*)\)").Groups[1].Value.Replace("`", "").Split(',');
             Assert.Equal(form.SatuPerKunjungan, utama.Length == 1);
 
             foreach (var isian in form.Isian)
             {
                 var (tipe, rinci) = kolom[isian.Kolom];
-                if (tipe == "enum")
+                if (tipe == "enum" && !isian.Otomatis)
                 {
-                    var enumDb = Regex.Matches(rinci, "'([^']*)'").Select(m => m.Groups[1].Value).ToArray();
+                    var enumDb = Enum(rinci);
                     // Layar Java kriteria keluar isolasi tidak menawarkan "Tidak Berlaku" walau kolomnya menerima.
                     if (form.Tabel == "checklist_kriteria_keluar_isolasi") Assert.Subset(enumDb.ToHashSet(), isian.Pilihan!.ToHashSet());
                     else Assert.Equal(enumDb, isian.Pilihan!);
@@ -131,9 +127,62 @@ public sealed class FormKlinisTests
         }
     }
 
+    /// <summary>
+    /// Isian acak: hasil hitungan dan saran harus muat di kolomnya, yaitu salah satu pilihan enum atau teks selebar kolom.
+    /// </summary>
+    [Fact]
+    public void HasilHitunganDanSaranMuatDiKolomKhanza()
+    {
+        var skema = Skema();
+        var acak = new Random(1);
+        string[] angka = ["", "1", "7.9", "8", "10.9", "11", "11.9", "12", "45", "80", "90", "120", "140", "160", "180", "250", "x"];
+        foreach (var form in FormKlinisKatalog.Semua.Where(f => f.Hitung is not null || f.Usul is not null))
+        {
+            var kolom = Kolom(skema, form.Tabel);
+            for (var kali = 0; kali < 400; kali++)
+            {
+                var isi = form.Isian.Where(i => !i.Otomatis).ToDictionary(i => i.Kolom,
+                    i => i.Pilihan is { } p ? p[acak.Next(p.Length)] : angka[acak.Next(angka.Length)]);
+                isi[FormKlinis.KunciJk] = kali % 2 == 0 ? "L" : "P";
+                isi[FormKlinis.KunciUmur] = acak.Next(0, 99).ToString();
+                isi[FormKlinis.KunciSatuanUmur] = kali % 5 == 0 ? "Bl" : "Th";
+                form.Hitung?.Invoke(isi);
+                // Isian yang ditolak aturan formulir tidak pernah sampai ke tabel.
+                if (form.Periksa?.Invoke(isi) is not null) continue;
+                var saran = form.Usul?.Invoke(isi) ?? [];
+                var hasil = form.Isian.Where(i => i.Otomatis).Select(i => (i.Kolom, Nilai: isi[i.Kolom]))
+                    .Concat(saran.Select(s => (Kolom: s.Key, Nilai: s.Value)));
+                foreach (var (nama, nilai) in hasil)
+                {
+                    if (nilai.Length == 0) continue;
+                    var (tipe, rinci) = kolom[nama];
+                    if (tipe == "enum") Assert.True(Enum(rinci).Contains(nilai), $"{form.Tabel}.{nama} = {nilai}");
+                    else if (tipe == "varchar") Assert.True(nilai.Length <= int.Parse(rinci), $"{form.Tabel}.{nama} = {nilai}");
+                }
+            }
+        }
+    }
+
+    private static string Skema()
+    {
+        var folder = new DirectoryInfo(AppContext.BaseDirectory);
+        while (folder is not null && !File.Exists(Path.Combine(folder.FullName, "docs", "audit", "schema_sik.sql"))) folder = folder.Parent;
+        Assert.NotNull(folder);
+        return File.ReadAllText(Path.Combine(folder.FullName, "docs", "audit", "schema_sik.sql"));
+    }
+
+    private static Dictionary<string, (string Tipe, string Rinci)> Kolom(string skema, string tabel)
+    {
+        var ddl = Regex.Match(skema, $@"CREATE TABLE `{tabel}` \((.*?)\) ENGINE", RegexOptions.Singleline).Groups[1].Value;
+        return Regex.Matches(ddl, @"^\s*`(\w+)` (\w+)(?:\((.*)\))?[ ,]", RegexOptions.Multiline)
+            .ToDictionary(m => m.Groups[1].Value, m => (m.Groups[2].Value, m.Groups[3].Value));
+    }
+
+    private static string[] Enum(string rinci) => [.. Regex.Matches(rinci, "'([^']*)'").Select(m => m.Groups[1].Value)];
+
     private static Dictionary<string, string> Hitungan(FormKlinis form, Dictionary<string, string> isi)
     {
-        var salinan = new Dictionary<string, string>(isi);
+        var salinan = new Dictionary<string, string>(isi) { [FormKlinis.KunciJk] = "P", [FormKlinis.KunciUmur] = "36", [FormKlinis.KunciSatuanUmur] = "Th" };
         form.Hitung?.Invoke(salinan);
         return salinan;
     }
@@ -170,7 +219,9 @@ public sealed class FormKlinisTests
             var bukan = form.Pemilik == PemilikForm.Dokter ? petugas : dokter;
             FormKlinisService Layanan(AuthenticatedUser u) => new(settings, u, form, "R1");
             var service = Layanan(akun);
-            var isi = form.Isian.Where(i => !i.Otomatis).ToDictionary(i => i.Kolom, i => i.Pilihan?[^1] ?? (i.Maks > 0 ? "1" : ""));
+            // Tinggi badan 1 cm membuat IMT tidak muat di kolomnya, jadi diberi nilai wajar.
+            var isi = form.Isian.Where(i => !i.Otomatis).ToDictionary(i => i.Kolom,
+                i => i.Pilihan?[^1] ?? (i.Kolom == "tinggi_badan" ? "100" : i.Maks > 0 ? "1" : ""));
             if (form.Periksa is not null)
                 Assert.Null(form.Periksa(Hitungan(form, isi)));
 
@@ -195,7 +246,8 @@ public sealed class FormKlinisTests
             await service.SimpanAsync(sekarang, "P2", isi);
             var (kunjungan, daftar) = await service.MuatAsync();
             var catatan = Assert.Single(daftar);
-            Assert.Equal(("Pasien Uji", akun.UserId, sekarang), (kunjungan.Pasien, catatan.Pemilik, catatan.Waktu));
+            DateTime Tercatat(DateTime t) => form.TanggalSaja ? t.Date : t;
+            Assert.Equal(("Pasien Uji", akun.UserId, Tercatat(sekarang)), (kunjungan.Pasien, catatan.Pemilik, catatan.Waktu));
             foreach (var (kolom, nilai) in isi) Assert.Equal(nilai, catatan.Isi[kolom]);
             if (form.Hitung is not null)
                 foreach (var auto in form.Isian.Where(i => i.Otomatis)) Assert.NotEqual("", catatan.Isi[auto.Kolom]);
@@ -203,14 +255,14 @@ public sealed class FormKlinisTests
 
             // Bukan pemilik ditolak, termasuk bila ia berhak atas menunya.
             // Formulir tanpa isian teks diubah lewat pilihan pertamanya.
-            var kolomUbah = form.Isian.FirstOrDefault(i => i is { Otomatis: false, Pilihan: null }) ?? form.Isian[0];
+            var kolomUbah = form.Isian.FirstOrDefault(i => i is { Otomatis: false, Pilihan: null }) ?? form.Isian.First(i => !i.Otomatis);
             var nilaiBaru = kolomUbah.Pilihan?[0] ?? "2";
             var baru = new Dictionary<string, string>(isi) { [kolomUbah.Kolom] = nilaiBaru };
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(lain).UbahAsync(catatan, sekarang, "", baru));
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(lain).HapusAsync(catatan));
             await service.UbahAsync(catatan, sekarang.AddMinutes(-1), "", baru);
             var diubah = Assert.Single((await service.MuatAsync()).Catatan);
-            Assert.Equal((nilaiBaru, form.SatuPerKunjungan ? diubah.Waktu : sekarang.AddMinutes(-1)), (diubah.Isi[kolomUbah.Kolom], diubah.Waktu));
+            Assert.Equal((nilaiBaru, form.SatuPerKunjungan ? diubah.Waktu : Tercatat(sekarang.AddMinutes(-1))), (diubah.Isi[kolomUbah.Kolom], diubah.Waktu));
             // Data lama dari layar yang belum dimuat ulang tidak menimpa perubahan terbaru.
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.UbahAsync(catatan, sekarang, "", isi));
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.HapusAsync(catatan));
@@ -263,7 +315,7 @@ public sealed class FormKlinisTests
         Assert.True(dikunci.TanggalTerkunci);
         Assert.False(keperawatan.TanggalTerkunci);
         Assert.False(new FormKlinisService(terkunci, admin, catatanForm, "R1").TanggalTerkunci);
-        Assert.False(new FormKlinisService(terkunci, petugas, FormKlinisKatalog.Semua.Single(f => !f.IkutKunciTanggal), "R1").TanggalTerkunci);
+        Assert.False(new FormKlinisService(terkunci, petugas, FormKlinisKatalog.RisikoJatuhDewasa, "R1").TanggalTerkunci);
         await dikunci.SimpanAsync(sekarang.AddDays(-1), "", new Dictionary<string, string> { ["uraian"] = "kunci" });
         var tercatat = Assert.Single((await dikunci.MuatAsync()).Catatan);
         Assert.InRange(tercatat.Waktu, sekarang, sekarang.AddMinutes(5));

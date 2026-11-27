@@ -31,6 +31,8 @@ public sealed class FormKlinisView : PageView
     private readonly IsianKlinis[] _kolomDaftar;
     private readonly WrapPanel _commands;
     private (string Kode, string Nama)? _akun;
+    private KunjunganKlinis? _kunjungan;
+    private Dictionary<string, string> _usul = new();
     private string _pemilik = "";
     private bool _mengisi, _sibuk, _siap;
 
@@ -57,6 +59,8 @@ public sealed class FormKlinisView : PageView
         var sekarang = Ui.Btn("Sekarang", (_, _) => AturWaktu(DateTime.Now));
         if (_service.TanggalTerkunci) _tanggal.IsEnabled = _jam.IsEnabled = sekarang.IsEnabled = false;
         var kepala = Ui.Bar(Ui.L("Tanggal"), _tanggal, Ui.L("Jam"), _jam, sekarang, Ui.L($"{sebutan} :"), _pemilikNama);
+        if (form.TanggalSaja)
+            foreach (var jam in kepala.Children.SkipWhile(c => c != _tanggal).Skip(1).Take(2).ToArray()) jam.IsVisible = false;
         if (user.IsAdminUtama)
             kepala.Children.Add(Ui.Btn($"Pilih {sebutan}", async (_, _) => await JalankanAsync(PilihPemilikAsync)));
         isi.Children.Add(kepala);
@@ -171,7 +175,7 @@ public sealed class FormKlinisView : PageView
                 AcceptsReturn = Panjang(f) && !f.Otomatis, TextWrapping = Panjang(f) ? TextWrapping.Wrap : TextWrapping.NoWrap,
                 MinHeight = Panjang(f) ? 52 : 0,
             };
-            if (_form.Hitung is not null && !f.Otomatis)
+            if ((_form.Hitung is not null || _form.Usul is not null) && !f.Otomatis)
                 teks.PropertyChanged += (_, e) => { if (e.Property == TextBox.TextProperty) Hitung(); };
             kontrol = teks;
         }
@@ -203,10 +207,31 @@ public sealed class FormKlinisView : PageView
     private void Hitung()
     {
         if (_mengisi || _editors.Count != _form.Isian.Length) return;
-        var nilai = BacaIsian();
-        _form.Hitung?.Invoke(nilai);
+        var nilai = NilaiHitung();
+        // Dua putaran: saran pilihan bisa mengubah skor, yang lalu mengubah saran kesimpulan.
+        for (var putaran = 0; putaran < 2 && TerapkanUsul(nilai); putaran++) nilai = NilaiHitung();
         foreach (var f in _form.Isian.Where(f => f.Otomatis)) ((TextBox)_editors[f.Kolom]).Text = nilai.GetValueOrDefault(f.Kolom, "");
         _keterangan.Text = _form.Keterangan?.Invoke(nilai) ?? "";
+    }
+
+    private Dictionary<string, string> NilaiHitung()
+    {
+        var nilai = BacaIsian();
+        _kunjungan?.IsiKonteks(nilai);
+        _form.Hitung?.Invoke(nilai);
+        return nilai;
+    }
+
+    /// <summary>Menulis saran yang berubah sejak terakhir diterapkan, sehingga ketikan pengguna tidak tertimpa.</summary>
+    private bool TerapkanUsul(IReadOnlyDictionary<string, string> nilai)
+    {
+        if (_form.Usul?.Invoke(nilai) is not { } usul) return false;
+        var berubah = usul.Where(u => !_usul.TryGetValue(u.Key, out var lama) || lama != u.Value).ToList();
+        _usul = usul;
+        _mengisi = true;
+        foreach (var (kolom, saran) in berubah) Atur(_form.Isian.First(f => f.Kolom == kolom), saran);
+        _mengisi = false;
+        return berubah.Count > 0;
     }
 
     private void AturWaktu(DateTime waktu)
@@ -235,6 +260,7 @@ public sealed class FormKlinisView : PageView
         _mengisi = true;
         foreach (var f in _form.Isian) Atur(f, f.Awal ?? f.Pilihan?[0] ?? "");
         _mengisi = false;
+        _usul = new();
         AturWaktu(DateTime.Now);
         AturPemilik(_akun?.Kode ?? "", _akun?.Nama ?? "");
         Hitung();
@@ -245,6 +271,8 @@ public sealed class FormKlinisView : PageView
         _mengisi = true;
         foreach (var f in _form.Isian) Atur(f, catatan.Isi.GetValueOrDefault(f.Kolom, ""));
         _mengisi = false;
+        // Catatan tersimpan ditampilkan apa adanya; saran baru berlaku sesudah isian sumbernya diubah.
+        _usul = _form.Usul?.Invoke(NilaiHitung()) ?? new();
         AturWaktu(catatan.Waktu);
         AturPemilik(catatan.Pemilik, catatan.NamaPemilik);
         _keterangan.Text = _form.Keterangan?.Invoke(catatan.Isi) ?? "";
@@ -253,9 +281,10 @@ public sealed class FormKlinisView : PageView
     private async Task MuatAsync()
     {
         var (kunjungan, catatan) = await _service.MuatAsync();
+        _kunjungan = kunjungan;
         _pasien.Text = $"{kunjungan.Pasien} · RM {kunjungan.NoRekamMedis} · No. Rawat {_noRawat}";
         Ui.FillRows(_grid, catatan.Select(c => new GridRow(
-            [c.Waktu.ToString("dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture), c.NamaPemilik,
+            [c.Waktu.ToString(_form.TanggalSaja ? "dd-MM-yyyy" : "dd-MM-yyyy HH:mm:ss", CultureInfo.InvariantCulture), c.NamaPemilik,
              .. _kolomDaftar.Select(f => c.Isi.GetValueOrDefault(f.Kolom, ""))], c)));
         Kosongkan();
         if (_form.SatuPerKunjungan && catatan.Count == 1)
