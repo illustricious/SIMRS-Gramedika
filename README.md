@@ -1,89 +1,187 @@
 # SIMRS Gramedika
 
-A cross-platform reimplementation of [SIMRS Khanza](https://github.com/mas-elkhanza/SIMRS-Khanza) — the open-source Indonesian hospital
-information system — written in C# on .NET 10 with Avalonia UI.
+A cross-platform reimplementation of [SIMRS Khanza](https://github.com/mas-elkhanza/SIMRS-Khanza), the open-source Indonesian
+hospital information system, written in C# on .NET 10 with Avalonia UI.
 
-It connects to the existing SIMRS Khanza MySQL/MariaDB database (`sik`) and uses Khanza accounts and access rights.
+It connects to the existing Khanza MySQL/MariaDB database (`sik`) and uses Khanza accounts and access rights.
 
-## Status
+> **Alpha software.** Many screens are read-only, most legacy actions have not been audited yet, and transactions have only been
+> tested against synthetic databases. See [Before using real data](#before-using-real-data).
 
-The dashboard follows the original Khanza menu categories A–U. As of 22 November 2026, **1,041 of 1,224 legacy dashboard tiles** open a screen. The count includes shared tiles in each category where they appear. Avalonia also adds a database backup tile for signed-in users. Screen coverage and feature parity are tracked separately.
+- [How big is this project](#how-big-is-this-project)
+- [Progress](#progress)
+- [What you can do today](#what-you-can-do-today)
+- [Technical details](#technical-details)
+- [Build, test, install](#build-test-install)
 
-| Menu | Area | Tiles with a screen |
-|------|------|--------|
-| A | Registration, outpatient/inpatient services, billing | **34/34** |
-| B | Barcode-based procedures & drugs, environmental health lab | 16/16 |
-| C | Attendance, staff management, K3, infection-control audits, patient safety (SKP) | 61/61 |
-| D | Pharmacy inventory, patient stock, prescription review, and reports | 75/75 |
-| E | Nonmedical logistics masters, stock movements, procurement and receiving reports | **33/33** |
-| F | Kitchen inventory, purchasing, receiving, stocktake, and circulation | **27/27** |
-| G | Assets, inventory, CSSD, facility maintenance, and environmental health | **28/28** |
-| H | Parking types, barcode cards, and vehicle check-in | **3/3** |
-| I | Billing, patient deposits, receivables, drug and procedure reports | 60/60 |
-| J | ICD masters, visit and diagnosis reports, and operational reports | 96/96 |
-| K | Tariffs, finance masters, payables and receivables, bank feeds, journals, manual journal posting | **87/87** |
-| L | Bridging (VClaim, Aplicare, PCare, INA-CBG, Kemenkes, third parties) | 0/183 (deferred: needs credentials and external APIs) |
-| M | Patient records | **255/255** |
-| N | Blood transfusion unit (UTD) | **11/11** |
-| O | Analytics and infographics (read-only aggregate tables, charts not drawn yet) | **113/113** |
-| P | Letters, consent forms, e-patient announcements | **45/45** |
-| Q | Library and digital collection | **16/16** |
-| R | PCRA/ICRA (pre-construction and infection control risk assessment) | **10/10** |
-| S | Store, minimarket, and cooperative master data and transaction reports | **25/25** |
-| T | Philanthropy, CSR, zakat, infaq, and shodaqoh reference data | **16/16** |
-| U | Application settings, tariffs, queue displays, and account administration | **30/30 legacy tiles** + database backup |
+## How big is this project
 
-Menu A now includes inpatient requests, surgery schedules, KFR requests, discharge prescriptions, diet delivery, outpatient screening, early COVID screening, deposits, and inpatient cost estimates. See [Menu A status](docs/audit/MENU_A_STATUS.md) for each screen's current workflows and remaining legacy differences. Several Menu D screens provide lists or reports for existing transactions.
+SIMRS Khanza is a very large application: registration, outpatient, inpatient and emergency care, medical records, pharmacy,
+laboratory, radiology, billing, accounting, HR, inventory, assets, kitchen, blood bank, library, parking, analytics and dozens of
+integrations with national health services. Rebuilding it is a long-running effort.
 
-Right-click a patient row in Registrasi, IGD, Rawat Jalan, Rawat Inap, Data Pasien, or the lab and radiology lists to open its context menu. The menu targets the clicked row and enables available actions according to Khanza permissions. The compact menu and its submenus follow the active light or dark theme.
+### The system being rewritten
 
-Dari **Registrasi → klik kanan pasien → Tindakan & Pemeriksaan → Tindakan Rawat Jalan**, area kerja terbuka di jendela utama. **Submenu kiri** memuat menu klinis yang bisa dicari sesuai hak akses akun dari katalog 178 menu. Nomor rawat mengikuti baris yang diklik. Pemeriksaan mendukung **5 SOAPIE Terakhir** untuk mengisi draf baru. **Catatan Dokter** mendukung tambah, ubah dan hapus sesuai hak akses. **Input Tindakan** mendukung dokter, petugas, dan gabungan, dengan pilihan tarif sesuai kunjungan dan simpan bersama jurnal. Obstetri, ginekologi, dan diagnosa tersedia baca saja. Pilih **Kembali ke Registrasi** untuk kembali ke daftar sebelumnya.
+Measured on the upstream source snapshot `6da4e15` (2 November 2026) used as the reference:
 
-Kasir records registration-only outpatient payments and supported inpatient room payments. The saved receipt includes the payable amount and settlement details. Visits with procedure or drug charges use Kasir Khanza for settlement.
+| Legacy SIMRS Khanza (Java) | Size |
+|---|---:|
+| Java source files | 1,678 |
+| Lines in those files (including generated Swing UI code) | about 2.2 million |
+| NetBeans form definitions (`.form`) | 1,492 |
+| Jasper report templates (`.jrxml`) | 1,326 |
+| Folders of companion web apps (`webapps/`) | 62 |
+| `CREATE TABLE` statements in the [schema dump](docs/audit/schema_sik.sql) | 1,199 |
+| Dashboard tiles in menus A–U | 1,224 |
+| Tracked features (windows, actions, popup entries, tiles) | 15,843 |
 
-Menu G includes editable asset masters, facility maintenance, CSSD catalog entries, and environmental health logs. The inventory, procurement, repairs, and CSSD circulation lists support search and CSV export. Asset transactions, approvals, accounting entries, and CSSD circulation updates are recorded in Khanza.
+### The rewrite so far
 
-Menu E includes editable item and supplier masters, transaction history, procurement and receiving summaries, order-to-receipt comparisons, stocktake results, and circulation reports. Reports support search, period filters, and CSV export. Nonmedical stock transactions and approvals are recorded in Khanza.
+Measured at commit `ec33aad` (27 November 2026). Line counts include blank lines and comments.
 
-Menu F includes editable wet and dry kitchen inventory and supplier masters. Its reports cover requests, purchasing, receiving, grants, returns, outgoing stock, stocktake, and circulation, with search and CSV export. Kitchen stock transactions and approvals are recorded in Khanza.
+| Project | C# files | C# lines | Contents |
+|---|---:|---:|---|
+| `SimrsGramedika.UI` | 109 | 19,757 | Avalonia desktop app, plus 40 AXAML files (4,124 lines) |
+| `SimrsGramedika.Data` | 129 | 22,363 | Repositories, services, screen specifications, journals |
+| `SimrsGramedika.Tests` | 43 | 4,620 | xUnit tests, headless UI tests, database fixtures |
+| `SimrsGramedika.Core` | 13 | 1,987 | Entities, authentication, legacy permission map (partly generated) |
+| `SimrsGramedika.Config` | 2 | 198 | Per-user connection profiles |
+| **Total** | **296** | **48,925** | About 53,000 lines including AXAML |
 
-Menu H includes parking type and tariff settings, barcode card registration, and vehicle check-in with date and text filters. A card or vehicle with an open visit cannot be checked in again. Checkout, fee collection, and ticket printing are outside the current implementation.
+First commit: 3 November 2026. The line counts of the two code bases are not a progress measure: many screens here are generated from
+short specifications, and covering a screen is far less than matching its behaviour.
 
-Menu I includes read-only reports for patient charges, discounts, receivables, billing, drugs and selected procedure fees with period filters, search and CSV export. Summaries include daily billing, payments per unit and shift, and receivables by account. The daily/monthly doctor, paramedic, facility, KSO, management and BHP reports currently cover outpatient and inpatient procedures only: lab, radiology and surgery are excluded. Debt payments and legacy report printing are not included. See [Menu I audit](docs/audit/MENU_BELUM_DAN_PELAJARAN_I.md) for the remaining tiles and limitations.
+## Progress
 
-See [Menu U status](docs/audit/MENU_U_STATUS.md) for the settings screens and which workflows use those settings in Avalonia.
+There are two separate measures. Please read both.
 
-See [Menu J status](docs/audit/MENU_J_STATUS.md) for available ICD masters, visit reports, diagnosis reports, and their scope.
+### 1. Screen coverage: 1,041 of 1,224 dashboard tiles (85%)
 
-Menu S provides editable store masters and read-only purchasing, sales, returns, payments, and stock reports. Store transactions are entered in Khanza. See [Menu S status](docs/audit/MENU_S_STATUS.md) for the coverage of each tile.
+A tile counts when it opens a screen. It does **not** mean the screen does everything the Java version does. Shared tiles are counted in
+each category where they appear.
 
-Menu K provides editable tariffs (outpatient, inpatient, lab, radiology, UTD, surgery) with automatic totals, editable account masters, and read-only payables, receivables, bank payment, journal, cash flow and profit-and-loss views, plus a manual balanced journal screen. See [Menu K status](docs/audit/MENU_K_STATUS.md).
+| Menu | Area | Tiles with a screen | Scope of these screens |
+|---|---|---:|---|
+| A | Registration, outpatient/inpatient services, billing | 34/34 | Main care workflows, see below ([notes](docs/audit/MENU_A_STATUS.md)) |
+| B | Barcode-based procedures and drugs, environmental health lab | 16/16 | |
+| C | Attendance, staff, occupational safety, infection-control audits, patient safety | 61/61 | |
+| D | Pharmacy inventory, patient stock, prescription review, reports | 75/75 | Some stock transactions; several screens are lists or reports |
+| E | Non-medical logistics | 33/33 | Editable masters and reports; transactions are entered in Khanza |
+| F | Kitchen inventory and purchasing | 27/27 | Editable masters and reports; transactions are entered in Khanza |
+| G | Assets, CSSD, maintenance, environmental health | 28/28 | Editable masters and logs; asset transactions are entered in Khanza |
+| H | Parking | 3/3 | Tariffs, cards, check-in; no checkout or fees |
+| I | Billing, deposits, receivables, drug and procedure reports | 60/60 | Read-only reports; fee summaries cover procedures only ([notes](docs/audit/MENU_BELUM_DAN_PELAJARAN_I.md)) |
+| J | ICD masters, visit, diagnosis and operational reports | 96/96 | ([notes](docs/audit/MENU_J_STATUS.md)) |
+| K | Tariffs, finance masters, payables, receivables, journals | 87/87 | Editable tariffs and accounts, manual journal; ledgers read-only ([notes](docs/audit/MENU_K_STATUS.md)) |
+| L | Bridging (BPJS VClaim, Aplicare, PCare, INA-CBG, Ministry of Health, third parties) | 0/183 | Deferred: needs credentials and external test environments |
+| M | Patient records | 255/255 | Clinical records are mostly read-only here ([notes](docs/audit/MENU_M_STATUS.md)) |
+| N | Blood transfusion unit | 11/11 | Editable references; donations and stock read-only ([notes](docs/audit/MENU_NR_STATUS.md)) |
+| O | Analytics and infographics | 113/113 | Aggregate tables; charts not drawn yet ([notes](docs/audit/MENU_O_STATUS.md)) |
+| P | Letters, consent forms, patient announcements | 45/45 | Editable registers; patient letters read-only ([notes](docs/audit/MENU_P_STATUS.md)) |
+| Q | Library and digital collection | 16/16 | Editable catalogue; loans read-only ([notes](docs/audit/MENU_Q_STATUS.md)) |
+| R | Construction and infection-control risk assessment | 10/10 | Editable references; project lists read-only ([notes](docs/audit/MENU_NR_STATUS.md)) |
+| S | Store, minimarket, cooperative | 25/25 | Editable masters; transaction reports read-only ([notes](docs/audit/MENU_S_STATUS.md)) |
+| T | Philanthropy, CSR and zakat reference data | 16/16 | Full create, edit and delete |
+| U | Settings, tariffs, queue displays, accounts | 30/30 | Plus a database backup tile ([notes](docs/audit/MENU_U_STATUS.md)) |
 
-Menu M now covers all 255 tiles with patient reference masters, clinical records, TNI/POLRI SOAP, record circulation, complaints, triage, discharge summaries, nutrition, clinical templates, nursing and medical assessments, diagnostic results, patient monitoring, therapy, screening and perioperative workflows. Clinical records remain read-only here and are entered through the corresponding Khanza care workflows. See [Menu M status](docs/audit/MENU_M_STATUS.md).
+### 2. Feature parity: the long road
 
-Menu N and R provide editable blood-component, donor and PCRA/ICRA reference data with read-only donation, stock and project lists. Menu Q has editable catalog, inventory, members and loan settings with read-only loans and fines. Menu P has editable letter registers and references plus read-only patient letters and consent lists. Menu O provides read-only aggregate tables (count per category, with totals) for registrations, inpatients, lab and radiology, staff, pharmacy items, inventory, patient safety, TB, K3, HAIs, utilities, waste, hemodialysis and diet; charts are not drawn yet. See the `docs/audit/MENU_*_STATUS.md` files.
+The [feature tracker](docs/tracker/README.md) inventories the Java source and records evidence for every item that has been assessed.
+Status at commit `ec33aad`:
 
-### Workflow parity (beyond screen coverage)
+| Item type | Total | Complete | Partial | Missing | Deferred | Not yet audited |
+|---|---:|---:|---:|---:|---:|---:|
+| Actions (buttons and controls) | 10,673 | 13 | 238 | 201 | 1 | 10,220 |
+| Popup menu entries | 2,652 | 0 | 156 | 242 | 0 | 2,254 |
+| Windows | 1,294 | 0 | 6 | 0 | 0 | 1,288 |
 
-The [feature tracker](docs/tracker/README.md) compares Avalonia against the legacy Java source (15,843 buttons, popups, windows and tiles) and records evidence per item. Audited workflows include [Registrasi](docs/tracker/AUDIT_REGISTRASI.md), [Rawat Jalan](docs/tracker/AUDIT_RAWAT_JALAN.md), and [Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md). Pharmacy supports direct sales for a registered patient from nonbatch stock in F.A with no tax, extra fees, or separate cashier verification. See [core services audit](docs/tracker/AUDIT_PELAYANAN_INTI.md) for the transactions verified with synthetic data and the remaining gaps.
+That is **856 of 14,619 non-tile items assessed (about 6%)**, and only 13 marked complete. "Complete" requires evidence for the whole
+flow, so working features often stay "partial". Current numbers are in the [generated summary](docs/tracker/RINGKASAN.md); the
+[chart view](docs/tracker/GRAFIK.html) can be opened locally in a browser.
 
-Pending tiles (Menu L) show a "not implemented" notice.
+## What you can do today
 
-Pada daftar Rawat Inap, pilih pasien lalu klik **SOAPIE** untuk melihat, mencatat, mengubah, atau menghapus pemeriksaan kunjungan sesuai hak akun. Formulir menampilkan nomor rawat dan NIK dokter atau petugas. Uji SQL SOAPIE di skema MariaDB sintetis lulus. Kasir mendukung tagihan gabungan Rawat Jalan dan Rawat Inap serta cetak ulang kuitansi PDF. Tindakan dokter, petugas dan gabungan memakai jurnal; rekonsiliasi dengan konfigurasi rekening RS masih diperlukan. [Audit Rawat Inap](docs/tracker/AUDIT_RAWAT_INAP.md).
+These workflows write to the database. Each follows the Java source for tables, permissions and, where listed, journals, but many
+have limits that are described in the audit documents.
 
-Di SOAPIE Rawat Inap, **5 SOAPIE Terakhir** membuka catatan pasien yang sama berdasarkan NIK penulis. **Salin Narasi Terpilih** memakai catatan yang dipilih di daftar kunjungan. Kedua tombol menyalin enam isian narasi ke draf baru tanpa langsung menyimpannya.
+| Area | Available |
+|---|---|
+| Registration ([audit](docs/tracker/AUDIT_REGISTRASI.md)) | Register visits with Khanza queue numbering; new patients with Khanza medical record numbers; patient notes and status; deceased record; internal, incoming and outgoing referrals; sick-leave letter; letterhead printing |
+| Emergency | Registration and triage entry |
+| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send and edit prescriptions (non-compounded), lab and radiology requests; write and print the medical resume |
+| Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals; discharge summary and room release; discharge prescriptions from request to validation, handover or return |
+| Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
+| Laboratory and radiology | Record results; post journals on save and reverse them on delete |
+| Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, surgery, returns and adjustments are still settled in Khanza |
+| Finance | Manual balanced journal, tariffs and accounts |
 
-Mulai dari [handover terbaru](docs/handover/README.md) atau buka [tracker HTML](docs/tracker/GRAFIK.html).
+Right-clicking a patient row in the main patient lists opens a context menu filtered by Khanza permissions.
 
-Menu T supports search, creation, editing, and deletion for all 16 Dankes reference lists. The legacy Kepemilikan Rumah tile opens the Atap Rumah screen. Avalonia stores ownership categories independently. Apply the [Kepemilikan Rumah SQL script](docs/audit/menu_t_kepemilikan_rumah.sql) to the configured SIMRS database before using that reference list.
+Referral letters, sick-leave letters and the outpatient resume carry a QR code identifying the signing doctor, as Khanza does. It is
+**not** a certified electronic signature.
 
-## Requirements
+### Next priorities
 
-- .NET SDK 10 (to build)
-- An existing SIMRS Khanza database (MySQL 5.7+/MariaDB 10.4+)
-- Windows 10/11 or a Debian/Ubuntu-based Linux desktop
+1. Run the transactions on a safe copy of a real hospital database and compare journals and stock with Khanza Java.
+2. Test concurrent use alongside Java clients.
+3. Close gaps in the core care flows: order cancellation, partial returns, room corrections, cashier settlement cases.
+4. Continue the per-action audit, then printing and report parity.
+5. Bridging (menu L), once specifications and test credentials are available.
 
-## Build & run
+The working list is in [PRIORITAS.md](docs/tracker/PRIORITAS.md) (Indonesian).
+
+## Technical details
+
+| Layer | Technology |
+|---|---|
+| Language and runtime | C#, .NET 10 |
+| Desktop UI | Avalonia 12 (Fluent theme, DataGrid, Inter font), light and dark themes |
+| Database | MySQL / MariaDB through MySqlConnector; Pomelo Entity Framework Core for earlier clinical screens, direct SQL for most newer features |
+| Printing | QuestPDF, QRCoder |
+| Tests | xUnit, Avalonia.Headless with Skia |
+| Packaging | Inno Setup, WiX, nfpm, AppImage, dmg ([installer notes](installer/README.md)) |
+| Tracker tooling | Node.js 22 |
+
+### Architecture
+
+- **One window, many pages.** The A–U dashboard is built from a catalogue of the 1,224 legacy tiles and filtered by each account's
+  Khanza access rights.
+- **Specification-driven screens.** `MasterSpec` (search, add, edit, delete, CSV) and `ReportSpec` (search, period filter, totals, CSV)
+  describe most menu screens; two generic views render them. Complex workflows have dedicated views and services.
+- **Existing schema first.** The app works on the Khanza tables so that data stays readable by Khanza. Features that need extra tables
+  ship SQL scripts: [discharge prescription handover](docs/migrations/20261125_serah_resep_pulang.sql) and
+  [home ownership reference (menu T)](docs/audit/menu_t_kepemilikan_rumah.sql).
+- **Transaction safety.** The transactional care and billing workflows lock the visit row (`reg_periksa ... FOR UPDATE`), re-check
+  billing status and current data, then commit documents, stock movements and double-entry journals together or not at all.
+
+More in [architecture](docs/handover/02-ARCHITECTURE.md) (Indonesian).
+
+### Project layout
+
+```
+src/SimrsGramedika.Config   connection profiles
+src/SimrsGramedika.Core     domain types, legacy access-right mapping
+src/SimrsGramedika.Data     repositories and services on the legacy sik schema
+src/SimrsGramedika.UI       Avalonia desktop application
+src/SimrsGramedika.Tests    unit, headless-UI, fixture and optional database smoke tests
+installer/                  Windows, Linux and macOS packaging
+tools/                      feature tracker (node tools/tracker.mjs)
+docs/handover               developer handover, runbook, session logs
+docs/tracker                feature parity tracker and per-flow audits
+docs/audit                  schema, per-menu status and backlog
+```
+
+Most internal documents are written in Indonesian.
+
+## Build, test, install
+
+### Requirements
+
+- .NET SDK 10 to build
+- An existing SIMRS Khanza database (MySQL 5.7+ or MariaDB 10.4+)
+- Windows 10/11 or a Debian/Ubuntu-based Linux desktop (macOS packages are built but ad-hoc signed)
+
+### Build and run
 
 ```bash
 dotnet build SimrsGramedika.sln
@@ -92,35 +190,50 @@ dotnet run --project src/SimrsGramedika.UI
 ```
 
 On first start the app asks for the database connection (host, port, user, password, database). Profiles are stored per user
-(`%APPDATA%\SimrsGramedika` on Windows, `~/.config/SimrsGramedika` on Linux), never in the repository. Existing settings under the former `SimrsKhanza` folder are read automatically; saving writes to the new folder and keeps the old file intact.
+(`%APPDATA%\SimrsGramedika` on Windows, `~/.config/SimrsGramedika` on Linux), never in the repository. Settings in the former
+`SimrsKhanza` folder are read automatically; saving writes to the new folder and keeps the old file.
 
-Optional database smoke tests run every list/report query against the configured database (read-only):
+### Tests
+
+Latest local run (27 November 2026, 250 tests):
+
+- Without a database: **211 passed, 0 failed, 39 skipped** because they need one.
+- Against synthetic MariaDB databases, the registration, prescription validation, lab/radiology journal, discharge prescription and
+  outpatient order suites passed (71 tests). The other fixture suites were not re-run in that pass.
+
+Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the
+[runbook](docs/handover/01-RUNBOOK.md). Optional smoke tests run list and report queries, read-only, against the configured database:
 
 ```bash
 SIMRS_DB_SMOKE=1 dotnet test SimrsGramedika.sln
 ```
 
-## Installers
+GitHub Actions checks that the tracker reports are up to date on each push. Packages are built on demand or on a version tag; the
+.NET tests are run locally.
 
-[SIMRS Gramedika 0.2.5-alpha.202611222238](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v0.2.5-alpha.202611222238) is available as a self-contained single-file `.exe` for Windows 10/11 x64 (no installer, no .NET install needed). Other operating systems will follow after version 1.
+### Download
 
-`installer/build-installers.ps1` produces a self-contained Windows installer (Inno Setup) and a `.deb` package — see
-[installer/README.md](installer/README.md).
+Pre-built packages for Windows, Linux and macOS (x64 and ARM64) are on the
+[Releases page](https://github.com/illustricious/SIMRS-Gramedika/releases). The newest published pre-release is
+[0.3.0-alpha.202611261200](https://github.com/illustricious/SIMRS-Gramedika/releases/tag/v0.3.0-alpha.202611261200). It is older than
+this source tree and does not include the prescription validation, lab/radiology journals, discharge medicine return or outpatient
+order editing described above.
 
-## Project layout
+To package it yourself, see [installer/README.md](installer/README.md).
 
-```
-src/SimrsGramedika.Config   connection profiles
-src/SimrsGramedika.Core     domain types, legacy access-right mapping
-src/SimrsGramedika.Data     repositories on the legacy sik schema (menu specs, stock, journals)
-src/SimrsGramedika.UI       Avalonia desktop application
-src/SimrsGramedika.Tests    unit, headless-UI and optional database smoke tests
-installer/               Windows and Debian packaging
-tools/                   feature tracker scripts (Node 22): node tools/tracker.mjs
-docs/handover            developer handover, runbook, session logs
-docs/tracker             feature parity tracker and per-flow audits
-docs/audit               schema, per-menu status and backlog
-```
+## Before using real data
+
+- Do not develop or experiment against a production database. Use a copy, with the data owner's approval.
+- Nothing here has been verified against a real hospital database copy or while Java Khanza clients are writing to it.
+- Account mappings and journals need to be reconciled by your finance team.
+- The published pre-releases up to `0.3.0-alpha.202611261200` save laboratory and radiology examinations **without journals**.
+  Releases up to `0.2.5-alpha` also recorded pharmacy sales in the wrong tables. Data written by those builds needs reconciliation.
+
+## Documentation
+
+- [Developer handover](docs/handover/README.md) and [runbook](docs/handover/01-RUNBOOK.md)
+- [Feature tracker](docs/tracker/README.md) and [priorities](docs/tracker/PRIORITAS.md)
+- [Core services audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)
 
 ## Credits
 
