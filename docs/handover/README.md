@@ -32,4 +32,4 @@ Status 28 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
 - Peta fungsi: paling banyak 34% pasangan tabel-aksi tulis jendela Java punya padanan (754 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
 - Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 31 fixture; tanpa database 223 lulus, 46 dilewati).
-- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611280045` (dari `1266e97`). Pre-release GitHub tertinggal dari source.
+- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611280130` (dari `6a045f1`). Pre-release GitHub tertinggal dari source.
