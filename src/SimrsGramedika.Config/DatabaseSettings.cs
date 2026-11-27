@@ -24,6 +24,9 @@ public class DatabaseSettings
     /// <summary>Legacy database.xml HPPFARMASI: databarang/data_batch column used as HPP (dasar | h_beli).</summary>
     public string HppFarmasi { get; init; } = "dasar";
 
+    /// <summary>Legacy database.xml PEMBULATANHARGAOBAT: harga obat dibulatkan ke atas per Rp100.</summary>
+    public bool PembulatanHargaObat { get; init; }
+
     /// <summary>Legacy HOSTHYBRIDWEB/PORTWEB/HYBRIDWEB: base URL of the Khanza web apps (penggajian, berkas). Empty = http://{Host}/webapps.</summary>
     public string WebUrl { get; init; } = "";
 
@@ -66,6 +69,7 @@ public class DatabaseSettings
         Name = name ?? Name, Host = Host, Port = Port, Database = Database, User = User, Password = Password,
         AktifkanBatchObat = batch ?? AktifkanBatchObat, HppFarmasi = hpp ?? HppFarmasi, WebUrl = web ?? WebUrl,
         UrutNoReg = UrutNoReg, BaseNoReg = BaseNoReg, JadwalDokterDiRegistrasi = JadwalDokterDiRegistrasi,
+        PembulatanHargaObat = PembulatanHargaObat,
     };
 
     /// <summary>

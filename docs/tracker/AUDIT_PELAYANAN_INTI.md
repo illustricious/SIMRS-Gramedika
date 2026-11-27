@@ -32,3 +32,21 @@ Jalur-jalur lain, seluruh popup, pengujian hak akses per aksi, serta rekonsilias
 - Kasir hanya mencatat pelunasan melalui transaksi yang menyimpan nota, rincian pembayaran, billing, jurnal dan status bayar. Jalur lama yang hanya menandai status lunas telah dihapus.
 - Kuitansi PDF memakai nomor dan waktu dari nota, rincian billing, serta akun dan nominal dari detail pembayaran. Tombol cetak ulang membaca snapshot pelunasan tanpa menulis nota atau jurnal tambahan.
 - Uji Avalonia headless mengirim dua klik dan memeriksa bahwa satu dialog konfirmasi terbuka. Uji MariaDB memakai dua koneksi kasir, lalu memaksa kegagalan insert detail jurnal setelah header disimpan untuk memverifikasi rollback. Dua kali baca kuitansi mengembalikan pembayaran yang sama dengan jumlah nota dan jurnal tetap.
+
+## Validasi, pembatalan dan penyerahan resep (27 November 2026)
+
+Layar **Farmasi > Daftar Resep Dokter** (`DaftarResepView`, `PilihObatWindow`, `ValidasiResepService`) kini dapat memproses resep, sebelumnya baca saja. Pembanding: `inventory/DlgDaftarPermintaanResep.java`, `DlgCariObat.java`, `DlgCariObat2.java`, `DlgPemberianObat.java` dan `webapps/penyerahanresep`.
+
+- Hak `beri_obat` untuk validasi, pembatalan dan penyerahan; `resep_dokter` hanya melihat.
+- Rawat jalan: depo `set_depo_ralan`, cadangan `set_lokasi`; harga kolom `ralan` atau `h_beli` ditambah `set_harga_obat_ralan`; rekening `set_akun_ralan`.
+- Rawat inap: kamar aktif (atau terakhir) menentukan kelas dan bangsal; depo `set_depo_ranap`, lalu stok bangsal atau depo utama sesuai `set_lokasi.asal_stok`; harga kolom kelas atau `h_beli` ditambah `set_harga_obat_ranap`; rekening `set_akun_ranap`.
+- Pembulatan per Rp100 mengikuti pengaturan koneksi (PEMBULATANHARGAOBAT). Mode batch memakai satu batch berkadaluarsa terdekat per obat. Java rawat inap pada cabang kenaikan harga mengurutkan kadaluarsa terjauh; di sini disamakan dengan rawat jalan.
+- Racikan: `obat_racikan` dan `detail_obat_racikan`. Obat yang sama di dalam dan di luar racikan digabung menjadi satu baris `detail_pemberian_obat`, karena kunci utamanya tidak memuat racikan; jumlah, embalase, tuslah dan total dijumlahkan.
+- Jumlah (0 sampai jumlah resep), embalase dan tuslah dapat diubah; awalnya dari `set_embalase`, untuk setiap baris termasuk bahan racikan.
+- Tambah atau ganti obat: obat aktif berstok di depo, aturan pakai wajib untuk obat di luar racikan. Pengganti bahan racikan tetap dalam racikannya. Resep dokter tidak diubah.
+- Validasi menulis seluruh perubahan dalam satu transaksi. Harga atau batch yang berubah sejak dimuat, stok kurang, billing terverifikasi, kunjungan batal, obat nonaktif yang tetap diberikan atau rekening kosong membatalkan seluruhnya.
+- Batal validasi: seluruh resep. Stok, `data_batch`, riwayat (`Hapus`), catatan obat dan racikan dikembalikan, jurnal dibalik, resep menunggu lagi. Ditolak bila sudah diserahkan, billing, ada retur obat itu pada kunjungan, tidak ada catatan pada waktu validasi, ada resep lain pada waktu yang sama, atau lewat 48 jam bagi selain Admin Utama.
+- Urutan kunci: kunjungan, resep, stok. Dua validasi atau dua pembatalan bersamaan hanya satu yang berhasil.
+- Penyerahan mengisi waktu serah resep rawat jalan.
+- `ValidasiResepTests` lulus pada MariaDB sintetis. Belum diuji: database RS atau salinannya, penggunaan bersamaan dengan klien Java, dan klik dialog konfirmasi di aplikasi.
+- Belum ada: resep pulang di layar ini, hapus per obat, pilihan depo dan jenis harga, hitung kandungan/kapasitas racikan, ubah nama atau jumlah bungkus racikan, input parsial, telaah resep, etiket, antrean apotek, foto bukti, kirim obat PCare.

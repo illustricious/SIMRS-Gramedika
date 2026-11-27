@@ -35,7 +35,7 @@ Telusuri cabang di dalam layar, termasuk tindakan petugas dan SOAPIE, melalui [a
 | Rawat Inap | `DlgRawatInap.java`, `DlgKamarInap.java` | [AUDIT_RAWAT_INAP.md](AUDIT_RAWAT_INAP.md) | Lima SOAPIE terakhir, salin narasi dan input tindakan dokter/petugas/gabungan tersedia. Penguncian billing, izin, jurnal dan rollback diuji di MariaDB sintetis. Uji visual dan penggunaan bersamaan dengan klien Java masih terbuka. |
 | Pelayanan inti | beberapa sumber Java | [AUDIT_PELAYANAN_INTI.md](AUDIT_PELAYANAN_INTI.md) | Pelunasan gabungan Rawat Jalan dan Rawat Inap, kuitansi, serta jual bebas Farmasi nonbatch diuji pada skema sintetis. Rekonsiliasi konfigurasi RS dengan klien Java masih terbuka. Cabang lain tetap mengikuti batas di audit. |
 
-Audit per tombol Kasir, IGD, Laboratorium, Radiologi, dan Pasien masih tertunda. Farmasi baru dinilai sebagian untuk No. Resep dan Data Penjualan; audit alur lainnya masih terbuka. Di Rawat Inap, 232 popup kamar belum diaudit. Lihat [log 23 November](../handover/06-SESSION-2026-11-23.md).
+Audit per tombol Kasir, IGD, Laboratorium, Radiologi, dan Pasien masih tertunda. Farmasi baru dinilai sebagian untuk No. Resep, Data Penjualan, serta [validasi, pembatalan dan penyerahan resep](AUDIT_PELAYANAN_INTI.md); audit alur lainnya masih terbuka. Di Rawat Inap, 232 popup kamar belum diaudit. Lihat [log 23 November](../handover/06-SESSION-2026-11-23.md).
 
 ## Cara membaca kemajuan
 

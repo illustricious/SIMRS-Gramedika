@@ -1,4 +1,20 @@
 {
+  "aksi|inventory/DlgPemberianObat.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "BatalAsync di Daftar Resep Dokter membatalkan validasi satu resep utuh: stok kembali, catatan obat dan racikan dihapus, jurnal dibalik, resep menunggu lagi; hanya sebelum penyerahan dan billing, lewat 48 jam hanya Admin Utama. Hapus per obat dari layar Data Pemberian Obat belum ada. Diuji pada MariaDB sintetis."
+  },
+  "aksi|inventory/DlgDaftarPermintaanResep.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "DaftarResepView dan ValidasiResepService.DaftarAsync mencari resep menurut periode, status dan kata kunci. Filter poli, dokter dan penjamin serta tab permintaan stok dan resep pulang di jendela Java belum digabung."
+  },
+  "aksi|inventory/DlgDaftarPermintaanResep.java|BtnTambah": {
+    "status": "sebagian",
+    "bukti": "Validasi resep rawat jalan dan rawat inap, nonracikan dan racikan, termasuk obat tambahan/pengganti: ValidasiResepService.ValidasiAsync (acuan DlgCariObat.java dan DlgCariObat2.java) menulis detail_pemberian_obat, aturan_pakai, obat_racikan, detail_obat_racikan, stok, riwayat, resep_obat dan jurnal dalam satu transaksi; ValidasiResepTests lulus pada MariaDB sintetis. Pilihan depo/jenis harga, jumlah di atas resep, kapasitas, input parsial dan antrean apotek masih lewat Khanza. Belum diuji pada database RS."
+  },
+  "aksi|inventory/DlgDaftarPermintaanResep.java|BtnPenyerahan": {
+    "status": "sebagian",
+    "bukti": "SerahkanAsync mengisi tgl_penyerahan resep rawat jalan tervalidasi (acuan webapps/penyerahanresep). Foto bukti penyerahan dan panggilan antrean (antriapotek3) belum ada."
+  },
   "aksi|keuangan/DlgBilingRanap.java|BtnSimpan": {
     "status": "sebagian",
     "bukti": "KasirRepository.BayarRanapAsync menagihkan kamar hingga pulang, biaya kamar lain, tindakan, Lab/Radiologi, pemberian obat, dan resep pulang tervalidasi. Fixture MariaDB membandingkan total terhadap rumus Java, serta menguji saldo suspen, jurnal, izin, rollback, dan kuitansi. Deposit, piutang, retur, operasi dan penggunaan operasional bersama Java masih terbuka."

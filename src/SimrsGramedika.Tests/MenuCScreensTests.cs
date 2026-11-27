@@ -43,6 +43,7 @@ public class MenuCScreensTests
                 .Append(("btnSKPRekapitulasiPenilaian", new SkpRekapView()))
                 .Concat(SimrsGramedika.Data.Farmasi.MenuDSpecs.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))
                 .Concat(SimrsGramedika.Data.Farmasi.MenuDSpecs.Reports.Select(kv => ("D_" + kv.Key, (PageView)new ReportView(kv.Value))))
+                .Append(("D_DaftarResep", (PageView)new SimrsGramedika.UI.Modules.Farmasi.DaftarResepView()))
                 .Append(("D_btnPemesanan", (PageView)new SimrsGramedika.UI.Modules.Farmasi.PenerimaanView()))
                 .Append(("D_btnPermintaanStokObatPasien", (PageView)new SimrsGramedika.UI.Modules.Farmasi.PermintaanStokPasienView()))
                 .Concat(SimrsGramedika.Data.Farmasi.MenuDLists.Masters.Select(kv => ("D_" + kv.Key, (PageView)new MasterView(kv.Value))))

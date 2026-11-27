@@ -1787,12 +1787,12 @@ aksi|inventory/DlgCopyResep.java|BtnTambah	aksi	Copy	inventory/DlgCopyResep.java
 aksi|inventory/DlgCopyResep.java|BtnEdit	aksi	Ubah	inventory/DlgCopyResep.java:224	belum diaudit	
 aksi|inventory/DlgCopyResep.java|BtnKeluar	aksi	Keluar	inventory/DlgCopyResep.java:242	belum diaudit	
 jendela|inventory/DlgCopyResep.java|DlgCopyResep	jendela	DlgCopyResep	inventory/DlgCopyResep.java:1	belum diaudit	
-aksi|inventory/DlgDaftarPermintaanResep.java|BtnCari	aksi	BtnCari	inventory/DlgDaftarPermintaanResep.java:578	belum diaudit	
+aksi|inventory/DlgDaftarPermintaanResep.java|BtnCari	aksi	BtnCari	inventory/DlgDaftarPermintaanResep.java:578	sebagian	DaftarResepView dan ValidasiResepService.DaftarAsync mencari resep menurut periode, status dan kata kunci. Filter poli, dokter dan penjamin serta tab permintaan stok dan resep pulang di jendela Java belum digabung.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnAll	aksi	BtnAll	inventory/DlgDaftarPermintaanResep.java:595	belum diaudit	
-aksi|inventory/DlgDaftarPermintaanResep.java|BtnTambah	aksi	Validasi	inventory/DlgDaftarPermintaanResep.java:619	belum diaudit	
+aksi|inventory/DlgDaftarPermintaanResep.java|BtnTambah	aksi	Validasi	inventory/DlgDaftarPermintaanResep.java:619	sebagian	Validasi resep rawat jalan dan rawat inap, nonracikan dan racikan, termasuk obat tambahan/pengganti: ValidasiResepService.ValidasiAsync (acuan DlgCariObat.java dan DlgCariObat2.java) menulis detail_pemberian_obat, aturan_pakai, obat_racikan, detail_obat_racikan, stok, riwayat, resep_obat dan jurnal dalam satu transaksi; ValidasiResepTests lulus pada MariaDB sintetis. Pilihan depo/jenis harga, jumlah di atas resep, kapasitas, input parsial dan antrean apotek masih lewat Khanza. Belum diuji pada database RS.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnEdit	aksi	Ubah	inventory/DlgDaftarPermintaanResep.java:637	belum diaudit	
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnHapus	aksi	Hapus	inventory/DlgDaftarPermintaanResep.java:655	belum diaudit	
-aksi|inventory/DlgDaftarPermintaanResep.java|BtnPenyerahan	aksi	Penyerahan	inventory/DlgDaftarPermintaanResep.java:673	belum diaudit	
+aksi|inventory/DlgDaftarPermintaanResep.java|BtnPenyerahan	aksi	Penyerahan	inventory/DlgDaftarPermintaanResep.java:673	sebagian	SerahkanAsync mengisi tgl_penyerahan resep rawat jalan tervalidasi (acuan webapps/penyerahanresep). Foto bukti penyerahan dan panggilan antrean (antriapotek3) belum ada.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnPrint	aksi	Cetak	inventory/DlgDaftarPermintaanResep.java:691	belum diaudit	
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnRekap	aksi	Rekap	inventory/DlgDaftarPermintaanResep.java:709	belum diaudit	
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnKeluar	aksi	Keluar	inventory/DlgDaftarPermintaanResep.java:738	belum diaudit	
@@ -2001,7 +2001,7 @@ jendela|inventory/DlgPembelian.java|DlgPembelian	jendela	DlgPembelian	inventory/
 popup|inventory/DlgPemberianObat.java|Popup2|ppResepObat	popup	Popup2 > Buat Nomor Resep Obat	inventory/DlgPemberianObat.java:250	belum diaudit	
 popup|inventory/DlgPemberianObat.java|Popup2|ppNoRawat	popup	Popup2 > Rekap Per No.Rawat	inventory/DlgPemberianObat.java:266	belum diaudit	
 popup|inventory/DlgPemberianObat.java|Popup2|ppLokasi	popup	Popup2 > Tampilkan Per Asal Stok	inventory/DlgPemberianObat.java:282	belum diaudit	
-aksi|inventory/DlgPemberianObat.java|BtnHapus	aksi	Hapus	inventory/DlgPemberianObat.java:353	belum diaudit	
+aksi|inventory/DlgPemberianObat.java|BtnHapus	aksi	Hapus	inventory/DlgPemberianObat.java:353	sebagian	BatalAsync di Daftar Resep Dokter membatalkan validasi satu resep utuh: stok kembali, catatan obat dan racikan dihapus, jurnal dibalik, resep menunggu lagi; hanya sebelum penyerahan dan billing, lewat 48 jam hanya Admin Utama. Hapus per obat dari layar Data Pemberian Obat belum ada. Diuji pada MariaDB sintetis.
 aksi|inventory/DlgPemberianObat.java|BtnPrint	aksi	Cetak	inventory/DlgPemberianObat.java:371	belum diaudit	
 aksi|inventory/DlgPemberianObat.java|BtnAll	aksi	Semua	inventory/DlgPemberianObat.java:389	belum diaudit	
 aksi|inventory/DlgPemberianObat.java|BtnKeluar	aksi	Keluar	inventory/DlgPemberianObat.java:429	belum diaudit	
