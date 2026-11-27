@@ -4,6 +4,10 @@ Status otomatis: tile berstatus "layar tersedia" bila kuncinya dirutekan di kode
 
 Buka [grafik progres](GRAFIK.html) secara lokal di browser, [prioritas pekerjaan](PRIORITAS.md), [ringkasan](RINGKASAN.md), atau filter [inventaris lengkap](fitur.tsv) menurut status, jenis, file Java, atau jalur submenu. Grafik membutuhkan `grafik-data.js` di folder yang sama; file ini dibuat ulang oleh tracker. Kolom ID menggunakan nama kontrol sehingga perubahan nomor baris tidak menghilangkan penilaian.
 
+## Peta fungsi seluruh source
+
+[PETA_FUNGSI.md](PETA_FUNGSI.md) memetakan semua jendela dan tile Java ke kemampuan tulis Gramedika dari analisis statis. Buat ulang dengan `node tools/peta-fungsi.mjs --java ../simrs-khanza/src`; CI tidak menjalankannya, jadi tanggalnya bisa tertinggal dari kode. Cara kerja, tingkat kepercayaan dan temuan ada di [AUDIT_PETA_FUNGSI.md](AUDIT_PETA_FUNGSI.md). Peta ini tidak mengubah status.json: status "selesai" tetap membutuhkan audit per alur.
+
 ## Saat mengerjakan fitur
 
 1. Cari ID di fitur.tsv. Untuk satu alur, periksa jendela, popup dan kontrol terkait pada masing-masing layar.

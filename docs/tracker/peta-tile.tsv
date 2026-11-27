@@ -1,0 +1,1225 @@
+Menu	Tile	Judul	Jendela Java	Java menulis	Layar Gramedika	Status jendela
+A	btnAnalisaKamar	Informasi Kamar	InformasiAnalisaKamin	tidak	khusus	baca ada
+A	BtnJadwal	Jadwal Praktek	DlgJadwal	ya	khusus	tulis sebagian
+A	btnRegistrasi	Registrasi	DlgReg	ya	khusus	tulis sebagian
+A	btnBookingPeriksa	Booking Periksa	DlgBookingPeriksa	ya	khusus	tulis sebagian
+A	btnBookingRegistrasi	Booking Registrasi	DlgBookingRegistrasi	ya	khusus	tulis sebagian
+A	btnBookingMCUPerusahaan	Booking MCU Perusahaan	DlgBookingMCUPerusahaan	ya	khusus	tulis sebagian
+A	btnIGD	IGD/UGD	DlgIGD	ya	khusus	tulis sebagian
+A	btnRalan	Tindakan Ralan	DlgRawatJalan	ya	khusus	tulis ada
+A	btnPermintaanRanap	Permintaan Rawat Inap	DlgPermintaanRanap	ya	master	tulis ada
+A	btnKamarInap	Rawat Inap	DlgKamarInap	ya	khusus	tulis sebagian
+A	btnJadwalOperasi	Jadwal Operasi	DlgBookingOperasi	ya	master	tulis ada
+A	btnPermintaanLab	Permintaan Lab PK	DlgCariPermintaanLab	ya	khusus	tulis sebagian
+A	btnPermintaanLabPA	Permintaan Lab PA	DlgCariPermintaanLabPA	ya	khusus	tulis ada
+A	btnPermintaanLabMB	Permintaan Lab MB	DlgCariPermintaanLabMB	ya	khusus	tulis ada
+A	btnPermintaanRadiologi	Permintaan Radiologi	DlgCariPermintaanRadiologi	ya	khusus	tulis sebagian
+A	btnPermintaanLayananProgramKFR	Permintaan Layanan Program KFR	DlgCariPermintaanLayananProgramKFR	ya	baca saja	tulis ada
+A	BtnDpjp	DPJP Ranap	DlgDpjp	ya	khusus	tulis ada
+A	btnRanap	Tindakan Ranap	DlgRawatInap	ya	khusus	tulis sebagian
+A	btnTagihanOperasi	Operasi/VK	DlgCariTagihanOperasi	ya	khusus	hanya baca
+A	btnRujukPasien	Rujukan Keluar	DlgRujuk	ya	khusus	tulis ada
+A	btnRujukMasuk	Rujukan Masuk	DlgRujukMasuk	ya	khusus	tulis sebagian
+A	btnBeriObat	Beri Obat/BHP	DlgPemberianObat	ya	khusus	tulis ada
+A	btnResepPulang	Resep Pulang	DlgResepPulang	ya	master	tulis ada
+A	btnResepObat	No. Resep	DlgResepObat	ya	khusus	tulis sebagian
+A	btnDiet	Diet Pasien	DlgPemberianDiet	ya	master	tulis ada
+A	btnSkriningRawatJalan	Skrining Rawat Jalan	RMSKriningRawatJalan	ya	master	tulis ada
+A	btnDeteksiDiniCorona	Deteksi Dini Corona	RMDeteksiDiniCorona	ya	master	tulis ada
+A	btnLaboratorium	Periksa Lab PK	DlgCariPeriksaLab	ya	khusus	tulis sebagian
+A	btnLaboratoriumPA	Periksa Lab PA	DlgCariPeriksaLabPA	ya	khusus	tulis ada
+A	btnLaboratoriumMB	Periksa Lab MB	DlgCariPeriksaLabMB	ya	khusus	tulis sebagian
+A	btnPeriksaRadiologi	Periksa Radiologi	DlgCariPeriksaRadiologi	ya	khusus	tulis ada
+A	btnKasir	Rawat Jalan		?	khusus	
+A	btnDeposit	Deposit Pasien	DlgDeposit	ya	master	tulis ada
+A	btnPerkiraanBiayaRanap	Perkiraan Biaya Ranap	DlgPerkiraanBiayaRanap	ya	master	tulis ada
+B	btnBarcodeRalan	Rawat Jalan	DlgBarcodeRalan	ya	khusus	tulis ada
+B	btnBarcodeRanap	Rawat Inap	DlgBarcodeRanap	ya	khusus	tulis ada
+B	btnLabKeslingPelanggan	Pelanggan Lab Kesling	LabKeslingPelanggan	ya	khusus	tulis ada
+B	btnLabKeslingSampelBakuMutu	Master Sampel Lab Kesling	LabKeslingMasterSampelBakuMutu	ya	khusus	tulis ada
+B	btnLabKeslingParameterPengujian	Parameter Pengujian Lab Kesling	LabKeslingParameterPengujian	ya	khusus	tulis ada
+B	btnLabKeslingNilaiNormalBakuMutu	Nilai Normal Baku Mutu Lab Kesling	LabKeslingNilaiNormalBakuMutu	ya	khusus	tulis ada
+B	btnLabKeslingPermintaanPengujianSampel	Permintaan Pengujian Sampel Lab Kesling	LabKeslingPermintaanPengujianSampel	ya	khusus	tulis ada
+B	btnLabKeslingPengujianSampelTidakDapatDilayani	Sampel Pengujian Lab Kesling Tidak Dapat Dilayani	LabKeslingCariPermintaanPengujianSampelTidakDapatDilayani	ya	khusus	tulis ada
+B	btnLabKeslingPengujianSampelDapatDilayani	Sampel Pengujian Lab Kesling Dapat Dilayani	LabKeslingCariPermintaanPengujianSampelDapatDilayani	ya	khusus	tulis ada
+B	btnLabKeslingPenugasanPengujianSampel	Data Penugasan Pengujian Sampel Lab Kesling	LabKeslingCariPenugasanPengujianSampel	ya	khusus	tulis ada
+B	btnLabKeslingHasilPengujianSampel	Data Hasil Pengujian Sampel Lab Kesling	LabKeslingCariHasilPengujianSampel	ya	khusus	tulis ada
+B	btnLabKeslingVerifikasiPengujianSampel	Data Verifikasi Pengujian Sampel Lab Kesling	LabKeslingCariVerifikasiPengujianSampel	ya	khusus	tulis ada
+B	btnLabKeslingValidasiPengujianSampel	Data Validasi Pengujian Sampel Lab Kesling	LabKeslingCariValidasiPengujianSampel	ya	khusus	tulis ada
+B	btnLabKeslingRekapPelayanan	Rekap Pelayanan Lab Kesling	LabKeslingRekapPelayanan	tidak	khusus	baca ada
+B	btnLabKeslingPembyaranPengujianSampel	Pembayaran Pengujian Sampel Lab Kesling	LabKeslingPembayaranPengujianSampel	tidak	khusus	baca ada
+B	btnLabKeslingRekapPembayaran	Rekap Pembayaran Lab Kesling	LabKeslingRekapPembayaran	ya	khusus	tulis ada
+C	btnPegawai	Petugas	DlgPetugas	ya	master	tulis sebagian
+C	btnDokter	Dokter	DlgDokter	ya	master	tulis sebagian
+C	btnBarcode	Barcode Presensi	DlgBarcode	ya	master	tulis ada
+C	btnSidikJari	Sidik Jari	DlgSidikJari	ya	master	tulis ada
+C	btnJamPresensi	Jam Presensi	DlgJamMasuk	ya	master	tulis ada
+C	btnJadwalPegawai	Jadwal Pegawai	DlgJadwalPegawai	ya	master	tulis ada
+C	btnJadwalTambahan	Jadwal Tambahan	DlgJadwalTambahan	ya	master	tulis ada
+C	btnRekapHarian	Presensi Harian	DlgHarian	ya	master	tulis ada
+C	btnRekapBulanan	Presensi Bulanan	DlgBulanan	ya	master	tulis ada
+C	btnTemporaryPresensi	Temporary Presensi	DlgTemporaryPresensi	ya	master	tulis ada
+C	btnPengajuanCuti	Pengajuan Cuti	PengajuanCutiAdmin	ya	master	tulis ada
+C	btnRekapPresensi	Rekap Kehadiran		?	baca saja	
+C	btnRekapPresensi2	Rekap Kehadiran 2	DlgKehadiran2	tidak	baca saja	baca ada
+C	btnPenggajian	Kepegawaian & Gaji	DlgPenggajian	tidak	khusus	tanpa data
+C	btnMasterBerkasPegawai	Master Berkas Pegawai	DlgMasterBerkasPegawai	ya	master	tulis ada
+C	btnBerkasPegawai	Berkas Kepegawaian	DlgBerkasKepegawaian	tidak	master	baca ada
+C	btnRiwayatJabatan	Riwayat Jabatan	DlgRiwayatJabatan	tidak	master	tanpa data
+C	btnRiwayatPendidikan	Riwayat Pendidikan	DlgRiwayatPendidikan	tidak	master	tanpa data
+C	btnRiwayatNaikGaji	Riwayat Naik Gaji	DlgRiwayatNaikGaji	tidak	master	tanpa data
+C	btnKegiatanIlmiah	Kegiatan Ilmiah & Pelatihan	DlgKegiatanIlmiah	tidak	master	tanpa data
+C	btnRiwayatPenghargaan	Riwayat Penghargaan	DlgRiwayatPenghargaan	tidak	master	tanpa data
+C	btnRiwayatSuratPeringatan	Riwayat Surat Peringatan	DlgRiwayatSuratPeringatan	tidak	master	tanpa data
+C	btnRiwayatPenelitian	Riwayat Penelitian	DlgRiwayatPenelitian	tidak	master	tanpa data
+C	btnSMS	SMS Gateway		?	master	
+C	btnJenisCideraK3	Jenis Cidera K3	K3RSJenisCidera	ya	master	tulis ada
+C	btnPenyebabKecelakaanK3	Penyebab Kecelakaan K3	K3RSPenyebab	ya	master	tulis ada
+C	btnJenisLukaK3	Jenis Luka K3	K3RSJenisLuka	ya	master	tulis ada
+C	btnLokasiKejadianK3	Lokasi Kejadian K3	K3RSLokasiKejadian	ya	master	tulis ada
+C	btnDampakCideraK3	Dampak Cidera K3	K3RSDampakCidera	ya	master	tulis ada
+C	btnJenisPekerjaanK3	Jenis Pekerjaan K3	K3RSJenisPekerjaan	ya	master	tulis ada
+C	btnBagianTubuhK3	Bagian Tubuh K3	K3RSBagianTubuh	ya	master	tulis ada
+C	btnPeristiwaK3	Peristiwa K3	K3RSPeristiwa	ya	master	tulis ada
+C	btnJenisCideraK3PerTahun	Jenis Cidera K3 Per Tahun	K3RSJenisCideraPerTahun	tidak	baca saja	baca ada
+C	btnPenyebabKecelakaanK3PerTahun	Penyebab Kecelakaan K3 Per Tahun	K3RSPenyebabPerTahun	tidak	baca saja	baca ada
+C	btnJenisLukaK3PerTahun	Jenis Luka K3 Per Tahun	K3RSJenisLukaPerTahun	tidak	baca saja	baca ada
+C	btnLokasiKejadianK3PerTahun	Lokasi Kejadian K3 Per Tahun	K3RSLokasiKejadianPerTahun	tidak	baca saja	baca ada
+C	btnDampakCideraK3PerTahun	Dampak Cidera K3 Per Tahun	K3RSDampakCideraPerTahun	tidak	baca saja	baca ada
+C	btnJenisPekerjaanK3PerTahun	Jenis Pekerjaan K3 Per Tahun	K3RSJenisPekerjaanPerTahun	tidak	baca saja	baca ada
+C	btnBagianTubuhK3PerTahun	Bagian Tubuh K3 Per Tahun	K3RSBagianTubuhPerTahun	tidak	baca saja	baca ada
+C	btnAuditKepatuhanAPD	Audit Kepatuhan APD	DlgAuditKepatuhanAPD	ya	master	tulis ada
+C	btnAuditCuciTanganMedis	Audit Cuci Tangan Medis	DlgAuditCuciTanganMedis	ya	master	tulis ada
+C	btnRuangAuditKepatuhan	Ruang/Unit Audit Kepatuhan	DlgRuangAuditKepatuhan	ya	master	tulis ada
+C	btnAuditPembuanganLimbah	Audit Pembuangan Limbah	DlgAuditPembuanganLimbah	ya	master	tulis ada
+C	btnAuditPembuanganBendaTajam	Audit Pembuangan Benda Tajam & Jarum	DlgAuditPembuanganBendaTajam	ya	master	tulis ada
+C	btnAuditPenangananDarah	Audit Penanganan Darah	DlgAuditPenangananDarah	ya	master	tulis ada
+C	btnAuditPengelolaanLinenKotor	Audit Pengelolaan Linen Kotor	DlgAuditPengelolaanLinenKotor	ya	master	tulis ada
+C	btnAuditPenempatanPasien	Audit Penempatan Pasien	DlgAuditPenempatanPasien	ya	master	tulis ada
+C	btnAuditKamarJenazah	Audit Kamar Jenazah	DlgAuditKamarJenazah	ya	master	tulis ada
+C	btnAuditBundleIADP	Audit Bundle IADP	DlgAuditBundleIADP	ya	master	tulis ada
+C	btnAuditBundleIDO	Audit Bundle IDO	DlgAuditBundleIDO	ya	master	tulis ada
+C	btnAuditFasilitasKebersihanTangan	Audit Fasilitas Kebersihan Tangan	DlgAuditFasilitasKebersihanTangan	ya	master	tulis ada
+C	btnAuditFasilitasAPD	Audit Fasilitas APD	DlgAuditFasilitasAPD	ya	master	tulis ada
+C	btnAuditPembuanganLimbahCairInfeksius	Audit Pembuangan Limbah Cair Infeksius	DlgAuditPembuanganLimbahCairInfeksius	ya	master	tulis ada
+C	btnAuditSterilisasiAlat	Audit Sterilisasi Alat	DlgAuditSterilisasiAlat	ya	master	tulis ada
+C	btnAuditBundleISK	Audit Bundle ISK	DlgAuditBundleISK	ya	master	tulis ada
+C	btnAuditBundlePLABSI	Audit Bundle PLABSI	DlgAuditBundlePLABSI	ya	master	tulis ada
+C	btnAuditBundleVAP	Audit Bundle VAP	DlgAuditBundleVAP	ya	master	tulis ada
+C	btnSKPKategoriPenilaian	Kategori Pengkajian SKP	SKPKategoriPenilaian	ya	master	tulis ada
+C	btnSKPKriteriaPenilaian	Kriteria Pengkajian SKP	SKPKriteriaPenilaian	ya	master	tulis ada
+C	btnSKPPenilaianPegawai	Pengkajian SKP Petugas/Dokter	SKPPenilaianPegawai	ya	khusus	tulis ada
+C	btnSKPRekapitulasiPenilaian	Rekapitulasi Pengkajian SKP	SKPRekapitulasiPenilaianPegawai	tidak	khusus	baca ada
+D	btnAsalHibah	Asal Hibah	InventarisAsalHibah	ya	master	tulis ada
+D	btnIndustriFarmasi	Industri Farmasi	DlgIndustriFarmasi	ya	master	tulis ada
+D	btnSuplier	Suplier Obat/Alkes/BHP	InventorySuplier	ya	master	tulis ada
+D	btnSatuan	Satuan Barang	DlgSatuan	ya	master	tulis ada
+D	btnMetodeRacik	Metode Racik	DlgMetodeRacik	ya	master	tulis ada
+D	btnKonversi	Konversi Satuan	DlgKonversi	ya	master	tulis ada
+D	btnJnsBarang	Jenis Obat, Alkes & BHP	DlgJenis	ya	master	tulis ada
+D	btnKategoriBarang	Kategori Obat, Alkes & BHP	DlgKategori	ya	master	tulis ada
+D	btnGolonganBarang	Golongan Obat, Alkes & BHP	DlgGolongan	ya	master	tulis ada
+D	btnObat	Obat, Alkes & BHP	DlgBarang	ya	master	tulis ada
+D	btnOpname	Stok Opname Obat & BHP	DlgInputStok	ya	khusus	tulis ada
+D	btnMutasiBarang	Mutasi Obat & BHP	DlgMutasiBarang	ya	khusus	tulis ada
+D	btnPermintaanStokObatPasien	Permintaan Stok Obat Pasien	DlgDaftarPermintaanStokPasien	ya	khusus	hanya baca
+D	btnPermintaanResepPulang	Permintaan Resep Pulang	DlgDaftarPermintaanResepPulang	ya	baca saja	tulis ada
+D	btnStokObatPasien	Stok Obat Pasien	DlgStokPasien	ya	baca saja	tulis ada
+D	btnPermintaanMedis	Permintaan Obat & BHP	DlgPermintaan	ya	khusus	tulis ada
+D	btnRingkasanPermintaanMedis	Ringkasan Permintaan Obat & BHP	DlgRekapPermintaan	tidak	baca saja	baca ada
+D	btnPengajuanBarangMedis	Pengajuan Obat & BHP	InventoryPengajuanBarangMedis	ya	baca saja	hanya baca
+D	btnRingkasanPengajuanMedis	Ringkasan Pengajuan Obat & BHP	InventoryRingkasanPengajuanBarangMedis	tidak	baca saja	baca ada
+D	btnSuratPemesananMedis	Surat Pemesanan Obat & BHP	InventorySuratPemesanan	ya	baca saja	hanya baca
+D	btnRingkasanPemesananMedis	Ringkasan Pemesanan Obat & BHP	InventoryRingkasanPemesananBarangMedis	tidak	baca saja	baca ada
+D	btnPembelian	Pengadaan Obat & BHP	DlgPembelian	ya	baca saja	tulis sebagian
+D	btnRingkasanPembelianMedis	Ringkasan Pengadaan Obat & BHP	InventoryRingkasanPembelianBarangMedis	tidak	baca saja	baca ada
+D	btnPemesanan	Penerimaan Obat & BHP	DlgPemesanan	ya	khusus	tulis ada
+D	btnRingkasanPenerimaanMedis	Ringkasan Penerimaan Obat & BHP	InventoryRingkasanPenerimaanBarangMedis	tidak	baca saja	baca ada
+D	btnHibahObatBHP	Hibah Obat & BHP	InventoryHibahObatBHP	ya	baca saja	tulis sebagian
+D	btnRingkasanHibahMedis	Ringkasan Hibah Obat & BHP	InventoryRingkasanHibahBarangMedis	tidak	baca saja	baca ada
+D	btnPenjualan	Penjualan Obat & BHP	DlgPenjualan	ya	khusus	tulis sebagian
+D	btnRingkasanPenjualanMedis	Ringkasan Penjualan Obat & BHP	InventoryRingkasanPenjualanBarangMedis	tidak	baca saja	baca ada
+D	btnRingkasanBeriObat	Ringkasan Beri Obat & BHP	InventoryRingkasanBeriObat	tidak	baca saja	baca ada
+D	btnDaftarPermintaanResep	Daftar Resep Dokter	DlgDaftarPermintaanResep	ya	khusus	tulis sebagian
+D	btnPiutang	Piutang Obat & BHP	DlgPiutang	ya	baca saja	tulis sebagian
+D	btnRingkasanPiutangObat	Ringkasan Piutang Obat & BHP	InventoryRingkasanPiutangBarangMedis	tidak	baca saja	baca ada
+D	btnStokKeluarMedis	Stok Keluar Medis	DlgPengeluaranApotek	ya	khusus	tulis ada
+D	btnRingkasanStokKeluarObat	Ringkasan Stok Keluar Obat & BHP	InventoryRingkasanStokKeluarBarangMedis	tidak	baca saja	baca ada
+D	btnReturBeli	Retur Ke Suplier	DlgReturBeli	ya	baca saja	tulis sebagian
+D	btnRingkasanReturSuplierObat	Ringkasan Retur Suplier Obat & BHP	InventoryRingkasanReturSuplierBarangMedis	tidak	baca saja	baca ada
+D	btnReturJual	Retur Dari Pembeli	DlgReturJual	ya	baca saja	tulis sebagian
+D	btnRingkasanReturJualObat	Ringkasan Retur Pembeli Obat & BHP	InventoryRingkasanReturJualBarangMedis	tidak	baca saja	baca ada
+D	btnReturPasien	Retur Obat Ranap	DlgReturObatPasien	ya	baca saja	tulis sebagian
+D	btnReturPiutang	Retur Piutang Pembeli	DlgReturPiutang	ya	baca saja	tulis sebagian
+D	btnPengambilanUTD	Pengambilan BHP UTD	DlgPengambilanUTD	ya	baca saja	tulis sebagian
+D	btnKeuntungan	Keuntungan Penjualan	DlgProyeksiJual	tidak	baca saja	baca ada
+D	btnKeuntunganObatRanap	Keuntungan Beri Obat 	DlgProyeksiBeriObat	tidak	baca saja	baca ada
+D	btnKeuntunganObat2	Keuntungan Beri Obat 2	DlgProyeksiBeriObat2	tidak	baca saja	baca ada
+D	btnSirkulasi	Sirkulasi Obat, Alkes & BHP	DlgSirkulasiBarang	tidak	baca saja	baca ada
+D	btnSirkulasi2	Sirkulasi Obat, Alkes & BHP 2	DlgSirkulasiBarang2	tidak	baca saja	baca ada
+D	btnSirkulasi3	Sirkulasi Obat, Alkes & BHP 3	DlgSirkulasiBarang3	tidak	baca saja	baca ada
+D	btnSirkulasiObat4	Sirkulasi Obat, Alkes & BHP 4	DlgSirkulasiBarang4	tidak	baca saja	baca ada
+D	btnSirkulasiObat5	Sirkulasi Obat, Alkes & BHP 5	DlgSirkulasiBarang5	tidak	baca saja	baca ada
+D	btnSirkulasiObat6	Sirkulasi Obat, Alkes & BHP 6	DlgSirkulasiBarang6	tidak	baca saja	baca ada
+D	btnObatPerTanggal	Obat/Alkes/BHP Per Tanggal	DlgObatPerTanggal	tidak	baca saja	baca ada
+D	btnPenjualanPerTanggal	Penjualan Bebas Per Tanggal	DlgPenjualanPerTanggal	tidak	baca saja	baca ada
+D	btnRiwayatBarangMedis	Riwayat Obat, Alkes & BHP	DlgRiwayatBarangMedis	tidak	baca saja	baca ada
+D	btnDaruratStok	Darurat Stok	DlgDaruratStok	tidak	baca saja	baca ada
+D	btnPenggunaObatResep	Pengguna Obat/Alkes/BHP Resep	DlgPenggunaObat	tidak	baca saja	baca ada
+D	btnRekapPenerimaanObat	Rekap Penerimaan Obat & BHP	DlgRekapPenerimaan	tidak	baca saja	baca ada
+D	btnDataBatch	Data Batch	DlgDataBatch	ya	baca saja	tulis sebagian
+D	btnRiwayatBatch	Riwayat Batch	DlgRiwayatBatch	tidak	baca saja	baca ada
+D	btnKegiatanFarmasi	Kegiatan Farmasi	DlgKegiatanFarmasi	tidak	baca saja	baca ada
+D	btnPPNObat	PPN Obat	DlgCariPPNObat	tidak	baca saja	baca ada
+D	btnKadaluarsaBatch	Kadaluarsa Batch	DlgKadaluarsaBatch	tidak	baca saja	baca ada
+D	btnSisaStok	Sisa Stok	DlgSisaStok	tidak	baca saja	baca ada
+D	btnObatPerResep	Obat Per Resep	DlgObatPeresep	tidak	baca saja	baca ada
+D	btn10BesarObatPoli	10 Obat Terbanyak Poli	Dlg10ObatTerbanyakPoli	tidak	baca saja	baca ada
+D	btnRekapObatPoli	Rekap Obat Per Poli	DlgRekapObatPoli	tidak	baca saja	baca ada
+D	btnRekapObatPasien	Rekap Obat Per Pasien	DlgRekapObatPasien	tidak	baca saja	baca ada
+D	btnVerifikasiPenerimaanFarmasi	Verifikasi Penerimaan Obat/Alkes/BHP	InventoryVerifikasiPenerimaan	tidak	baca saja	baca ada
+D	btnPenggunaanBHPOK	Penggunaan BHP OK/VK	InventoryPenggunaanBHPOK	tidak	baca saja	baca ada
+D	btnResepLuar	Resep Luar	InventoryCariResepLuar	ya	baca saja	hanya baca
+D	btnStokAkhirFarmasiPerTanggal	Stok Akhir Farmasi Per Tanggal	InventoryStokAkhirFarmasiPerTanggal	tidak	baca saja	baca ada
+D	btnTelaahResep	Pengkajian Resep & Obat	InventoryTelaahResep	ya	master	tulis ada
+D	btnRingkasanBiayaObatPasienPerTanggal	Ringkasan Biaya Obat Pasien Per Tanggal	InventoryRingkasanBiayaObatPasienPerTanggal	tidak	baca saja	baca ada
+D	btnNilaiPenerimaanVendorFarmasiPerBulan	Nilai Penerimaan Vendor Farmasi Per Bulan	InventoryNilaiPenerimaanVendorFarmasiPerBulan	tidak	baca saja	baca ada
+D	btnObatBHPTidakBergerak	Obat/Alkes/BHP Tidak Bergerak	InventoryObatBHPTidakBergerak	tidak	baca saja	baca ada
+E	btnAsalHibah	Asal Hibah	InventarisAsalHibah	ya	master	tulis ada
+E	btnSatuan	Satuan Barang	DlgSatuan	ya	master	tulis ada
+E	btnJenisIpsrs	Jenis Barang Non Medis	IPSRSJenis	ya	master	tulis ada
+E	btnBarangIpsrs	Barang Non Medis	IPSRSBarang	ya	master	tulis ada
+E	btnSuplierIPSRS	Suplier Non Medis	IPSRSSuplier	ya	master	tulis ada
+E	btnPermintaanNonMedis	Permintaan Barang Non Medis	IPSRSPermintaan	ya	baca saja	hanya baca
+E	btnRekapPermintaanNonMedis	Ringkasan Permintaan Barang Non Medis	DlgRekapPermintaanNonMedis	tidak	baca saja	baca ada
+E	btnPengajuanBarangNonMedis	Pengajuan Barang Non Medis	IPSRSPengajuanBarangNonMedis	ya	baca saja	hanya baca
+E	btnRingkasanPengajuanNonMedis	Ringkasan Pengajuan Non Medis	IPSRSRingkasanPengajuanBarangNonMedis	tidak	baca saja	baca ada
+E	btnSuratPemesananNonMedis	Surat Pemesanan Barang Non Medis	IPSRSSuratPemesanan	ya	baca saja	hanya baca
+E	btnRingkasanPemesananNonMedis	Ringkasan Pemesanan Non Medis	IPSRSRingkasanPemesananBarangNonMedis	tidak	baca saja	baca ada
+E	btnPembelianIpsrs	Pengadaan Barang Non Medis	IPSRSPembelian	ya	baca saja	hanya baca
+E	btnRingkasanPengadaanNonMedis	Ringkasan Pengadaan Non Medis	IPSRSRingkasanPengadaanBarangNonMedis	tidak	baca saja	baca ada
+E	btnPenerimaanNonMedis	Penerimaan Barang Non Medis	IPSRSPemesanan	ya	baca saja	hanya baca
+E	btnRingkasanPenerimaanNonMedis	Ringkasan Penerimaan Non Medis	IPSRSRingkasanPenerimaanBarangNonMedis	tidak	baca saja	baca ada
+E	btnHibahNonMedis	Hibah Non Medis	IPSRSHibah	ya	baca saja	hanya baca
+E	btnPengeluaranIpsrs	Stok Keluar Non Medis	IPSRSPengeluaran	ya	baca saja	hanya baca
+E	btnRingkasanStokKeluarNonMedis	Ringkasan Stok Keluar Non Medis	IPSRSRingkasanPengeluaranBarangNonMedis	tidak	baca saja	baca ada
+E	btnReturBarangNonMedis	Retur Ke Suplier Non Medis	IPSRSReturBeli	ya	baca saja	hanya baca
+E	btnRingkasanReturSuplierNonMedis	Ringkasan Retur Suplier Non Medis	IPSRSRingkasanReturBeliBarangNonMedis	tidak	baca saja	baca ada
+E	btnRiwayatBarangNonMedis	Riwayat Barang Non Medis	IPSRSRiwayatBarang	tidak	baca saja	baca ada
+E	btnRBiayaIpsrs	Biaya Pengadaan Non Medis	DlgRBiayaHarianIPSRS	tidak	baca saja	baca ada
+E	btnRHMasukIpsrs	Rekap Pengadaan Non Medis	DlgRHPembelianIPSRS	tidak	baca saja	baca ada
+E	btnRHKeluarIpsrs	Rekap Stok Keluar Non Medis	DlgRHPengeluaranIPSRS	tidak	baca saja	baca ada
+E	btnPengambilanPenunjangUTD	Pengambilan UTD	IPSRSPengambilanPenunjangUTD	ya	baca saja	hanya baca
+E	btnPengadaanIPSRSPerTanggal	Pengadaan Non Medis Per Tanggal	DlgPengadaanIPSRSPerTanggal	tidak	baca saja	baca ada
+E	btnStokKeluarIPSRSPerTanggal	Stok Keluar Non Medis Per Tanggal	DlgStokKeluarIPSRSPerTanggal	tidak	baca saja	baca ada
+E	btnRekapPenerimaanNonMedis	Rekap Penerimaan Non Medis	DlgRekapPenerimaanNonMedis	tidak	baca saja	baca ada
+E	btnOpnameIPSRS	Stok Opname Non Medis	IPSRSInputStok	ya	baca saja	hanya baca
+E	btnSirkulasiNonMedis	Sirkulasi Non Medis	DlgSirkulasiNonMedis	tidak	baca saja	baca ada
+E	btnSirkulasiNonMedis2	Sirkulasi Non Medis 2	DlgSirkulasiNonMedis2	tidak	baca saja	baca ada
+E	btnVerifikasiPenerimaanLogistik	Verifikasi Penerimaan Non Medis	IPSRSVerifikasiPenerimaan	tidak	baca saja	baca ada
+E	btnNilaiPenerimaanVendorNonMedisPerBulan	Nilai Penerimaan Vendor Non Medis Per Bulan	IPSRSNilaiPenerimaanVendorNonMedisPerBulan	tidak	baca saja	baca ada
+F	btnAsalHibah	Asal Hibah	InventarisAsalHibah	ya	master	tulis ada
+F	btnSatuan	Satuan Barang	DlgSatuan	ya	master	tulis ada
+F	btnBarangDapur	Barang Dapur	DapurBarang	ya	master	tulis ada
+F	btnOpnameDapur	Stok Opname Barang Dapur	DapurInputStok	ya	baca saja	hanya baca
+F	btnSuplierDapur	Suplier Dapur	DapurSuplier	ya	master	tulis ada
+F	btnPengajuanBarangDapur	Pengajuan Barang Dapur	DapurPengajuan	ya	baca saja	hanya baca
+F	btnRingkasanPengajuanDapur	Ringkasan Pengajuan Dapur	DapurRingkasanPengajuanBarang	tidak	baca saja	baca ada
+F	btnSuratPemesananDapur	Surat Pemesanan Barang Dapur	DapurSuratPemesanan	ya	baca saja	hanya baca
+F	btnRingkasanPemesananDapur	Ringkasan Pemesanan Dapur	DapurRingkasanPemesananBarang	tidak	baca saja	baca ada
+F	btnPembelianDapur	Pengadaan Barang Dapur	DapurPembelian	ya	baca saja	hanya baca
+F	btnRingkasanPengadaanDapur	Ringkasan Pengadaan Dapur	DapurRingkasanPengadaanBarang	tidak	baca saja	baca ada
+F	btnPenerimaanBarangDapur	Penerimaan Barang Dapur	DapurPemesanan	ya	baca saja	hanya baca
+F	btnRingkasanPenerimaanDapur	Ringkasan Penerimaan Dapur	DapurRingkasanPenerimaanBarang	tidak	baca saja	baca ada
+F	btnHibahDapur	Hibah Barang Dapur	DapurHibah	ya	baca saja	hanya baca
+F	btnPengeluaranDapur	Stok Keluar Dapur	DapurPengeluaran	ya	baca saja	hanya baca
+F	btnRingkasanStokKeluarDapur	Ringkasan Stok Keluar Dapur	DapurRingkasanStokKeluarBarang	tidak	baca saja	baca ada
+F	btnReturBarangDapur	Retur Ke Suplier Dapur	DapurReturBeli	ya	baca saja	hanya baca
+F	btnRingkasanReturBeliDapur	Ringkasan Retur Suplier Dapur	DapurRingkasanReturBeliBarang	tidak	baca saja	baca ada
+F	btnRiwayatBarangDapur	Riwayat Barang Dapur	DapurRiwayatBarang	tidak	baca saja	baca ada
+F	btnPermintaanDapur	Permintaan Barang Dapur	DapurPermintaan	ya	baca saja	hanya baca
+F	btnRBiayaDapur	Biaya Pengadaan Dapur	DapurRBiayaHarian	tidak	baca saja	baca ada
+F	btnRekapPengadaanDapur	Rekap Pengadaan Dapur	DapurRHPembelian	tidak	baca saja	baca ada
+F	btnStokKeluarDapurPerTanggal	Stok Keluar Dapur Per Tanggal	DapurStokKeluarBarangPerTanggal	tidak	baca saja	baca ada
+F	btnSirkulasiDapur	Sirkulasi Barang Dapur	DapurSirkulasiBarang	tidak	baca saja	baca ada
+F	btnSirkulasiDapur2	Sirkulasi Barang Dapur 2	DapurSirkulasiBarang2	tidak	baca saja	baca ada
+F	btnVerifikasiPenerimaanDapur	Verifikasi Penerimaan Dapur	DapurVerifikasiPenerimaan	tidak	baca saja	baca ada
+F	btnNilaiPenerimaanVendorDapurPerBulan	Nilai Penerimaan Vendor Dapur Per Bulan	DapurNilaiPenerimaanVendorPerBulan	tidak	baca saja	baca ada
+G	btnAsalHibah	Asal Hibah	InventarisAsalHibah	ya	master	tulis ada
+G	btnJenisInventaris	Jenis Inventaris	InventarisJenis	ya	master	tulis ada
+G	btnKategoriInventaris	Kategori Inventaris	InventarisKategori	ya	master	tulis ada
+G	btnMerkInventaris	Merk Inventaris	InventarisMerk	ya	master	tulis ada
+G	btnRuangInventaris	Ruang Inventaris	InventarisRuang	ya	master	tulis ada
+G	btnProdusenInventaris	Produsen Inventaris	InventarisProdusen	ya	master	tulis ada
+G	btnBarangInventaris	Koleksi Inventaris	InventarisBarang	ya	baca saja	hanya baca
+G	btnInventaris	Data Inventaris	InventarisKoleksi	ya	baca saja	hanya baca
+G	btnSirkulasiInventaris	Sirkulasi Inventaris	InventarisSirkulasi	ya	baca saja	hanya baca
+G	btnPermintaanPerbaikanInventaris	Permintaan Perbaikan Inventaris	InventarisPermintaanPerbaikan	ya	baca saja	hanya baca
+G	btnPerbaikanInventaris	Perbaikan Inventaris	InventarisPerbaikan	ya	baca saja	hanya baca
+G	btnPemeliharaanInventaris	Pemeliharaan Inventaris	InventarisPemeliharaan	ya	baca saja	hanya baca
+G	btnPengajuanAsetInventaris	Pengajuan Aset/Inventaris	PengajuanInventaris	ya	baca saja	hanya baca
+G	btnRekapPengajuanAsetDepartemen	Rekap Pengajuan Aset Departemen	RekapPengajuanInventarisDepartemen	tidak	baca saja	baca ada
+G	btnSuplierInventaris	Suplier Aset/Inventaris	InventarisSuplier	ya	master	tulis ada
+G	btnPengadaanAset	Pengadaan Aset/Inventaris	InventarisPembelian	ya	baca saja	hanya baca
+G	btnPenerimaanAset	Penerimaan Aset/Inventaris	InventarisPemesanan	ya	baca saja	hanya baca
+G	btnHibahAsetInventaris	Hibah Aset/Inventaris	InventarisHibah	ya	baca saja	hanya baca
+G	btnPemeliharaanGedung	Pemeliharaan Gedung	InventarisPemeliharaanGedung	ya	master	tulis ada
+G	btnBarangCSSD	Barang CSSD	InventarisBarangCSSD	ya	master	tulis ada
+G	btnSirkulasiInventarisCSSD	Sirkulasi CSSD	InventarisSirkulasiCSSD	ya	baca saja	hanya baca
+G	btnPemakaianAirPDAM	Pemakaian Air PDAM	KeslingPemakaiaanAirPDAM	ya	master	tulis ada
+G	btnPemakaianAirTanah	Pemakaian Air Tanah	KeslingPemakaiaanAirTanah	ya	master	tulis ada
+G	btnLimbahB3Medis	Limbah Padat B3 Medis	KeslingLimbahB3Medis	ya	master	tulis ada
+G	btnLimbahB3MedisCair	Limbah Cair B3 Medis	KeslingLimbahB3MedisCair	ya	master	tulis ada
+G	btnLimbahDomestik	Limbah Padat Domestik	KeslingLimbahDomestik	ya	master	tulis ada
+G	btnMutuAirLimbah	Mutu Air Limbah	KeslingMutuAirLimbah	ya	master	tulis ada
+G	btnPestControl	Pest Control	KeslingPestControl	ya	master	tulis ada
+H	btnJenisParkir	Jenis Parkir	DlgParkirJenis	ya	khusus	tulis ada
+H	btnBarcodeParkir	Barcode Parkir	DlgParkirBarcode	ya	master	tulis ada
+H	btnParkirMasuk	Parkir Masuk	DlgParkirMasuk	tidak	khusus	baca ada
+I	btnTagihanPoli	Harian Dokter Poli	DlgRBTindakanPoli	tidak	baca saja	baca ada
+I	btnHarianKamar	Harian Kamar	DlgRBTindakanKamar	tidak	baca saja	baca ada
+I	btnTagihanDokter	Harian Dokter Ralan	DlgRBTindakanDokter	tidak	baca saja	baca ada
+I	btnTagihanObatPoli	Obat Per Poli	DlgRBObatPoli	tidak	baca saja	baca ada
+I	btnTagihanObatBangsal	Obat Per Kamar	DlgRBObatBangsal	tidak	baca saja	baca ada
+I	btnObatPasienRalan	Obat Per Dokter Ralan	DlgRBObatDokterRalan	tidak	baca saja	baca ada
+I	btnObatPasienRanap	Obat Per Dokter Ranap	DlgRBObatDokterRanap	tidak	baca saja	baca ada
+I	btnObatPasienPeresep	Obat Per Dokter Peresep	DlgRBObatDokterPeresep	tidak	baca saja	baca ada
+I	btnObatPerCaraBayar	Obat Per Cara Bayar	DlgRBObatPercaraBayar	tidak	baca saja	baca ada
+I	btnDetailTindakan	Detail Tindakan	DlgDetailTindakan	tidak	baca saja	baca ada
+I	btnJMDetailDokter	Detail JM Dokter	DlgDetailJMDokter	tidak	baca saja	baca ada
+I	btnJMDetailDokter2	Detail JM Dokter 2	DlgDetailJMDokter2	tidak	baca saja	baca ada
+I	btnRHDOkter	Harian Dokter	DlgRHJmDokter	tidak	baca saja	baca ada
+I	btnRBDokter	Bulanan Dokter	DlgRBJmDokter	tidak	baca saja	baca ada
+I	btnRekapJasaDokter	Rekap JM Dokter	KeuanganRekapJmDokter	tidak	baca saja	baca ada
+I	btnRekapBiayaRegistrasi	Rekap Biaya Registrasi	DlgRekapBiayaRegistrasi	tidak	baca saja	baca ada
+I	btnRHParamedis	Harian Paramedis	DlgRHJmParamedis	tidak	baca saja	baca ada
+I	btnRBParamedis	Bulanan Paramedis	DlgRBJmParamedis	tidak	baca saja	baca ada
+I	btnRHJasaSarana	Harian Jasa Sarana	DlgRHJS	tidak	baca saja	baca ada
+I	btnRBJasaSarana	Bulanan Jasa Sarana	DlgRBJS	tidak	baca saja	baca ada
+I	btnRHKSO	Harian KSO	DlgRHKSO	tidak	baca saja	baca ada
+I	btnRBKSO	Bulanan KSO	DlgRBKSO	tidak	baca saja	baca ada
+I	btnRHMenejemen	Harian Menejemen	DlgRHMenejemen	tidak	baca saja	baca ada
+I	btnRBMenejemen	Bulanan Menejemen	DlgRBMenejemen	tidak	baca saja	baca ada
+I	btnRHPaketBHP	Harian BHP Medis/Paket Obat	DlgRHPaketBHP	tidak	baca saja	baca ada
+I	btnRBPaketBHP	Bulanan BHP Medis/Paket Obat	DlgRBPaketBHP	tidak	baca saja	baca ada
+I	btnRingkasanTindakanRalan	Ringkasan Tindakan	KeuanganRingkasanTindakan	tidak	baca saja	baca ada
+I	btnfee_visit_dokter	Fee Visit Dokter	DlgFeeVisitDokter	tidak	baca saja	baca ada
+I	btnfee_bacaan_ekg	Fee Bacaan EKG	DlgFeeBacaanEKG	tidak	baca saja	baca ada
+I	btnfee_rujukan_rontgen	Fee Rujukan Rontgen	DlgFeeRujukanRontgen	tidak	baca saja	baca ada
+I	btnfee_rujukan_ranap	Fee Rujukan Ranap		?	baca saja	
+I	btnfee_ralan	Fee Periksa Ralan	DlgFeePeriksaRalan	tidak	baca saja	baca ada
+I	btnDetailVKOK	Detail VK & OK	DlgDetailVKOK	tidak	baca saja	baca ada
+I	btnJasaTindakanPasien	Jasa Tindakan Pasien	KeuanganJasaTindakan	tidak	baca saja	baca ada
+I	btnRingkasanJasaTindakanPasien	Ringkasan Jasa Tindakan Pasien	KeuanganRingkasanJasaTindakan	tidak	baca saja	baca ada
+I	btnRalanMasuk	Pembayaran Ralan	DlgPembayaranRalan	tidak	baca saja	baca ada
+I	btnRanapMasuk	Pembayaran Ranap	DlgPembayaranRanap	tidak	baca saja	baca ada
+I	btnLihatPiutang	Piutang Pasien	DlgLhtPiutang	tidak	baca saja	baca ada
+I	btnPiutangRalan	Piutang Ralan	DlgPiutangRalan	tidak	baca saja	baca ada
+I	btnPiutangRanap	Piutang Ranap	DlgPiutangRanap	tidak	baca saja	baca ada
+I	btnTagihanRalanPerhari	Rekap Pembayaran Ralan	DlgPembayaranRalanPerHari	tidak	baca saja	baca ada
+I	btnTagihanRanapPerhari	Rekap Pembayaran Ranap	DlgPembayaranRanapPerhari	tidak	baca saja	baca ada
+I	btnPembayaranPerUnit	Pembayaran Per Unit	DlgPembayaranPerPoli	tidak	baca saja	baca ada
+I	btnRekapPembayaranPerUnit	Rekap Pembayaran Per Unit	DlgRekapPembayaranPerPoli	tidak	baca saja	baca ada
+I	btnTagihanMasuk	Tagihan Masuk	DlgLhtBiaya	tidak	baca saja	baca ada
+I	btnTambahanBiaya	Tambahan Biaya Pasien	DlgDetailTambahan	tidak	baca saja	baca ada
+I	btnPotonganBiaya	Potongan Biaya Pasien	DlgDetailPotongan	tidak	baca saja	baca ada
+I	btnRekapPoliAnak	Rekap Poli Anak	KeuanganRekapPoliAnak	tidak	baca saja	baca ada
+I	btnDeposit	Deposit Pasien	DlgDeposit	ya	master	tulis ada
+I	btnRekapPershift	Rekap Uang Pershift	DlgRekapPerShift	tidak	baca saja	baca ada
+I	btnPaymentPoint	Payment Point	DlgPaymentPoint	ya	baca saja	belum ada
+I	btnPaymentPoint2	Payment Point 2	DlgPaymentPoint2	tidak	baca saja	baca ada
+I	btnPembayaranAkunBayar	Pembayaran Per Akun Bayar	DlgPembayaranPerAKunBayar	tidak	baca saja	baca ada
+I	btnPembayaranAkunBayar2	Pembayaran Per Akun Bayar 2	DlgPembayaranPerAKunBayar2	tidak	baca saja	baca ada
+I	btnPembayaranAkunBayar3	Pembayaran Per Akun Bayar 3	DlgPembayaranPerAKunBayar3	tidak	baca saja	baca ada
+I	btnPembayaranAkunBayar4	Pembayaran Per Akun Bayar 4	DlgPembayaranPerAKunBayar4	tidak	baca saja	baca ada
+I	btnPembayaranAkunBayar5	Pembayaran Per Akun Bayar 5	DlgPembayaranPerAKunBayar5	tidak	baca saja	baca ada
+I	btnPiutangPerAkunPiutang	Piutang Per Akun Piutang	DlgPiutangPerAKunPiutang	tidak	baca saja	baca ada
+I	btnPendapatanPerAkun	Pendapatan Per Akun Rekening	DlgPendapatanPerAKun	tidak	baca saja	baca ada
+I	btnPendapatanPerAkunClosing	Pendapatan Per Akun Closing	DlgPendapatanPerAKunClosing	tidak	baca saja	baca ada
+J	btnICD9	ICD 9	DlgICD9	ya	master	tulis ada
+J	btnICD	ICD 10	DlgPenyakit	ya	master	tulis ada
+J	btnPenyakitPD3I	Penyakit AFP & PD3I	DlgPenyakitPd3i	ya	master	tulis ada
+J	btnSurveilansPD3I	Surveilans AFP & PD3I	DlgDkkSurveilansPD3I	tidak	baca saja	baca ada
+J	btnSurveilansRalan	Surveilans Ralan	DlgDkkSurveilansRalan	tidak	baca saja	baca ada
+J	btnSurveilansRanap	Surveilans Ranap	DlgDkkSurveilansRanap	tidak	baca saja	baca ada
+J	btnPnyTakMenularRalan	Pny Tdk Menular Ralan	DlgDkkPenyakitTidakMenularRalan	tidak	baca saja	baca ada
+J	btnPnyTakMenularRanap	Pny Tdk Menular Ranap	DlgDkkPenyakitTidakMenularRanap	tidak	baca saja	baca ada
+J	btnPnyMenularRalan	Pny Menular Ralan	DlgDkkPenyakitMenularRalan	tidak	baca saja	baca ada
+J	btnPnyMenularRanap	Pny Menular Ranap	DlgDkkPenyakitMenularRanap	tidak	baca saja	baca ada
+J	btnObatPenyakit	Obat Penyakit	DlgObatPenyakit	ya	master	tulis ada
+J	btnFrekuensiRalan	Frekuensi Penyakit Ralan	DlgFrekuensiPenyakitRalan	tidak	baca saja	baca ada
+J	btnFrekuensiRanap	Frekuensi Penyakit Ranap	DlgFrekuensiPenyakitRanap	tidak	baca saja	baca ada
+J	btnKunjunganRalan	Kunjungan Ralan	DlgKunjunganRalan	tidak	khusus	baca ada
+J	btnKunjunganRanap	Kunjungan Ranap	DlgKunjunganRanap	tidak	khusus	baca ada
+J	btnKedatanganPasienPerJam	Kedatangan Pasien Per Jam	LaporanKedatanganPasienPerJam	tidak	khusus	baca ada
+J	btnRekapKunjungan	Rekap Kunjungan	DlgRekapKunjungan	tidak	khusus	baca ada
+J	btnKunjunganLabRalan	Kunjungan Lab Ralan	DlgKunjunganLabRalan	tidak	baca saja	baca ada
+J	btnKunjunganLabRanap	Kunjungan Lab Ranap	DlgKunjunganLabRanap	tidak	baca saja	baca ada
+J	btnKunjunganRadRalan	Kunjungan Radiologi Ralan	DlgKunjunganRadRalan	tidak	baca saja	baca ada
+J	btnKunjunganRadRanap	Kunjungan Radiologi Ranap	DlgKunjunganRadRanap	tidak	baca saja	baca ada
+J	btnSensusHarianPoli	Sensus Harian Poli	DlgSensusHarianPoli	tidak	khusus	baca ada
+J	btnSensusHarianRalan	Sensus Harian Ralan	DlgSensusHarianRalan	tidak	baca saja	baca ada
+J	btnRl13KetersediaanKamar	RL 1.3 Ketersediaan Tempat Tidur	DlgRL13KetersediaanTempatTidur	tidak	baca saja	baca ada
+J	btnRl32	RL 3.2 Rawat Darurat	DlgRl32	tidak	baca saja	baca ada
+J	btnRl33	RL 3.3 Gigi dan Mulut	DlgRl33	tidak	baca saja	baca ada
+J	btnRl34	RL 3.4 Kebidanan	DlgRl34	tidak	baca saja	baca ada
+J	btnRl36	RL 3.6 Pembedahan	DlgRl36	tidak	baca saja	baca ada
+J	btnRl37	RL 3.7 Radiologi	DlgRl37	tidak	baca saja	baca ada
+J	btnRl38	RL 3.8 Laboratorium	DlgRl38	tidak	baca saja	baca ada
+J	btnRl4a	RL 4A Morbiditas Ranap	DlgRL4A	tidak	baca saja	baca ada
+J	btnRl4b	RL 4B Morbiditas Ralan	DlgRL4B	tidak	baca saja	baca ada
+J	btnRl4asebab	RL 4A Sebab Morbiditas Ranap	DlgRL4ASebab	tidak	baca saja	baca ada
+J	btnRl4bsebab	RL 4B Sebab Morbiditas Ralan	DlgRL4BSebab	tidak	baca saja	baca ada
+J	btnLamaPelayananRalan	Lama Pelayanan Ralan	DlgPelayananRalan	tidak	baca saja	baca ada
+J	btnLamaPelayananApotek	Lama Pelayanan Apotek	DlgPelayananApotek	tidak	baca saja	baca ada
+J	btnLamaPelayananRadiologi	Lama Pelayanan Radiologi	DlgPelayananRadiologi	tidak	baca saja	baca ada
+J	btnLamaPelayananLab	Lama Pelayanan Lab PK	DlgPelayananLab	tidak	baca saja	baca ada
+J	btnLamaPelayananLabPA	Lama Pelayanan Lab PA	DlgPelayananLabPA	tidak	baca saja	baca ada
+J	btnLamaPelayananLabMB	Lama Pelayanan Lab MB	DlgPelayananLabMB	tidak	baca saja	baca ada
+J	btnLamaPelayananPoli	Lama Pelayanan Poli	DlgPelayananPoli	tidak	baca saja	baca ada
+J	btnLamaPenyiapanRM	Lama Penyiapan RM	DlgPenyiapanRM	tidak	baca saja	baca ada
+J	btnLamaPelayananPasien	Lama Pelayanan Pasien	DlgLamaPelayananPasien	tidak	baca saja	baca ada
+J	btnLamaOperasi	Lama Operasi	DlgPelayananOperasi	tidak	baca saja	baca ada
+J	btnLamaPelayananCSSD	Lama Pelayanan CSSD	DlgPelayananCSSD	tidak	baca saja	baca ada
+J	btnDosisRadiologi	Dosis Radiologi	DlgDosisRadiologi	tidak	baca saja	baca ada
+J	btnHarianHAIs	Harian HAIs	DlgHarianHAIs	tidak	baca saja	baca ada
+J	btnHarianHAIs2	Harian HAIs 2	DlgHarianHAIs2	tidak	baca saja	baca ada
+J	btnBulananHAIs	Bulanan HAIs	DlgBulananHAIs	tidak	baca saja	baca ada
+J	btnHAIsBangsal	HAIs Per Kamar/Bangsal	DlgHAIsPerBangsal	tidak	baca saja	baca ada
+J	btnHitungBor	Hitung BOR	DlgHitungBOR	tidak	baca saja	baca ada
+J	btnHitungAlos	Hitung ALOS	DlgHitungALOS	tidak	baca saja	baca ada
+J	btnPembatalanPeriksaDokter	Pembatalan Periksa Per Dokter	DlgPembatalanPeriksaPerDokter	tidak	baca saja	baca ada
+J	btnCekEntryRalan	Cek Entry Ralan	DlgCekEntryRalan	tidak	baca saja	baca ada
+J	btnRanapPerRuang	Ranap Per Ruang	DlgRanapPerRuang	tidak	baca saja	baca ada
+J	btnPoliAsalPasienRanap	Poli Asal Pasien Ranap	DlgPoliAsalPasienRanap	tidak	baca saja	baca ada
+J	btnDokterAsalPasienRanap	Dokter Asal Pasien Ranap	DlgDokterAsalPasienRanap	tidak	baca saja	baca ada
+J	btnPenyakitRanapCaraBayar	Penyakit Ranap Per Cara Bayar	DlgPenyakitRanapPerCaraBayar	tidak	baca saja	baca ada
+J	btnRekapLabPerTahun	Rekap Lab Per Tahun	DlgRekapLabPerTahun	tidak	baca saja	baca ada
+J	btnPerujukLabPerTahun	Perujuk Lab Per Tahun	DlgPerujukLabPerTahun	tidak	baca saja	baca ada
+J	btnRekapRadiologiPerTahun	Rekap Radiologi Per Tahun	DlgRekapRadiologiPerTahun	tidak	baca saja	baca ada
+J	btnPerujukRadiologiPerTahun	Perujuk Radiologi Per Tahun	DlgPerujukRadiologiPerTahun	tidak	baca saja	baca ada
+J	btnJumlahPorsiDiet	Rekap Bulanan Porsi Diet	DlgJumlahPorsiDiet	tidak	baca saja	baca ada
+J	btnJumlahMacamDiet	Rekap Bulanan Macam Diet	DlgJumlahMacamDiet	tidak	baca saja	baca ada
+J	btnRekapPermintaanDiet	Rekap Permintaan Diet	DlgRekapPermintaanDiet	tidak	baca saja	baca ada
+J	btnSisaDietPasien	Sisa Diet Pasien	LaporanSisaDietPasien	ya	baca saja	hanya baca
+J	btnDataSITT	Data TB	DlgDataTB	ya	baca saja	bridging
+J	btnRekapMutasiBerkas	Rekap Mutasi Berkas	DlgRekapMutasiBerkas	tidak	baca saja	baca ada
+J	btnSkriningRalanPernapasanPerTahun	Skrining Pernapasan Ralan Per Tahun	LaporanRekapSkriningPernapasanRalanPerTahun	tidak	baca saja	baca ada
+J	btnKunjunganBangsalTahun	Masuk Ruang Per Tahun	LaporanRekapKunjunganRuangPerTahun	tidak	baca saja	baca ada
+J	btnKIPPasienRanap	KIP Pasien Ranap	DlgKIPPasienRanap	tidak	baca saja	baca ada
+J	btnKIPPasienRalan	KIP Pasien Ralan	DlgKIPPasienRalan	tidak	baca saja	baca ada
+J	btnDaftarPasienRanap	Daftar Pasien Ranap	DlgDaftarPasienRanap	tidak	baca saja	baca ada
+J	btnAnggotaMiliterDirawat	Anggota TNI Dirawat	DlgAnggotaMiliterDirawat	tidak	baca saja	baca ada
+J	btnDaftarPasienRanapTNI	Daftar Pasien Ranap TNI	DlgDaftarPasienRanapTNI	tidak	baca saja	baca ada
+J	btnAnggotaPolriDirawat	Anggota POLRI Dirawat	DlgAnggotaPolriDirawat	tidak	baca saja	baca ada
+J	btnDaftarPasienRanapPolri	Daftar Pasien Ranap POLRI	DlgDaftarPasienRanapPolri	tidak	baca saja	baca ada
+J	btnLaporanPenyakitPolri	Laporan Penyakit POLRI	DlgLaporanPenyakitPolri	tidak	baca saja	baca ada
+J	btnLaporanPenyakitTNI	Laporan Penyakit TNI	DlgLaporanPenyakitTNI	tidak	baca saja	baca ada
+J	btnJumlahPengunjungRalanPolri	Jumlah Pengunjung Ralan POLRI	DlgJumlahPengunjungRalanPolri	tidak	baca saja	baca ada
+J	btnJumlahPengunjungRalanTNI	Jumlah Pengunjung Ralan TNI	DlgJumlahPengunjungRalanTNI	tidak	baca saja	baca ada
+J	btnRegistrasiPoliPerTanggal	Registrasi Poli Per Tanggal	LaporanRegistrasiPoliPerTanggal	tidak	baca saja	baca ada
+J	btnLaporanTahunanIRJ	Laporan Tahunan IRJ	LaporanTahunanIRJ	tidak	baca saja	baca ada
+J	btnLaporanBulananIRJ	Laporan Bulanan IRJ	LaporanBulananIRJ	tidak	khusus	baca ada
+J	btnLaporanTahunanIGD	Laporan Tahunan IGD	LaporanTahunanIGD	tidak	baca saja	baca ada
+J	btnBulananKlasifikasiPasienRanap	Bulanan Klasifikasi Pasien Ranap	DlgBulananKlasifikasiPasienRanap	tidak	baca saja	baca ada
+J	btnHarianKlasifikasiPasienRanap	Harian Klasifikasi Pasien Ranap	DlgHarianKlasifikasiPasienRanap	tidak	baca saja	baca ada
+J	btnKlasifikasiPasienPerRuang	Klasifikasi Pasien Per Ruang	DlgKlasifikasiPasienPerBangsal	tidak	baca saja	baca ada
+J	btnDemografiUmurKunjungan	Demografi Umur Kunjungan	DlgDemografiUmurKunjungan	tidak	baca saja	baca ada
+J	btnStatusDataRM	Status Data RM	DlgStatusDataRM	tidak	baca saja	baca ada
+J	btnKepatuhanKelengkapanKeselamatanBedah	Kepatuhan Kelengkapan Keselamatan Bedah	DlgKepatuhanKelengkapanKeselamatanBedah	tidak	baca saja	baca ada
+J	btnOperasiPerBulan	Operasi Per Bulan	DlgOperasiPerBulan	tidak	baca saja	baca ada
+J	btnLaporanTahunanPenolakanAnjuranMedis	Laporan Tahunan Penolakan Anjuran Medis	LaporanTahunanPAM	tidak	baca saja	baca ada
+J	btnPemeriksaanFisikRalanPerPenyakit	Pemeriksaan Fisik Ralan Per Penyakit	DlgPemeriksaanFisikRalanPerPenyakit	tidak	baca saja	baca ada
+J	btnDataSasaranUsiaProduktif	Data Sasaran Usia Produktif	DlgDataSasaranUsiaProduktif	tidak	baca saja	baca ada
+J	btnDataSasaranUsiaLansia	Data Sasaran Usia Lansia	DlgDataSasaranUsiaLansia	tidak	baca saja	baca ada
+K	btnKamar	Kamar	DlgKamar	ya	master	tulis ada
+K	btnTindakanRalan	Tarif Ralan	DlgJnsPerawatanRalan	ya	master	tulis ada
+K	btnTindakanRanap	Tarif Ranap	DlgJnsPerawatanRanap	ya	master	tulis ada
+K	btnTarifLab	Tarif Lab	DlgJnsPerawatanLab	ya	master	tulis ada
+K	btnTarifRadiologi	Tarif Radiologi	DlgJnsPerawatanRadiologi	ya	master	tulis ada
+K	btnPaketOperasi	Tarif Operasi/VK	DlgJnsPerawatanOperasi	ya	master	tulis ada
+K	btnTarifUtd	Tarif UTD	DlgJnsPerawatanUTD	ya	master	tulis ada
+K	btnSetTarifOnline	Set Tarif Online	KeuanganSetTarifOnline	ya	master	tulis ada
+K	btnCaraBayar	Asuransi/Askes/Jenis Bayar	DlgPenanggungJawab	ya	master	tulis sebagian
+K	btnRekening	Akun Rekening	DlgRekening	ya	master	tulis sebagian
+K	btnRekeningTahun	Rekening Tahun	DlgRekeningTahun	ya	master	tulis ada
+K	btnSaldoAkunPerBulan	Saldo Akun Per Bulan	KeuanganSaldoAkunPerBulan	tidak	baca saja	baca sebagian
+K	btnakun_bayar	Akun Bayar	DlgAkunBayar	ya	master	tulis ada
+K	btnAkunBayarHutang	Akun Bayar Hutang	DlgAkunBayarHutang	ya	master	tulis ada
+K	btnAkunPiutang	Akun Piutang	DlgAkunPiutang	ya	master	tulis ada
+K	btnAkunPenagihanPiutang	Akun Penagihan Piutang	DlgAkunPenagihanPiutang	ya	master	tulis ada
+K	btnAkunAsetInventaris	Akun Jenis Aset/Inventaris	DlgAkunAsetInventaris	ya	master	tulis ada
+K	btnPengaturanRekening	Pengaturan Rekening	DlgPengaturanRekening	ya	baca saja	hanya baca
+K	btnKategoriPengeluaranHarian	Kategori Pengeluaran Harian	DlgKategoriPengeluaran	ya	master	tulis ada
+K	btnPengeluaran	Pengeluaran Harian	DlgPengeluaranHarian	ya	baca saja	hanya baca
+K	btnKategoriPemasukanLian	Kategori Pemasukan Lain-lain	DlgKategoriPemasukan	ya	master	tulis ada
+K	btnPemasukanLain	Pemasukan Lain-Lain	DlgPemasukanLain	ya	baca saja	tulis sebagian
+K	btnKategoriPiutangJasaPerusahaan	Kategori Piutang Jasa Perusahaan	DlgKategoriPiutangJasaPerusahaan	ya	master	tulis sebagian
+K	btnPiutangJasaPerusahaan	Piutang Jasa Perusahaan	KeuanganPiutangJasaPerusahaan	ya	baca saja	hanya baca
+K	btnPiutangJasaPerusahaanBelumLunas	Piutang Jasa Perusahaan Belum Lunas	KeuanganPiutangJasaPerusahaanBelumLunas	ya	baca saja	hanya baca
+K	btnBayarPiutangJasaPerusahaan	Bayar Piutang Jasa Perusahaan	KeuanganBayarPiutangJasaPerusahaan	ya	baca saja	hanya baca
+K	btnDeposit	Deposit Pasien	DlgDeposit	ya	master	tulis ada
+K	btnLihatPiutang	Piutang Pasien	DlgLhtPiutang	tidak	baca saja	baca ada
+K	btnRincianPiutangPasien	Rincian Piutang Pasien	KeuanganRincianPiutangPasien	tidak	baca saja	baca ada
+K	btnPiutangBelumLunas	Piutang Belum Lunas	KeuanganPiutangBelumLunas	ya	baca saja	hanya baca
+K	btnPiutangObatBelumLunas	Piutang Obat & BHP Belum Lunas	KeuanganPiutangObatBelumLunas	ya	baca saja	hanya baca
+K	btnPiutangPerCaraBayar	Piutang Per Cara Bayar	DlgPiutangPercaraBayar	tidak	baca saja	baca ada
+K	btnNilaiPiutangPerJenisBayarPerBulan	Nilai Piutang Per Cara Bayar Per Bulan	KeuanganNilaiPiutangPerJenisBayarPerBulan	tidak	baca saja	baca ada
+K	btnRingkasanPiutangPerJenisBayar	Ringkasan Piutang Per Cara Bayar	KeuanganRingkasanPiutangPerJensBayar	tidak	baca saja	baca ada
+K	btnPenagihanPiutangPasien	Penagihan Piutang Pasien	KeuanganPenagihanPiutangPasien	ya	baca saja	hanya baca
+K	btnValidasiPenagihanPiutang	Validasi Penagihan Piutang	KeuanganValidasiPenagihanPiutang	tidak	baca saja	baca sebagian
+K	btnRVPPiutangBPJS	RVP Piutang BPJS	KeuanganRVPBPJS	ya	baca saja	bridging
+K	btnKlaimRawatJalan	Klaim Rawat Jalan	KeuanganKlaimRalan	tidak	baca saja	baca ada
+K	btnBayarPiutang	Bayar Piutang	DlgBayarPiutang	ya	baca saja	hanya baca
+K	btnOmsetPenerimaan	Penerimaan/Omset/Kas Masuk	DlgOmsetPenerimaan	tidak	baca saja	baca ada
+K	btnPengembalianDepositPasien	Pengembalian Deposit Pasien	DlgPengembalianDepositPasien	tidak	baca saja	baca ada
+K	btnPendapatanPerCaraBayar	Pendapatan Per Cara Bayar	DlgPendapatanPerCaraBayar	tidak	baca saja	baca ada
+K	btnPembayaranBankJateng	Pembayaran Bank Jateng	DlgLhtBankJateng	tidak	baca saja	baca ada
+K	btnPembayaranBRIVA	Pembayaran BRIVA	DlgLhtBRIVA	tidak	baca saja	bridging
+K	btnPembayaranBankPapua	Pembayaran Bank Papua	DlgLhtBankPapua	tidak	baca saja	baca ada
+K	btnPembayaranBankJabar	Pembayaran Bank Jabar	DlgLhtBankJabar	tidak	baca saja	baca ada
+K	btnPembayaranBankMandiri	Pembayaran Bank Mandiri	DlgLhtBankMandiri	tidak	baca saja	baca ada
+K	btnPembayaranPihakKe3BankMandiri	Pembayaran Pihak Ke 3 Bank Mandiri	DlgLhtPembayaranPihakKe3BankMandiri	ya	baca saja	hanya baca
+K	btnRingkasanHutangVendorFarmasi	Ringkasan Hutang Vendor Farmasi	KeuanganRingkasanHutangVendorFarmasi	tidak	baca saja	baca ada
+K	btnHutangObat	Hutang Obat & BHP	KeuanganHutangObatBelumLunas	ya	baca saja	hanya baca
+K	btnTagihanHutangObat	Titip Faktur/Tagihan Obat & BHP	KeuanganTagihanObatBHP	ya	baca saja	hanya baca
+K	btnValidasiTagihanObatBHP	Validasi Titip Faktur/Tagihan Obat & BHP	KeuanganValidasiTagihanObatBHP	tidak	baca saja	baca ada
+K	btnbayar_pemesanan	Bayar Pesan Obat/BHP	KeuanganBayarPemesananFarmasi	ya	baca saja	hanya baca
+K	btnRingkasanHutangVendorBarangNonMedis	Ringkasan Hutang Vendor Non Medis	KeuanganRingkasanHutangVendorNonMedis	tidak	baca saja	baca ada
+K	btnHutangNonMedis	Hutang Non Medis	KeuanganHutangNonMedisBelumLunas	ya	baca saja	hanya baca
+K	btnTagihanHutangNonMedis	Titip Faktur/Tagihan Non Medis	KeuanganTagihanNonMedis	ya	baca saja	hanya baca
+K	btnValidasiTagihanNonMedis	Validasi Titip Faktur/Tagihan Non Medis	KeuanganValidasiTagihanNonMedis	tidak	baca saja	baca ada
+K	btnBayarPesanNonMedis	Bayar Pesan Non Medis	KeuanganBayarPemesananNonMedis	ya	baca saja	hanya baca
+K	btnHutangAsetInventaris	Hutang Aset/Inventaris	KeuanganHutangAsetIventarisBelumLunas	ya	baca saja	hanya baca
+K	btnTagihanHutangAset	Titip Faktur/Tagihan Aset/Inventaris	KeuanganTagihanAset	ya	baca saja	hanya baca
+K	btnValidasiTagihanAset	Validasi Titip Faktur/Tagihan Aset/Inventaris	KeuanganValidasiTagihanAset	tidak	baca saja	baca ada
+K	btnBayarPemesananInventaris	Bayar Pesan Aset/Inventaris	KeuanganBayarPemesananAset	ya	baca saja	hanya baca
+K	btnRingkasanHutangVendorAsetInventaris	Ringkasan Hutang Vendor Aset/Inventaris	KeuanganRingkasanHutangVendorAsetInventaris	tidak	baca saja	baca ada
+K	btnRingkasanHutangVendorBarangDapur	Ringkasan Hutang Vendor Dapur	KeuanganRingkasanHutangVendorDapur	tidak	baca saja	baca ada
+K	btnHutangDapur	Hutang Barang Dapur	KeuanganHutangDapurBelumLunas	ya	baca saja	hanya baca
+K	btnTagihanHutangDapur	Titip Faktur/Tagihan Dapur	KeuanganTagihanDapur	ya	baca saja	hanya baca
+K	btnValidasiTagihanDapur	Validasi Titip Faktur/Tagihan Dapur	KeuanganValidasiTagihanDapur	tidak	baca saja	baca ada
+K	btnBayarPesanDapur	Bayar Pesan Dapur	KeuanganBayarPemesananDapur	ya	baca saja	hanya baca
+K	btnPeminjamPiutang	Peminjam Piutang	KeuanganPeminjamPiutang	ya	master	tulis ada
+K	btnPiutangLainLain	Piutang Peminjaman Uang	KeuanganPiutangPeminjamanUang	ya	baca saja	hanya baca
+K	btnPiutangPeminjamanUangBelumLunas	Piutang Peminjaman Uang Belum Lunas	KeuanganPiutangPeminjamanUangBelumLunas	ya	baca saja	hanya baca
+K	btnBayarPiutangLainLain	Bayar Piutang Peminjaman Uang	KeuanganBayarPiutangPeminjamanUang	ya	baca saja	hanya baca
+K	btnPemberiHutangLain	Pemberi Hutang Lain	KeuanganPemberiHutangLain	ya	master	tulis ada
+K	btnBebanHutangLain	Beban Hutang Lain	KeuanganBebanHutangLain	ya	baca saja	hanya baca
+K	btnRingkasanBebanHutangLain	Ringkasan Beban Hutang Lain	KeuanganRingkasanBebanHutangLain	tidak	baca saja	baca ada
+K	btnBayarBebanHutangLain	Bayar Beban Hutang Lain	KeuanganBayarBebanHutangLain	ya	baca saja	hanya baca
+K	btnBayarJMDokter	Bayar JM Dokter	KeuanganBayarJMDokter	ya	baca saja	hanya baca
+K	btnPengajuanBiayaKuangan	Pengajuan Biaya	KeuanganPengajuanBiaya	ya	baca saja	hanya baca
+K	btnPersetujuanPengajuanBiaya	Persetujuan Pengajuan Biaya	KeuanganPersetujuanPengajuanBiaya	ya	baca saja	hanya baca
+K	btnValidasiPersetujuanPengajuanBiaya	Validasi Persetujuan Pengajuan Biaya	KeuanganValidasiPersetujuanPengajuanBiaya	tidak	baca saja	baca ada
+K	btnRekapPengajuanBiaya	Rekap Pengajuan Biaya	KeuanganRekapPengajuanBiaya	tidak	baca saja	baca ada
+K	btnPengeluaranPengeluaran	Pengeluaran-pengeluaran/Kas Keluar	DlgPengeluaranPengeluaran	tidak	baca saja	baca ada
+K	btnPostingJurnal	Posting Jurnal	DlgJurnal	tidak	khusus	baca ada
+K	btnJurnalHarian	Jurnal Harian	DlgJurnalHarian	tidak	baca saja	baca ada
+K	btnBubes	Buku Besar	KeuanganBubes	tidak	baca saja	baca ada
+K	btnCashFlow	Cash Flow	DlgCashflow	tidak	baca saja	baca ada
+K	btnLabaRugi	Keuangan	DlgLabaRugi	tidak	baca saja	baca sebagian
+L	btnCekBPJSKartu	Cek No.Kartu VClaim	BPJSCekKartu	ya	ditunda	bridging
+L	btnCekBPJSNik	Cek NIK VClaim	BPJSCekNIK2	ya	ditunda	bridging
+L	btnCekBPJSSKDP	Cek SKDP VClaim	BPJSCekSKDP	ya	ditunda	bridging
+L	btnCekBPJSRiwayatRujukanPCare	Riwayat Rujukan PCare di VClaim	BPJSCekRiwayatRujukanPCare	tidak	ditunda	bridging
+L	btnCekBPJSRiwayatRujukanRS	Riwayat Rujukan RS di VClaim	BPJSCekRiwayatRujukanRS	tidak	ditunda	bridging
+L	btnCekBPJSTanggalRujukan	Tanggal Rujukan di VClaim	BPJSCekTanggalRujukan	tidak	ditunda	bridging
+L	btnCekBPJSNomorRujukanPCare	Cek No.Rujukan PCare di VClaim	BPJSCekNoRujukanPCare	ya	ditunda	bridging
+L	btnCekBPJSNomorRujukanRS	Cek No.Rujukan RS di VClaim	BPJSCekNoRujukanRS	ya	ditunda	bridging
+L	btnCekBPJSRujukanKartuPCare	Cek Rujukan Kartu PCare di VClaim	BPJSCekRujukanKartuPCare	ya	ditunda	bridging
+L	btnCekBPJSRujukanKartuRS	Cek Rujukan Kartu RS di VClaim	BPJSCekRujukanKartuRS	ya	ditunda	bridging
+L	btnBPJSHistoriPelayanan	Histori Pelayanan BPJS	BPJSHistoriPelayanan	tidak	ditunda	bridging
+L	btnCekBPJSDiagnosa	Referensi Diagnosa VClaim	BPJSCekReferensiPenyakit	tidak	ditunda	bridging
+L	btnCekBPJSPoli	Referensi Poli VClaim	BPJSCekReferensiPoli	tidak	ditunda	bridging
+L	btnMapingPoliBPJS	Mapping Poli VClaim	BPJSMapingPoli	ya	ditunda	bridging
+L	btnCekBPJSFaskes	Referensi Faskes VClaim	BPJSCekReferensiFaskes	tidak	ditunda	bridging
+L	btnCekReferensiProsedurBPJS	Referensi Prosedur VClaim	BPJSCekReferensiProsedur	tidak	ditunda	bridging
+L	btnCekReferensiKelasRawatBPJS	Referensi Kelas Rawat VClaim	BPJSCekReferensiKelasRawat	tidak	ditunda	bridging
+L	btnCekReferensiDokterBPJS	Referensi Dokter VClaim	BPJSCekReferensiDokter	tidak	ditunda	bridging
+L	btnCekReferensiSpesialistikBPJS	Referensi Spesialistik VClaim	BPJSCekReferensiSpesialistik	tidak	ditunda	bridging
+L	btnCekReferensiRuangRawatBPJS	Referensi Ruang Rawat VClaim	BPJSCekReferensiRuangRawat	tidak	ditunda	bridging
+L	btnCekReferensiCaraKeluarBPJS	Referensi Cara Keluar VClaim	BPJSCekReferensiCaraKeluar	tidak	ditunda	bridging
+L	btnCekReferensiPascaPulangBPJS	Referensi Pasca Pulang VClaim	BPJSCekReferensiPascaPulang	tidak	ditunda	bridging
+L	btnCekReferensiPropinsiBPJS	Referensi Propinsi VClaim	BPJSCekReferensiPropinsi	tidak	ditunda	bridging
+L	btnCekReferensiKabupatenBPJS	Referensi Kabupaten VClaim	BPJSCekReferensiKabupaten	tidak	ditunda	bridging
+L	btnCekReferensiKecamatanBPJS	Referensi Kecamatan VClaim	BPJSCekReferensiKecamatan	tidak	ditunda	bridging
+L	btnCekReferensiDokterDPJPBPJS	Referensi Dokter DPJP VClaim	BPJSCekReferensiDokterDPJP	tidak	ditunda	bridging
+L	btnBPJSReferensiDiagnosaPRB	Referensi Diagnosa PRB VClaim	BPJSCekReferensiDiagnosaPRB	tidak	ditunda	bridging
+L	btnBPJSReferensiObatPRB	Referensi Obat PRB VClaim	BPJSCekReferensiObatPRB	tidak	ditunda	bridging
+L	btnBPJSProgramPRB	Program PRB di VClaim	BPJSProgramPRB	ya	ditunda	bridging
+L	btnBPJSPotensiPRB	Potensi PRB di VClaim	BPJSPotensiPRB	tidak	ditunda	bridging
+L	btnMappingDokterDPJPVClaim	Mapping Dokter DPJP VClaim	BPJSMapingDokterDPJP	ya	ditunda	bridging
+L	btnBPJSSEP	Data Bridging SEP VClaim	BPJSDataSEP	ya	ditunda	bridging
+L	btnCekSEP	Cek Nomor SEP	BPJSCekDetailSEP2	tidak	ditunda	bridging
+L	btnRujukanKeluarBPJS	Data Rujukan Keluar VClaim	BPJSRujukanKeluar	ya	ditunda	bridging
+L	btnMonitoringKlaim	Monitoring Verifikasi Klaim BPJS	BPJSMonitoringKlaim	tidak	ditunda	bridging
+L	btnBPJSSuratKontrol	Surat Kontrol VClaim	BPJSSuratKontrol	ya	ditunda	bridging
+L	btnBPJSSuratPRI	Surat PRI VClaim	BPJSSPRI	ya	ditunda	bridging
+L	btnBPJSSuplesiJasaRaharja	Suplesi Jasa Raharja di VClaim	BPJSCekSuplesiJasaRaharja	tidak	ditunda	bridging
+L	btnBPJSDataIndukKecelakaan	Data Induk Kecelakaan VClaim	BPJSCekDataIndukKecelakaan	tidak	ditunda	bridging
+L	btnBPJSDataSEPInternal	Data SEP Internal VClaim	BPJSCekDataSEPInternal	tidak	ditunda	bridging
+L	btnBPJSKlaimJasaRaharja	Klaim Jaminan Jasa Raharja VClaim	BPJSCekKlaimJasaRaharja	tidak	ditunda	bridging
+L	btnBPJSPasienFinger	Pasien Finger Print VClaim	BPJSDataFingerPrintPasien	tidak	ditunda	bridging
+L	btnBPJSRujukanKhusus	Rujukan Khusus VClaim	BPJSRujukanKhusus	ya	ditunda	bridging
+L	btnBPJSReferensiPoliHFIS	Referensi Poli HFIS	BPJSCekReferensiPoliHFIS	tidak	ditunda	bridging
+L	btnBPJSReferensiDokterHFIS	Referensi Dokter HFIS	BPJSCekReferensiDokterHFIS	tidak	ditunda	bridging
+L	btnBPJSReferensiJadwalHFIS	Referensi Jadwal HFIS	BPJSCekReferensiJadwalHFIS	tidak	ditunda	bridging
+L	btnBPJSTaskIDMobileJKN	Task ID Mobile JKN	BPJSTaskIDMobileJKN	tidak	ditunda	bridging
+L	btnBPJSAntreanPerTanggalMobileJKN	Antrean Per Tanggal Mobile JKN	BPJSAntreanPerTanggal	tidak	ditunda	bridging
+L	btnBPJSReferensiDPHOApotek	Referensi DPHO Apotek BPJS	ApotekBPJSCekReferensiDPHO	tidak	ditunda	bridging
+L	btnBPJSReferensiPoliApotek	Referensi Poli Apotek BPJS	ApotekBPJSCekReferensiPoli	tidak	ditunda	bridging
+L	btnBPJSReferensiFaskesApotek	Referensi Faskes Apotek BPJS	ApotekBPJSCekReferensiFaskes	tidak	ditunda	bridging
+L	btnBPJSReferensiSpesialistikApotek	Referensi Spesialistik Apotek BPJS	ApotekBPJSCekReferensiSpesialistik	tidak	ditunda	bridging
+L	btnBPJSReferensiSettingPPKApotek	Referensi Setting PPK Apotek BPJS	ApotekBPJSCekReferensiSettingPPK	tidak	ditunda	bridging
+L	btnBPJSReferensiObatApotek	Referensi Obat Apotek BPJS	ApotekBPJSCekReferensiObat	tidak	ditunda	bridging
+L	btnBPJSMapingObatApotek	Mapping Obat Apotek BPJS	ApotekBPJSMapingObat	ya	ditunda	bridging
+L	btnBPJSKunjunganSEPApotek	Pencarian SEP Apotek BPJS	ApotekBPJSKunjunganSEP	tidak	ditunda	bridging
+L	btnBPJSMonitoringKlaimApotek	Monitoring Klaim Apotek BPJS	ApotekBPJSMonitoringKlaim	tidak	ditunda	bridging
+L	btnBPJSDaftarPelayananObatApotek	Daftar Pelayanan Obat Apotek BPJS	ApotekBPJSDaftarPelayananObat	tidak	ditunda	bridging
+L	btnBPJSRiwayatPelayananObatApotek	Riwayat Pelayanan Obat Apotek BPJS	ApotekBPJSRiwayatPelayananObat	tidak	ditunda	bridging
+L	btnBPJSRekapPesertaPRBObatApotek	Rekap Peserta PRB Apotek BPJS	ApotekBPJSRekapPesertaPRB	tidak	ditunda	bridging
+L	btnBPJSResepObatApotek	Resep Obat Apotek BPJS	ApotekBPJSResepObat	tidak	ditunda	bridging
+L	btnObatApolApotekBPJS	Obat ApOL Apotek BPJS	ApotekBPJSDaftarResepObat	ya	ditunda	bridging
+L	btnPermintaanResepIterasiApotekBPJS	Permintaan Resep Iterasi Apotek BPJS	ApotekBPJSDaftarPermintaanResepIterasi	tidak	ditunda	bridging
+L	btnMappingProsedurSmartKlaimBPJS	Mapping Prosedur Smart Klaim BPJS	SmartKlaimBPJSMappingProsedur	ya	ditunda	bridging
+L	btnMappingPenyakitSmartKlaimBPJS	Mapping Penyakit Smart Klaim BPJS	SmartKlaimBPJSMappingPenyakit	ya	ditunda	bridging
+L	btnKirimFHIRSmartKlaimBPJS	Kirim FHIR Smart Klaim BPJS	SmartKlaimBPJSKirimFHIR	ya	ditunda	bridging
+L	btnRiwayatPerawatanICare	Riwayat Perawatan ICare BPJS	ICareRiwayatPerawatan	tidak	ditunda	bridging
+L	btnReklasifikasiRalan	Reklasifikasi Ralan	ReklasifikasiRalan	tidak	ditunda	bridging
+L	btnReklasifikasiRanap	Reklasifikasi Ranap	ReklasifikasiRanap	tidak	ditunda	bridging
+L	btnAplicareReferensiKamar	Referensi Kamar Aplicare	AplicareCekReferensiKamar	tidak	ditunda	bridging
+L	btnAplicareKetersediaanKamar	Ketersediaan Kamar Aplicare	AplicareKetersediaanKamar	ya	ditunda	bridging
+L	btnInaCBGCoderNIK	Coder NIK INACBG	INACBGCoderNIK	ya	ditunda	bridging
+L	btnInaCBGKlaimBaruOtomatis	Klaim Baru Otomatis INACBG		?	ditunda	
+L	btnInaCBGKlaimBaruManual	Klaim Baru Manual INACBG		?	ditunda	
+L	btnInaCBGKlaimBaruManual2	Klaim Baru Manual INACBG 2		?	ditunda	
+L	btnReferensiKamarInhealth	Referensi Ruang Rawat Inhealth	InhealthReferensiJenpelRuang	ya	ditunda	bridging
+L	btnCekInhealthPoli	Referensi Poli Inhealth	InhealthCekReferensiPoli	tidak	ditunda	bridging
+L	btnMappingPoliInhealth	Mapping Poli Inhealth	InhealthMapingPoli	ya	ditunda	bridging
+L	btnMappingDokterInhealth	Mapping Dokter Inhealth	InhealthMapingDokter	ya	ditunda	bridging
+L	btnMappingTindakanRalanInhealth	Tarif Ralan Inhealth	InhealthTindakanRalan	ya	ditunda	bridging
+L	btnMappingTindakanRanapInhealth	Tarif Ranap Inhealth	InhealthTindakanRanap	ya	ditunda	bridging
+L	btnMappingTindakanRadiologiInhealth	Tarif Radiologi Inhealth	InhealthTindakanRadiologi	ya	ditunda	bridging
+L	btnMappingTindakanLaboratInhealth	Tarif Laborat Inhealth	InhealthTindakanLaborat	ya	ditunda	bridging
+L	btnMappingTindakanOperasiInhealth	Tarif Operasi Inhealth	InhealthTindakanOperasi	ya	ditunda	bridging
+L	btnCekInhealthFaskes	Referensi Faskes Inhealth	InhealthCekReferensiFaskes	tidak	ditunda	bridging
+L	btnCekEligibilitasInhealth	Cek Eligibilitas Inhealth	InhealthCekEligibilitas	ya	ditunda	bridging
+L	btnInhealthSJP	Data Bridging SJP Inhealth	InhealthDataSJP	ya	ditunda	bridging
+L	btnKirimTagihanInheath	Tagihan Inhealth	InhealthTagihan	tidak	ditunda	bridging
+L	btnCekPCareDiagnosa	Referensi Diagnosa PCare	PCareCekReferensiPenyakit	tidak	ditunda	bridging
+L	btnCekPCareKesadaran	Referensi Kesadaran PCare	PCareCekReferensiKesadaran	tidak	ditunda	bridging
+L	btnPCareReferensiDokter	Referensi Dokter PCare	PCareCekReferensiDokter	tidak	ditunda	bridging
+L	btnPCareReferensiPoli	Referensi Poli PCare	PCareCekReferensiPoli	tidak	ditunda	bridging
+L	btnPCareReferensiProvider	Referensi Provider PCare	PCareCekReferensiProvider	tidak	ditunda	bridging
+L	btnPCareReferensiStatusPulang	Referensi Stts Pulang PCare	PCareCekReferensiStatusPulang	tidak	ditunda	bridging
+L	btnPCareReferensiSpesialis	Referensi Spesialis PCare	PCareCekReferensiSpesialis	tidak	ditunda	bridging
+L	btnPCareReferensiSubspesialis	Referensi Subspesialis PCare	PCareCekReferensiSubspesialis	tidak	ditunda	bridging
+L	btnPCareReferensiSarana	Referensi Sarana PCare	PCareCekReferensiSarana	tidak	ditunda	bridging
+L	btnPCareReferensiAlergi	Referensi Alergi PCare	PCareCekReferensiAlergi	tidak	ditunda	bridging
+L	btnPCareReferensiPrognosa	Referensi Prognosa PCare	PCareCekReferensiPrognosa	tidak	ditunda	bridging
+L	btnPCareReferensiKhusus	Referensi Khusus PCare	PCareCekReferensiKhusus	tidak	ditunda	bridging
+L	btnPCareReferensiObat	Referensi Obat PCare	PCareCekReferensiObat	tidak	ditunda	bridging
+L	btnPCareReferensiTindakan	Referensi Tindakan PCare	PCareCekReferensiTindakan	tidak	ditunda	bridging
+L	btnCekPCareTACC	Referensi TACC PCare	PCareCekReferensiTACC	tidak	ditunda	bridging
+L	btnPCareFaskesSubspesialis	Faskes Subspesialis PCare	PCareCekFaskesSubspesialis	tidak	ditunda	bridging
+L	btnPCareFaskesAlihRawat	Faskes Alih Rawat PCare	PCareCekFaskesAlihRawat	tidak	ditunda	bridging
+L	btnPCareFaskesThalasemia	Faskes Thalasemia & Hemofili PCare	PCareCekFaskesThalasemia	tidak	ditunda	bridging
+L	btnPCareMapingObat	Mapping Obat PCare	PCareMapingObat	ya	ditunda	bridging
+L	btnPCareMapingTindakan	Tarif Ralan PCare	PCareMapingTindakanRalan	ya	ditunda	bridging
+L	btnPCareMapingTindakanRanap	Tarif Ranap PCare	PCareMapingTindakanRanap	ya	ditunda	bridging
+L	btnPCareMapingDokter	Mapping Dokter PCare	PCareMapingDokter	ya	ditunda	bridging
+L	btnPCareMapingPoli	Mapping Poli PCare	PCareMapingPoli	ya	ditunda	bridging
+L	btnPCareClubProlanis	Club Prolanis PCare	PCareClubProlanis	tidak	ditunda	bridging
+L	btnPCareKegiatanKelompok	Kegiatan Kelompok PCare	PCareKegiatanKelompok	ya	ditunda	bridging
+L	btnPCarePesertaKegiatanKelompok	Peserta Keg Kelompok PCare	PCarePesertaKegiatanKelompok	ya	ditunda	bridging
+L	btnPCareCekKartu	Cek No.Kartu PCare	PCareCekKartu	ya	ditunda	bridging
+L	btnPCarePendaftaran	Data Pendaftaran PCare	PCareDataPendaftaran	ya	ditunda	bridging
+L	btnCekPCareRujukan	Cek Rujukan PCare	PCareCekRujukan	tidak	ditunda	bridging
+L	btnPCareBeriObat	Pemberian Obat PCare	PCareDataPemberianObat	ya	ditunda	bridging
+L	btnPCareBeriTindakan	Pemberian Tindakan PCare	PCareDataPemberianTindakan	ya	ditunda	bridging
+L	btnCekSisruteFaskes	Referensi Faskes Sisrute	SisruteCekReferensiFaskes	tidak	ditunda	bridging
+L	btnCekSisruteAlasanRujuk	Referensi Alasan Rujuk Sisrute	SisruteCekReferensiAlasanRujuk	tidak	ditunda	bridging
+L	btnCekSisruteDiagnosa	Referensi Diagnosa Sisrute	SisruteCekReferensiDiagnosa	tidak	ditunda	bridging
+L	btnRujukanMasukSisrute	Rujukan Masuk Sisrute	SisruteRujukanMasukan	tidak	ditunda	bridging
+L	btnRujukanKeluarSisrute	Rujukan Keluar Sisrute	SisruteRujukanKeluar	ya	ditunda	bridging
+L	btnSiranapKetersediaanKamar	Ketersediaan Kamar SIRANAP	SiranapKetersediaanKamar	ya	ditunda	bridging
+L	btnPasienCorona	Pasien Corona	CoronaPasien	ya	ditunda	bridging
+L	btnDiagnosaPasienCorona	Diagnosa Pasien Corona	CoronaDiagnosa	ya	ditunda	bridging
+L	btnPerawatanPasienCorona	Perawatan Pasien Corona	INACBGPerawatanCorona	ya	ditunda	bridging
+L	btnReferensiPendaftaranMobileJKN	Referensi Pendaftaran Mobile JKN	MobileJKNReferensiPendaftaran	ya	ditunda	bridging
+L	btnBatalPendaftaranMobileJKN	Batal Pendaftaran Mobile JKN	MobileJKNPembatalanPendaftaran	ya	ditunda	bridging
+L	btnAkunRekeningHtHBankJateng	Host To Host Bank Jateng	AkunRekeningBankJateng	ya	ditunda	bridging
+L	btnAkunRekeningHtHBankJabar	Host To Host Bank Jabar	AkunRekeningBankJabar	ya	ditunda	bridging
+L	btnIntegrasiBRIApi	Integrasi BRI API	BRIApiIntegrasi	ya	ditunda	bridging
+L	btnAkunRekeningHtHBankPapua	Host To Host Bank Papua	AkunRekeningBankPapua	ya	ditunda	bridging
+L	btnHostToHostBankMandiri	Host To Host Bank Mandiri	AkunRekeningBankMandiri	ya	ditunda	bridging
+L	btnMandiriMetodePembayaran	Metode Pembayaran Bank Mandiri	MandiriMetodePembayaran	ya	ditunda	bridging
+L	btnMandiriBankTujuanTRansfer	Bank Tujuan Transfer Bank Mandiri	MandiriBankTujuanTransfer	ya	ditunda	bridging
+L	btnMandiriKodeTransaksiTujuanTRansfer	Kode Transaksi Tujuan Transfer Bank Mandiri	MandiriKodeTransaksiTujuanTransfer	ya	ditunda	bridging
+L	btnReferensiDokterSatuSehat	Referensi Praktisi Satu Sehat	SatuSehatReferensiPraktisi	tidak	ditunda	bridging
+L	btnReferensiPasienSatuSehat	Referensi Pasien Satu Sehat	SatuSehatReferensiPasien	tidak	ditunda	bridging
+L	btnMappingOrganisasiSatuSehat	Mapping Organisasi Satu Sehat	SatuSehatMapingOrganisasi	ya	ditunda	bridging
+L	btnMappingLokasiSatuSehat	Mapping Lokasi Satu Sehat	SatuSehatMapingLokasi	ya	ditunda	bridging
+L	btnMappingVaksinSatuSehat	Mapping Vaksin Satu Sehat	SatuSehatMapingVaksin	ya	ditunda	bridging
+L	btnKirimEncounterSatuSehat	Kirim Encounter Satu Sehat	SatuSehatKirimEncounter	ya	ditunda	bridging
+L	btnKirimConditionSatuSehat	Kirim Condition Satu Sehat	SatuSehatKirimCondition	ya	ditunda	bridging
+L	btnKirimObservationTTVSatuSehat	Kirim Observation-TTV Satu Sehat	SatuSehatKirimObservationTTV	ya	ditunda	bridging
+L	btnKirimProcedureSatuSehat	Kirim Procedure Satu Sehat	SatuSehatKirimProcedure	ya	ditunda	bridging
+L	btnKirimVaksinSatuSehat	Kirim Imunisasi Satu Sehat	SatuSehatKirimVaksin	ya	ditunda	bridging
+L	btnKirimClinicalImpressionSatuSehat	Kirim Clinical Impression Satu Sehat	SatuSehatKirimClinicalImpression	ya	ditunda	bridging
+L	btnKirimDietSatuSehat	Kirim Diet Satu Sehat	SatuSehatKirimDiet	ya	ditunda	bridging
+L	btnMappingObatSatuSehat	Mapping Obat/Alkes/BHP Satu Sehat	SatuSehatMapingObatAlkes	ya	ditunda	bridging
+L	btnKirimMedicationSatuSehat	Kirim Medication Satu Sehat	SatuSehatKirimMedication	ya	ditunda	bridging
+L	btnKirimMedicationRequestSatuSehat	Kirim Medication Request Satu Sehat	SatuSehatKirimMedicationRequest	ya	ditunda	bridging
+L	btnKirimMedicationDispenseSatuSehat	Kirim Medication Dispense Satu Sehat	SatuSehatKirimMedicationDispense	ya	ditunda	bridging
+L	btnKirimMedicationStatementSatuSehat	Kirim Medication Statement Satu Sehat	SatuSehatKirimMedicationStatement	ya	ditunda	bridging
+L	btnKirimQRTelaahFarmasiSatuSehat	Kirim Q.R. Telaah Farmasi Satu Sehat	SatuSehatKirimQRTelaahFarmasi	ya	ditunda	bridging
+L	btnKirimAllergiSatuSehat	Kirim Allergy Intolerance Satu Sehat	SatuSehatKirimAllergyIntolerance	ya	ditunda	bridging
+L	btnMapingTarifTindakanRalanKPTLSatuSehat	Mapping Tindakan Ralan KPTL Satu Sehat	SatuSehatMapingTindakanRalanKPTL	ya	ditunda	bridging
+L	btnMapingTarifTindakanRanapKPTLSatuSehat	Mapping Tindakan Ranap KPTL Satu Sehat	SatuSehatMapingTindakanRanapKPTL	ya	ditunda	bridging
+L	btnMapingTarifTindakanRadiologiKPTLSatuSehat	Mapping Tindakan Radiologi KPTL Satu Sehat	SatuSehatMapingTindakanRadiologiKPTL	ya	ditunda	bridging
+L	btnMapingTarifTindakanLabKPTLSatuSehat	Mapping Tindakan Lab KPTL Satu Sehat	SatuSehatMapingTindakanLaboratKPTL	ya	ditunda	bridging
+L	btnMapingTarifTindakanOperasiKPTLSatuSehat	Mapping Tindakan Operasi KPTL Satu Sehat	SatuSehatMapingTindakanOperasiKPTL	ya	ditunda	bridging
+L	btnMapingTarifKamarKPTLSatuSehat	Mapping Tarif Kamar KPTL Satu Sehat	SatuSehatMapingTarifKamarKPTL	ya	ditunda	bridging
+L	btnBridgingCompositionRMESatuSehat	Kirim Composition Satu Sehat	SatuSehatKirimCompositionRME	ya	ditunda	bridging
+L	btnBridgingTTESatuSehat	Bridging TTE Satu Sehat	SatuSehatBridgingTTE	tidak	ditunda	bridging
+L	btnMappingRadiologiSatuSehat	Mapping Tindakan Radiologi Satu Sehat	SatuSehatMapingRadiologi	ya	ditunda	bridging
+L	btnMappingLaboratSatuSehat	Mapping Tindakan Lab PK & MB Satu Sehat	SatuSehatMapingLaborat	ya	ditunda	bridging
+L	btnKirimServiceRequestRadiologiSatuSehat	Kirim Service Request Radiologi Satu Sehat	SatuSehatKirimServiceRequestRadiologi	ya	ditunda	bridging
+L	btnKirimSpecimenRadiologiSatuSehat	Kirim Specimen Radiologi Satu Sehat	SatuSehatKirimSpecimenRadiologi	ya	ditunda	bridging
+L	btnKirimObservationRadiologiSatuSehat	Kirim Observation Radiologi Satu Sehat	SatuSehatKirimObservationRadiologi	ya	ditunda	bridging
+L	btnKirimDiagnosticReportSatuSehat	Kirim Diagnostic Report Radiologi Satu Sehat	SatuSehatKirimDiagnosticReportRadiologi	ya	ditunda	bridging
+L	btnKirimServiceRequestLabPKSatuSehat	Kirim Service Request Lab PK Satu Sehat	SatuSehatKirimServiceRequestLabPK	ya	ditunda	bridging
+L	btnKirimSpecimenLabPKSatuSehat	Kirim Specimen Lab PK Satu Sehat	SatuSehatKirimSpecimenLabPK	ya	ditunda	bridging
+L	btnKirimObservationLabPKSatuSehat	Kirim Observation Lab PK Satu Sehat	SatuSehatKirimObservationLabPK	ya	ditunda	bridging
+L	btnKirimDiagnosticReportLabPKSatuSehat	Kirim Diagnostic Report Lab PK Satu Sehat	SatuSehatKirimDiagnosticReportLabPK	ya	ditunda	bridging
+L	btnKirimServiceRequestLabMBSatuSehat	Kirim Service Request Lab MB Satu Sehat	SatuSehatKirimServiceRequestLabMB	ya	ditunda	bridging
+L	btnKirimSpecimenLabMBSatuSehat	Kirim Specimen Lab MB Satu Sehat	SatuSehatKirimSpecimenLabMB	ya	ditunda	bridging
+L	btnKirimObservationLabMBSatuSehat	Kirim Observation Lab MB Satu Sehat	SatuSehatKirimObservationLabMB	ya	ditunda	bridging
+L	btnKirimDiagnosticReportLabMBSatuSehat	Kirim Diagnostic Report Lab MB Satu Sehat	SatuSehatKirimDiagnosticReportLabMB	ya	ditunda	bridging
+L	btnKirimCarePlanSatuSehat	Kirim Care Plan Satu Sehat	SatuSehatKirimCarePlan	ya	ditunda	bridging
+L	btnReferensiPoliMobileJKNFKTP	Referensi Poli Mobile JKN FKTP	MobileJKNFKTPReferensiPoli	tidak	ditunda	bridging
+L	btnReferensiDokterMobileJKNFKTP	Referensi Dokter Mobile JKN FKTP	MobileJKNFKTPReferensiDokter	tidak	ditunda	bridging
+L	btnRekapKeluarDutaParking	Rekap Keluar Duta Parking	DutaParkingRekapKeluar	tidak	ditunda	bridging
+M	btnPerusahaan	Instansi/Perusahaan Pasien	DlgPerusahaan	ya	master	tulis sebagian
+M	btnSuku	Suku/Bangsa Pasien	DlgSuku	ya	master	tulis sebagian
+M	btnBahasa	Bahasa Pasien	DlgBahasa	ya	master	tulis sebagian
+M	btnGolonganTNI	Golongan TNI	DlgGolonganTNI	ya	master	tulis sebagian
+M	btnSatuanTNI	Satuan TNI	DlgSatuanTNI	ya	master	tulis sebagian
+M	btnJabatanTNI	Jabatan TNI	DlgJabatanTNI	ya	master	tulis sebagian
+M	btnPangkatTNI	Pangkat TNI	DlgPangkatTNI	ya	master	tulis sebagian
+M	btnGolonganPolri	Golongan POLRI	DlgGolonganPolri	ya	master	tulis sebagian
+M	btnSatuanPolri	Satuan POLRI	DlgSatuanPolri	ya	master	tulis sebagian
+M	btnJabatanPolri	Jabatan POLRI	DlgJabatanPolri	ya	master	tulis sebagian
+M	btnPangkatPolri	Pangkat POLRI	DlgPangkatPolri	ya	master	tulis sebagian
+M	btnCacatFisik	Cacat Fisik	DlgCacatFisik	ya	master	tulis sebagian
+M	btnPasien	Pasien	DlgPasien	ya	khusus	tulis sebagian
+M	btnLahir	Kelahiran Bayi	DlgIKBBayi	ya	baca saja	tulis sebagian
+M	btnCatatanPasien	Catatan Pasien	DlgLhtCatatanPasien	tidak	baca saja	baca ada
+M	btnPasienMati	Pasien Meninggal	DlgPasienMati	ya	baca saja	tulis ada
+M	btnDiagnosa	Diagnosa Pasien	DlgDiagnosaPenyakit	tidak	baca saja	baca ada
+M	btnInsidenKeselamatan	Insiden Keselamatan	DlgInsidenKeselamatan	ya	master	tulis sebagian
+M	btnDataHAIs	Data HAIs	DlgDataHAIs	ya	baca saja	hanya baca
+M	btnKlasifikasiPasienRanap	Klasifikasi Pasien Ranap	DlgDataKlasifikasiPasienRanap	ya	baca saja	hanya baca
+M	btnSOAPPerawatan	SOAP Perawatan	DlgSOAPPerawatan	tidak	baca saja	baca ada
+M	btnSOAPRalanAnggotaPolri	SOAP Ralan Anggota POLRI	DlgSOAPRalanAggotaPolri	tidak	baca saja	baca ada
+M	btnSOAPRanapAnggotaPolri	SOAP Ranap Anggota POLRI	DlgSOAPRanapAggotaPolri	tidak	baca saja	baca ada
+M	btnSOAPRalanAnggotaTNI	SOAP Ralan Anggota TNI	DlgSOAPRalanAggotaTNI	tidak	baca saja	baca ada
+M	btnSOAPRanapAnggotaTNI	SOAP Ranap Anggota TNI	DlgSOAPRanapAggotaTNI	tidak	baca saja	baca ada
+M	btnRiwayatKamarPasien	Riwayat Kamar Pasien	RMRiwayatKamarPasien	tidak	baca saja	baca ada
+M	btnInsidenKeselamatanPasien	Data Insiden Keselamatan	DlgDataInsidenKeselamatan	ya	baca saja	hanya baca
+M	btnSirkulasiBerkas	Peminjaman Berkas RM	DlgSirkulasiBerkas	ya	baca saja	hanya baca
+M	btnResume	Riwayat Perawatan	RMRiwayatPerawatan	tidak	baca saja	baca sebagian
+M	btnRetensiRM	Retensi Berkas R.M.	DlgRetensi	tidak	baca saja	tanpa data
+M	btnMutasiBerkas	Mutasi Berkas RM	DlgMutasiBerkas	tidak	baca saja	tanpa data
+M	btnBerkasDigitalPerawatan	Berkas Digital Perawatan	DlgBerkasRawat	tidak	baca saja	baca sebagian
+M	btnPengaduan	Pengaduan/Chat		?	baca saja	
+M	btnMasterTriasePemeriksaan	Master Triase Pemeriksaan	MasterTriasePemeriksaan	ya	master	tulis ada
+M	btnMasterTriaseMacamKasus	Master Triase Macam Kasus	MasterTriaseMacamKasus	ya	master	tulis ada
+M	btnMasterTriaseSkala1	Master Triase Skala 1	MasterTriaseSkala1	ya	master	tulis ada
+M	btnMasterTriaseSkala2	Master Triase Skala 2	MasterTriaseSkala2	ya	master	tulis ada
+M	btnMasterTriaseSkala3	Master Triase Skala 3	MasterTriaseSkala3	ya	master	tulis ada
+M	btnMasterTriaseSkala4	Master Triase Skala 4	MasterTriaseSkala4	ya	master	tulis ada
+M	btnMasterTriaseSkala5	Master Triase Skala 5	MasterTriaseSkala5	ya	master	tulis ada
+M	btnDataTriaseIGD	Data Triase IGD	RMTriaseIGD	ya	baca saja	tulis sebagian
+M	btnResumePasien	Resume Pasien Ralan	RMDataResumePasien	ya	baca saja	tulis sebagian
+M	btnResumePasienRanap	Resume Pasien Ranap	RMDataResumePasienRanap	ya	baca saja	tulis sebagian
+M	btnSkriningGiziLanjut	Skrining Gizi Lanjut	RMDataSkriningGiziLanjut	ya	formulir	tulis ada
+M	btnAsuhanGizi	Asuhan Gizi	RMDataAsuhanGizi	ya	baca saja	hanya baca
+M	btnMonitoringAsuhanGizi	Monitoring Asuhan Gizi	RMDataMonitoringAsuhanGizi	ya	baca saja	hanya baca
+M	btnCatatanADIMEGizi	Catatan ADIME Gizi	RMCatatanADIMEGizi	ya	baca saja	hanya baca
+M	btnSkriningNutrisiDewasa	Skrining Nutrisi Pasien Dewasa	RMSkriningNutrisiDewasa	ya	baca saja	hanya baca
+M	btnSkriningNutrisiLansia	Skrining Nutrisi Pasien Lansia	RMSkriningNutrisiLansia	ya	baca saja	hanya baca
+M	btnSkriningNutrisiAnak	Skrining Nutrisi Pasien Anak	RMSkriningNutrisiAnak	ya	baca saja	hanya baca
+M	btnSkriningGiziKehamilan	Skrining Gizi Kehamilan	RMDataSkriningGiziKehamilan	ya	baca saja	hanya baca
+M	btnMasterTemplateHasilRadiologi	Master Template Hasil Radiologi	MasterTemplateHasilRadiologi	ya	master	tulis ada
+M	btnMasterTemplateLaporanOperasi	Master Template Laporan Operasi	MasterTemplateLaporanOperasi	ya	master	tulis ada
+M	btnMasterTemplatePemeriksaanDokter	Master Template Pemeriksaan	MasterTemplatePemeriksaanDokter	ya	master	tulis sebagian
+M	btnMasterTemplateInformasiEdukasi	Master Template Informasi & Edukasi	MasterTemplateInformasiEdukasi	ya	master	tulis ada
+M	btnMasterMasalahKeperawatan	Master Masalah Keperawatan	MasterMasalahKeperawatan	ya	master	tulis ada
+M	btnMasterRencanaKeperawatan	Master Rencana Keperawatan	MasterRencanaKeperawatan	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanGigi	Master Masalah Keperawatan Gigi	MasterMasalahKeperawatanGigi	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanGigi	Master Rencana Keperawatan Gigi	MasterRencanaKeperawatanGigi	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanAnak	Master Masalah Keperawatan Bayi/Anak	MasterMasalahKeperawatanAnak	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanAnak	Master Rencana Keperawatan Bayi/Anak	MasterRencanaKeperawatanAnak	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanMata	Master Masalah Keperawatan Mata	MasterMasalahKeperawatanMata	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanMata	Master Rencana Keperawatan Mata	MasterRencanaKeperawatanMata	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanIGD	Master Masalah Keperawatan IGD	MasterMasalahKeperawatanIGD	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanIGD	Master Rencana Keperawatan IGD	MasterRencanaKeperawatanIGD	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanPsikiatri	Master Masalah Keperawatan Psikiatri	MasterMasalahKeperawatanPsikiatri	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanPsikiatri	Master Rencana Keperawatan Psikiatri	MasterRencanaKeperawatanPsikiatri	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanGeriatri	Master Masalah Keperawatan Geriatri	MasterMasalahKeperawatanGeriatri	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanGeriatri	Master Rencana Keperawatan Geriatri	MasterRencanaKeperawatanGeriatri	ya	master	tulis ada
+M	btnMasterMasalahKeperawatanNeonatus	Master Masalah Keperawatan Neonatus	MasterMasalahKeperawatanNeonatus	ya	master	tulis ada
+M	btnMasterRencanaKeperawatanNeonatus	Master Rencana Keperawatan Neonatus	MasterRencanaKeperawatanNeonatus	ya	master	tulis ada
+M	btnMasterImunisasi	Master Imunisasi	MasterImunisasi	ya	master	tulis ada
+M	btnPenilaianAwalKeperawatanRalan	Awal Keperawatan Ralan Umum	RMPenilaianAwalKeperawatanRalan	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanRanap	Awal Keperawatan Ranap Umum	RMPenilaianAwalKeperawatanRanap	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanIGD	Awal Keperawatan IGD	RMPenilaianAwalKeperawatanIGD	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanGigi	Awal Keperawatan Gigi	RMPenilaianAwalKeperawatanGigi	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanKebidanan	Awal Keperawatan Ralan Kebidanan	RMPenilaianAwalKeperawatanKebidanan	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanKebidananRanap	Awal Keperawatan Ranap Kebidanan	RMPenilaianAwalKeperawatanKebidananRanap	ya	baca saja	hanya baca
+M	btnPenilaianAwalRalanBayi	Awal Keperawatan Ralan Bayi/Anak	RMPenilaianAwalKeperawatanBayiAnak	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanRanapBayiAnak	Awal Keperawatan Ranap Bayi/Anak	RMPenilaianAwalKeperawatanRanapBayiAnak	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanRalanPsikiatri	Awal Keperawatan Ralan Psikiatri	RMPenilaianAwalKeperawatanRalanPsikiatri	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanRalanGeriatri	Awal Keperawatan Ralan Geriatri	RMPenilaianAwalKeperawatanRalanGeriatri	ya	baca saja	hanya baca
+M	btnPenilaianAwalKeperawatanRanapNeonatus	Awal Keperawatan Ranap Neonatus	RMPenilaianAwalKeperawatanRanapNeonatus	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisIGD	Awal Medis IGD	RMPenilaianAwalMedisIGD	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanIGDPsikiatri	Awal Medis IGD Psikiatri	RMPenilaianAwalMedisIGDPsikiatri	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalan	Awal Medis Ralan Umum	RMPenilaianAwalMedisRalanDewasa	ya	formulir	tulis ada
+M	btnPenilaianAwalMedisRanap	Awal Medis Ranap Umum	RMPenilaianAwalMedisRanapDewasa	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRanapNeonatus	Awal Medis Ranap Neonatus	RMPenilaianAwalMedisRanapNeonatus	ya	baca saja	hanya baca
+M	btnPenilaianBayiBaruLahir	Pengkajian Bayi Baru Lahir	RMPenilaianBayiBaruLahir	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanBayi	Awal Medis Ralan Bayi/Anak	RMPenilaianAwalMedisRalanAnak	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanKandungan	Awal Medis Ralan Kandungan	RMPenilaianAwalMedisRalanKandungan	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRanapKandungan	Awal Medis Ranap Kandungan	RMPenilaianAwalMedisRanapKandungan	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanJantung	Awal Medis Ralan Jantung	RMPenilaianAwalMedisRalanJantung	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRanapJantung	Awal Medis Ranap Jantung	RMPenilaianAwalMedisRanapJantung	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanUrologi	Awal Medis Ralan Urologi	RMPenilaianAwalMedisRalanUrologi	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanUSG	Hasil USG Kandungan	RMHasilPemeriksaanUSG	ya	baca saja	hanya baca
+M	btnHasilUSGUrologi	Hasil USG Urologi	RMHasilPemeriksaanUSGUrologi	ya	baca saja	hanya baca
+M	btnHasilUSGGynecologi	Hasil USG Gynecologi	RMHasilPemeriksaanUSGGynecologi	ya	baca saja	hanya baca
+M	btnHasilUSGNeonatus	Hasil USG Neonatus	RMHasilPemeriksaanUSGNeonatus	ya	baca saja	hanya baca
+M	btnHasilUSGAbdomen	Hasil USG Abdomen	RMHasilPemeriksaanUSGAbdomen	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanTHT	Awal Medis Ralan THT	RMPenilaianAwalMedisRalanTHT	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanPsikiatri	Awal Medis Ralan Psikiatri	RMPenilaianAwalMedisRalanPsikiatrik	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRanapPsikiatri	Awal Medis Ranap Psikiatri	RMPenilaianAwalMedisRanapPsikiatrik	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanPenyakitDalam	Awal Medis Ralan Penyakit Dalam	RMPenilaianAwalMedisRalanPenyakitDalam	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanMata	Awal Medis Ralan Mata	RMPenilaianAwalMedisRalanMata	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanNeurologi	Awal Medis Ralan Neurologi	RMPenilaianAwalMedisRalanNeurologi	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanOrthopedi	Awal Medis Ralan Orthopedi	RMPenilaianAwalMedisRalanOrthopedi	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanBedah	Awal Medis Ralan Bedah	RMPenilaianAwalMedisRalanBedah	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanBedahMulut	Awal Medis Ralan Bedah Mulut	RMPenilaianAwalMedisRalanBedahMulut	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanGeriatri	Awal Medis Ralan Geriatri	RMPenilaianAwalMedisRalanGeriatri	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanKulitKelamin	Awal Medis Ralan Kulit & Kelamin	RMPenilaianAwalMedisRalanKulitDanKelamin	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanParu	Awal Medis Ralan Paru	RMPenilaianAwalMedisRalanParu	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisRalanRehabMedik	Awal Medis Ralan Fisik & Rehabilitasi	RMPenilaianAwalMedisRalanRehabMedik	ya	baca saja	hanya baca
+M	btnPenilaianAwalMedisHemodialisa	Awal Medis Pasien Hemodialisa	RMPenilaianAwalMedisHemodialisa	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanEKG	Hasil Pemeriksaan EKG	RMHasilPemeriksaanEKG	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanTreadmill	Hasil Pemeriksaan Treadmill	RMHasilPemeriksaanTreadmill	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanSlitLamp	Hasil Pemeriksaan Slit Lamp	RMHasilPemeriksaanSlitLamp	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanOCT	Hasil Pemeriksaan OCT	RMHasilPemeriksaanOCT	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanECHO	Hasil Pemeriksaan ECHO	RMHasilPemeriksaanEcho	ya	baca saja	hanya baca
+M	btnHasilPemeriksaanECHOPediatrik	Hasil Pemeriksaan ECHO Pediatrik	RMHasilPemeriksaanEchoPediatrik	ya	baca saja	hanya baca
+M	btnHasilEndoskopiFaringLaring	Hasil Endoskopi Faring/Laring	RMHasilEndoskopiFaringLaring	ya	baca saja	hanya baca
+M	btnHasilEndoskopiHidung	Hasil Endoskopi Hidung	RMHasilEndoskopiHidung	ya	baca saja	hanya baca
+M	btnHasilEndoskopiTelinga	Hasil Endoskopi Telinga	RMHasilEndoskopiTelinga	ya	baca saja	hanya baca
+M	btnPenilaianTambahanGeriatri	Pengkajian Tambahan Pasien Geriatri	RMPenilaianTambahanGeriatri	ya	baca saja	hanya baca
+M	btnPenilaianTambahanBunuhDiri	Pengkajian Tambahan Bunuh Diri	RMPenilaianTambahanBunuhDiri	ya	baca saja	hanya baca
+M	btnPenilaianTambahanPerilakuKekerasan	Pengkajian Tambahan Perilaku Kekerasan	RMPenilaianTambahanPerilakuKekerasan	ya	baca saja	hanya baca
+M	btnPenilaianTambahanMelarikanDiri	Pengkajian Tambahan Melarikan Diri	RMPenilaianTambahanMelarikanDiri	ya	baca saja	hanya baca
+M	btnPenilaianPasienTerminal	Pengkajian Pasien Terminal	RMPenilaianPasienTerminal	ya	baca saja	hanya baca
+M	btnPenilaianKorbanKekerasan	Pengkajian Korban Kekerasan	RMPenilaianKorbanKekerasan	ya	baca saja	hanya baca
+M	btnPenilaianPasienPenyakitMenular	Pengkajian Pasien Penyakit Menular	RMPenilaianPasienPenyakitMenular	ya	baca saja	hanya baca
+M	btnPenilaianPasienImunitasRendah	Pengkajian Pasien Imunitas Rendah	RMPenilaianPasienImunitasRendah	ya	baca saja	hanya baca
+M	btnPenilaianDerajatDehidrasi	Pengkajian Derajat Dehidrasi	RMPenilaianDerajatDehidrasi	ya	baca saja	hanya baca
+M	btnPenilaianPasienKeracunan	Pengkajian Pasien Keracunan	RMPenilaianPasienKeracunan	ya	baca saja	hanya baca
+M	btnPenilaianLevelKecemasanRanapAnak	Pengkajian Level Kecemasan Ranap Anak	RMPenilaianLevelKecemasanRanapAnak	ya	baca saja	hanya baca
+M	btnCatatanObservasiIGD	Catatan Observasi IGD	RMDataCatatanObservasiIGD	ya	formulir	tulis ada
+M	btnCatatanObservasiRanap	Catatan Observasi Ranap	RMDataCatatanObservasiRanap	ya	baca saja	hanya baca
+M	btnCatatanObservasiRanapKebidanan	Catatan Observasi Ranap Kebidanan	RMDataCatatanObservasiRanapKebidanan	ya	baca saja	hanya baca
+M	btnCatatanObservasiRanapPostPartum	Catatan Observasi Ranap Post Partum	RMDataCatatanObservasiRanapPostPartum	ya	baca saja	hanya baca
+M	btnCatatanObservasiRuangOperasi	Catatan Observasi Ruang Operasi	RMDataCatatanObservasiRuangOperasi	ya	baca saja	hanya baca
+M	btnCatatanObservasiBayi	Catatan Observasi Bayi	RMDataCatatanObservasiBayi	ya	baca saja	hanya baca
+M	btnCatatanObservasiCHBP	Catatan Observasi CHBP	RMDataCatatanObservasiCHBP	ya	baca saja	hanya baca
+M	btnCatatanObservasiInduksiPersalinan	Catatan Observasi Induksi Persalinan	RMDataCatatanObservasiInduksiPersalinan	ya	baca saja	hanya baca
+M	btnCatatanObservasiRestrainNonFramakologi	Catatan Observasi Restrain Nonfarmakologi	RMDataCatatanObservasiRestrainNonFarmakologi	ya	baca saja	hanya baca
+M	btnCatatanObservasiVentilator	Catatan Observasi Ventilator	RMDataCatatanObservasiVentilator	ya	baca saja	hanya baca
+M	btnCatatanObservasiHemodialisa	Catatan Observasi Hemodialisa	RMDataCatatanObservasiHemodialisa	ya	baca saja	hanya baca
+M	btnCatatanKeseimbanganCairan	Keseimbangan Cairan	RMDataCatatanKeseimbanganCairan	ya	baca saja	hanya baca
+M	btnCatatanCairanHemodialisa	Catatan Cairan Hemodialisa	RMDataCatatanCairanHemodialisa	ya	baca saja	hanya baca
+M	btnDataFollowUpDBD	Follow Up DBD	RMDataFollowUpDBD	ya	baca saja	hanya baca
+M	btnCatatanKeperawatanRalan	Catatan Keperawatan Ralan	RMDataCatatanKeperawatanRalan	ya	formulir	tulis ada
+M	btnCatatanKeperawatanRanap	Catatan Keperawatan Ranap	RMDataCatatanKeperawatanRanap	ya	baca saja	hanya baca
+M	btnCatatanPersalinan	Catatan Persalinan	RMCatatanPersalinan	ya	baca saja	hanya baca
+M	btnMonitoringReaksiTranfusi	Monitoring Reaksi Tranfusi	RMDataMonitoringReaksiTranfusi	ya	baca saja	hanya baca
+M	btnLaporanReaksiTranfusi	Laporan Reaksi Tranfusi	RMReaksiTransfusi	ya	baca saja	hanya baca
+M	btnPenilaianGRACEScore	Penilaian GRACE Score	RMPenilaianGRACE	ya	baca saja	hanya baca
+M	btnPenilaianBISHOPScore	Penilaian BISHOP Score	RMPenilaianBishop	ya	baca saja	hanya baca
+M	btnPemantauanPEWSAnak	Pemantauan PEWS Pasien Anak	RMPemantauanPEWS	ya	baca saja	hanya baca
+M	btnPemantauanPEWSDewasa	Pemantauan EWS Pasien Dewasa	RMPemantauanEWSD	ya	baca saja	hanya baca
+M	btnPemantauanMEOWS	Pemantauan MEOWS Pasien Obstetri	RMPemantauanMEOWS	ya	baca saja	hanya baca
+M	btnPemantauanEWSNeonatus	Pemantauan EWS Pasien Neonatus	RMPemantauanEWSNeonatus	ya	baca saja	hanya baca
+M	btnHemodialisa	Hemodialisa	RMHemodialisa	ya	baca saja	hanya baca
+M	btnFisioterapi	Awal Fisioterapi	RMPenilaianFisioterapi	ya	baca saja	hanya baca
+M	btnPenilaianTerapiWicara	Pengkajian Terapi Wicara	RMPenilaianTerapiWicara	ya	baca saja	hanya baca
+M	btnPenatalaksanaanTerapiOkupasi	Penatalaksanaan Terapi Okupasi	RMPenatalaksanaanTerapiOkupasi	ya	baca saja	hanya baca
+M	btnPenilaianPsikologi	Pengkajian Psikologi	RMPenilaianPsikologi	ya	baca saja	hanya baca
+M	btnPenilaianPsikologiKlinis	Pengkajian Psikologi Klinis	RMPenilaianPsikologiKlinis	ya	baca saja	hanya baca
+M	btnPenilaianPreInduksi	Pengkajian Pre Induksi	RMPenilaianPreInduksi	ya	baca saja	hanya baca
+M	btnChecklistPreOperasi	Check List Pre Operasi	RMChecklistPreOperasi	ya	baca saja	hanya baca
+M	btnSignInSebelumAnestesi	Sign-In Sebelum Anestesi	RMSignInSebelumAnastesi	ya	baca saja	hanya baca
+M	btnTimeOutSebelumInsisi	Time-Out Sebelum Insisi	RMTimeOutSebelumInsisi	ya	baca saja	hanya baca
+M	btnSignOutSebelumMenutupLuka	Sign-Out Sebelum Menutup Luka	RMSignOutSebelumMenutupLuka	ya	baca saja	hanya baca
+M	btnChecklistPostOperasi	Check List Post Operasi	RMChecklistPostOperasi	ya	baca saja	hanya baca
+M	btnPenilaianPreOperasi	Pengkajian Pre Operasi	RMPenilaianPreOperasi	ya	baca saja	hanya baca
+M	btnPenilaianPreAnastesi	Pengkajian Pre Anestesi	RMPenilaianPreAnastesi	ya	baca saja	hanya baca
+M	btnChecklistKesiapanAnestesi	Check List Kesiapan Anestesi	RMChecklistKesiapanAnestesi	ya	baca saja	hanya baca
+M	btnCatatanAnastesiSedasi	Catatan Anestesi-Sedasi	RMCatatanAnastesiSedasi	ya	baca saja	hanya baca
+M	btnSkorAldrettePascaAnestesi	Skor Aldrette Pasca Anestesi	RMMonitoringAldrettePascaAnestesi	ya	baca saja	hanya baca
+M	btnSkorStewardPascaAnestesi	Skor Steward Pasca Anestesi	RMMonitoringStewardPascaAnestesi	ya	baca saja	hanya baca
+M	btnSkorBromagePascaAnestesi	Skor Bromage Pasca Anestesi	RMMonitoringBromagePascaAnestesi	ya	baca saja	hanya baca
+M	btnCatatanPengkajianPaskaOperasi	Catatan Pengkajian Paska Operasi	RMCatatanPengkajianPaskaOperasi	ya	baca saja	hanya baca
+M	btnChecklistKriteriaMasukHCU	Check List Kriteria Masuk HCU	RMChecklistKriteriaMasukHCU	ya	formulir	tulis ada
+M	btnChecklistKriteriaKeluarHCU	Check List Kriteria Keluar HCU	RMChecklistKriteriaKeluarHCU	ya	formulir	tulis ada
+M	btnChecklistKriteriaMasukNICU	Check List Kriteria Masuk NICU	RMChecklistKriteriaMasukNICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaKeluarNICU	Check List Kriteria Keluar NICU	RMChecklistKriteriaKeluarNICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaMasukPICU	Check List Kriteria Masuk PICU	RMChecklistKriteriaMasukPICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaKeluarPICU	Check List Kriteria Keluar PICU	RMChecklistKriteriaKeluarPICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaMasukICU	Check List Kriteria Masuk ICU	RMChecklistKriteriaMasukICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaKeluarICU	Check List Kriteria Keluar ICU	RMChecklistKriteriaKeluarICU	ya	formulir	tulis ada
+M	btnChecklistKriteriaMasukIsolasi	Check List Kriteria Masuk Isolasi	RMChecklistKriteriaMasukIsolasi	ya	formulir	tulis ada
+M	btnChecklistKriteriaKeluarIsolasi	Check List Kriteria Keluar Isolasi	RMChecklistKriteriaKeluarIsolasi	ya	formulir	tulis ada
+M	btnPerencanaanPemulangan	Perencanaan Pemulangan	RMPerencanaanPemulangan	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhDewasa	Pengkajian Lanjutan Risiko Jatuh Dewasa	RMPenilaianLanjutanRisikoJatuhDewasa	ya	formulir	tulis ada
+M	btnPenilaianRisikoJatuhAnak	Pengkajian Lanjutan Risiko Jatuh Anak	RMPenilaianLanjutanRisikoJatuhAnak	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhLansia	Pengkajian Lanjutan Risiko Jatuh Lansia	RMPenilaianLanjutanRisikoJatuhLansia	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhGeriatri	Pengkajian Lanjutan Risiko Jatuh Geriatri	RMPenilaianLanjutanRisikoJatuhGeriatri	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhNeonatus	Pengkajian Lanjutan Risiko Jatuh Neonatus	RMPenilaianRisikoJatuhNeonatus	ya	baca saja	hanya baca
+M	btnPenilaianRisikoJatuhPsikiatri	Pengkajian Lanjutan Risiko Jatuh Psikiatri	RMPenilaianLanjutanRisikoJatuhPsikiatri	ya	baca saja	hanya baca
+M	btnPenilaianLanjutanSkriningFungsional	Pengkajian Lanjutan Skrining Fungsional	RMPenilaianLanjutanSkriningFungsional	ya	baca saja	hanya baca
+M	btnPenilaianUlangNyeri	Pengkajian Ulang Nyeri	RMPenilaianUlangNyeri	ya	baca saja	hanya baca
+M	btnIntervensiNyeriFarmakologi	Intervensi Nyeri Farmakologi	RMDataIntervensiNyeriFarmakologi	ya	baca saja	hanya baca
+M	btnIntervensiNyeriNonFarmakologi	Intervensi Nyeri Non Farmakologi	RMDataIntervensiNyeriNonFarmakologi	ya	baca saja	hanya baca
+M	btnPenilaianRisikoDekubitus	Pengkajian Risiko Dekubitus	RMPenilaianRisikoDekubitus	ya	baca saja	hanya baca
+M	btnLayananKedokteranFisikRehabilitasi	Layanan Kedokteran Fisik & Rehabilitasi	RMLayananKedokteranFisikRehabilitasi	ya	baca saja	tulis sebagian
+M	btnLayananProgramKFR	Layanan Program KFR	RMLayananProgramKFR	ya	baca saja	tulis sebagian
+M	btnUjiFungsiKFR	Uji Fungsi/Prosedur KFR	RMUjiFungsiKFR	ya	baca saja	hanya baca
+M	btnDokumentasiTindakanESWL	Dokumentasi Tindakan ESWL	RMHasilTindakanESWL	ya	baca saja	hanya baca
+M	btnMasterKesimpulanAnjuranMCU	Master Kesimpulan & Anjuran MCU	RMMasterKesimpulanAnjuranMCU	ya	master	tulis sebagian
+M	btnPenilaianMCU	Pengkajian MCU	RMMCU	ya	baca saja	hanya baca
+M	btnKonselingFarmasi	Konseling Farmasi	RMKonselingFarmasi	ya	baca saja	hanya baca
+M	btnPelayananInformasiObat	Pelayanan Informasi Obat	DlgPermintaanPelayananInformasiObat	ya	baca saja	hanya baca
+M	btnKonsultasiMedik	Konsultasi Medik	DlgPermintaanKonsultasiMedik	ya	baca saja	hanya baca
+M	btnKonsultasiPerawat	Konsultasi Perawat	DlgPermintaanKonsultasiPerawat	ya	baca saja	hanya baca
+M	btnTransferPasienAntarRuang	Transfer Pasien Antar Ruang	RMTransferPasienAntarRuang	ya	baca saja	hanya baca
+M	btnPengkajianRestrain	Pengkajian Restrain	RMPengkajianRestrain	ya	baca saja	hanya baca
+M	btnCatatanCekGDS	Catatan Cek GDS	RMDataCatatanCekGDS	ya	baca saja	hanya baca
+M	btnRekonsiliasiObat	Rekonsiliasi Obat	RMCariRekonsiliasiObat	ya	baca saja	hanya baca
+M	btnChecklistPemberianFibrinolitik	Check List Pemberian Fibrinolitik	RMChecklistPemberianFibrinolitik	ya	baca saja	hanya baca
+M	btnSkriningManagerPelayananPasien	Skrining Manajer Pelayanan Pasien	RMSkriningMPP	ya	baca saja	hanya baca
+M	btnSkriningMPPFormA	Evaluasi Awal Manajer Pelayanan Pasien	RMSkriningMPPFormA	ya	baca saja	hanya baca
+M	btnSkriningMPPFormB	Catatan Implementasi Manajer Pelayanan Pasien	RMSkriningMPPFormB	ya	baca saja	hanya baca
+M	btnEdukasiPasienKeluargaRJ	Edukasi Pasien & Keluarga Rawat Jalan	RMEdukasiPasienKeluargaRawatJalan	ya	baca saja	hanya baca
+M	btnPelaksanaanInformasiEdukasi	Pelaksanaan Informasi & Edukasi	RMPelaksanaanInformasiEdukasi	ya	baca saja	hanya baca
+M	btnSkriningMerokokUsiaSekolah	Skrining Merokok Usia Sekolah & Remaja	RMSkriningMerokokUsiaSekolahRemaja	ya	baca saja	hanya baca
+M	btnSkriningKekerasanPadaPerempuan	Skrining Kekerasan Pada Perempuan	RMSkriningKekerasanPadaPerempuan	ya	baca saja	hanya baca
+M	btnSkriningObesitas	Skrining Obesitas	RMSkriningObesitas	ya	baca saja	hanya baca
+M	btnSkriningRisikoKankerPayudara	Skrining Risiko Kanker Payudara	RMSkriningRisikoKankerPayudara	ya	baca saja	hanya baca
+M	btnSkriningRisikoKankerParu	Skrining Risiko Kanker Paru	RMSkriningRisikoKankerParu	ya	baca saja	hanya baca
+M	btnSkriningRisikoKankerServiks	Skrining Risiko Kanker Serviks	RMSkriningRisikoKankerServiks	ya	baca saja	hanya baca
+M	btnSkriningKesehatanGigiMulutRemaja	Skrining Kesehatan Gigi Mulut Remaja	RMSkriningKesehatanGigiMulutRemaja	ya	baca saja	hanya baca
+M	btnSkriningKesehatanGigiMulutBalita	Skrining Kesehatan Gigi Mulut Balita	RMSkriningKesehatanGigiMulutBalita	ya	baca saja	hanya baca
+M	btnSkriningKesehatanGigiMulutLansia	Skrining Kesehatan Gigi Mulut Lansia	RMSkriningKesehatanGigiMulutLansia	ya	baca saja	hanya baca
+M	btnSkriningKesehatanGigiMulutDewasa	Skrining Kesehatan Gigi Mulut Dewasa	RMSkriningKesehatanGigiMulutDewasa	ya	baca saja	hanya baca
+M	btnSkriningAnemia	Skrining Anemia	RMSkriningAnemia	ya	baca saja	hanya baca
+M	btnSkriningHipertensi	Skrining Hipertensi	RMSkriningHipertensi	ya	baca saja	hanya baca
+M	btnSkriningKesehatanPenglihatan	Skrining Kesehatan Penglihatan	RMSkriningKesehatanPenglihatan	ya	baca saja	hanya baca
+M	btnSkriningIndraPendengaran	Skrining Indra Pendengaran	RMSkriningIndraPendengaran	ya	baca saja	hanya baca
+M	btnSkriningTBC	Skrining TBC	RMSkriningTBC	ya	baca saja	hanya baca
+M	btnSkriningPUMA	Skrining PUMA	RMSkriningPUMA	ya	baca saja	hanya baca
+M	btnSkriningAdiksiNikotin	Skrining Adiksi Nikotin	RMSkriningAdiksiNikotin	ya	baca saja	hanya baca
+M	btnSkriningThalassemia	Skrining Thalassemia	RMSkriningTalasemia	ya	baca saja	hanya baca
+M	btnSkriningInstrumenSDQ	Skrining Instrumen SDQ	RMSkriningInstrumenSDQ	ya	baca saja	hanya baca
+M	btnSkriningInstrumenSRQ	Skrining Instrumen SRQ	RMSkriningSRQ	ya	baca saja	hanya baca
+M	btnSkriningInstrumenACRS	Skrining Instrumen ACRS	RMSkriningInstrumenACRS	ya	baca saja	hanya baca
+M	btnSkriningInstrumenMentalEmosional	Skrining Instrumen Mental Emosional Anak	RMSkriningInstrumenMentalEmosional	ya	baca saja	hanya baca
+M	btnSkriningInstrumenAMT	Skrining Instrumen AMT	RMSkriningInstrumenAMT	ya	baca saja	hanya baca
+M	btnSkriningInstrumenESAT	Skrining Instrumen ESAT	RMSkriningInstrumenESAT	ya	baca saja	hanya baca
+M	btnSkriningPneumoniaSeverityIndex	Skrining Pneumonia Severity Index	RMSkriningPneumoniaSeverityIndex	ya	baca saja	hanya baca
+M	btnSkriningCURB65	Skrining CURB-65	RMSkriningCURB65	ya	baca saja	hanya baca
+M	btnSkriningKankerKolorektal	Skrining Kanker Kolorektal	RMSkriningKankerKolorektal	ya	baca saja	hanya baca
+M	btnSkriningDiabetesMelitus	Skrining Diabetes Melitus	RMSkriningDiabetesMelitus	ya	baca saja	hanya baca
+M	btnSkriningFrailtySyndrome	Skrining Frailty Syndrome	RMSkriningFrailtySyndrome	ya	baca saja	hanya baca
+M	btnSkriningTOLAC	Skrining TOLAC	RMSkriningTOLAC	ya	baca saja	hanya baca
+M	btnAdmisiSkoringTOLAC	Admisi & Skoring TOLAC	RMAdmisiSkoringTOLAC	ya	baca saja	hanya baca
+M	btnMonitoringTOLAC	Monitoring Selama TOLAC	RMDataMonitoringTOLAC	ya	baca saja	hanya baca
+M	btnHasilPersalinanTOLAC	Resume Hasil Persalinan TOLAC	RMHasilPersalinanTOLAC	ya	baca saja	hanya baca
+M	btnLaporanTindakan	Laporan Tindakan Medis	RMLaporanTindakan	ya	baca saja	hanya baca
+N	btnPengambilanUTD2	Pengambilan BHP Medis	DlgCariPengambilanUTD	ya	baca saja	tulis sebagian
+N	btnUTDMedisRusak	BHP Medis Rusak	UTDMedisRusak	ya	baca saja	hanya baca
+N	btnPengambilanPenunjangUTD2	Pengambilan BHP Non Medis	IPSRSCariPengambilanPenunjangUTD	ya	baca saja	hanya baca
+N	btnUTDPenunjangRusak	BHP Non Medis Rusak	UTDPenunjangRusak	ya	baca saja	hanya baca
+N	btnUTDKomponenDarah	Komponen Darah	UTDKomponenDarah	ya	master	tulis ada
+N	btnPendonorDarah	Pendonor Darah	UTDPendonor	ya	master	tulis ada
+N	btnUTDDonorDarah	Donor Darah	UTDDonor	ya	baca saja	hanya baca
+N	btnUTDCekalDarah	Pencekalan Darah	UTDCekalDarah	ya	baca saja	hanya baca
+N	btnUTDPemisahanDarah	Pemisahan Darah	UTDPemisahanDarah	ya	baca saja	hanya baca
+N	btnUTDStokDarah	Stok Darah	UTDStokDarah	ya	baca saja	hanya baca
+N	btnUTDPenyerahanDarah	Penyerahan Darah	UTDPenyerahanDarah	ya	baca saja	tulis sebagian
+O	btnGrafikKunjunganPoli	Registrasi Per Poli	GrafikRegistrasiPoli	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerDokter	Registrasi Per Dokter	GrafikRegistrasiPerDokter	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerPekerjaan	Registrasi Per Pekerjaan	GrafikRegistrasiPerPekerjaan	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerPendidikan	Registrasi Per Pendidikan	GrafikRegistrasiPerPendidikan	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerTahun	Registrasi Per Tahun	GrafikRegistrasiPerTahun	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerBulan	Registrasi Per Bulan	GrafikRegistrasiPerBulan	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerTanggal	Registrasi Per Tanggal	GrafikRegistrasiPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikDemografiRegistrasi	Demografi Registrasi	GrafikDemografiRegistrasi	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerTahun	Registrasi Lama Per Tahun	GrafikStatusRegPerTahun	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerTahun2	Registrasi Baru Per Tahun	GrafikStatusRegPerTahun2	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerBulan	Registrasi Lama Per Bulan	GrafikStatusRegPerBulan	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerBulan2	Registrasi Baru Per Bulan	GrafikStatusRegPerBulan2	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerTanggal	Registrasi Lama Per Tanggal	GrafikStatusRegPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikStatusRegPerTanggal2	Registrasi Baru Per Tanggal	GrafikStatusRegPerTanggal2	tidak	baca saja	baca ada
+O	btnGrafikStatusRegBatalPerTahun	Batal Periksa Per Tahun	GrafikStatusBatalRegPerTahun	tidak	baca saja	baca ada
+O	btnGrafikStatusRegBatalPerBulan	Batal Periksa Per Bulan	GrafikStatusBatalRegPerBulan	tidak	baca saja	baca ada
+O	btnGrafikStatusRegBatalPerTanggal	Batal Periksa Per Tanggal	GrafikStatusBatalRegPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerCarabayar	Registrasi Per Cara Bayar	GrafikRegistrasiPerCaraBayar	tidak	baca saja	baca ada
+O	btnGrafikKunjunganRanapPerTahun	Kunjungan Ranap Per Tahun	GrafikKunjunganRanapPerTahun	tidak	baca saja	baca ada
+O	btnGrafikLabRalanPerTahun	Kunjungan Lab Ralan Per Tahun	GrafikLabRalanPerTahun	tidak	baca saja	baca ada
+O	btnGrafikRadRalanPerTahun	Kunjungan Rad Ralan Per Tahun	GrafikRadRalanPerTahun	tidak	baca saja	baca ada
+O	btnGrafikPerPerujuk	Registrasi Per Perujuk	GrafikRegistrasiPerPerujuk	tidak	baca saja	baca ada
+O	btnGrafikLabRalanPerBulan	Kunjungan Lab Ralan Per Bulan	GrafikLabRalanPerBulan	tidak	baca saja	baca ada
+O	btnGrafikRadRalanPerBulan	Kunjungan Rad Ralan Per Bulan	GrafikRadRalanPerBulan	tidak	baca saja	baca ada
+O	btnGrafikLabRalanPerHari	Kunjungan Lab Ralan Per Tanggal	GrafikLabRalanPerHari	tidak	baca saja	baca ada
+O	btnGrafikRadRalanPerHari	Kunjungan Rad Ralan Per Tanggal	GrafikRadRalanPerHari	tidak	baca saja	baca ada
+O	btnGrafikKejadianIKPPerTahun	Kejadian IKP Per Tahun	GrafikKejadianIKPPerTahun	tidak	baca saja	baca ada
+O	btnGrafikKejadianIKPPerBulan	Kejadian IKP Per Bulan	GrafikKejadianIKPPerBulan	tidak	baca saja	baca ada
+O	btnGrafikKejadianIKPPerTanggal	Kejadian IKP Per Tanggal	GrafikKejadianIKPPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikKejadianIKPPerJenis	Kejadian IKP Per Jenis	GrafikKejadianIKPPerJenis	tidak	baca saja	baca ada
+O	btnGrafikKejadianIKPPerDampak	Kejadian IKP Per Dampak	GrafikKejadianIKPPerDampak	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerAgama	Registrasi Per Agama	GrafikRegistrasiPerAgama	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerUmur	Registrasi Per Umur	GrafikRegistrasiPerUmur	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerSuku	Registrasi Per Suku/Bangsa	GrafikRegistrasiPerSuku	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerBahasa	Registrasi Per Bahasa	GrafikRegistrasiPerBahasa	tidak	baca saja	baca ada
+O	btnGrafikKunjunganPerCacat	Registrasi Per Cacat Fisik	GrafikRegistrasiPerCacat	tidak	baca saja	baca ada
+O	btnGrafikTBLaporanPeriode	Periode Laporan TB	GrafikTBPeriodeLaporan	tidak	baca saja	baca ada
+O	btnGrafikTBRujukan	Rujukan TB	GrafikTBRujukan	tidak	baca saja	baca ada
+O	btnGrafikTBRiwayat	Riwayat TB	GrafikTBRiwayat	tidak	baca saja	baca ada
+O	btnGrafikTBTipeDiagnosis	Tipe Diagnosis TB	GrafikTBTipeDiagnosis	tidak	baca saja	baca ada
+O	btnGrafikTBSTatusHIV	Status HIV TB	GrafikTBStatusHIV	tidak	baca saja	baca ada
+O	btnGrafikTBSkoringAnak	Skoring Anak TB	GrafikTBSkoringAnak	tidak	baca saja	baca ada
+O	btnGrafikTBKonfirmasiSkoring5	Konfirmasi Skoring 5 TB	GrafikTBKonfirmasiSkoring5	tidak	baca saja	baca ada
+O	btnGrafikTBKonfirmasiSkoring6	Konfirmasi Skoring 6 TB	GrafikTBKonfirmasiSkoring6	tidak	baca saja	baca ada
+O	btnGrafikTBSumberObat	Sumber Obat TB	GrafikTBSumberObat	tidak	baca saja	baca ada
+O	btnGrafikTBHasilAkhirPengobatan	Hasil Akhir Pengobatan TB	GrafikTBHasilAkhirPengobatan	tidak	baca saja	baca ada
+O	btnGrafikTBHasilTesHIV	Hasil Tes HIV TB	GrafikTBHasilTesHIV	tidak	baca saja	baca ada
+O	btnGrafikPemakaianAirPDAMPerTanggal	Pemakaian Air PDAM Per Tanggal	GrafikKeslingPDAMPertanggal	tidak	baca saja	baca ada
+O	btnGrafikPemakaianAirPDAMPerBulan	Pemakaian Air PDAM Per Bulan	GrafikKeslingPDAMPerBulan	tidak	baca saja	baca ada
+O	btnGrafikPemakaianAirTanahPerTanggal	Pemakaian Air Tanah Per Tanggal	GrafikKeslingTanahPertanggal	tidak	baca saja	baca ada
+O	btnGrafikPemakaianAirTanahPerBulan	Pemakaian Air Tanah Per Bulan	GrafikKeslingTanahPerBulan	tidak	baca saja	baca ada
+O	btnGrafikLimbahB3MedisPerTanggal	Limbah B3 Medis Per Tanggal	GrafikKeslingLimbahB3Pertanggal	tidak	baca saja	baca ada
+O	btnGrafikLimbahB3MedisPerBulan	Limbah B3 Medis Per Bulan	GrafikKeslingLimbahB3Bulan	tidak	baca saja	baca ada
+O	btnGrafikLimbahDomestikPerTanggal	Limbah Padat Domestik Per Tanggal	GrafikKeslingLimbahDomestikPertanggal	tidak	baca saja	baca ada
+O	btnGrafikLimbahDomestikPerBulan	Limbah Padat Domestik Medis Per Bulan	GrafikKeslingLimbahDomestikBulan	tidak	baca saja	baca ada
+O	btnGrafikK3PerTahun	K3 Per Tahun	GrafikPeristiwaK3PerTahun	tidak	baca saja	baca ada
+O	btnGrafikK3PerBulan	K3 Per Bulan	GrafikPeristiwaK3PerBulan	tidak	baca saja	baca ada
+O	btnGrafikK3PerTanggal	K3 Per Tanggal	GrafikPeristiwaK3PerTanggal	tidak	baca saja	baca ada
+O	btnGrafikK3PerJenisCidera	K3 Per Jenis Cidera	GrafikPeristiwaK3PerJenisCidera	tidak	baca saja	baca ada
+O	btnGrafikK3PerPenyebab	K3 Per Penyebab Kecelakaan	GrafikPeristiwaK3PerPenyebab	tidak	baca saja	baca ada
+O	btnGrafikK3PerJenisLuka	K3 Per Jenis Luka	GrafikPeristiwaK3PerJenisLuka	tidak	baca saja	baca ada
+O	btnGrafikK3PerLokasiKejadian	K3 Per Lokasi Kejadian	GrafikPeristiwaK3PerLokasiKejadian	tidak	baca saja	baca ada
+O	btnGrafikK3PerDampakCidera	K3 Per Dampak Cidera	GrafikPeristiwaK3PerDampakCidera	tidak	baca saja	baca ada
+O	btnGrafikK3PerJenisPekerjaan	K3 Per Jenis Pekerjaan	GrafikPeristiwaK3PerJenisPekerjaan	tidak	baca saja	baca ada
+O	btnGrafikK3PerBagianTubuh	K3 Per Bagian Tubuh	GrafikPeristiwaK3PerBagianTubuh	tidak	baca saja	baca ada
+O	btnGrafikKunjunganRanapBulan	Kunjungan Ranap Per Bulan	GrafikKunjunganRanapPerBulan	tidak	baca saja	baca ada
+O	btnGrafikKunjunganRanapTanggal	Kunjungan Ranap Per Tanggal	GrafikKunjunganRanapPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikKunjunganRanapRuang	Kunjungan Ranap Per Ruang	GrafikKunjunganRanapPerRuang	tidak	baca saja	baca ada
+O	btnGrafikJenjangJabatanPegawai	Pegawai Per Jenjang Jabatan	GrafikPegawaiPerJenjangJabatan	tidak	baca saja	baca ada
+O	btnGrafikBidangPegawai	Pegawai Per Bidang/Bagian	GrafikPegawaiPerBidang	tidak	baca saja	baca ada
+O	btnGrafikDepartemenPegawai	Pegawai Per Departemen	GrafikPegawaiPerDepartemen	tidak	baca saja	baca ada
+O	btnGrafikPendidikanPegawai	Pegawai Per Pendidikan	GrafikPegawaiPerPendidikan	tidak	baca saja	baca ada
+O	btnGrafikStatusWPPegawai	Pegawai Per Status WP	GrafikPegawaiPerStatusWP	tidak	baca saja	baca sebagian
+O	btnGrafikStatusKerjaPegawai	Pegawai Per Status Kerja	GrafikPegawaiPerStatusKerja	tidak	baca saja	baca sebagian
+O	btnGrafikStatusPulangRanap	Status Pulang Ranap	GrafikStatusPulangRanap	tidak	baca saja	baca ada
+O	btnGrafikItemApotekPerJenis	Item Apotek Per Jenis	GrafikItemApotekPerJenis	tidak	baca saja	baca ada
+O	btnGrafikItemApotekPerKategori	Item Apotek Per Kategori	GrafikItemApotekPerKategori	tidak	baca saja	baca ada
+O	btnGrafikItemApotekPerGolongan	Item Apotek Per Golongan	GrafikItemApotekPerGolongan	tidak	baca saja	baca ada
+O	btnGrafikItemApotekPerIndustriFarmasi	Item Apotek Per Industri Farmasi	GrafikItemApotekPerIndustriFarmasi	tidak	baca saja	baca ada
+O	btnGrafikPengajuanAsetUrgensi	Pengajuan Aset Per Urgensi	GrafikPengajuanAsetUrgensi	tidak	baca saja	baca ada
+O	btnGrafikPengajuanAsetStatus	Pengajuan Aset Per Status	GrafikPengajuanAsetStatus	tidak	baca saja	baca ada
+O	btnGrafikPengajuanAsetDepartemen	Pengajuan Aset Per Departemen	GrafikPengajuanAsetDepartemen	tidak	baca saja	baca ada
+O	btnGrafikKelompokJabatanPegawai	Pegawai Per Kelompok Jabatan	GrafikPegawaiPerKelompokJabatan	tidak	baca saja	baca ada
+O	btnGrafikRisikoKerjaPegawai	Pegawai Per Risiko Kerja	GrafikPegawaiPerResikoKerja	tidak	baca saja	baca ada
+O	btnGrafikEmergencyIndexPegawai	Pegawai Per Emergency Index	GrafikPegawaiPerEmergencyIndex	tidak	baca saja	baca ada
+O	btnGrafikInventarisRuang	Jumlah Inventaris Per Ruang	GrafikInventarisPerRuang	tidak	baca saja	baca ada
+O	btnGrafikInventarisJenis	Jumlah Inventaris Per Jenis	GrafikInventarisPerJenis	tidak	baca saja	baca ada
+O	btnGrafikHAIsPasienRuang	Pasien HAIs Per Ruang	GrafikPasienHAIsRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsPasienBulan	Pasien HAIs Per Bulan	GrafikPasienHAIsBulan	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuVAP	Laju HAIs VAP Per Ruang	GrafikLajuHAIsVAPPerRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuIAD	Laju HAIs IAD Per Ruang	GrafikLajuHAIsIADPerRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuPleb	Laju HAIs Plebitis Per Ruang	GrafikLajuHAIsPlebPerRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuISK	Laju HAIs ISK Per Ruang	GrafikLajuHAIsISKPerRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuILO	Laju HAIs ILO Per Ruang	GrafikLajuHAIsILOPerRuang	tidak	baca saja	baca ada
+O	btnGrafikHAIsLajuHAP	Laju HAIs HAP Per Ruang	GrafikLajuHAIsHAPPerRuang	tidak	baca saja	baca ada
+O	btnGrafikPenerimaanObatPerBulan	Penerimaan Obat, Alkes & BHP Per Bulan	GrafikPenerimaanObatPerbulan	tidak	baca saja	baca ada
+O	btnGrafikHemodialisaPerTanggal	Hemodialisa Per Tanggal	GrafikHemodialisaPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikHemodialisaPerBulan	Hemodialisa Per Bulan	GrafikHemodialisaPerBulan	tidak	baca saja	baca ada
+O	btnGrafikHemodialisaPerTahun	Hemodialisa Per Tahun	GrafikHemodialisaPerBulan	tidak	baca saja	baca ada
+O	btnGrafikMeninggalPerBulan	Pasien Meninggal Per Bulan	GrafikMeninggalPerBulan	tidak	baca saja	baca ada
+O	btnGrafikInventarisKategori	Jumlah Inventaris Per Kategori	GrafikInventarisPerKategori	tidak	baca saja	baca ada
+O	btnGrafikInventarisMerk	Jumlah Inventaris Per Merk	GrafikInventarisPerMerk	tidak	baca saja	baca ada
+O	btnGrafikInventarisProdusen	Jumlah Inventaris Per Produsen	GrafikInventarisPerProdusen	tidak	baca saja	baca ada
+O	btnGrafikPorsiDietPerTanggal	Porsi Diet Per Tanggal	GrafikPorsiDietPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikPorsiDietPerBulan	Porsi Diet Per Bulan	GrafikPorsiDietPerBulan	tidak	baca saja	baca ada
+O	btnGrafikPorsiDietPerTahun	Porsi Diet Per Tahun	GrafikPorsiDietPerTahun	tidak	baca saja	baca ada
+O	btnGrafikPorsiDietPerRuang	Porsi Diet Per Ruang	GrafikPorsiDietPerRuang	tidak	baca saja	baca ada
+O	btnGrafikPerbaikanInventarisPerTanggal	Perbaikan Inventaris Per Tanggal	GrafikPerbaikanInventarisPerTanggal	tidak	baca saja	baca ada
+O	btnGrafikPerbaikanInventarisPerBulan	Perbaikan Inventaris Per Bulan	GrafikPerbaikanInventarisPerBulan	tidak	baca saja	baca ada
+O	btnGrafikPerbaikanInventarisPerTahun	Perbaikan Inventaris Per Tahun	GrafikPerbaikanInventarisPerTahun	tidak	baca saja	baca ada
+O	btnGrafikPerbaikanInventarisPerPelaksanaStatus	Perbaikan Inventaris Per Pelaksana & Status	GrafikPerbaikanInventarisPerPelaksanaStatus	tidak	baca saja	baca ada
+O	btnGrafikLimbahB3MedisCairPerTanggal	Limbah B3 Cair Per Tanggal	GrafikKeslingLimbahB3CairPertanggal	tidak	baca saja	baca ada
+O	btnGrafikLimbahB3MedisCairPerBulan	Limbah B3 Cair Per Bulan	GrafikKeslingLimbahB3CairBulan	tidak	baca saja	baca ada
+P	btnSuratIndeks	Indeks Surat	SuratIndeks	ya	master	tulis sebagian
+P	btnSuratMap	Map Surat	SuratMap	ya	master	tulis sebagian
+P	btnSuratAlmari	Almari Surat	SuratAlmari	ya	master	tulis sebagian
+P	btnSuratRak	Rak Surat	SuratRak	ya	master	tulis sebagian
+P	btnSuratRuang	Ruang Surat	SuratRuang	ya	master	tulis sebagian
+P	btnSuratKlasifikasi	Klasifikasi Surat	SuratKlasifikasi	ya	master	tulis sebagian
+P	btnSuratStatus	Status Surat	SuratStatus	ya	master	tulis sebagian
+P	btnSuratSifat	Sifat Surat	SuratSifat	ya	master	tulis sebagian
+P	btnSuratBalas	Stts Balas Surat	SuratBalas	ya	master	tulis sebagian
+P	btnSuratMasuk	Surat Masuk	SuratMasuk	tidak	master	tanpa data
+P	btnSuratKeluar	Surat Keluar	SuratKeluar	tidak	master	tanpa data
+P	btnSuratSakit	Surat Keterangan Sakit	SuratSakit	ya	baca saja	tulis ada
+P	btnSuratSakitPihak2	Surat Keterangan Sakit Pihak 2	SuratSakitPihak2	ya	baca saja	hanya baca
+P	btnSuratHamil	Surat Hamil	SuratTidakHamil	ya	baca saja	hanya baca
+P	btnSuratCutiHamil	Surat Cuti Hamil	SuratCutiHamil	ya	baca saja	hanya baca
+P	btnSKDPBPJS	Surat Kontrol	SuratKontrol	ya	baca saja	hanya baca
+P	btnSuratBebasNarkoba	Surat Bebas Narkoba	SuratBebasNarkoba	ya	baca saja	hanya baca
+P	btnSuratKeteranganCovid	Surat Keterangan Covid	SuratKeteranganCovid	ya	baca saja	hanya baca
+P	btnSuratKeteranganRawatInap	Surat Keterangan Rawat Inap	SuratKeteranganRawatInap	ya	baca saja	hanya baca
+P	btnSuratKeteranganSehat	Surat Keterangan Sehat	SuratKeteranganSehat	ya	baca saja	hanya baca
+P	btnSuratBebasTBC	Surat Bebas TBC	SuratKeteranganBebasTBC	ya	baca saja	hanya baca
+P	btnSuratButaWarna	Surat Keterangan Buta Warna	SuratButaWarna	ya	baca saja	hanya baca
+P	btnSuratBebasTato	Surat Bebas Tato	SuratBebasTato	ya	baca saja	hanya baca
+P	btnSuratKeteranganLayakTerbang	Surat Keterangan Layak Terbang	SuratKeteranganLayakTerbang	ya	baca saja	hanya baca
+P	btnSuratKeteranganBerobat	Surat Keterangan Berobat	SuratKeteranganBerobat	ya	baca saja	hanya baca
+P	btnSuratKewaspadaanKesehatan	Surat Kewaspadaan Kesehatan	SuratKewaspadaanKesehatan	ya	baca saja	hanya baca
+P	btnPengumumanEPasien	Pengumuman E-Pasien	PengumumanEPasien	ya	master	tulis ada
+P	btnTemplatePersetujuanPenolakanTindakan	Template Persetujuan Penolakan Tindakan	MasterTemplatePersetujuanPenolakanTindakan	ya	master	tulis ada
+P	btnPersetujuanPenolakanTindakan	Persetujuan/Penolakan Tindakan	SuratPersetujuanPenolakanTindakan	ya	baca saja	hanya baca
+P	btnPersetujuanPulangAtasPermintanSendiri	Pulang Atas Permintaan Sendiri	SuratPulangAtasPermintaanSendiri	ya	baca saja	hanya baca
+P	btnPernyataanPasienUmum	Pernyataan Pasien Umum	SuratPernyataanPasienUmum	ya	baca saja	hanya baca
+P	btnPersetujuanUmum	Persetujuan Umum	SuratPersetujuanUmum	ya	baca saja	hanya baca
+P	btnPersetujuanRawatInap	Persetujuan Rawat Inap	SuratPersetujuanRawatInap	ya	baca saja	hanya baca
+P	btnPersetujuanPenundaanPelayanan	Persetujuan Penundaan Pelayanan	SuratPersetujuanPenundaanPelayanan	ya	baca saja	hanya baca
+P	btnMasterMenolakAnjuranMedis	Master Menolak Anjuran Medis	MasterMenolakAnjuranMedis	ya	master	tulis ada
+P	btnPenolakanAnjuranMedis	Penolakan Anjuran Medis	SuratPenolakanAnjuranMedis	ya	baca saja	hanya baca
+P	btnPersetujuanPemeriksaanHIV	Persetujuan Pemeriksaan HIV	SuratPersetujuanPemeriksaanHIV	ya	baca saja	hanya baca
+P	btnSuratPernyataanMemilihDPJP	Surat Pernyataan Memilih DPJP	SuratPernyataanMemilihDPJP	ya	baca saja	tulis sebagian
+P	btnSuratSerahTerimaBarangAnggotaTubuh	Serah Terima Anggota Tubuh/Barang	SuratSerahTerimaBarangAnggotaTubuh	ya	baca saja	hanya baca
+P	btnSuratPermintaanBinrohtal	Persetujuan Bimbingan Rohani & Mental	SuratPermintaanBinrohtal	ya	baca saja	hanya baca
+P	btnSuratPermintaanPerlindunganDariKekerasan	Permintaan Perlindungan Diri Dari Kekerasan	SuratPermintaanPerlindunganDariKekerasan	ya	baca saja	hanya baca
+P	btnSuratPermohonanPrivasi	Surat Permohonan Privasi	SuratPermohonanPrivasi	ya	baca saja	hanya baca
+P	btnSuratPermintaanSecondOpinion	Surat Permintaan Second Opinion	SuratPermintaanSecondOpinion	ya	baca saja	tulis sebagian
+P	btnSuratPenolakanResusitasi	Surat Penolakan Resusitasi	SuratPenolakanResusitasi	ya	baca saja	hanya baca
+P	btnSuratPengajuanCutiPerawatan	Surat Pegajuan Cuti Perawatan	SuratPengajuanCutiPerawatan	ya	baca saja	hanya baca
+Q	btnRuangPerpustakaan	Ruang Perpustakaan	PerpustakaanRuang	ya	master	tulis ada
+Q	btnKategoriPerpustakaan	Kategori Koleksi	PerpustakaanKategori	ya	master	tulis ada
+Q	btnJenisPerpustakaan	Jenis Koleksi	PerpustakaanJenis	ya	master	tulis ada
+Q	btnPengarangPerpustakaan	Pengarang/Penulis	PerpustakaanPengarang	ya	master	tulis ada
+Q	btnPenerbitPerpustakaan	Penerbit Koleksi	PerpustakaanPenerbit	ya	master	tulis ada
+Q	btnKoleksiPerpustakaan	Koleksi Perpustakaan	PerpustakaanKoleksi	ya	master	tulis ada
+Q	btnInventarisPerpustakaan	Inventaris Perpustakaan	PerpustakaanInventaris	ya	master	tulis ada
+Q	btnPengaturanPeminjamanPerpustakaan	Pengaturan Peminjaman	PerpustakaanPengaturanPeminjaman	ya	master	tulis sebagian
+Q	btnDendaPerpustakaan	Denda Perpustakaan	PerpustakaanDenda	ya	master	tulis ada
+Q	btnAnggotaPerpustakaan	Anggota Perpustakaan	PerpustakaanAnggota	ya	master	tulis ada
+Q	btnPeminjamanPerpustakaan	Peminjaman Koleksi Perpustakaan	PerpustakaanSirkulasi	ya	baca saja	tulis sebagian
+Q	btnBayarDendaPerpustakaan	Bayar Denda Perpustakaan	PerpustakaanBayarDenda	ya	baca saja	hanya baca
+Q	btnEbookPerpustakaan	Data Koleksi Ebook	PerpustakaanEbook	tidak	master	tanpa data
+Q	btnPenelitianPerpustakaan	Koleksi Penelitian	PerpustakaanPenelitian	tidak	master	tanpa data
+Q	btnCariEbook	Cari Koleksi Ebook	PerpustakaanCariEbook	tidak	baca saja	tanpa data
+Q	btnCariInventarisPerpustakaan	Cari Inventaris Perpustakaan	PerpustakaanCariInventaris	tidak	baca saja	baca ada
+R	btnPCRAICRAJenisAktivitasProyek	Jenis Aktivitas Proyek PCRA	PCRAICRAJenisAktivitasProyek	ya	master	tulis sebagian
+R	btnPCRAICRALokasiKelompokRisiko	Lokasi & Kelompok Risiko Area PCRA	PCRAICRALokasiKelompokRisikoArea	ya	master	tulis sebagian
+R	btnPCRAICRAKelasRisikoPencegahan	Kelas Risiko/Kelas Pencegahan PCRA	PCRAICRAKelasRisikoPencegahan	ya	master	tulis sebagian
+R	btnPCRAICRATindakanPengendalian	Tindakan Pengendalian PCRA	PCRAICRATindakanPengendalian	ya	master	tulis sebagian
+R	btnPCRAICRAIdentifikasiRisikoInfeksi	Identifikasi Risiko Infeksi PCRA	PCRAICRAIdentifikasiRisikoInfeksi	ya	master	tulis sebagian
+R	btnPCRAICRAIdentifikasiRisikoKeselamatan	Identifikasi Risiko Keselamatan PCRA	PCRAICRAIdentifikasiRisikoKeselamatan	ya	master	tulis sebagian
+R	btnPCRAICRAIdentifikasiRisikoKebakaran	Identifikasi Risiko Kebakaran PCRA	PCRAICRAIdentifikasiRisikoKebakaran	ya	master	tulis sebagian
+R	btnPCRAICRAIdentifikasiRisikoUtilitas	Identifikasi Risiko Utilitas PCRA	PCRAICRAIdentifikasiRisikoUtilitas	ya	master	tulis sebagian
+R	btnPCRAICRAPersyaratanHarusDipenuhi	Persyaratan Harus Dipenuhi PCRA	PCRAICRAPersyaratanHarusDipenuhi	ya	master	tulis sebagian
+R	btnPCRAICRAPengkajianRisikoPraKonstruksi	Pengkajian Risiko Pra Konstruksi/PCRA	PCRAICRAPengkajianRisikoPraKonstruksi	ya	baca saja	hanya baca
+S	btnSatuan	Satuan Barang	DlgSatuan	ya	master	tulis ada
+S	btnSuplierToko	Suplier Toko	TokoSuplier	ya	master	tulis ada
+S	btnJenisToko	Jenis Barang Toko	TokoJenis	ya	master	tulis ada
+S	btnBarangToko	Barang Toko	TokoBarang	ya	master	tulis ada
+S	btnStokOpnameToko	Stok Opname Toko	TokoInputStok	ya	baca saja	tulis sebagian
+S	btnRiwayatBarangToko	Riwayat Barang Toko	TokoRiwayatBarang	tidak	baca saja	baca ada
+S	btnPengajuanBarangToko	Pengajuan Barang Toko	TokoPengajuanBarang	ya	baca saja	hanya baca
+S	btnSuratPemesananToko	Surat Pemesanan Toko	TokoSuratPemesanan	ya	baca saja	hanya baca
+S	btnPenerimaanBarangToko	Penerimaan Barang Toko	TokoPemesanan	ya	baca saja	tulis sebagian
+S	btnPengadaanBarangToko	Pengadaan Barang Toko	TokoPembelian	ya	baca saja	tulis sebagian
+S	btnMemberToko	Member Toko	TokoMember	ya	master	tulis sebagian
+S	btnPenjualanToko	Penjualan Toko	TokoPenjualan	ya	baca saja	tulis sebagian
+S	btnPiutangToko	Piutang Toko	TokoPiutang	ya	baca saja	tulis sebagian
+S	btnReturKeSuplierToko	Retur Ke Suplier Toko	TokoReturBeli	ya	baca saja	tulis sebagian
+S	btnReturJualToko	Retur Jual Toko	TokoReturJual	ya	baca saja	tulis sebagian
+S	btnReturPiutangToko	Retur Piutang Toko	TokoReturPiutang	ya	baca saja	tulis sebagian
+S	btnHutangToko	Hutang Toko	KeuanganHutangToko	ya	baca saja	hanya baca
+S	btnBayarPesanToko	Bayar Pesan Toko	KeuanganBayarPesanToko	ya	baca saja	hanya baca
+S	btnPendapatanHarianToko	Pendapatan Harian Toko	TokoPendapatanHarian	tidak	baca saja	baca ada
+S	btnPenjualanHarianToko	Penjualan Harian Toko	TokoPenjualanHarian	tidak	baca saja	baca ada
+S	btnPiutangHarianToko	Piutang Harian Toko	TokoPiutangHarian	tidak	baca saja	baca ada
+S	btnKeuntunganBarangToko	Keuntungan Barang Toko	TokoKeuntunganBarang	tidak	baca saja	baca ada
+S	btnBayarPiutangToko	Bayar Piutang Toko	TokoBayarPiutang	ya	baca saja	hanya baca
+S	btnSirkulasiBarangToko	Sirkulasi Barang Toko	TokoSirkulasi	tidak	baca saja	baca ada
+S	btnSirkulasiBarangToko2	Sirkulasi Barang Toko 2	TokoSirkulasi2	tidak	baca saja	baca ada
+T	btnZISPengeluaranPenerimaDankes	Ket Pengeluaran Penerima Dankes	ZISPengeluaranPenerimaDankes	ya	master	tulis ada
+T	btnZISPenghasilanPenerimaDankes	Ket Penghasilan Penerima Dankes	ZISPenghasilanPenerimaDankes	ya	master	tulis ada
+T	btnZISUkuranRumahPenerimaDankes	Ukuran Rumah Penerima Dankes	ZISUkuranRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISDindingRumahPenerimaDankes	Dinding Rumah Penerima Dankes	ZISDindingRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISLantaiRumahPenerimaDankes	Lantai Rumah Penerima Dankes	ZISLantaiRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISAtapRumahPenerimaDankes	Atap Rumah Penerima Dankes	ZISAtapRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISKepemilikanRumahPenerimaDankes	Kepemilikan Rumah Penerima Dankes	ZISAtapRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISKamarMandiPenerimaDankes	Kamar Mandi Penerima Dankes	ZISKamarMandiPenerimaDankes	ya	master	tulis ada
+T	btnZISDapurRumahPenerimaDankes	Dapur Rumah Penerima Dankes	ZISDapurRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISKursiRumahPenerimaDankes	Kursi Rumah Penerima Dankes	ZISKursiRumahPenerimaDankes	ya	master	tulis ada
+T	btnZISKategoriPHBSPenerimaDankes	Kategori PHBS Penerima Dankes	ZISKategoriPHBSPenerimaDankes	ya	master	tulis ada
+T	btnZISElektronikPenerimaDankes	Elektronik Penerima Dankes	ZISElektronikPenerimaDankes	ya	master	tulis ada
+T	btnZISTernakPenerimaDankes	Ternak Penerima Dankes	ZISTernakPenerimaDankes	ya	master	tulis ada
+T	btnZISJenisSimpananPenerimaDankes	Jenis Simpanan Penerima Dankes	ZISJenisSimpananPenerimaDankes	ya	master	tulis ada
+T	btnZISKategoriAsnafPenerimaDankes	Kategori Asnaf Penerima Dankes	ZISKategoriAsnafPenerimaDankes	ya	master	tulis ada
+T	btnZISPatologisPenerimaDankes	Patologis Penerima Dankes	ZISPatologisPenerimaDankes	ya	master	tulis ada
+U	btnSetupAplikasi	Set Aplikasi	DlgSetAplikasi	ya	khusus	hanya baca
+U	btnAdmin	Set Admin	DlgAdmin	ya	khusus	tulis ada
+U	btnSetPenjab	Set P.J. Unit Penunjang	DlgSetPenjabLab	ya	master	tulis sebagian
+U	btnSetupOtoLokasi	Set Oto Lokasi	DlgSetOtoLokasi	ya	master	tulis sebagian
+U	btnSetupJamInap	Set Kamar Inap	DlgSetKamarInap	ya	master	tulis sebagian
+U	btnSetHargaKamar	Set Harga Kamar	DlgSetHargaKamar	ya	master	tulis ada
+U	btnSetupEmbalase	Set Embalase & Tuslah	DlgSetEmbalase	ya	master	tulis sebagian
+U	btnUser	Set User	DlgUser	ya	khusus	tulis ada
+U	btnEEksekutif	Set E-Eksekutif	DlgEEksekutif	ya	khusus	tulis ada
+U	btnTracker	Tracker Login	DlgPenelusuranLogin	ya	khusus	tulis sebagian
+U	btnVakum	Vakum Table	DlgVakum	tidak	khusus	tanpa data
+U	btnDisplay	Display Antrian Registrasi & Poli	DlgRunTeks	ya	khusus	tulis sebagian
+U	btnDisplayApotek	Display Antrian Apotek	DlgRunTeksApotek	ya	khusus	tulis sebagian
+U	btnSetupHarga	Set Harga Obat	DlgSetHarga	ya	master	tulis sebagian
+U	btnSetObatRalan	Set Obat Ralan	DlgSetHargaObatRalan	ya	master	tulis ada
+U	btnSetObatRanap	Set Obat Ranap	DlgSetHargaObatRanap	ya	master	tulis ada
+U	btnSetupTarif	Set Penggunaan Tarif	DlgSetTarif	ya	master	tulis sebagian
+U	btnSetOtoRalan	Set Oto Ralan	DlgSetOtoRalan	ya	master	tulis ada
+U	btnSetBiayaHarian	Biaya Harian	DlgBiayaHarian	ya	master	tulis ada
+U	btnSetBiayaMasukSekali	Biaya Masuk Sekali	DlgBiayaSekaliMasuk	ya	master	tulis ada
+U	btnSetupRM	Set RM	DlgSetRM	ya	master	tulis sebagian
+U	btnSetupNota	Set Billing	DlgSetNota	ya	master	tulis sebagian
+U	btnClosingKasir	Closing Kasir	DlgClosingKasir	ya	master	tulis ada
+U	btnKeterlambatanPresensi	Set Keterlambatan Presensi	DlgSetKeterlambatan	ya	master	tulis sebagian
+U	btnSetInputParsial	Set Input Parsial	DlgSetInputParsial	ya	master	tulis ada
+U	btnPasswordAsuransi	Password BPJS	DlgPasswordBPJS	ya	khusus	bridging
+U	btnSetHargaToko	Set Harga Toko	DlgSetHargaToko	ya	master	tulis sebagian
+U	btnJamDietPasien	Jam Diet Pasien	DlgJamDietPasien	ya	master	tulis ada
+U	btnRuangOperasi	Ruang Operasi	DlgRuangOperasi	ya	master	tulis ada
+U	btnSetResepPerCaraBayar	Set Resep Per Cara Bayar	DlgSetResepPerCaraBayar	ya	master	tulis ada

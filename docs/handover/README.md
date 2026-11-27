@@ -7,7 +7,7 @@ Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 1. Buka [log sesi terbaru](12-SESSION-2026-11-27.md) untuk hasil kerja, titik masuk fitur, verifikasi, batas, dan calon pekerjaan.
 2. Cek `git status --short` dan `git log -5 --oneline`. Commit source, EXE lokal di `dist/`, dan release GitHub adalah tiga hal terpisah.
 3. Jalankan `powershell -ExecutionPolicy Bypass -File tools\uji-fixture.ps1` untuk memastikan keadaan awal ([runbook](01-RUNBOOK.md#skrip-tes-fixture)).
-4. Buka [tracker HTML](../tracker/GRAFIK.html) dan [prioritas](../tracker/PRIORITAS.md). Angka 1.041 dari 1.224 adalah cakupan tile yang punya layar, bukan kesetaraan fungsi. Tile Menu L yang ditunda berjumlah 183.
+4. Buka [peta fungsi](../tracker/AUDIT_PETA_FUNGSI.md), [tracker HTML](../tracker/GRAFIK.html) dan [prioritas](../tracker/PRIORITAS.md). Angka 1.041 dari 1.224 adalah cakupan tile yang punya layar, bukan kesetaraan fungsi. Tile Menu L yang ditunda berjumlah 183; pemilik menyiapkan bridging sebagai aplikasi terpisah ([log 12](12-SESSION-2026-11-27.md#bridging-di-aplikasi-terpisah)).
 5. Gunakan skema sintetis. Akses database rumah sakit memerlukan persetujuan pemilik sistem; jangan arahkan pengembangan ke database produksi.
 
 | Dokumen | Isi |
@@ -25,5 +25,6 @@ Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Cek "kunjungan sudah ditagih" disatukan di `TagihanKunjungan` dan mengikuti Khanza (hanya baris `billing`).
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
+- Peta fungsi: paling banyak 33% pasangan tabel-aksi tulis jendela Java punya padanan (725 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
 - Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 28 fixture; tanpa database 221 lulus, 42 dilewati).
 - Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611271423` (dari `16a8761`). Pre-release GitHub tertinggal dari source.
