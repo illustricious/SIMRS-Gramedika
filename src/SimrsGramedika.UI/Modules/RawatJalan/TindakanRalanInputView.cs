@@ -32,7 +32,8 @@ internal sealed class TindakanRalanInputView : UserControl
     private readonly Grid _layout;
     private bool _busy;
 
-    public TindakanRalanInputView(string noRawat, AuthenticatedUser user, TindakanRalanSnapshot? asal = null)
+    public TindakanRalanInputView(string noRawat, AuthenticatedUser user, TindakanRalanSnapshot? asal = null,
+        TindakanRalanJenis? jenis = null)
     {
         _service = new(DatabaseSettings.Load(), noRawat, user);
         _asal = asal;
@@ -46,6 +47,11 @@ internal sealed class TindakanRalanInputView : UserControl
             _tarif.SelectionMode = DataGridSelectionMode.Single;
         }
         else _tarif.SelectionMode = DataGridSelectionMode.Extended;
+        if (asal is null && jenis is { } tetap)
+        {
+            _jenis.SelectedIndex = (int)tetap;
+            _jenis.IsEnabled = false;
+        }
         _simpan = Ui.Btn(asal is null ? "Simpan Tindakan" : "Simpan Perubahan", async (_, _) => await JalankanAsync(SimpanAsync), false);
         _simpan.Classes.Add("accent");
         _tarif.SelectionChanged += (_, _) => PerbaruiPilihan();

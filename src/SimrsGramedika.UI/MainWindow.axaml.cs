@@ -505,7 +505,9 @@ public partial class MainWindow : Window
         }
         if (SimrsGramedika.Data.Master.MenuMSpecs.Reports.TryGetValue(key, out var reportM))
         {
-            await OpenPageAsync(new Modules.Shared.ReportView(reportM));
+            var daftar = new Modules.Shared.ReportView(reportM);
+            if (FormKlinisUntuk(key) is { } formulir) PasangFormulir(daftar, formulir);
+            await OpenPageAsync(daftar);
             return;
         }
 
@@ -557,6 +559,40 @@ public partial class MainWindow : Window
         ShowPage(Page.Feature);
         await reload();
     }
+
+    /// <summary>Formulir rekam medis yang bisa diisi akun ini untuk tile tersebut.</summary>
+    private SimrsGramedika.Data.RekamMedis.FormKlinis? FormKlinisUntuk(string? tile) =>
+        SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Cari(tile) is { } form && _user?.HasPermission(form.Izin) == true
+            ? form : null;
+
+    private Task OpenFormKlinisAsync(SimrsGramedika.Data.RekamMedis.FormKlinis form, string noRawat, Func<Task> kembali)
+    {
+        var view = new Modules.RekamMedis.FormKlinisView(form, noRawat, _user!);
+        view.BackRequested += async (_, _) => await kembali();
+        return OpenFeatureAsync(view, view.ReloadAsync);
+    }
+
+    /// <summary>Daftar baca-saja lintas pasien tetap ada; tombol ini membuka formulir untuk baris atau kunjungan terpilih.</summary>
+    private void PasangFormulir(Modules.Shared.ReportView daftar, SimrsGramedika.Data.RekamMedis.FormKlinis form) =>
+        daftar.TambahAksi("Isi / Ubah Formulir", async row =>
+        {
+            var noRawat = row?.S("no_rawat") ?? "";
+            if (noRawat.Length == 0)
+            {
+                var queries = new SimrsGramedika.Data.MenuA.MenuAQueries(SimrsGramedika.Config.DatabaseSettings.Load());
+                var pasien = await Controls.SearchPickerDialog.ShowAsync<SimrsGramedika.Data.Sql.Row>(this, "Pilih Kunjungan",
+                    q => queries.CariPasienAsync(q, true),
+                    r => $"{r.S("no_rawat")}  •  {r.S("no_rkm_medis")}  •  {r.S("nm_pasien")}");
+                if (pasien is null) return;
+                noRawat = pasien.S("no_rawat");
+            }
+            await OpenFormKlinisAsync(form, noRawat, async () =>
+            {
+                this.FindControl<ContentControl>("PageHost")!.Content = daftar;
+                ShowPage(Page.Feature);
+                await daftar.ReloadAsync();
+            });
+        });
 
     private async System.Threading.Tasks.Task OpenPageAsync(Modules.Shared.PageView view)
     {
@@ -1262,6 +1298,18 @@ public partial class MainWindow : Window
         {
             host.Content = source;
             ShowPage(Page.Feature);
+        }
+
+        // Formulir yang sudah bisa diisi menggantikan laporan baca-saja untuk kunjungan yang diklik.
+        if (request.Action is PatientMenuAction.Report or PatientMenuAction.Skrining &&
+            !string.IsNullOrWhiteSpace(request.NoRawat) && FormKlinisUntuk(request.TileKey) is { } isian)
+        {
+            await OpenFormKlinisAsync(isian, request.NoRawat, () =>
+            {
+                Back(this, EventArgs.Empty);
+                return Task.CompletedTask;
+            });
+            return;
         }
 
         switch (request.Action)

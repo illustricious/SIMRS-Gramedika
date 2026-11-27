@@ -79,6 +79,10 @@ public static class PatientContextMenu
                     .Select(format => Entry(format.Title, hasVisit && Can("registrasi")
                         ? () => Run(() => PatientLabelPreview.Open(grid, patient, format)) : null)).ToArray());
 
+            // Bertambah sendiri mengikuti formulir yang sudah bisa diisi.
+            MenuItem FormulirMenu() => Group("Formulir Rekam Medis",
+                [.. SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.Select(f => Screen(f.Judul, f.Tile))]);
+
             MenuItem ScreeningMenu() => Group("Skrining",
                     Screen("Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah"),
                     Screen("Skrining Kekerasan Pada Perempuan", "btnSkriningKekerasanPadaPerempuan"),
@@ -152,7 +156,7 @@ public static class PatientContextMenu
                 ]
                 :
                 [
-                    Group("Data Rekam Medis", [.. (kind is PatientMenuKind.Registration or PatientMenuKind.Emergency ? new[] { ScreeningMenu() } : Array.Empty<MenuItem>()), identity, Entry("Resume Pasien"), history]),
+                    Group("Data Rekam Medis", [.. (kind is PatientMenuKind.Registration or PatientMenuKind.Emergency ? new[] { ScreeningMenu() } : Array.Empty<MenuItem>()), identity, Entry("Resume Pasien"), history, FormulirMenu()]),
                     Group("Permintaan", Entry("Jadwal Operasi"),
                         ActionItem("Permintaan Lab", PatientMenuAction.PermintaanLab,
                             kind == PatientMenuKind.Registration && hasVisit && !patient.IsInpatient && Can("permintaan_lab")),

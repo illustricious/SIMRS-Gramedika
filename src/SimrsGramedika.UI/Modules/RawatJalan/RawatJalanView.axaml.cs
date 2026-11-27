@@ -105,6 +105,8 @@ public partial class RawatJalanView : UserControl
             var visit = await Service.KunjunganAsync(noRawat);
             grid.ItemsSource = visit is null ? Array.Empty<RawatJalanKunjungan>() : new[] { visit };
             grid.SelectedItem = visit;
+            // Tabel antrean tersembunyi pada tampilan tertanam tidak memunculkan peristiwa pilih.
+            if (!ReferenceEquals(_selected, visit)) await PakaiKunjunganAsync(visit);
             this.FindControl<TextBlock>("QueueCountText")!.Text = visit is null ? "Kunjungan Rawat Jalan" : "1 kunjungan";
             if (visit is null) Show(status, "Kunjungan ini bukan kunjungan rawat jalan (poli non-IGD).", error: true);
         }
@@ -173,9 +175,12 @@ public partial class RawatJalanView : UserControl
         await LoadQueueAsync();
     }
 
-    private async void OnQueueSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void OnQueueSelectionChanged(object? sender, SelectionChangedEventArgs e) =>
+        await PakaiKunjunganAsync(this.FindControl<DataGrid>("QueueGrid")!.SelectedItem as RawatJalanKunjungan);
+
+    private async Task PakaiKunjunganAsync(RawatJalanKunjungan? kunjungan)
     {
-        _selected = this.FindControl<DataGrid>("QueueGrid")!.SelectedItem as RawatJalanKunjungan;
+        _selected = kunjungan;
         this.FindControl<Button>("AlurKunjunganButton")!.IsEnabled = _selected is not null;
         this.FindControl<TextBlock>("SelectedPatientText")!.Text = _selected is null
             ? "(belum ada kunjungan dipilih)"

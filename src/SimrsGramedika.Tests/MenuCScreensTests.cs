@@ -217,7 +217,7 @@ public class MenuCScreensTests
         var menu = PatientContextMenu.Attach<PatientMenuTarget>(grid, row => row, request => openedFor = request, PatientMenuKind.Registration);
         var window = new Window { Width = 640, Height = 480, Content = grid };
         var oldUser = AppSession.CurrentUser;
-        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "pasien", "tindakan_ralan", "data_resume_pasien" } };
+        AppSession.CurrentUser = new() { Permissions = new HashSet<string> { "pasien", "tindakan_ralan", "data_resume_pasien", "catatan_observasi_igd" } };
         try
         {
             window.Show();
@@ -238,6 +238,14 @@ public class MenuCScreensTests
             Assert.True(identity.IsEnabled);
             var billing = menu.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Billing/Pembayaran Pasien"));
             Assert.False(Assert.IsType<MenuItem>(billing.Items[1]).IsEnabled);
+            // Formulir rekam medis: hanya yang diizinkan aktif, dan permintaannya membawa kunjungan yang diklik.
+            var formulir = record.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Formulir Rekam Medis"));
+            var isian = formulir.Items.OfType<MenuItem>().ToList();
+            Assert.Equal(SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.Select(f => f.Judul), isian.Select(i => (string)i.Header!));
+            var observasi = Assert.Single(isian, i => i.IsEnabled);
+            observasi.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            Assert.Equal(new PatientMenuRequest(second.NoRawat, second.NoRekamMedis, second.NamaPasien,
+                PatientMenuAction.Skrining, "btnCatatanObservasiIGD"), openedFor);
             grid.SelectedItem = first;
             identity.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
             Assert.Equal(second.NoRekamMedis, openedFor?.NoRekamMedis);
@@ -269,12 +277,19 @@ public class MenuCScreensTests
             Assert.Contains(labels, t => t?.Contains(second.NoRawat) == true);
             Assert.DoesNotContain(labels, t => t?.StartsWith("Input Resep") == true);
             Assert.Contains("Resume Pasien", labels);
+            Assert.Contains("Observasi IGD", labels); // formulir aktif, bukan "Belum tersedia"
             Assert.DoesNotContain("Riwayat Pasien", labels);
-            Assert.Contains("Pemeriksaan / SOAPIE", visit.GetVisualDescendants().OfType<Button>().Select(b => b.Content));
+            // Delapan tab seperti DlgRawatJalan, dibuka pada Pemeriksaan.
+            var tab = visit.GetVisualDescendants().OfType<TabControl>().First();
+            var daftarTab = tab.Items.OfType<TabItem>().ToList();
+            Assert.Equal(["Penanganan Dokter", "Penanganan Petugas", "Penanganan Dokter & Petugas", "Pemeriksaan",
+                "Pemeriksaan Obstetri", "Pemeriksaan Ginekologi", "Diagnosa", "Catatan Dokter"], daftarTab.Select(t => (string)t.Header!));
+            Assert.Equal(3, tab.SelectedIndex);
             var sidebarSearch = visit.GetVisualDescendants().OfType<TextBox>().Single(t => t.PlaceholderText == "Cari menu klinis");
             var sidebar = sidebarSearch.GetVisualAncestors().OfType<Border>().First(b => b.Child is DockPanel);
             Assert.Equal(0, Grid.GetColumn(sidebar));
-            Assert.False(visit.GetVisualDescendants().OfType<Button>().Single(b => Equals(b.Content, "Catatan Dokter")).IsEnabled);
+            Assert.False(daftarTab[6].IsEnabled); // tanpa hak diagnosa_pasien
+            Assert.False(daftarTab[7].IsEnabled); // tanpa hak catatan dokter
         }
         finally
         {

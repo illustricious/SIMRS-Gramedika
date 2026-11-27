@@ -46,6 +46,14 @@ public partial class TindakanRalanView : UserControl
         _ready = true;
     }
 
+    /// <summary>Hanya daftar satu jenis penanganan, untuk tab di halaman kunjungan.</summary>
+    internal void HanyaJenis(TindakanRalanJenis jenis)
+    {
+        var tabs = this.FindControl<TabControl>("Tabs")!;
+        for (var i = 0; i < tabs.Items.Count; i++) ((TabItem)tabs.Items[i]!).IsVisible = i == (int)jenis;
+        tabs.SelectedIndex = (int)jenis;
+    }
+
     public async System.Threading.Tasks.Task ReloadAsync()
     {
         var from = DateOnly.FromDateTime(this.FindControl<CalendarDatePicker>("FromPicker")!.SelectedDate ?? DateTime.Today);

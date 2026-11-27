@@ -108,8 +108,9 @@ have limits that are described in the audit documents.
 |---|---|
 | Registration ([audit](docs/tracker/AUDIT_REGISTRASI.md)) | Register visits with Khanza queue numbering; new patients with Khanza medical record numbers; patient notes and status; deceased record; internal, incoming and outgoing referrals; sick-leave letter; letterhead printing |
 | Emergency | Registration and triage entry |
-| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send and edit prescriptions (non-compounded), lab and radiology requests; write and print the medical resume |
+| Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send and edit prescriptions (non-compounded), lab and radiology requests; write and print the medical resume |
 | Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals; discharge summary and room release; discharge prescriptions from request to validation, handover or return |
+| Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print five record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment |
 | Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
 | Laboratory and radiology | Record results; post journals on save and reverse them on delete |
 | Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, surgery, returns and adjustments are still settled in Khanza |
@@ -195,11 +196,11 @@ On first start the app asks for the database connection (host, port, user, passw
 
 ### Tests
 
-Latest local run (27 November 2026, 250 tests):
+Latest local run (27 November 2026, 256 tests):
 
-- Without a database: **211 passed, 0 failed, 39 skipped** because they need one.
-- Against synthetic MariaDB databases, the registration, prescription validation, lab/radiology journal, discharge prescription and
-  outpatient order suites passed (71 tests). The other fixture suites were not re-run in that pass.
+- Without a database: **216 passed, 0 failed, 40 skipped** because they need one.
+- Against synthetic MariaDB databases, the registration, prescription validation, lab/radiology journal, discharge prescription, record
+  form and outpatient order suites passed (77 tests). The other fixture suites were not re-run in that pass.
 
 Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the
 [runbook](docs/handover/01-RUNBOOK.md). Optional smoke tests run list and report queries, read-only, against the configured database:

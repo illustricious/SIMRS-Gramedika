@@ -1,4 +1,84 @@
 {
+  "aksi|rekammedis/RMDataCatatanKeperawatanRalan.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Catatan Keperawatan Rawat Jalan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanKeperawatanRalan.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Catatan Keperawatan Rawat Jalan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanKeperawatanRalan.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Catatan Keperawatan Rawat Jalan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanKeperawatanRalan.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Catatan Keperawatan Rawat Jalan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanObservasiIGD.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Catatan Observasi IGD: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanObservasiIGD.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Catatan Observasi IGD: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanObservasiIGD.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Catatan Observasi IGD: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataCatatanObservasiIGD.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Catatan Observasi IGD: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziLanjut.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Lanjut: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziLanjut.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Lanjut: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziLanjut.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Lanjut: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMDataSkriningGiziLanjut.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Skrining Gizi Lanjut: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianLanjutanRisikoJatuhDewasa.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Lanjutan Risiko Jatuh Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianAwalMedisRalanDewasa.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Penilaian Awal Medis Rawat Jalan: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianAwalMedisRalanDewasa.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Penilaian Awal Medis Rawat Jalan: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianAwalMedisRalanDewasa.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Penilaian Awal Medis Rawat Jalan: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPenilaianAwalMedisRalanDewasa.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Penilaian Awal Medis Rawat Jalan: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
   "aksi|inventory/DlgResepPulang.java|BtnHapus": {
     "status": "sebagian",
     "bukti": "Retur Validasi Resep di Farmasi mengembalikan seluruh obat satu validasi ke depo/batch asal dan membuka lagi permintaannya; ditolak bila sudah ditagih atau sudah dicatat diserahkan. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
@@ -2924,8 +3004,8 @@
     "bukti": "simrskhanza/DlgRawatInap.java:7244 - Handler membuka RMPerencanaanPemulangan dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhDewasa": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:7261 - Handler membuka RMPenilaianLanjutanRisikoJatuhDewasa dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgRawatInap.java:7261 - Sekarang dibuka dari klik kanan pasien Rawat Inap, Data Rekam Medis, Formulir Rekam Medis (Penilaian Lanjutan Risiko Jatuh Dewasa). Jalur submenu berbeda dari Java dan klik di aplikasi asli belum diuji."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPenilaianLanjutanResikoJatuhAnak": {
     "status": "kurang",
@@ -3048,8 +3128,8 @@
     "bukti": "simrskhanza/DlgRawatInap.java:7409 - Handler membuka RMSkriningNutrisiAnak dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnSkriningGiziLanjut": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:7426 - Handler membuka RMDataSkriningGiziLanjut dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "simrskhanza/DlgRawatInap.java:7426 - Sekarang dibuka dari klik kanan pasien Rawat Inap, Data Rekam Medis, Formulir Rekam Medis (Skrining Gizi Lanjut). Jalur submenu berbeda dari Java dan klik di aplikasi asli belum diuji."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnAsuhanGizi": {
     "status": "kurang",

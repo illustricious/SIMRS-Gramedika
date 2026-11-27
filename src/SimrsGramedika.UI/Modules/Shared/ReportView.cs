@@ -18,6 +18,7 @@ public class ReportView : PageView
     private readonly PeriodPicker? _period;
     private readonly NumericUpDown _tahun = new() { Minimum = 2000, Maximum = 2100, Value = DateTime.Today.Year, Width = 110, FormatString = "0" };
     private List<Row> _rows = [];
+    private readonly WrapPanel _bar;
 
     private readonly string? _visit;
 
@@ -50,10 +51,17 @@ public class ReportView : PageView
         filters.Add(tampilkan);
         filters.Add(Ui.Btn("Ekspor CSV", async (_, _) => await ExportAsync()));
 
-        var bar = Ui.Bar(filters.ToArray());
-        bar.Margin = default;
-        Build(spec.Title, _grid, spec.Hint, bar);
+        _bar = Ui.Bar(filters.ToArray());
+        _bar.Margin = default;
+        Build(spec.Title, _grid, spec.Hint, _bar);
     }
+
+    /// <summary>Perintah tambahan yang menerima baris terpilih, bila ada.</summary>
+    public void TambahAksi(string label, Func<Row?, Task> aksi) => _bar.Children.Add(Ui.Btn(label, async (_, _) =>
+    {
+        try { await aksi(Ui.Selected<Row>(_grid)); }
+        catch (Exception ex) { Ui.Err(StatusText, ex.Message); }
+    }));
 
     public override async Task ReloadAsync() => await RunAsync(async () =>
     {

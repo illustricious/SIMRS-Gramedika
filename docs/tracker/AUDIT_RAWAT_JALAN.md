@@ -138,3 +138,13 @@ Tombol Template Pemeriksaan juga mulai tersedia untuk akun dengan izin `template
 - Pembatalan/penghapusan order belum tersedia.
 - **Cetak Resume** mencetak resume tersimpan berkop RS dengan isi `rptLaporanResume.jrxml` dan QR identitas dokter (bukan tanda tangan elektronik tersertifikasi).
 - `AlurPenunjangRalanTests` lulus pada skema sintetis; tata letak PDF diperiksa dari gambar hasil render. Klik di aplikasi, database RS dan klien Java bersamaan belum diuji.
+
+## Halaman bertab Tagihan/Tindakan Rawat Jalan (27 November 2026)
+
+Bagian ini menggantikan uraian deretan tombol pada bagian sebelumnya. Registrasi → klik kanan pasien → Tindakan & Pemeriksaan → Tindakan Rawat Jalan membuka halaman dengan susunan `DlgRawatJalan.java`:
+
+- Delapan tab berurutan: Penanganan Dokter, Penanganan Petugas, Penanganan Dokter & Petugas, Pemeriksaan, Pemeriksaan Obstetri, Pemeriksaan Ginekologi, Diagnosa, Catatan Dokter. Dibuka pada Pemeriksaan. Isi tab dibuat saat pertama dibuka dan draf bertahan saat berpindah tab.
+- Tiga tab penanganan punya Daftar Tindakan/Tagihan (jenis terkunci) dan Tindakan Dilakukan.
+- Menu klinis di kiri membuka layarnya di area tab; **Kembali ke Tab** mengembalikan tab. Dengan akun Admin Utama pada skema uji, 27 dari 177 entri masih "Belum tersedia"; banyak entri lain masih laporan baca saja.
+- Perbaikan: tab Pemeriksaan tidak memuat kunjungan pada tampilan tertanam, sehingga tombol Simpan SOAPIE nonaktif. Pemuatan kunjungan kini tidak bergantung pada tabel antrean yang tersembunyi.
+- Uji headless sementara pada skema Khanza penuh dengan data sintetis membuka kedelapan tab dan menyimpan satu SOAPIE. Tes tetap hanya memeriksa susunan tab dan hak akses. Belum diuji: klik di aplikasi asli, database RS, dan tata letak isian yang sama persis dengan Java.
