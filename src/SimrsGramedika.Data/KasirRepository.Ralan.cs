@@ -88,10 +88,10 @@ public partial class KasirRepository
     }
 
     private async Task<List<JurnalLine>> BuatJurnalRalanAsync(
-        KasirBillItem bill, string rekening, string akunBayar, MySqlConnection conn, MySqlTransaction tx, CancellationToken ct)
+        KasirBillItem bill, IReadOnlyList<JurnalLine> debit, MySqlConnection conn, MySqlTransaction tx, CancellationToken ct)
     {
         var akun = await JurnalPoster.ReadAkunAsync(conn, tx, "set_akun_ralan", ct);
-        var lines = new List<JurnalLine> { new(rekening, akunBayar, (double)bill.Total, 0) };
+        var lines = new List<JurnalLine>(debit);
         TambahKredit(lines, akun.GetValueOrDefault("Registrasi_Ralan", ""), Registrasi, bill.BiayaReg);
         var ppn = bill.Rincian.Where(r => r.Jenis == Obat && r.Nama == PpnObat).Sum(r => r.Total);
         if (ppn > 0)

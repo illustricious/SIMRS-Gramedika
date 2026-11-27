@@ -113,7 +113,7 @@ have limits that are described in the audit documents.
 | Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print 15 record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment, and admission and discharge criteria checklists for HCU, ICU, NICU, PICU and isolation |
 | Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
 | Laboratory and radiology | Record results; post journals on save and reverse them on delete |
-| Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee. Deposits, receivables, outpatient surgery, returns and adjustments are still settled in Khanza |
+| Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee; save a bill as a patient receivable with a down payment, record and cancel installments, discounts and write-offs. Deposits, outpatient surgery, returns and adjustments are still settled in Khanza |
 | Finance | Manual balanced journal, tariffs and accounts |
 
 Generic report screens can be exported to CSV or printed as a letterhead PDF. A connection profile setting mirrors Khanza's
@@ -200,10 +200,10 @@ On first start the app asks for the database connection (host, port, user, passw
 
 ### Tests
 
-Latest local run (27 November 2026, 263 tests):
+Latest local run (28 November 2026, 269 tests):
 
-- Without a database: **221 passed, 0 failed, 42 skipped** because they need one.
-- Against synthetic MariaDB databases, all fixture suites run by the script passed (106 tests).
+- Without a database: **223 passed, 0 failed, 46 skipped** because they need one.
+- Against synthetic MariaDB databases, all fixture suites run by the script passed (109 tests).
 
 On Windows, `tools\uji-fixture.ps1` starts a temporary MariaDB and runs those suites and then the whole test project.
 Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the

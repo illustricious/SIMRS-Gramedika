@@ -29,9 +29,14 @@ public partial class KasirRepository
                    CAST(COALESCE(besar_bayar,0) AS DECIMAL(20,4)) AS Jumlah
             FROM detail_nota_jalan WHERE no_rawat={noRawat} ORDER BY nama_bayar
             """).ToListAsync(ct);
-        if (bill.Total > 0 && pembayaran.Count == 0) return null;
+        var piutang = bill.StatusPiutang is null ? [] : await db.Database.SqlQuery<KasirPiutangRincian>($"""
+            SELECT nama_bayar AS AkunPiutang,CAST(COALESCE(totalpiutang,0) AS DECIMAL(20,4)) AS Jumlah,
+                   CAST(COALESCE(sisapiutang,0) AS DECIMAL(20,4)) AS Sisa,CAST(tgltempo AS DATETIME) AS JatuhTempo
+            FROM detail_piutang_pasien WHERE no_rawat={noRawat} ORDER BY nama_bayar
+            """).ToListAsync(ct);
+        if (bill.Total > 0 && pembayaran.Count == 0 && piutang.Count == 0) return null;
 
         await tx.CommitAsync(ct);
-        return new(bill, waktu.Value, pembayaran);
+        return new(bill, waktu.Value, pembayaran) { Piutang = piutang };
     }
 }

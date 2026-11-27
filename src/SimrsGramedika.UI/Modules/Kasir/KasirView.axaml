@@ -14,6 +14,7 @@
             <TextBlock Text="No. Rawat :" VerticalAlignment="Center" />
             <TextBox Name="NoRawatBox" Width="260" PlaceholderText="contoh: 2026/11/07/000001" KeyDown="OnNoRawatKeyDown" />
             <Button Name="CariButton" Content="Cari Tagihan" Click="OnCariClick" />
+            <Button Name="PiutangButton" Content="Piutang Pasien" Click="OnPiutangClick" IsVisible="False" />
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" Margin="0,10,0,0">
@@ -42,9 +43,20 @@
                     <TextBlock Text="Akun Bayar" VerticalAlignment="Center" />
                     <ComboBox Name="AkunBayarBox" MinWidth="240" PlaceholderText="Pilih akun bayar" />
                 </StackPanel>
+                <StackPanel Name="PiutangRow" Spacing="6" IsVisible="False">
+                    <CheckBox Name="PiutangCheck" Content="Simpan sisa tagihan sebagai piutang" IsCheckedChanged="OnPiutangCheck" />
+                    <StackPanel Name="PiutangIsian" Orientation="Horizontal" Spacing="8" IsVisible="False">
+                        <TextBlock Text="Uang muka" VerticalAlignment="Center" />
+                        <TextBox Name="UangMukaBox" Width="150" PlaceholderText="0" />
+                        <TextBlock Text="Akun piutang" VerticalAlignment="Center" />
+                        <ComboBox Name="AkunPiutangBox" MinWidth="220" PlaceholderText="Pilih akun piutang" />
+                        <TextBlock Text="Jatuh tempo" VerticalAlignment="Center" />
+                        <CalendarDatePicker Name="TempoPicker" />
+                    </StackPanel>
+                </StackPanel>
                 <Button Name="BayarButton" Content="Catat Pelunasan" Click="OnBayarClick"
                         HorizontalAlignment="Left" Margin="0,8,0,0" />
-                <Button Name="BuktiButton" Content="Cetak Ulang Kuitansi (PDF)" Click="OnBuktiClick"
+                <Button Name="BuktiButton" Content="Cetak Ulang Kuitansi / Nota (PDF)" Click="OnBuktiClick"
                         HorizontalAlignment="Left" IsVisible="False" />
             </StackPanel>
             </StackPanel>

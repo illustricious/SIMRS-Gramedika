@@ -461,8 +461,8 @@ K	btnBayarPiutangJasaPerusahaan	Bayar Piutang Jasa Perusahaan	KeuanganBayarPiuta
 K	btnDeposit	Deposit Pasien	DlgDeposit	ya	master	tulis ada
 K	btnLihatPiutang	Piutang Pasien	DlgLhtPiutang	tidak	baca saja	baca ada
 K	btnRincianPiutangPasien	Rincian Piutang Pasien	KeuanganRincianPiutangPasien	tidak	baca saja	baca ada
-K	btnPiutangBelumLunas	Piutang Belum Lunas	KeuanganPiutangBelumLunas	ya	baca saja	hanya baca
-K	btnPiutangObatBelumLunas	Piutang Obat & BHP Belum Lunas	KeuanganPiutangObatBelumLunas	ya	baca saja	hanya baca
+K	btnPiutangBelumLunas	Piutang Belum Lunas	KeuanganPiutangBelumLunas	ya	baca saja	tulis sebagian
+K	btnPiutangObatBelumLunas	Piutang Obat & BHP Belum Lunas	KeuanganPiutangObatBelumLunas	ya	baca saja	tulis ada
 K	btnPiutangPerCaraBayar	Piutang Per Cara Bayar	DlgPiutangPercaraBayar	tidak	baca saja	baca ada
 K	btnNilaiPiutangPerJenisBayarPerBulan	Nilai Piutang Per Cara Bayar Per Bulan	KeuanganNilaiPiutangPerJenisBayarPerBulan	tidak	baca saja	baca ada
 K	btnRingkasanPiutangPerJenisBayar	Ringkasan Piutang Per Cara Bayar	KeuanganRingkasanPiutangPerJensBayar	tidak	baca saja	baca ada
@@ -470,7 +470,7 @@ K	btnPenagihanPiutangPasien	Penagihan Piutang Pasien	KeuanganPenagihanPiutangPas
 K	btnValidasiPenagihanPiutang	Validasi Penagihan Piutang	KeuanganValidasiPenagihanPiutang	tidak	baca saja	baca sebagian
 K	btnRVPPiutangBPJS	RVP Piutang BPJS	KeuanganRVPBPJS	ya	baca saja	bridging
 K	btnKlaimRawatJalan	Klaim Rawat Jalan	KeuanganKlaimRalan	tidak	baca saja	baca ada
-K	btnBayarPiutang	Bayar Piutang	DlgBayarPiutang	ya	baca saja	hanya baca
+K	btnBayarPiutang	Bayar Piutang	DlgBayarPiutang	ya	baca saja	tulis ada
 K	btnOmsetPenerimaan	Penerimaan/Omset/Kas Masuk	DlgOmsetPenerimaan	tidak	baca saja	baca ada
 K	btnPengembalianDepositPasien	Pengembalian Deposit Pasien	DlgPengembalianDepositPasien	tidak	baca saja	baca ada
 K	btnPendapatanPerCaraBayar	Pendapatan Per Cara Bayar	DlgPendapatanPerCaraBayar	tidak	baca saja	baca ada

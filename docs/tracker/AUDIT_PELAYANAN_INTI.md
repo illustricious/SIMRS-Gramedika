@@ -27,11 +27,17 @@ Jalur-jalur lain, seluruh popup, pengujian hak akses per aksi, serta rekonsilias
 - Pemetaan pendapatan merujuk DlgBilingRalan.java. Jika saldo suspen untuk kunjungan sudah terbentuk saat pelayanan, pelunasan mengkredit rekening suspen agar pendapatan tidak dicatat ulang. Selisih yang belum diposting masuk rekening pendapatan layanan. Saldo suspen tidak wajar atau alokasi ambigu menghentikan transaksi. Ini berbeda dari kode pelunasan Java yang mengkredit pendapatan langsung. Saldo dan pemetaan rekening RS perlu direkonsiliasi sebelum penggunaan operasional bersamaan dengan Java.
 - Ruang lingkup pelunasan menggunakan satu akun bayar tanpa biaya admin. Deposit, piutang, retur obat kunjungan, operasi, tagihan obat langsung, tambahan dan potongan tetap diarahkan ke Kasir Khanza.
 
+Sejak 28 November 2026 piutang dapat dicatat di Kasir ([bagian piutang](#piutang-pasien-28-november-2026)).
+
 ## Penguncian pelunasan dan cetak ulang kuitansi (26 November 2026)
 
 - Kasir hanya mencatat pelunasan melalui transaksi yang menyimpan nota, rincian pembayaran, billing, jurnal dan status bayar. Jalur lama yang hanya menandai status lunas telah dihapus.
 - Kuitansi PDF memakai nomor dan waktu dari nota, rincian billing, serta akun dan nominal dari detail pembayaran. Tombol cetak ulang membaca snapshot pelunasan tanpa menulis nota atau jurnal tambahan.
 - Uji Avalonia headless mengirim dua klik dan memeriksa bahwa satu dialog konfirmasi terbuka. Uji MariaDB memakai dua koneksi kasir, lalu memaksa kegagalan insert detail jurnal setelah header disimpan untuk memverifikasi rollback. Dua kali baca kuitansi mengembalikan pembayaran yang sama dengan jumlah nota dan jurnal tetap.
+
+## Piutang pasien (28 November 2026)
+
+Kasir dapat menyimpan tagihan sebagai piutang dengan uang muka, dan jendela **Piutang Pasien** mencatat serta membatalkan cicilan (`KasirRepository.Piutang.cs`, `PiutangPasienService`, pembanding `DlgBilingRalan`, `DlgBilingRanap`, `DlgBayarPiutang`). Rincian, perbedaan dari Khanza dan bagian yang belum ada di [log 12](../handover/12-SESSION-2026-11-27.md#piutang-pasien). Uji memakai MariaDB sintetis; belum diuji pada database RS atau bersama klien Java.
 
 ## Validasi, pembatalan dan penyerahan resep (27 November 2026)
 

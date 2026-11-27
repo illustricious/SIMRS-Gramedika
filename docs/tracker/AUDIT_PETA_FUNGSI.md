@@ -3,7 +3,7 @@
 Pemetaan seluruh jendela dan tile Khanza terhadap Gramedika. Angka ada di [PETA_FUNGSI.md](PETA_FUNGSI.md) (dibuat otomatis),
 rincian di [peta-fungsi.tsv](peta-fungsi.tsv) per jendela Java dan [peta-tile.tsv](peta-tile.tsv) per tile.
 
-Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi dan resep racikan dokter; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
+Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi, resep racikan dokter dan piutang pasien; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
 
 ## Cara kerja
 
@@ -54,12 +54,12 @@ Perlakukan angka "tulis ada" sebagai langit-langit.
 
 ## Temuan utama
 
-1. **Sepertiga aksi tulis Java punya padanan.** 748 dari 2.202 pasangan tabel-aksi (34%), sebelum dikoreksi ke bawah.
-2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 255 jendela "tulis ada" tercakup layar master satu tabel.
+1. **Sepertiga aksi tulis Java punya padanan.** 754 dari 2.202 pasangan tabel-aksi (34%), sebelum dikoreksi ke bawah.
+2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 257 jendela "tulis ada" tercakup layar master satu tabel.
 3. **320 tile hanya menampilkan** data yang di Java bisa diisi; 184 di antaranya Menu M (rekam medis).
 4. **Rekam medis adalah kelompok terbesar yang tersisa:** 147 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
    isi" belum berarti muat di mesin formulir; pemilik ganda, bentuk kunci dan tipe kolom harus dicek per formulir.
-5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** piutang pasien, pengurangan dan tambahan
+5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** pengurangan dan tambahan
    biaya, data bayi lahir, pengadaan farmasi,
    retur beli, retur jual dan piutang obat.
 6. Pembelian, pemesanan, pengeluaran dan retur Dapur, Non Medis dan Toko hanya tampil; master barangnya yang bisa diedit.
@@ -76,6 +76,6 @@ berguna untuk menentukan prioritas.
 
 1. Daftar menu yang dipakai sehari-hari dari rumah sakit, lalu saring [peta-fungsi.tsv](peta-fungsi.tsv) dengannya.
 2. Uji alur inti pada salinan database RS (perlu persetujuan pemilik sistem).
-3. Celah alur uang dan pasien: piutang/deposit/penyesuaian di kasir.
+3. Celah alur uang dan pasien: deposit dan penyesuaian di kasir.
 4. Formulir rekam medis per kelompok lewat mesin formulir.
 5. Transaksi stok non-farmasi.

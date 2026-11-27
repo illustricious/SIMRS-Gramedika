@@ -8,7 +8,10 @@ using SimrsGramedika.Data.Keuangan;
 namespace SimrsGramedika.Data;
 
 public record KasirPembayaran(string AkunBayar, decimal BiayaAdmin, decimal Jumlah);
-public record KasirKuitansi(KasirBillItem Tagihan, DateTime WaktuBayar, IReadOnlyList<KasirPembayaran> Pembayaran);
+public record KasirKuitansi(KasirBillItem Tagihan, DateTime WaktuBayar, IReadOnlyList<KasirPembayaran> Pembayaran)
+{
+    public IReadOnlyList<KasirPiutangRincian> Piutang { get; init; } = [];
+}
 
 public record KasirRincian(string Jenis, string Nama, decimal Tarif, decimal Jumlah, decimal Total);
 
@@ -23,6 +26,8 @@ public record KasirBillItem(
     public string? AlasanBelumBisaBayar { get; init; }
     /// <summary>Terisi untuk bayi rawat gabung: seluruh tagihannya ada pada No. Rawat ibu.</summary>
     public string? NoRawatIbu { get; init; }
+    /// <summary>Isi piutang_pasien.status bila tagihan disimpan sebagai piutang.</summary>
+    public string? StatusPiutang { get; init; }
 }
 
 public interface IKasirRepository
@@ -56,6 +61,12 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         var visit = await KunjunganQuery.SingleOrDefaultAsync(r => r.Reg.NoRawat == noRawat, ct);
         if (visit is null) return null;
         var result = (await BuatRingkasanAsync([visit], ct)).Single();
+        if (result.StatusBayar == "Sudah Bayar")
+            result = result with
+            {
+                StatusPiutang = await db.Database.SqlQuery<string>(
+                    $"SELECT status AS Value FROM piutang_pasien WHERE no_rawat={noRawat}").SingleOrDefaultAsync(ct),
+            };
         if (!result.Ranap)
         {
             if (result.StatusBayar == "Sudah Bayar")
@@ -78,11 +89,11 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             SELECT nama_bayar AS Value FROM akun_bayar WHERE COALESCE(ppn,0)=0 AND COALESCE(kd_rek,'')<>'' ORDER BY nama_bayar
             """).ToListAsync(ct);
 
-    public async Task<string> BayarRalanAsync(KasirBillItem dilihat, string akunBayar, AuthenticatedUser user, CancellationToken ct = default)
+    public async Task<string> BayarRalanAsync(KasirBillItem dilihat, string akunBayar, AuthenticatedUser user,
+        CancellationToken ct = default, KasirPiutang? piutang = null)
     {
         if (!user.HasPermission("kasir_ralan") && !user.HasPermission("billing_ralan"))
             throw new InvalidOperationException("Akun tidak memiliki hak billing rawat jalan.");
-        if (string.IsNullOrWhiteSpace(akunBayar)) throw new ArgumentException("Pilih akun bayar.");
         await using var tx = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, dilihat.NoRawat, ct);
         var rawat = reg.NoRawat;
@@ -95,11 +106,9 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         if (bill.AlasanBelumBisaBayar is { } alasan) throw new InvalidOperationException(alasan);
         if (dilihat.NoRekamMedis != bill.NoRekamMedis || dilihat.Total != bill.Total || !dilihat.Rincian.SequenceEqual(bill.Rincian) || bill.Total < 0)
             throw new InvalidOperationException("Rincian tagihan berubah. Muat ulang sebelum mengonfirmasi.");
-        var rekening = await db.Database.SqlQuery<string>($"""
-            SELECT kd_rek AS Value FROM akun_bayar WHERE nama_bayar={akunBayar} AND COALESCE(ppn,0)=0 AND kd_rek<>''
-            """).SingleOrDefaultAsync(ct) ?? throw new InvalidOperationException("Akun bayar tidak valid.");
         var now = await db.Database.SqlQuery<DateTime>($"SELECT NOW() AS Value").SingleAsync(ct);
         var tanggal = DateOnly.FromDateTime(now);
+        var terima = await SiapkanPenerimaanAsync(bill.Total, akunBayar, piutang, tanggal, ct);
         var urut = 1 + await db.Database.SqlQuery<long>($"""
             SELECT COALESCE(MAX(CAST(RIGHT(no_nota,4) AS SIGNED)),0) AS Value FROM nota_jalan WHERE tanggal={tanggal} FOR UPDATE
             """).SingleAsync(ct);
@@ -123,30 +132,40 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             """, ct);
         if (bill.Total > 0)
         {
-            await db.Database.ExecuteSqlInterpolatedAsync($"""
-                INSERT INTO detail_nota_jalan(no_rawat,nama_bayar,besarppn,besar_bayar) VALUES ({rawat},{akunBayar},0,{bill.Total})
-                """, ct);
+            if (terima.Tunai > 0)
+                await db.Database.ExecuteSqlInterpolatedAsync($"""
+                    INSERT INTO detail_nota_jalan(no_rawat,nama_bayar,besarppn,besar_bayar) VALUES ({rawat},{akunBayar},0,{terima.Tunai})
+                    """, ct);
             var conn = (MySqlConnection)db.Database.GetDbConnection();
             var sqlTx = (MySqlTransaction)tx.GetDbTransaction();
-            var lines = await BuatJurnalRalanAsync(bill, rekening, akunBayar, conn, sqlTx, ct);
-            await JurnalPoster.PostAsync(conn, sqlTx, rawat, $"PELUNASAN RAWAT JALAN {rawat}, OLEH {user.KodeLegacy}", lines, ct);
+            var lines = await BuatJurnalRalanAsync(bill, terima.Debit, conn, sqlTx, ct);
+            var keterangan = piutang is null ? $"PELUNASAN RAWAT JALAN {rawat}, OLEH {user.KodeLegacy}"
+                : $"PIUTANG PASIEN RAWAT JALAN {rawat} {bill.NoRekamMedis} {bill.NamaPasien}, DIPOSTING OLEH {user.KodeLegacy}";
+            await JurnalPoster.PostAsync(conn, sqlTx, rawat, keterangan, lines, ct);
         }
-        await db.Database.ExecuteSqlInterpolatedAsync($"""
-            INSERT INTO tagihan_sadewa(no_nota,no_rkm_medis,nama_pasien,alamat,tgl_bayar,jenis_bayar,jumlah_tagihan,jumlah_bayar,status,petugas)
-            VALUES({rawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},'Pelunasan',{bill.Total},{bill.Total},'Sudah',{user.KodeLegacy})
-            """, ct);
+        if (piutang is not null)
+            await SimpanPiutangAsync(rawat, bill.NoRekamMedis, bill.Total, terima, piutang, tanggal, ct);
+        if (piutang is null || terima.Tunai > 0)
+        {
+            var (jenis, status) = piutang is null ? ("Pelunasan", "Sudah") : ("Uang Muka", "Belum");
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO tagihan_sadewa(no_nota,no_rkm_medis,nama_pasien,alamat,tgl_bayar,jenis_bayar,jumlah_tagihan,jumlah_bayar,status,petugas)
+                VALUES({rawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},{jenis},{bill.Total},{terima.Tunai},{status},{user.KodeLegacy})
+                """, ct);
+        }
         reg.StatusBayar = StatusBayar.SudahBayar;
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
         return nota;
     }
 
-    public async Task<string> BayarRanapAsync(KasirBillItem dilihat, string akunBayar, AuthenticatedUser user, CancellationToken ct = default)
+    public async Task<string> BayarRanapAsync(KasirBillItem dilihat, string akunBayar, AuthenticatedUser user,
+        CancellationToken ct = default, KasirPiutang? piutang = null)
     {
         if (!user.HasPermission("billing_ranap")) throw new InvalidOperationException("Akun tidak memiliki hak billing rawat inap.");
         var petugas = user.KodeLegacy;
-        if (string.IsNullOrWhiteSpace(akunBayar) || string.IsNullOrWhiteSpace(petugas))
-            throw new ArgumentException("Pilih akun bayar dan pastikan petugas sudah login.");
+        if (string.IsNullOrWhiteSpace(petugas))
+            throw new ArgumentException("Pastikan petugas sudah login.");
         await using var tx = await db.Database.BeginTransactionAsync(ct);
         var reg = await KunjunganRanap.KunciAsync(db, dilihat.NoRawat, ct);
         // Kunci bayi rawat gabung sebelum pembacaan biasa, agar transaksi bayi tidak menyusul tagihan yang sedang disimpan.
@@ -169,12 +188,9 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         if (bill.Total < 0 || bill.Rincian.Any(r => r.Total < 0))
             throw new InvalidOperationException("Ada biaya negatif yang perlu diperiksa di Kasir Khanza.");
 
-        var rekeningBayar = await db.Database.SqlQuery<string>($"""
-            SELECT kd_rek AS Value FROM akun_bayar
-            WHERE nama_bayar={akunBayar} AND COALESCE(ppn,0)=0 AND COALESCE(kd_rek,'')<>''
-            """).SingleOrDefaultAsync(ct) ?? throw new InvalidOperationException("Akun bayar belum valid atau memiliki biaya admin.");
         var now = await db.Database.SqlQuery<DateTime>($"SELECT NOW() AS Value").SingleAsync(ct);
         var tanggal = DateOnly.FromDateTime(now);
+        var terima = await SiapkanPenerimaanAsync(bill.Total, akunBayar, piutang, tanggal, ct);
         var urut = (await db.Database.SqlQuery<long>($"""
             SELECT IFNULL(MAX(CAST(RIGHT(no_nota,4) AS SIGNED)),0) AS Value FROM nota_inap
             WHERE tanggal={tanggal} FOR UPDATE
@@ -200,28 +216,36 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             """, ct);
         if (bill.Total > 0)
         {
-            await db.Database.ExecuteSqlInterpolatedAsync($"""
-                INSERT INTO detail_nota_inap (no_rawat,nama_bayar,besarppn,besar_bayar)
-                VALUES ({reg.NoRawat},{akunBayar},0,{bill.Total})
-                """, ct);
+            if (terima.Tunai > 0)
+                await db.Database.ExecuteSqlInterpolatedAsync($"""
+                    INSERT INTO detail_nota_inap (no_rawat,nama_bayar,besarppn,besar_bayar)
+                    VALUES ({reg.NoRawat},{akunBayar},0,{terima.Tunai})
+                    """, ct);
             var conn = (MySqlConnection)db.Database.GetDbConnection();
             var sqlTx = (MySqlTransaction)tx.GetDbTransaction();
             var akun = await JurnalPoster.ReadAkunAsync(conn, sqlTx, "set_akun_ranap", ct);
             var akun2 = await JurnalPoster.ReadAkunAsync(conn, sqlTx, "set_akun_ranap2", ct);
-            var lines = new List<JurnalLine> { new(rekeningBayar, akunBayar, (double)bill.Total, 0) };
+            var lines = new List<JurnalLine>(terima.Debit);
             TambahKredit(lines, akun.GetValueOrDefault("Registrasi_Ranap", ""), Registrasi, bill.BiayaReg);
             TambahKredit(lines, akun.GetValueOrDefault("Kamar_Inap", ""), Kamar,
                 bill.Rincian.Where(r => r.Jenis is Kamar or BiayaMasuk).Sum(r => r.Total));
             TambahKredit(lines, akun2.GetValueOrDefault("Harian_Ranap", ""), Harian,
                 bill.Rincian.Where(r => r.Jenis == Harian).Sum(r => r.Total));
             await TambahJurnalLayananRanapAsync(bill, lines, akun, conn, sqlTx, ct);
+            var judul = piutang is null ? "PEMBAYARAN" : "PIUTANG";
             await JurnalPoster.PostAsync(conn, sqlTx, reg.NoRawat,
-                $"PEMBAYARAN PASIEN RAWAT INAP {reg.NoRawat} {bill.NoRekamMedis} {bill.NamaPasien}, DIPOSTING OLEH {petugas}", lines, ct);
+                $"{judul} PASIEN RAWAT INAP {reg.NoRawat} {bill.NoRekamMedis} {bill.NamaPasien}, DIPOSTING OLEH {petugas}", lines, ct);
         }
-        await db.Database.ExecuteSqlInterpolatedAsync($"""
-            INSERT INTO tagihan_sadewa (no_nota,no_rkm_medis,nama_pasien,alamat,tgl_bayar,jenis_bayar,jumlah_tagihan,jumlah_bayar,status,petugas)
-            VALUES ({reg.NoRawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},'Pelunasan',{bill.Total},{bill.Total},'Sudah',{petugas})
-            """, ct);
+        if (piutang is not null)
+            await SimpanPiutangAsync(reg.NoRawat, bill.NoRekamMedis, bill.Total, terima, piutang, tanggal, ct);
+        if (piutang is null || terima.Tunai > 0)
+        {
+            var (jenis, status) = piutang is null ? ("Pelunasan", "Sudah") : ("Uang Muka", "Belum");
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO tagihan_sadewa (no_nota,no_rkm_medis,nama_pasien,alamat,tgl_bayar,jenis_bayar,jumlah_tagihan,jumlah_bayar,status,petugas)
+                VALUES ({reg.NoRawat},{bill.NoRekamMedis},{bill.NamaPasien},{visit.Alamat ?? ""},{now},{jenis},{bill.Total},{terima.Tunai},{status},{petugas})
+                """, ct);
+        }
         reg.StatusBayar = StatusBayar.SudahBayar;
         foreach (var anak in bayi) anak.StatusBayar = StatusBayar.SudahBayar;
         await db.SaveChangesAsync(ct);

@@ -1,6 +1,6 @@
 # Handover SIMRS Gramedika
 
-Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `master`. Aplikasi desktop C#, .NET 10, dan Avalonia memakai skema MySQL/MariaDB Khanza. Folder `simrs-khanza` berada di samping repo Avalonia dan dipakai sebagai referensi sumber Java.
+Status 28 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `master`. Aplikasi desktop C#, .NET 10, dan Avalonia memakai skema MySQL/MariaDB Khanza. Folder `simrs-khanza` berada di samping repo Avalonia dan dipakai sebagai referensi sumber Java.
 
 ## Mulai sesi berikutnya
 
@@ -26,9 +26,10 @@ Status 27 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Rawat gabung ibu dan bayi bisa dibuat dan dilepas, bayi tampil di bawah ibunya, dan Kasir menagih keduanya dalam satu nota ([log 12](12-SESSION-2026-11-27.md#rawat-gabung-ibu-dan-bayi)).
 - Operasi/VK rawat inap bisa diinput dan dihapus beserta obat kamar operasi, laporan dan jurnalnya, dan ikut tagihan rawat inap ([log 12](12-SESSION-2026-11-27.md#operasi-rawat-inap)).
 - Dokter bisa mengirim dan mengubah resep racikan rawat jalan ([log 12](12-SESSION-2026-11-27.md#resep-racikan-dari-dokter)).
+- Kasir bisa menyimpan tagihan sebagai piutang, menerima cicilan dan membatalkannya ([log 12](12-SESSION-2026-11-27.md#piutang-pasien)).
 - Cek "kunjungan sudah ditagih" disatukan di `TagihanKunjungan` dan mengikuti Khanza (hanya baris `billing`).
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
-- Peta fungsi: paling banyak 34% pasangan tabel-aksi tulis jendela Java punya padanan (748 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
-- Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 30 fixture; tanpa database 223 lulus, 45 dilewati).
+- Peta fungsi: paling banyak 34% pasangan tabel-aksi tulis jendela Java punya padanan (754 dari 2.202, tanpa bridging); 320 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
+- Tes terakhir: skrip fixture lulus seluruhnya (77 + 1 + 31 fixture; tanpa database 223 lulus, 46 dilewati).
 - Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611280045` (dari `1266e97`). Pre-release GitHub tertinggal dari source.
