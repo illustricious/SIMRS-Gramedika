@@ -16,7 +16,7 @@ internal sealed class ResumeRalanView : UserControl
     private readonly TextBlock _kode = new() { TextWrapping = TextWrapping.Wrap };
     private readonly TextBlock _status = Ui.Status();
     private readonly StackPanel _layout = new() { Spacing = 7, Margin = new Thickness(12) };
-    private readonly Button _simpan;
+    private readonly Button _simpan, _cetak;
     private ResumeRalan? _snapshot;
     private bool _busy;
 
@@ -24,8 +24,10 @@ internal sealed class ResumeRalanView : UserControl
     {
         _service = new(DatabaseSettings.Load(), noRawat, noRm, user);
         _simpan = Ui.Btn("Simpan Resume", async (_, _) => await JalankanAsync(SimpanAsync), false);
+        _cetak = Ui.Btn("Cetak Resume", async (_, _) => await JalankanAsync(CetakAsync), false);
+        _cetak.IsEnabled = false;
         _layout.Children.Add(Ui.Title("Resume Medis Rawat Jalan"));
-        _layout.Children.Add(Ui.Bar(_simpan, Ui.Btn("Muat Ulang", async (_, _) => await JalankanAsync(async () =>
+        _layout.Children.Add(Ui.Bar(_simpan, _cetak, Ui.Btn("Muat Ulang", async (_, _) => await JalankanAsync(async () =>
         {
             if (await Dialogs.ConfirmAsync(this, "Muat ulang resume", "Muat ulang data dan buang perubahan yang belum disimpan?"))
                 await MuatAsync();
@@ -64,13 +66,32 @@ internal sealed class ResumeRalanView : UserControl
         _kode.Text = kode.Count == 0 ? "Belum ada diagnosis atau prosedur pada kunjungan." :
             string.Join(Environment.NewLine, kode.Select(c => $"{(c.Prosedur ? "ICD-9" : "ICD-10")} {c.Prioritas} · {c.Kode} · {c.Nama}"));
         _simpan.IsEnabled = true;
+        _cetak.IsEnabled = resume is not null;
     }
+
+    private async Task CetakAsync()
+    {
+        // Yang dicetak adalah isi tersimpan, jadi perubahan di layar harus disimpan dulu.
+        if (_snapshot is null || BacaIsian() != Rapikan(_snapshot.Isi))
+            throw new InvalidOperationException("Simpan resume sebelum mencetak.");
+        var isi = await _service.CetakAsync();
+        try
+        {
+            var path = ResumeRalanReport.GeneratePdf(isi, await KopInstansi.MuatAsync(DatabaseSettings.Load()));
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
+        }
+        catch (Exception ex) { Ui.Err(_status, $"Gagal membuat atau membuka resume: {ex.Message}"); }
+    }
+
+    private IsiResumeRalan BacaIsian() => Rapikan(new(_keluhan.Text ?? "", _perjalanan.Text ?? "",
+        _penunjang.Text ?? "", _lab.Text ?? "", _kondisi.SelectedItem as string ?? "", _obat.Text ?? ""));
+
+    private static IsiResumeRalan Rapikan(IsiResumeRalan d) => new(d.Keluhan.Trim(), d.Perjalanan.Trim(),
+        d.Penunjang.Trim(), d.Laborat.Trim(), d.Kondisi, d.Obat.Trim());
 
     private async Task SimpanAsync()
     {
-        var data = new IsiResumeRalan(_keluhan.Text?.Trim() ?? "", _perjalanan.Text?.Trim() ?? "",
-            _penunjang.Text?.Trim() ?? "", _lab.Text?.Trim() ?? "", _kondisi.SelectedItem as string ?? "", _obat.Text?.Trim() ?? "");
-        await _service.SimpanAsync(data, _snapshot);
+        await _service.SimpanAsync(BacaIsian(), _snapshot);
         Ui.Ok(_status, "Resume tersimpan.");
         try { await MuatAsync(); }
         catch (Exception) { Ui.Ok(_status, "Resume tersimpan. Muat ulang sebelum mengubah lagi."); }

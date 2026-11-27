@@ -378,12 +378,54 @@ public class RadiologiPeriksaRepository(SimrsGramedikaDbContext db) : IRadiologi
         {
             await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
             var p = new object[] { key.NoRawat, key.Tgl, key.Jam };
+            var lama = await NilaiTersimpanAsync(p, ct);
+            // Diputuskan selagi baris masih ada, karena saldo dibandingkan dengan seluruh pemeriksaan kunjungan.
+            var balik = new List<(bool Ranap, KomponenPenunjang Nilai)>();
+            foreach (var (ranap, nilai) in lama)
+                if (await PenunjangJurnal.PerluDibalikAsync(db, key.NoRawat, ranap, PenunjangJurnal.Radiologi, ct))
+                    balik.Add((ranap, nilai));
             var n = await db.Database.ExecuteSqlRawAsync("delete from periksa_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p, ct);
             if (n == 0) throw new InvalidOperationException("Data pemeriksaan tidak ditemukan.");
             await db.Database.ExecuteSqlRawAsync("delete from hasil_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p, ct);
             await db.Database.ExecuteSqlRawAsync("delete from gambar_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p, ct);
             await db.Database.ExecuteSqlRawAsync("delete from beri_bhp_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p, ct);
+            foreach (var (ranap, nilai) in balik)
+                await PenunjangJurnal.PostAsync(db, key.NoRawat, ranap, PenunjangJurnal.Radiologi, nilai, true, ct);
         }, ct);
+    }
+
+    private sealed class NilaiRow
+    {
+        public string? Status { get; set; }
+        public double Pendapatan { get; set; }
+        public double Dokter { get; set; }
+        public double Petugas { get; set; }
+        public double Bhp { get; set; }
+        public double Kso { get; set; }
+        public double Sarana { get; set; }
+        public double Perujuk { get; set; }
+        public double Menejemen { get; set; }
+    }
+
+    /// <summary>Nilai tarif pemeriksaan tersimpan ditambah BHP yang dipakai, dikelompokkan rawat jalan atau inap.</summary>
+    private async Task<List<(bool Ranap, KomponenPenunjang Nilai)>> NilaiTersimpanAsync(object[] p, CancellationToken ct)
+    {
+        var rows = await db.Database.SqlQueryRaw<NilaiRow>(
+            "select status as Status,biaya as Pendapatan,tarif_tindakan_dokter as Dokter,tarif_tindakan_petugas as Petugas,bhp as Bhp," +
+            "ifnull(kso,0) as Kso,bagian_rs as Sarana,tarif_perujuk as Perujuk,ifnull(menejemen,0) as Menejemen " +
+            "from periksa_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p).ToListAsync(ct);
+        var hasil = rows.GroupBy(r => r.Status == "Ranap")
+            .Select(g => (Ranap: g.Key, Nilai: g.Aggregate(new KomponenPenunjang(), (jumlah, r) => jumlah + new KomponenPenunjang(
+                r.Pendapatan, r.Dokter, r.Petugas, r.Bhp, r.Kso, r.Sarana, r.Perujuk, r.Menejemen))))
+            .ToList();
+        if (hasil.Count > 0)
+        {
+            var bhp = await db.Database.SqlQueryRaw<double>(
+                "select cast(ifnull(sum(total),0) as double) as Value from beri_bhp_radiologi where no_rawat={0} and tgl_periksa={1} and jam={2}", p)
+                .ToListAsync(ct);
+            hasil[0] = (hasil[0].Ranap, hasil[0].Nilai + new KomponenPenunjang(Bhp: bhp[0]));
+        }
+        return hasil;
     }
 
     private static string Cut(string s, int max) => s.Length > max ? s[..(max - 1)] : s;
@@ -424,6 +466,20 @@ public class RadiologiPeriksaRepository(SimrsGramedikaDbContext db) : IRadiologi
             if (rq.Hasil.Length > 0)
                 await db.Database.ExecuteSqlRawAsync("insert into hasil_radiologi(no_rawat,tgl_periksa,jam,hasil) values({0},{1},{2},{3})",
                     new object[] { rq.NoRawat, tgl, jam, rq.Hasil }, ct);
+
+            // Item permintaan yang sudah dibayar di muka tidak dijurnal lagi.
+            var nilai = new KomponenPenunjang();
+            var order = rq.NoOrder?.Trim() ?? "";
+            foreach (var t in rq.Pemeriksaan.Select(x => x.Tarif))
+            {
+                if (order.Length > 0 && await ScalarAsync(
+                        "select count(*) as Value from permintaan_pemeriksaan_radiologi where noorder={0} and kd_jenis_prw={1} and stts_bayar='Sudah'",
+                        [order, t.KdJenisPrw], ct) > 0) continue;
+                nilai += new KomponenPenunjang((double)t.Biaya, (double)t.TarifDokter, (double)t.TarifPetugas, (double)t.Bhp,
+                    (double)t.Kso, (double)t.BagianRs, (double)t.TarifPerujuk, (double)t.Menejemen);
+            }
+            nilai += new KomponenPenunjang(Bhp: rq.Bhp.Sum(b => (double)(b.Harga * b.Jumlah)));
+            await PenunjangJurnal.PostAsync(db, rq.NoRawat, rq.Status == "Ranap", PenunjangJurnal.Radiologi, nilai, false, ct);
 
             if (!string.IsNullOrWhiteSpace(rq.NoOrder))
             {

@@ -85,13 +85,68 @@ public sealed class AlurPenunjangRalanTests
         Assert.Equal("A00", Assert.Single(kode).Kode);
         Assert.Equal("Diagnosis Uji", await db.StrAsync("SELECT diagnosa_utama FROM resume_pasien WHERE no_rawat=@p0", rawat));
         await resume.SimpanAsync(narasi with { Laborat = "Hasil uji" }, snapshot);
+        var cetak = await resume.CetakAsync();
+        Assert.Equal(("Pasien Uji", "Dokter Penulis", "Poli Uji", "Hasil uji", "AUTH"),
+            (cetak.Pasien, cetak.Dokter, cetak.Ruang, cetak.Isi.Laborat, cetak.IdDokter));
+        Assert.Equal(("A00", "Diagnosis Uji"), (cetak.Kode[0].Kode, cetak.Kode[0].Nama));
+        var pdf = SimrsGramedika.UI.Modules.RawatJalan.ResumeRalanReport.GeneratePdf(cetak,
+            new KopInstansi("RS UJI", "Jalan Uji", "000", "", null) { Kota = "Kota Uji" });
+        Assert.True(new FileInfo(pdf).Length > 1000);
+        File.Delete(pdf);
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new ResumeRalanService(settings, rawat, "RM-LAIN", user).CetakAsync());
         await Assert.ThrowsAsync<InvalidOperationException>(() => resume.SimpanAsync(narasi, snapshot));
         var diagnosaService = new DiagnosaRalanService(settings, rawat, new AuthenticatedUser { IsAdminUtama = true });
         await diagnosaService.TambahAsync(false, "B00", 2, "");
         Assert.Equal("Diagnosis Tambahan", await db.StrAsync("SELECT diagnosa_sekunder FROM resume_pasien WHERE no_rawat=@p0", rawat));
         await diagnosaService.HapusAsync(false, "B00", 2);
         Assert.Equal("", await db.StrAsync("SELECT diagnosa_sekunder FROM resume_pasien WHERE no_rawat=@p0", rawat));
+        // Ubah resep: dokter lain ditolak, kegagalan satu baris membatalkan semua, data lama ditolak.
+        var drafResep = await resep.MuatOrderAsync(noResep);
+        var baru = drafResep.Baris[0] with { Jumlah = 5, Aturan = "Aturan baru" };
+        var dokterLain = new AuthenticatedUser { UserId = "DR", Permissions = user.Permissions };
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new OrderRalanService(settings, rawat, rm, dokterLain, JenisOrderRalan.Resep).MuatOrderAsync(noResep));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => resep.UbahAsync(drafResep, [baru, inactive], "", ""));
+        Assert.Equal(2, await db.CountAsync("SELECT jml FROM resep_dokter WHERE no_resep=@p0", noResep));
+        await resep.UbahAsync(drafResep, [baru], "", "");
+        Assert.Equal(5, await db.CountAsync("SELECT jml FROM resep_dokter WHERE no_resep=@p0", noResep));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => resep.UbahAsync(drafResep, [baru], "", ""));
+        await db.ExecAsync("UPDATE resep_obat SET tgl_perawatan=CURRENT_DATE WHERE no_resep=@p0", noResep);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => resep.MuatOrderAsync(noResep));
+
+        // Ubah permintaan lab: rincian diganti; yang sudah diambil sampel atau dibayar ditolak.
+        var drafLab = await lab.MuatOrderAsync(noPk);
+        Assert.Equal([2], Assert.Single(drafLab.Baris).Template!);
+        await lab.UbahAsync(drafLab, [pk with { Template = [1, 2] }], "Diagnosis baru", "Info");
+        Assert.Equal(2, await db.CountAsync("SELECT COUNT(*) FROM permintaan_detail_permintaan_lab WHERE noorder=@p0", noPk));
+        Assert.Equal("Diagnosis baru", await db.StrAsync("SELECT diagnosa_klinis FROM permintaan_lab WHERE noorder=@p0", noPk));
+        drafLab = await lab.MuatOrderAsync(noPk);
+        await db.ExecAsync("UPDATE permintaan_detail_permintaan_lab SET stts_bayar='Sudah' WHERE noorder=@p0 AND id_template=1", noPk);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => lab.UbahAsync(drafLab, [pk with { Template = [1] }], "Uji", ""));
+        await db.ExecAsync("UPDATE permintaan_detail_permintaan_lab SET stts_bayar='Belum' WHERE noorder=@p0", noPk);
+        await db.ExecAsync("UPDATE permintaan_lab SET tgl_sampel=CURRENT_DATE WHERE noorder=@p0", noPk);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => lab.UbahAsync(drafLab, [pk with { Template = [1] }], "Uji", ""));
+        Assert.Equal(2, await db.CountAsync("SELECT COUNT(*) FROM permintaan_detail_permintaan_lab WHERE noorder=@p0", noPk));
+
+        var pa = Order(JenisOrderRalan.LabPa);
+        var drafPa = await pa.MuatOrderAsync(noPa);
+        Assert.Equal("Bahan uji", drafPa.Bahan!.Cara);
+        await pa.UbahAsync(drafPa, drafPa.Baris, "Diagnosis uji", "", drafPa.Bahan with { Cara = "Biopsi", Diambil = null });
+        Assert.Equal("Biopsi", (await pa.MuatOrderAsync(noPa)).Bahan!.Cara);
+        var mb = Order(JenisOrderRalan.LabMb);
+        var drafMb = await mb.MuatOrderAsync(noMb);
+        await mb.UbahAsync(drafMb, drafMb.Baris, "Diagnosis MB", "");
+        Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM permintaan_detail_permintaan_labmb WHERE noorder=@p0", noMb));
+
+        var rad = Order(JenisOrderRalan.Radiologi);
+        var drafRad = await rad.MuatOrderAsync(noRad);
+        await rad.UbahAsync(drafRad, drafRad.Baris, "Diagnosis radiologi", "Info baru");
+        Assert.Equal("Info baru", await db.StrAsync("SELECT informasi_tambahan FROM permintaan_radiologi WHERE noorder=@p0", noRad));
+        drafRad = await rad.MuatOrderAsync(noRad);
+
         await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Sudah Bayar' WHERE no_rawat=@p0", rawat);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => rad.UbahAsync(drafRad, drafRad.Baris, "Uji", ""));
         await Assert.ThrowsAsync<InvalidOperationException>(() => lab.SimpanAsync([pk], "Diagnosis uji", ""));
         var wrongPatient = new OrderRalanService(settings, rawat, "RM-LAIN", user, JenisOrderRalan.Resep);
         await Assert.ThrowsAsync<InvalidOperationException>(() => wrongPatient.SimpanAsync([obat with { Jumlah = 1, Aturan = "Uji" }], "", ""));

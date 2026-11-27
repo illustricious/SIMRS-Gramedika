@@ -1,4 +1,44 @@
 {
+  "aksi|inventory/DlgResepPulang.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Retur Validasi Resep di Farmasi mengembalikan seluruh obat satu validasi ke depo/batch asal dan membuka lagi permintaannya; ditolak bila sudah ditagih atau sudah dicatat diserahkan. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "aksi|inventory/DlgDaftarPermintaanResep.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Ubah resep nonracikan rawat jalan lewat Alur Kunjungan selama belum divalidasi. Racikan dan rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "aksi|inventory/DlgPeresepanDokter.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Kirim dan ubah resep nonracikan rawat jalan lewat Alur Kunjungan. Racikan dan aturan input lain belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Kirim dan ubah permintaan lab PK/PA/MB rawat jalan selama belum diambil sampel atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Kirim dan ubah permintaan radiologi rawat jalan selama belum diproses atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnLaporanResume": {
+    "status": "sebagian",
+    "bukti": "Cetak Resume rawat jalan berkop RS dengan QR identitas dokter, isi mengikuti rptLaporanResume. Varian laporan lain dan resume rawat inap dengan format ini belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "SaveAsync menyimpan pemeriksaan dan memposting jurnal suspen/pendapatan, jasa, BHP dan KSO dalam satu transaksi dengan kunci billing; item permintaan yang sudah dibayar tidak dijurnal. JurnalPenunjangTests lulus pada MariaDB sintetis. Cetak, aturan input lain dan database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "SaveAsync menyimpan pemeriksaan dan memposting jurnal suspen/pendapatan, jasa, BHP dan KSO dalam satu transaksi dengan kunci billing; item permintaan yang sudah dibayar tidak dijurnal. JurnalPenunjangTests lulus pada MariaDB sintetis. Gambar radiologi, aturan input lain dan database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgCariPeriksaLab.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "DeleteAsync membalik jurnal pemeriksaan yang dihapus; pemeriksaan tanpa jurnal dihapus tanpa pembalik, dan ditolak bila saldo suspen tidak cukup untuk memastikannya. Diuji pada MariaDB sintetis. Belum diuji pada database RS."
+  },
+  "aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "DeleteAsync membalik jurnal pemeriksaan yang dihapus; pemeriksaan tanpa jurnal dihapus tanpa pembalik, dan ditolak bila saldo suspen tidak cukup untuk memastikannya. Diuji pada MariaDB sintetis. Belum diuji pada database RS."
+  },
   "aksi|inventory/DlgPemberianObat.java|BtnHapus": {
     "status": "sebagian",
     "bukti": "BatalAsync di Daftar Resep Dokter membatalkan validasi satu resep utuh: stok kembali, catatan obat dan racikan dihapus, jurnal dibalik, resep menunggu lagi; hanya sebelum penyerahan dan billing, lewat 48 jam hanya Admin Utama. Hapus per obat dari layar Data Pemberian Obat belum ada. Diuji pada MariaDB sintetis."

@@ -199,8 +199,9 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
 
         await using var db = await Db.OpenAsync(settings);
         await PastikanTabelSerahAsync(db);
-        await db.BeginAsync();
+        // Dibaca sebelum transaksi: baca biasa di dalamnya membekukan snapshot sebelum kunjungan terkunci.
         var rawat = await db.StrAsync("SELECT no_rawat FROM permintaan_resep_pulang WHERE no_permintaan=@p0", nomor);
+        await db.BeginAsync();
         await MenuAWrites.KunciKunjunganAsync(db, rawat);
         var header = await db.FirstAsync("""
             SELECT no_rawat,status FROM permintaan_resep_pulang
@@ -242,6 +243,78 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
     }
 
     public sealed record ObatDiminta(string Kode, double Jumlah, string Dosis);
+
+    /// <summary>Permintaan tervalidasi yang obatnya belum dicatat diserahkan, jadi masih bisa diretur ke depo.</summary>
+    public async Task<IReadOnlyList<Row>> CariBisaDireturAsync(AuthenticatedUser user, string query)
+    {
+        PastikanIzin(user, IzinFarmasi);
+        await using var db = await Db.OpenAsync(settings);
+        var belumSerah = await AdaTabelSerahAsync(db)
+            ? "AND NOT EXISTS (SELECT 1 FROM gramedika_serah_resep_pulang s WHERE s.no_permintaan=h.no_permintaan)"
+            : "";
+        return await db.QueryAsync($"""
+            SELECT h.no_permintaan,h.no_rawat,h.tgl_validasi,h.jam_validasi,p.nm_pasien,
+                   GROUP_CONCAT(CONCAT(b.nama_brng,' × ',d.jml_barang) ORDER BY b.nama_brng SEPARATOR ', ') AS obat
+            FROM permintaan_resep_pulang h
+            JOIN reg_periksa r ON r.no_rawat=h.no_rawat
+            JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis
+            JOIN resep_pulang d ON d.no_rawat=h.no_rawat AND d.tanggal=h.tgl_validasi AND d.jam=h.jam_validasi
+            JOIN databarang b ON b.kode_brng=d.kode_brng
+            WHERE h.status='Sudah' AND r.stts<>'Batal' AND r.status_bayar<>'Sudah Bayar' {belumSerah}
+              AND CONCAT_WS(' ',h.no_permintaan,h.no_rawat,r.no_rkm_medis,p.nm_pasien) LIKE @p0
+            GROUP BY h.no_permintaan,h.no_rawat,h.tgl_validasi,h.jam_validasi,p.nm_pasien
+            ORDER BY h.tgl_validasi DESC,h.jam_validasi DESC,h.no_permintaan DESC LIMIT 100
+            """, $"%{query.Trim()}%");
+    }
+
+    /// <summary>
+    /// Retur seluruh obat satu validasi: stok kembali ke depo/batch asal, baris pengeluaran dihapus, dan permintaan
+    /// kembali berstatus "Belum" agar bisa dikoreksi, dibatalkan, atau divalidasi ulang. Seperti Khanza, tanpa jurnal.
+    /// </summary>
+    public async Task ReturValidasiAsync(AuthenticatedUser user, string noRawat, string nomor,
+        string tanggalValidasi, string jamValidasi)
+    {
+        PastikanIzin(user, IzinFarmasi);
+        await using var db = await Db.OpenAsync(settings);
+        var adaSerah = await AdaTabelSerahAsync(db);
+        await db.BeginAsync();
+        var pasien = await MenuAWrites.KunciKunjunganAsync(db, noRawat, cekBilling: true);
+        if (await db.FirstAsync("""
+            SELECT no_permintaan FROM permintaan_resep_pulang
+            WHERE no_permintaan=@p0 AND no_rawat=@p1 AND status='Sudah' AND tgl_validasi=@p2 AND jam_validasi=@p3 FOR UPDATE
+            """, nomor, noRawat, tanggalValidasi, jamValidasi) is null)
+            throw new InvalidOperationException("Validasi sudah diretur atau berubah. Muat ulang daftar.");
+        if (adaSerah && await db.CountAsync("SELECT COUNT(*) FROM gramedika_serah_resep_pulang WHERE no_permintaan=@p0", nomor) != 0)
+            throw new InvalidOperationException("Obat sudah dicatat diserahkan kepada penerima. Proses retur lewat Khanza.");
+        var sewaktu = await db.QueryAsync("""
+            SELECT no_permintaan FROM permintaan_resep_pulang
+            WHERE no_rawat=@p0 AND status='Sudah' AND tgl_validasi=@p1 AND jam_validasi=@p2 FOR UPDATE
+            """, noRawat, tanggalValidasi, jamValidasi);
+        if (sewaktu.Count != 1)
+            throw new InvalidOperationException("Ada permintaan lain yang divalidasi pada waktu yang sama, sehingga obatnya tidak bisa dipisahkan. Periksa lewat Khanza.");
+
+        var baris = await db.QueryAsync("""
+            SELECT kode_brng,jml_barang,kd_bangsal,no_batch,no_faktur FROM resep_pulang
+            WHERE no_rawat=@p0 AND tanggal=@p1 AND jam=@p2 ORDER BY kode_brng,kd_bangsal,no_batch,no_faktur FOR UPDATE
+            """, noRawat, tanggalValidasi, jamValidasi);
+        if (baris.Count == 0)
+            throw new InvalidOperationException("Data pengeluaran obat untuk validasi ini tidak ditemukan. Periksa lewat Khanza.");
+
+        foreach (var row in baris)
+        {
+            var item = new StokItem(row.S("kode_brng"), "", "", "", row.S("no_batch"), row.S("no_faktur"), 0, 0, null);
+            await MenuAWrites.MutasiResepAsync(db, item, row.S("kd_bangsal"), row.D("jml_barang"), masuk: true,
+                $"{noRawat} {pasien.S("nm_pasien")}", user.KodeLegacy);
+        }
+
+        await db.ExecAsync("DELETE FROM resep_pulang WHERE no_rawat=@p0 AND tanggal=@p1 AND jam=@p2",
+            noRawat, tanggalValidasi, jamValidasi);
+        await db.ExecAsync("""
+            UPDATE permintaan_resep_pulang SET status='Belum',tgl_validasi='1000-01-01',jam_validasi='00:00:00'
+            WHERE no_permintaan=@p0
+            """, nomor);
+        await db.CommitAsync();
+    }
 
     public async Task BatalkanPermintaanAsync(AuthenticatedUser user, string noRawat, string nomor,
         string tanggal, string jam)
@@ -362,8 +435,9 @@ public sealed class ResepPulangRepository(DatabaseSettings settings)
     {
         PastikanIzin(user, IzinFarmasi);
         await using var db = await Db.OpenAsync(settings);
-        await db.BeginAsync();
+        // Dibaca sebelum transaksi: baca biasa di dalamnya membekukan snapshot sebelum kunjungan terkunci.
         var rawat = await db.StrAsync("SELECT no_rawat FROM permintaan_resep_pulang WHERE no_permintaan=@p0", nomor);
+        await db.BeginAsync();
         if (rawat != noRawat) throw new InvalidOperationException("Permintaan sudah berubah. Muat ulang antrean.");
         var pasien = await MenuAWrites.KunciKunjunganAsync(db, rawat, cekBilling: true);
         var header = await db.FirstAsync("""

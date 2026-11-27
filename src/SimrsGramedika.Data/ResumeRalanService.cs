@@ -8,6 +8,14 @@ public sealed record IsiResumeRalan(string Keluhan, string Perjalanan, string Pe
 public sealed record ResumeRalan(string Dokter, IsiResumeRalan Isi);
 public sealed record RingkasanKodeResume(string Kode, string Nama, int Prioritas, bool Prosedur);
 
+/// <summary>Isi rptLaporanResume Khanza. Diagnosis dan prosedur diambil dari kolom resume yang tersimpan.</summary>
+public sealed record ResumeRalanCetak(string NoRawat, string NoRekamMedis, string Pasien, string Umur, string JenisKelamin,
+    DateTime? TanggalLahir, string Pekerjaan, string Alamat, string Ruang, DateTime? TanggalRegistrasi, string Dokter,
+    IsiResumeRalan Isi, IReadOnlyList<RingkasanKodeResume> Kode)
+{
+    public string IdDokter { get; init; } = "";
+}
+
 public sealed class ResumeRalanService(DatabaseSettings settings, string noRawat, string noRm, AuthenticatedUser user)
 {
     private const string Select = """
@@ -24,6 +32,41 @@ public sealed class ResumeRalanService(DatabaseSettings settings, string noRawat
         if (await db.CountAsync("SELECT COUNT(*) FROM reg_periksa WHERE no_rawat=@p0 AND no_rkm_medis=@p1", noRawat, noRm) != 1)
             throw new InvalidOperationException("Kunjungan tidak ditemukan.");
         return (Baca(await db.FirstAsync(Select, noRawat, noRm)), await KodeAsync(db));
+    }
+
+    public async Task<ResumeRalanCetak> CetakAsync()
+    {
+        PastikanIzin();
+        await using var db = await Db.OpenAsync(settings);
+        var kolom = KolomDiagnosa.Concat(KolomProsedur).ToArray();
+        var r = await db.FirstAsync($"""
+            SELECT s.kd_dokter,d.nm_dokter,s.keluhan_utama,s.jalannya_penyakit,s.pemeriksaan_penunjang,s.hasil_laborat,
+                   s.kondisi_pulang,s.obat_pulang,{string.Join(',', kolom.Select(k => $"s.{k},s.kd_{k}"))},
+                   p.no_rkm_medis,p.nm_pasien,p.jk,p.tgl_lahir,p.pekerjaan,r.umurdaftar,r.sttsumur,r.tgl_registrasi,poli.nm_poli,
+                   CONCAT_WS(', ',p.alamat,kel.nm_kel,kec.nm_kec,kab.nm_kab,prop.nm_prop) AS alamat_lengkap
+            FROM resume_pasien s
+            JOIN reg_periksa r ON r.no_rawat=s.no_rawat
+            JOIN pasien p ON p.no_rkm_medis=r.no_rkm_medis
+            LEFT JOIN dokter d ON d.kd_dokter=s.kd_dokter
+            LEFT JOIN poliklinik poli ON poli.kd_poli=r.kd_poli
+            LEFT JOIN kelurahan kel ON kel.kd_kel=p.kd_kel
+            LEFT JOIN kecamatan kec ON kec.kd_kec=p.kd_kec
+            LEFT JOIN kabupaten kab ON kab.kd_kab=p.kd_kab
+            LEFT JOIN propinsi prop ON prop.kd_prop=p.kd_prop
+            WHERE s.no_rawat=@p0 AND r.no_rkm_medis=@p1
+            """, noRawat, noRm) ?? throw new InvalidOperationException("Resume kunjungan ini belum disimpan.");
+        var kode = kolom.Select((k, i) =>
+        {
+            var prosedur = i >= KolomDiagnosa.Length;
+            var prioritas = (prosedur ? i - KolomDiagnosa.Length : i) + 1;
+            return new RingkasanKodeResume(r.S("kd_" + k), r.S(k), prioritas, prosedur);
+        }).Where(k => k.Kode.Length > 0 || k.Nama.Length > 0).ToList();
+        return new(noRawat, r.S("no_rkm_medis"), r.S("nm_pasien"), $"{r.S("umurdaftar")} {r.S("sttsumur")}".Trim(),
+            r.S("jk") == "P" ? "Perempuan" : "Laki-Laki", r.Dt("tgl_lahir"), r.S("pekerjaan"), r.S("alamat_lengkap"),
+            r.S("nm_poli"), r.Dt("tgl_registrasi"), r.S("nm_dokter"), Baca(r)!.Isi, kode)
+        {
+            IdDokter = await TandaTanganSurat.IdAsync(db, r.S("kd_dokter")),
+        };
     }
 
     public async Task SimpanAsync(IsiResumeRalan data, ResumeRalan? sebelumnya)

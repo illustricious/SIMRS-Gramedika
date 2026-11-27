@@ -130,3 +130,11 @@ Daftar pemeriksaan memiliki tombol **Simpan PDF** saat satu catatan dipilih. PDF
 Pencocokan `fitur.tsv` dan `status.json` saat audit ini menemukan 207 entri Rawat Jalan: **3 selesai, 165 sebagian, 39 kurang**. Angka sebagian mencakup banyak jalur laporan yang sudah bisa dibaca, tetapi belum mendukung input atau seluruh aksi Java; jadi 204 entri terbuka tidak sama dengan 204 fitur inti yang kosong. Formulir klinis khusus dan alur yang membutuhkan integrasi/bukti database tetap pekerjaan besar yang perlu dipecah per modul.
 
 Tombol Template Pemeriksaan juga mulai tersedia untuk akun dengan izin `template_pemeriksaan`: daftar dibatasi pada template dokter terpilih, dan enam narasi SOAPIE diterapkan ke draf. Tinjauan order, diagnosa, resep, dan tindakan pada template Java masih terbuka.
+
+## Ubah order dan cetak resume (27 November 2026)
+
+- **Ubah order terpilih** di riwayat Alur Kunjungan: resep nonracikan, permintaan lab PK/PA/MB dan radiologi. Nomor, waktu dan dokter pengirim tetap; isi diganti dalam satu transaksi dan ditolak bila order berubah sejak dibuka.
+- Ditolak: resep sudah divalidasi atau berisi racikan; permintaan sudah diambil sampel/berhasil atau ada item berstatus bayar; kunjungan sudah ditagih atau masuk rawat inap; pengubah bukan dokter pengirim atau Admin Utama. Pembatasan dokter lebih ketat daripada Java.
+- Pembatalan/penghapusan order belum tersedia.
+- **Cetak Resume** mencetak resume tersimpan berkop RS dengan isi `rptLaporanResume.jrxml` dan QR identitas dokter (bukan tanda tangan elektronik tersertifikasi).
+- `AlurPenunjangRalanTests` lulus pada skema sintetis; tata letak PDF diperiksa dari gambar hasil render. Klik di aplikasi, database RS dan klien Java bersamaan belum diuji.

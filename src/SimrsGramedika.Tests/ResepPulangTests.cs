@@ -80,6 +80,30 @@ public sealed class ResepPulangTests
         await ValidateAsync(farmasi);
         Assert.Equal(3, await db.CountAsync("SELECT stok FROM gudangbarang WHERE kode_brng='OB'"));
         Assert.Equal(2, await db.CountAsync("SELECT COUNT(*) FROM riwayat_barang_medis WHERE petugas='FARM'"));
+        // Retur: stok dan permintaan kembali seperti sebelum validasi, lalu bisa divalidasi ulang.
+        var tervalidasi = Assert.Single(await repo.CariBisaDireturAsync(farmasi, nomor));
+        Task ReturAsync(AuthenticatedUser user, string jam) => repo.ReturValidasiAsync(user, "RANAP-UJI", nomor,
+            tervalidasi.S("tgl_validasi"), jam);
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => ReturAsync(dokter, tervalidasi.S("jam_validasi")));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => ReturAsync(farmasi, "25:00:00"));
+        await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Sudah Bayar' WHERE no_rawat='RANAP-UJI'");
+        await Assert.ThrowsAsync<InvalidOperationException>(() => ReturAsync(farmasi, tervalidasi.S("jam_validasi")));
+        await db.ExecAsync("UPDATE reg_periksa SET status_bayar='Belum Bayar' WHERE no_rawat='RANAP-UJI'");
+        Assert.Equal(3, await db.CountAsync("SELECT stok FROM gudangbarang WHERE kode_brng='OB'"));
+        var returGanda = await Task.WhenAll(
+            TryAsync(() => ReturAsync(farmasi, tervalidasi.S("jam_validasi"))),
+            TryAsync(() => ReturAsync(farmasi, tervalidasi.S("jam_validasi"))));
+        Assert.Single(returGanda, ok => ok);
+        Assert.Equal(5, await db.CountAsync("SELECT stok FROM gudangbarang WHERE kode_brng='OB'"));
+        Assert.Equal(3, await db.CountAsync("SELECT stok FROM gudangbarang WHERE kode_brng='ZZ'"));
+        Assert.Equal(0, await db.CountAsync("SELECT COUNT(*) FROM resep_pulang"));
+        Assert.Equal(2, await db.CountAsync("SELECT COUNT(*) FROM riwayat_barang_medis WHERE petugas='FARM' AND status='Hapus'"));
+        Assert.Equal("Belum", await db.StrAsync("SELECT status FROM permintaan_resep_pulang"));
+        Assert.Empty(await repo.CariBisaDireturAsync(farmasi, nomor));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repo.CatatSerahAsync(farmasi, nomor, "Penerima Uji"));
+        await ValidateAsync(farmasi);
+        Assert.Equal(3, await db.CountAsync("SELECT stok FROM gudangbarang WHERE kode_brng='OB'"));
+
         var siap = Assert.Single(await repo.CariSiapSerahAsync(farmasi, nomor));
         Assert.Contains("Obat Uji", siap.S("obat"));
 
@@ -103,6 +127,11 @@ public sealed class ResepPulangTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => repo.CatatSerahAsync(farmasi, nomor, "Penerima Lain"));
         await Assert.ThrowsAsync<InvalidOperationException>(() => ValidateAsync(farmasi));
         Assert.Empty(await repo.CariSiapSerahAsync(farmasi, nomor));
+        // Sesudah diserahkan, retur ditolak.
+        Assert.Empty(await repo.CariBisaDireturAsync(farmasi, nomor));
+        var akhir = (await db.FirstAsync("SELECT tgl_validasi,jam_validasi FROM permintaan_resep_pulang WHERE no_permintaan=@p0", nomor))!;
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repo.ReturValidasiAsync(farmasi, "RANAP-UJI", nomor,
+            akhir.S("tgl_validasi"), akhir.S("jam_validasi")));
         var bukti = await repo.MuatBuktiSerahAsync(dokter, "RANAP-UJI", nomor);
         Assert.Equal("Penerima Uji", bukti.S("penerima"));
         Assert.Equal("Pasien Uji", bukti.S("nm_pasien"));

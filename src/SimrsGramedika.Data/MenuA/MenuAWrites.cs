@@ -208,7 +208,7 @@ internal static class MenuAWrites
             SELECT COUNT(*) FROM permintaan_resep_pulang
             WHERE no_rawat=@p0 AND tgl_validasi=@p1 AND jam_validasi=@p2 AND status='Sudah'
             """, keys["no_rawat"], keys["tanggal"], keys["jam"]) != 0)
-            throw new InvalidOperationException("Obat ini berasal dari validasi permintaan resep. Pengembalian perlu memproses seluruh permintaan.");
+            throw new InvalidOperationException("Obat ini berasal dari validasi permintaan resep. Gunakan Retur Validasi Resep untuk mengembalikan seluruh permintaan.");
         var resep = await db.FirstAsync("""
             SELECT jml_barang,kd_bangsal FROM resep_pulang
             WHERE no_rawat=@p0 AND kode_brng=@p1 AND tanggal=@p2 AND jam=@p3 AND no_batch=@p4 AND no_faktur=@p5 FOR UPDATE

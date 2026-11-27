@@ -1790,7 +1790,7 @@ jendela|inventory/DlgCopyResep.java|DlgCopyResep	jendela	DlgCopyResep	inventory/
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnCari	aksi	BtnCari	inventory/DlgDaftarPermintaanResep.java:578	sebagian	DaftarResepView dan ValidasiResepService.DaftarAsync mencari resep menurut periode, status dan kata kunci. Filter poli, dokter dan penjamin serta tab permintaan stok dan resep pulang di jendela Java belum digabung.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnAll	aksi	BtnAll	inventory/DlgDaftarPermintaanResep.java:595	belum diaudit	
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnTambah	aksi	Validasi	inventory/DlgDaftarPermintaanResep.java:619	sebagian	Validasi resep rawat jalan dan rawat inap, nonracikan dan racikan, termasuk obat tambahan/pengganti: ValidasiResepService.ValidasiAsync (acuan DlgCariObat.java dan DlgCariObat2.java) menulis detail_pemberian_obat, aturan_pakai, obat_racikan, detail_obat_racikan, stok, riwayat, resep_obat dan jurnal dalam satu transaksi; ValidasiResepTests lulus pada MariaDB sintetis. Pilihan depo/jenis harga, jumlah di atas resep, kapasitas, input parsial dan antrean apotek masih lewat Khanza. Belum diuji pada database RS.
-aksi|inventory/DlgDaftarPermintaanResep.java|BtnEdit	aksi	Ubah	inventory/DlgDaftarPermintaanResep.java:637	belum diaudit	
+aksi|inventory/DlgDaftarPermintaanResep.java|BtnEdit	aksi	Ubah	inventory/DlgDaftarPermintaanResep.java:637	sebagian	Ubah resep nonracikan rawat jalan lewat Alur Kunjungan selama belum divalidasi. Racikan dan rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnHapus	aksi	Hapus	inventory/DlgDaftarPermintaanResep.java:655	belum diaudit	
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnPenyerahan	aksi	Penyerahan	inventory/DlgDaftarPermintaanResep.java:673	sebagian	SerahkanAsync mengisi tgl_penyerahan resep rawat jalan tervalidasi (acuan webapps/penyerahanresep). Foto bukti penyerahan dan panggilan antrean (antriapotek3) belum ada.
 aksi|inventory/DlgDaftarPermintaanResep.java|BtnPrint	aksi	Cetak	inventory/DlgDaftarPermintaanResep.java:691	belum diaudit	
@@ -2089,7 +2089,7 @@ aksi|inventory/DlgPeresepanDokter.java|BtnCari	aksi	BtnCari	inventory/DlgPeresep
 aksi|inventory/DlgPeresepanDokter.java|BtnAll	aksi	BtnAll	inventory/DlgPeresepanDokter.java:489	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnTambah	aksi	BtnTambah	inventory/DlgPeresepanDokter.java:526	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnSeek5	aksi	BtnSeek5	inventory/DlgPeresepanDokter.java:538	belum diaudit	
-aksi|inventory/DlgPeresepanDokter.java|BtnSimpan	aksi	BtnSimpan	inventory/DlgPeresepanDokter.java:555	belum diaudit	
+aksi|inventory/DlgPeresepanDokter.java|BtnSimpan	aksi	BtnSimpan	inventory/DlgPeresepanDokter.java:555	sebagian	Kirim dan ubah resep nonracikan rawat jalan lewat Alur Kunjungan. Racikan dan aturan input lain belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 aksi|inventory/DlgPeresepanDokter.java|BtnTambah1	aksi	BtnTambah1	inventory/DlgPeresepanDokter.java:567	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnHapus	aksi	BtnHapus	inventory/DlgPeresepanDokter.java:579	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnKeluar	aksi	BtnKeluar	inventory/DlgPeresepanDokter.java:591	belum diaudit	
@@ -2259,7 +2259,7 @@ jendela|inventory/DlgResepObat.java|DlgResepObat	jendela	DlgResepObat	inventory/
 popup|inventory/DlgResepPulang.java|jPopupMenu1|ppResepObat	popup	jPopupMenu1 > Cetak Aturan Pakai Model 1	inventory/DlgResepPulang.java:196	belum diaudit	
 popup|inventory/DlgResepPulang.java|jPopupMenu1|ppResepObat1	popup	jPopupMenu1 > Cetak Aturan Pakai Model 2	inventory/DlgResepPulang.java:212	belum diaudit	
 popup|inventory/DlgResepPulang.java|jPopupMenu1|ppResepObat2	popup	jPopupMenu1 > Cetak Aturan Pakai Model 3	inventory/DlgResepPulang.java:228	belum diaudit	
-aksi|inventory/DlgResepPulang.java|BtnHapus	aksi	Hapus	inventory/DlgResepPulang.java:279	belum diaudit	
+aksi|inventory/DlgResepPulang.java|BtnHapus	aksi	Hapus	inventory/DlgResepPulang.java:279	sebagian	Retur Validasi Resep di Farmasi mengembalikan seluruh obat satu validasi ke depo/batch asal dan membuka lagi permintaannya; ditolak bila sudah ditagih atau sudah dicatat diserahkan. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 aksi|inventory/DlgResepPulang.java|BtnPrint	aksi	Cetak	inventory/DlgResepPulang.java:297	belum diaudit	
 aksi|inventory/DlgResepPulang.java|BtnAll	aksi	Semua	inventory/DlgResepPulang.java:315	belum diaudit	
 aksi|inventory/DlgResepPulang.java|BtnKeluar	aksi	Keluar	inventory/DlgResepPulang.java:355	belum diaudit	
@@ -6937,7 +6937,7 @@ aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari1	aksi	BtnCari1	permintaan
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari3	aksi	BtnCari3	permintaan/DlgPermintaanLaboratorium.java:836	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCariMB	aksi	BtnCariMB	permintaan/DlgPermintaanLaboratorium.java:1047	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari5	aksi	BtnCari5	permintaan/DlgPermintaanLaboratorium.java:1094	belum diaudit	
-aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanLaboratorium.java:1135	belum diaudit	
+aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanLaboratorium.java:1135	sebagian	Kirim dan ubah permintaan lab PK/PA/MB rawat jalan selama belum diambil sampel atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnBatal	aksi	Baru	permintaan/DlgPermintaanLaboratorium.java:1153	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnHapus	aksi	Hapus	permintaan/DlgPermintaanLaboratorium.java:1171	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnPrint	aksi	Cetak	permintaan/DlgPermintaanLaboratorium.java:1189	belum diaudit	
@@ -6962,7 +6962,7 @@ aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnRiwayatPasien	aksi	R
 aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnJawabanApoteker	aksi	Jawaban Apoteker	permintaan/DlgPermintaanPelayananInformasiObat.java:1056	belum diaudit	
 aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnDokumentasiPIO	aksi	Dokumentasi PIO	permintaan/DlgPermintaanPelayananInformasiObat.java:1073	belum diaudit	
 jendela|permintaan/DlgPermintaanPelayananInformasiObat.java|DlgPermintaanPelayananInformasiObat	jendela	DlgPermintaanPelayananInformasiObat	permintaan/DlgPermintaanPelayananInformasiObat.java:1	belum diaudit	
-aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanRadiologi.java:234	belum diaudit	
+aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanRadiologi.java:234	sebagian	Kirim dan ubah permintaan radiologi rawat jalan selama belum diproses atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnBatal	aksi	Baru	permintaan/DlgPermintaanRadiologi.java:252	belum diaudit	
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnPrint	aksi	Cetak	permintaan/DlgPermintaanRadiologi.java:270	belum diaudit	
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnCari	aksi	Cari	permintaan/DlgPermintaanRadiologi.java:292	belum diaudit	
@@ -8076,7 +8076,7 @@ aksi|rekammedis/RMDataMonitoringTOLAC.java|BtnAll	aksi	BtnAll	rekammedis/RMDataM
 aksi|rekammedis/RMDataMonitoringTOLAC.java|btnPetugas	aksi	btnPetugas	rekammedis/RMDataMonitoringTOLAC.java:619	belum diaudit	
 aksi|rekammedis/RMDataMonitoringTOLAC.java|ChkInput	aksi	.: Input Data	rekammedis/RMDataMonitoringTOLAC.java:815	belum diaudit	
 jendela|rekammedis/RMDataMonitoringTOLAC.java|RMDataMonitoringTOLAC	jendela	RMDataMonitoringTOLAC	rekammedis/RMDataMonitoringTOLAC.java:1	belum diaudit	
-popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnLaporanResume	popup	jPopupMenu1 > Laporan Resume Pasien	rekammedis/RMDataResumePasien.java:304	belum diaudit	
+popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnLaporanResume	popup	jPopupMenu1 > Laporan Resume Pasien	rekammedis/RMDataResumePasien.java:304	sebagian	Cetak Resume rawat jalan berkop RS dengan QR identitas dokter, isi mengikuti rptLaporanResume. Varian laporan lain dan resume rawat inap dengan format ini belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
 popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnInputDiagnosa	popup	jPopupMenu1 > Input Diagnosa Pasien	rekammedis/RMDataResumePasien.java:318	belum diaudit	
 popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|ppBerkasDigital	popup	jPopupMenu1 > Berkas Digital Perawatan	rekammedis/RMDataResumePasien.java:334	belum diaudit	
 popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnSPBK	popup	jPopupMenu1 > Surat Bukti Pelayanan Kesehatan (SBPK)	rekammedis/RMDataResumePasien.java:350	belum diaudit	
@@ -10731,7 +10731,7 @@ aksi|simrskhanza/DlgCariPeriksaLab.java|BtnCloseIn5	aksi	Tutup	simrskhanza/DlgCa
 aksi|simrskhanza/DlgCariPeriksaLab.java|btnPasien	aksi	btnPasien	simrskhanza/DlgCariPeriksaLab.java:904	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaLab.java|btnPetugas	aksi	btnPetugas	simrskhanza/DlgCariPeriksaLab.java:917	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaLab.java|BtnCari	aksi	BtnCari	simrskhanza/DlgCariPeriksaLab.java:967	belum diaudit	
-aksi|simrskhanza/DlgCariPeriksaLab.java|BtnHapus	aksi	Hapus	simrskhanza/DlgCariPeriksaLab.java:989	belum diaudit	
+aksi|simrskhanza/DlgCariPeriksaLab.java|BtnHapus	aksi	Hapus	simrskhanza/DlgCariPeriksaLab.java:989	sebagian	DeleteAsync membalik jurnal pemeriksaan yang dihapus; pemeriksaan tanpa jurnal dihapus tanpa pembalik, dan ditolak bila saldo suspen tidak cukup untuk memastikannya. Diuji pada MariaDB sintetis. Belum diuji pada database RS.
 aksi|simrskhanza/DlgCariPeriksaLab.java|BtnAll	aksi	Semua	simrskhanza/DlgCariPeriksaLab.java:1007	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaLab.java|BtnPrint	aksi	Cetak	simrskhanza/DlgCariPeriksaLab.java:1025	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaLab.java|BtnKeluar	aksi	Keluar	simrskhanza/DlgCariPeriksaLab.java:1043	belum diaudit	
@@ -10795,7 +10795,7 @@ aksi|simrskhanza/DlgCariPeriksaRadiologi.java|btnPetugas1	aksi	btnPetugas1	simrs
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|btnPasien	aksi	btnPasien	simrskhanza/DlgCariPeriksaRadiologi.java:666	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|btnPetugas	aksi	btnPetugas	simrskhanza/DlgCariPeriksaRadiologi.java:679	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnCari	aksi	BtnCari	simrskhanza/DlgCariPeriksaRadiologi.java:729	belum diaudit	
-aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnHapus	aksi	Hapus	simrskhanza/DlgCariPeriksaRadiologi.java:751	belum diaudit	
+aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnHapus	aksi	Hapus	simrskhanza/DlgCariPeriksaRadiologi.java:751	sebagian	DeleteAsync membalik jurnal pemeriksaan yang dihapus; pemeriksaan tanpa jurnal dihapus tanpa pembalik, dan ditolak bila saldo suspen tidak cukup untuk memastikannya. Diuji pada MariaDB sintetis. Belum diuji pada database RS.
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnAll	aksi	Semua	simrskhanza/DlgCariPeriksaRadiologi.java:769	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnPrint	aksi	Cetak	simrskhanza/DlgCariPeriksaRadiologi.java:787	belum diaudit	
 aksi|simrskhanza/DlgCariPeriksaRadiologi.java|BtnKeluar	aksi	Keluar	simrskhanza/DlgCariPeriksaRadiologi.java:805	belum diaudit	
@@ -12122,7 +12122,7 @@ aksi|simrskhanza/DlgPenanggungJawab.java|BtnRefreshPhoto	aksi	Refresh	simrskhanz
 jendela|simrskhanza/DlgPenanggungJawab.java|DlgPenanggungJawab	jendela	DlgPenanggungJawab	simrskhanza/DlgPenanggungJawab.java:1	belum diaudit	
 popup|simrskhanza/DlgPeriksaLaboratorium.java|Popup|ppBersihkan	popup	Popup > Bersihkan Pilihan	simrskhanza/DlgPeriksaLaboratorium.java:324	belum diaudit	
 popup|simrskhanza/DlgPeriksaLaboratorium.java|Popup|ppSemua	popup	Popup > Pilih Semua	simrskhanza/DlgPeriksaLaboratorium.java:340	belum diaudit	
-aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgPeriksaLaboratorium.java:365	belum diaudit	
+aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgPeriksaLaboratorium.java:365	sebagian	SaveAsync menyimpan pemeriksaan dan memposting jurnal suspen/pendapatan, jasa, BHP dan KSO dalam satu transaksi dengan kunci billing; item permintaan yang sudah dibayar tidak dijurnal. JurnalPenunjangTests lulus pada MariaDB sintetis. Cetak, aturan input lain dan database RS belum diuji.
 aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnBatal	aksi	Baru	simrskhanza/DlgPeriksaLaboratorium.java:383	belum diaudit	
 aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnHapus	aksi	Hapus	simrskhanza/DlgPeriksaLaboratorium.java:401	belum diaudit	
 aksi|simrskhanza/DlgPeriksaLaboratorium.java|BtnPrint	aksi	Cetak	simrskhanza/DlgPeriksaLaboratorium.java:419	belum diaudit	
@@ -12177,7 +12177,7 @@ aksi|simrskhanza/DlgPeriksaLaboratoriumPA.java|btnDokterPj	aksi	btnDokterPj	simr
 aksi|simrskhanza/DlgPeriksaLaboratoriumPA.java|btnDokter	aksi	btnDokter	simrskhanza/DlgPeriksaLaboratoriumPA.java:769	belum diaudit	
 aksi|simrskhanza/DlgPeriksaLaboratoriumPA.java|btnPetugas	aksi	btnPetugas	simrskhanza/DlgPeriksaLaboratoriumPA.java:781	belum diaudit	
 jendela|simrskhanza/DlgPeriksaLaboratoriumPA.java|DlgPeriksaLaboratoriumPA	jendela	DlgPeriksaLaboratoriumPA	simrskhanza/DlgPeriksaLaboratoriumPA.java:1	belum diaudit	
-aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgPeriksaRadiologi.java:323	belum diaudit	
+aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgPeriksaRadiologi.java:323	sebagian	SaveAsync menyimpan pemeriksaan dan memposting jurnal suspen/pendapatan, jasa, BHP dan KSO dalam satu transaksi dengan kunci billing; item permintaan yang sudah dibayar tidak dijurnal. JurnalPenunjangTests lulus pada MariaDB sintetis. Gambar radiologi, aturan input lain dan database RS belum diuji.
 aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnBatal	aksi	Baru	simrskhanza/DlgPeriksaRadiologi.java:341	belum diaudit	
 aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnPrint	aksi	Cetak	simrskhanza/DlgPeriksaRadiologi.java:359	belum diaudit	
 aksi|simrskhanza/DlgPeriksaRadiologi.java|BtnNota	aksi	Nota	simrskhanza/DlgPeriksaRadiologi.java:377	belum diaudit	

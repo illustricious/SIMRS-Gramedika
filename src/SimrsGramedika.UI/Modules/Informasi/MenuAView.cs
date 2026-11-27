@@ -41,6 +41,7 @@ public sealed class MenuAView : MasterView
             AddCommand("Pilih Stok dan Harga", PilihStokResepAsync);
             AddCommand("Validasi Permintaan Resep", LayaniPermintaanResepAsync);
             AddCommand("Catat Serah Terima Obat", CatatSerahResepAsync);
+            AddCommand("Retur Validasi Resep", ReturValidasiResepAsync);
         }
         AddCommand("Simpan Daftar PDF", () => SimpanPdfAsync(ListedRows, perPasien: false));
         AddCommand(spec == MenuASpecs.Deposit ? "Simpan Bukti Deposit PDF" : "Simpan Data Terpilih PDF",
@@ -150,6 +151,23 @@ public sealed class MenuAView : MasterView
         var dialog = new SerahResepDialog(repo, user, row);
         await dialog.ShowDialog(owner);
         if (dialog.Saved) Ui.Ok(StatusText, "Serah terima obat pulang sudah dicatat.");
+    }
+
+    private async Task ReturValidasiResepAsync()
+    {
+        if (AppSession.CurrentUser is not { } user || TopLevel.GetTopLevel(this) is not Window owner) return;
+        var repo = new ResepPulangRepository(DatabaseSettings.Load());
+        var row = await SearchPickerDialog.ShowAsync<Row>(owner, "Pilih Validasi yang Akan Diretur",
+            q => repo.CariBisaDireturAsync(user, q),
+            r => $"{r.S("no_permintaan")} · {r.S("no_rawat")} · {r.S("nm_pasien")} · {r.S("obat")}");
+        if (row is null) return;
+        if (!await Dialogs.ConfirmAsync(this, "Retur Validasi Resep Pulang",
+                $"Kembalikan seluruh obat {row.S("nm_pasien")} ke depo asal?\n{row.S("obat")}\n\n" +
+                "Pastikan obat belum diterima pasien. Permintaan kembali berstatus Belum.")) return;
+        await repo.ReturValidasiAsync(user, row.S("no_rawat"), row.S("no_permintaan"),
+            row.S("tgl_validasi"), row.S("jam_validasi"));
+        await ReloadAsync();
+        Ui.Ok(StatusText, "Obat sudah dikembalikan ke stok. Permintaan bisa dikoreksi, dibatalkan, atau divalidasi ulang.");
     }
 
     private sealed class SerahResepDialog : FormDialog

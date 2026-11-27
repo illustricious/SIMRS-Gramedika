@@ -453,9 +453,16 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
         {
             await EnsureNotLockedAsync(key.NoRawat, "data tidak boleh dihapus", ct);
             var cat = Cat(category);
+            if (category == LabCategory.PA && string.IsNullOrEmpty(kdJenisPrw))
+                throw new InvalidOperationException("Pilih satu baris pemeriksaan PA yang mau dihapus.");
+            var lama = await NilaiTersimpanAsync(cat, key, category == LabCategory.PA ? kdJenisPrw : null, ct);
+            // Diputuskan selagi baris masih ada, karena saldo dibandingkan dengan seluruh pemeriksaan kunjungan.
+            var balik = new List<(bool Ranap, KomponenPenunjang Nilai)>();
+            foreach (var (ranap, nilai) in lama)
+                if (await PenunjangJurnal.PerluDibalikAsync(db, key.NoRawat, ranap, PenunjangJurnal.Laborat, ct))
+                    balik.Add((ranap, nilai));
             if (category == LabCategory.PA)
             {
-                if (string.IsNullOrEmpty(kdJenisPrw)) throw new InvalidOperationException("Pilih satu baris pemeriksaan PA yang mau dihapus.");
                 var p = new object[] { key.NoRawat, key.Tgl, key.Jam, kdJenisPrw };
                 await db.Database.ExecuteSqlRawAsync("delete from detail_periksa_labpa_gambar where no_rawat={0} and tgl_periksa={1} and jam={2} and kd_jenis_prw={3}", p, ct);
                 await db.Database.ExecuteSqlRawAsync("delete from detail_periksa_labpa where no_rawat={0} and tgl_periksa={1} and jam={2} and kd_jenis_prw={3}", p, ct);
@@ -477,7 +484,47 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
                     "(select 1 from periksa_lab x where x.no_rawat={0} and x.tgl_periksa={1} and x.jam={2})",
                     new object[] { key.NoRawat, key.Tgl, key.Jam }, ct);
             }
+
+            foreach (var (ranap, nilai) in balik)
+                await PenunjangJurnal.PostAsync(db, key.NoRawat, ranap, PenunjangJurnal.Laborat, nilai, true, ct);
         }, ct);
+    }
+
+    private sealed class NilaiRow
+    {
+        public string? Status { get; set; }
+        public double Pendapatan { get; set; }
+        public double Dokter { get; set; }
+        public double Petugas { get; set; }
+        public double Bhp { get; set; }
+        public double Kso { get; set; }
+        public double Sarana { get; set; }
+        public double Perujuk { get; set; }
+        public double Menejemen { get; set; }
+    }
+
+    /// <summary>Nilai tarif pemeriksaan tersimpan (termasuk item hasil), dikelompokkan rawat jalan atau inap.</summary>
+    private async Task<List<(bool Ranap, KomponenPenunjang Nilai)>> NilaiTersimpanAsync(
+        string kategori, LabPeriksaKey key, string? kdJenisPrw, CancellationToken ct)
+    {
+        var saring = "l.kategori={0} and l.no_rawat={1} and l.tgl_periksa={2} and l.jam={3}" +
+                     (kdJenisPrw is null ? "" : " and l.kd_jenis_prw={4}");
+        object[] p = kdJenisPrw is null
+            ? [kategori, key.NoRawat, key.Tgl, key.Jam]
+            : [kategori, key.NoRawat, key.Tgl, key.Jam, kdJenisPrw];
+        var rows = await db.Database.SqlQueryRaw<NilaiRow>(
+            "select l.status as Status,l.biaya as Pendapatan,l.tarif_tindakan_dokter as Dokter,l.tarif_tindakan_petugas as Petugas," +
+            "l.bhp as Bhp,ifnull(l.kso,0) as Kso,l.bagian_rs as Sarana,l.tarif_perujuk as Perujuk,ifnull(l.menejemen,0) as Menejemen " +
+            "from periksa_lab l where " + saring, p).ToListAsync(ct);
+        var item = await db.Database.SqlQueryRaw<NilaiRow>(
+            "select l.status as Status,d.biaya_item as Pendapatan,d.bagian_dokter as Dokter,d.bagian_laborat as Petugas,d.bhp as Bhp," +
+            "ifnull(d.kso,0) as Kso,d.bagian_rs as Sarana,d.bagian_perujuk as Perujuk,ifnull(d.menejemen,0) as Menejemen " +
+            "from detail_periksa_lab d inner join periksa_lab l on l.no_rawat=d.no_rawat and l.kd_jenis_prw=d.kd_jenis_prw " +
+            "and l.tgl_periksa=d.tgl_periksa and l.jam=d.jam where " + saring, p).ToListAsync(ct);
+        return rows.Concat(item).GroupBy(r => r.Status == "Ranap")
+            .Select(g => (g.Key, g.Aggregate(new KomponenPenunjang(), (jumlah, r) => jumlah + new KomponenPenunjang(
+                r.Pendapatan, r.Dokter, r.Petugas, r.Bhp, r.Kso, r.Sarana, r.Perujuk, r.Menejemen))))
+            .ToList();
     }
 
     public async Task SaveAsync(LabSaveRequest rq, CancellationToken ct = default)
@@ -527,6 +574,28 @@ public class LabPeriksaRepository(SimrsGramedikaDbContext db) : ILabPeriksaRepos
                             (double)i.BagianPerujuk, (double)i.BagianDokter, (double)i.BagianLaborat, (double)i.Kso, (double)i.Menejemen, (double)i.BiayaItem,
                         }, ct);
             }
+
+            // Item permintaan yang sudah dibayar di muka tidak dijurnal lagi.
+            var nilai = new KomponenPenunjang();
+            var order = rq.NoOrder?.Trim() ?? "";
+            foreach (var t in rq.Pemeriksaan)
+            {
+                if (order.Length > 0 && await ScalarAsync(
+                        $"select count(*) as Value from permintaan_pemeriksaan_lab{sfx} where noorder={{0}} and kd_jenis_prw={{1}} and stts_bayar='Sudah'",
+                        [order, t.KdJenisPrw], ct) > 0) continue;
+                nilai += new KomponenPenunjang((double)t.Biaya, (double)t.TarifDokter, (double)t.TarifPetugas, (double)t.Bhp,
+                    (double)t.Kso, (double)t.BagianRs, (double)t.TarifPerujuk, (double)t.Menejemen);
+            }
+            if (rq.Category != LabCategory.PA)
+                foreach (var i in rq.Items)
+                {
+                    if (order.Length > 0 && await ScalarAsync(
+                            $"select count(*) as Value from permintaan_detail_permintaan_lab{sfx} where noorder={{0}} and kd_jenis_prw={{1}} and id_template={{2}} and stts_bayar='Sudah'",
+                            [order, i.KdJenisPrw, i.IdTemplate], ct) > 0) continue;
+                    nilai += new KomponenPenunjang((double)i.BiayaItem, (double)i.BagianDokter, (double)i.BagianLaborat, (double)i.Bhp,
+                        (double)i.Kso, (double)i.BagianRs, (double)i.BagianPerujuk, (double)i.Menejemen);
+                }
+            await PenunjangJurnal.PostAsync(db, rq.NoRawat, rq.Status == "Ranap", PenunjangJurnal.Laborat, nilai, false, ct);
 
             if (!string.IsNullOrWhiteSpace(rq.NoOrder))
             {

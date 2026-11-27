@@ -50,3 +50,14 @@ Layar **Farmasi > Daftar Resep Dokter** (`DaftarResepView`, `PilihObatWindow`, `
 - Penyerahan mengisi waktu serah resep rawat jalan.
 - `ValidasiResepTests` lulus pada MariaDB sintetis. Belum diuji: database RS atau salinannya, penggunaan bersamaan dengan klien Java, dan klik dialog konfirmasi di aplikasi.
 - Belum ada: resep pulang di layar ini, hapus per obat, pilihan depo dan jenis harga, hitung kandungan/kapasitas racikan, ubah nama atau jumlah bungkus racikan, input parsial, telaah resep, etiket, antrean apotek, foto bukti, kirim obat PCare.
+
+## Jurnal Laboratorium dan Radiologi (27 November 2026)
+
+Bagian ini menggantikan temuan 24 November pada tabel di atas untuk jurnal dan letak cek billing: cek billing sudah berada di dalam transaksi dengan kunci kunjungan, dan jurnal kini diposting (`PenunjangJurnal`, dipakai `LabPeriksaRepository` PK/PA/MB dan `RadiologiPeriksaRepository`).
+
+- Simpan: suspen/pendapatan, jasa dokter, petugas, KSO, sarana, perujuk, menejemen, serta HPP/persediaan BHP, mengikuti `DlgPeriksaLaboratorium*.java` dan `DlgPeriksaRadiologi.java`; rekening dari `set_akun_ralan`/`set_akun_ranap`. Radiologi menambahkan nilai `beri_bhp_radiologi` ke BHP. Rekening yang kosong membatalkan seluruh simpan.
+- Item permintaan berstatus bayar `Sudah` tidak dijurnal. Item di luar permintaan tetap dijurnal; Java melewatkannya.
+- Hapus: jurnal dibalik dalam transaksi yang sama. Jurnal tidak menyimpan kunci pemeriksaan, sehingga saldo suspen kunjungan dibandingkan dengan nilai seluruh pemeriksaan unit itu. Saldo nol (data versi aplikasi sebelumnya) dihapus tanpa pembalik; saldo kurang dari nilai pemeriksaan ditolak dan diarahkan ke Khanza. Java selalu membalik.
+- Data yang pernah disimpan versi aplikasi sebelumnya tetap tanpa jurnal dan perlu direkonsiliasi bagian keuangan.
+- `JurnalPenunjangTests` lulus pada MariaDB sintetis (batasan relasi dilepas pada skema uji ini). Belum diuji: database RS atau salinannya, bersamaan dengan klien Java, dan klik di aplikasi.
+- Masih terbuka: audit hak akses per aksi, perubahan tarif/pemeriksaan tersimpan, gambar radiologi dan alur permintaan penuh.
