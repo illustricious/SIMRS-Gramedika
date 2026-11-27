@@ -202,6 +202,7 @@ Latest local run (27 November 2026, 256 tests):
 - Against synthetic MariaDB databases, the registration, prescription validation, lab/radiology journal, discharge prescription, record
   form and outpatient order suites passed (77 tests). The other fixture suites were not re-run in that pass.
 
+On Windows, `tools\uji-fixture.ps1` starts a temporary MariaDB and runs those suites and then the whole test project.
 Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the
 [runbook](docs/handover/01-RUNBOOK.md). Optional smoke tests run list and report queries, read-only, against the configured database:
 

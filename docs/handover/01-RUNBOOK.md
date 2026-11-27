@@ -22,16 +22,27 @@ dotnet test
 - Tes integrasi ke database nyata melewati diri sendiri bila DB tidak terjangkau (return, bukan gagal). Satu tes billing ranap selalu dilewati tanpa DB.
 - Tes layar (`MenuCScreensTests`) membangun semua layar dalam Avalonia headless. Variabel opsional: `SIMRS_DB_SMOKE=1` memuat data juga, `SIMRS_SCREENSHOT_DIR=<folder>` menyimpan PNG per layar. Layar menu baru **wajib** ditambahkan ke tes ini.
 
+## Skrip tes fixture
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\uji-fixture.ps1
+```
+
+Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schema_sik.sql` tanpa data rumah sakit, menjalankan suite fixture registrasi, validasi resep, jurnal penunjang, resep pulang, formulir rekam medis dan alur penunjang rawat jalan, lalu seluruh tes tanpa database. Server dan datanya dihapus setelah selesai. Skrip berhenti bila port sudah dipakai, dan memakai folder konfigurasi kosong agar profil koneksi tersimpan tidak dibaca.
+
+MariaDB portabel: skrip mengekstrak `dist\mariadb-test-11.4.8.zip` (tidak di git) ke folder TEMP, atau beri `-MariaDb <folder berisi bin\mariadbd.exe>`. Fixture baru ditambahkan ke daftar tabel dan filter di skrip.
+
 ## Exe tunggal lokal (portabel)
 
 ```powershell
 $v = "0.3.0-alpha.$(Get-Date -Format yyyyMMddHHmm)"
 dotnet publish src\SimrsGramedika.UI -c Release -r win-x64 --self-contained true `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true `
-  -p:DebugType=none -p:DebugSymbols=false -p:Version=$v -o dist\single-win-x64
+  -p:DebugType=none -p:DebugSymbols=false -p:Version=$v -o dist\single-win-x64 `
+  -p:NuGetAudit=false -p:UseSharedCompilation=false -m:1
 ```
 
-Hasilnya `SimrsGramedika.UI.exe` (sekitar 59 MB, .NET sudah termasuk) dan satu folder `LatoFont`. Exe berjalan sendiri tanpa folder itu. Ganti nama menjadi `SIMRS-Gramedika-<versi>-win-x64-single.exe`. Folder `dist/` di-gitignore. Exe hanya diunggah sebagai aset Release GitHub bila pemilik proyek memintanya (`gh release create ... --prerelease`), tidak pernah di-commit ke repo.
+Hasilnya `SimrsGramedika.UI.exe` (sekitar 59 MB, .NET sudah termasuk) dan satu folder `LatoFont`. Exe berjalan sendiri tanpa folder itu. Ganti nama menjadi `SIMRS-Gramedika-<versi>-win-x64-single.exe`. Folder `dist/` di-gitignore. Pada mesin pengembang ini set `$env:MSBuildEnableWorkloadResolver = 'false'` sebelum build. Pemilik pernah meminta build lama dibersihkan (27 November, dipindah ke Recycle Bin); hapus hanya bila diminta. Exe hanya diunggah sebagai aset Release GitHub bila pemilik proyek memintanya (`gh release create ... --prerelease`), tidak pernah di-commit ke repo.
 
 ## Installer (Windows/Linux/macOS)
 
@@ -69,6 +80,6 @@ Lihat `docs/tracker/README.md`. Ringkas: `node tools/tracker.mjs` (Node 22+) mem
 6. **MariaDB lokal** bukan service Windows. Cek prosesnya sebelum bekerja bila memakai DB dev lokal.
 7. Tabel yang dibutuhkan fitur baru tetapi tidak ada di DB dev: ambil `CREATE TABLE`-nya dari `docs/audit/schema_sik.sql` (struktur saja, tanpa data).
 
-## Fixture Kasir dan Rawat Inap
+## Fixture Kasir dan Rawat Inap (belum masuk skrip)
 
 Buat database lokal kosong bernama `simrs_kasir_farmasi_fixture`, `simrs_ralan_fixture`, `simrs_ranap_fixture`, dan `simrs_tindakan_ranap_fixture`. Muat DDL Khanza dari `docs/audit/schema_sik.sql`, tanpa INSERT data, dengan pemeriksaan foreign key dimatikan saat membuat tabel. Jika nama tabel muncul lagi dari skema bridging, gunakan definisi pertama skema inti. Aktifkan fixture dengan `SIMRS_KASIR_FARMASI_FIXTURE_PORT`, `SIMRS_RALAN_FIXTURE_PORT`, `SIMRS_RANAP_FIXTURE_PORT`, dan `SIMRS_TINDAKAN_RANAP_FIXTURE_PORT`. Fixture menyisipkan data sintetis dan membutuhkan skema kosong untuk setiap putaran. Jalankan `dotnet test src/SimrsGramedika.Tests/SimrsGramedika.Tests.csproj -p:NuGetAudit=false -m:1`. Untuk fixture obat pulang, gunakan `simrs_resep_pulang_fixture`, terapkan SQL di `docs/migrations/20261125_serah_resep_pulang.sql`, lalu set `SIMRS_RESEP_PULANG_FIXTURE_PORT`.

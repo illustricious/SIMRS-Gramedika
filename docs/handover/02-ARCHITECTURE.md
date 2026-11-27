@@ -46,6 +46,14 @@ Untuk alur yang bukan daftar/formulir sederhana: `PostingJurnalView` (jurnal man
 6. `dotnet build` dan `dotnet test`.
 7. Perbarui `docs/audit/TILE_BACKLOG.md` (hapus tile dari daftar, ubah hitungan), README, dan `MENU_X_STATUS.md` menu itu.
 
+## Formulir rekam medis (27 November 2026)
+
+Formulir berpola "satu tabel, catatan per kunjungan" tidak dibuat sebagai layar khusus. Tambahkan satu `FormKlinis` di `Data/RekamMedis/FormKlinis.cs` (tile, tabel, izin, pemilik petugas/dokter, isian, aturan waktu, fungsi skor). `FormKlinisService`, `FormKlinisView` dan `FormKlinisReport` menanganinya, dan submenu klik kanan mengikuti katalog. Langkah dan batas: [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md).
+
+## Urutan kunci transaksi
+
+Kunci baris `reg_periksa` (`FOR UPDATE`), periksa billing dan data terkini, kunci dokumen, lalu stok. Jangan melakukan baca biasa di dalam transaksi sebelum kunci pertama: pada REPEATABLE READ itu membekukan snapshot lama.
+
 ## Data dan jurnal
 
 - `Db` (`Data/Sql/Db.cs`): koneksi MySql, `QueryAsync`/`ExecAsync`/`CountAsync`/`ScalarAsync`, transaksi `BeginAsync`/`CommitAsync`, penomoran `AutoNomorAsync`. Parameter bernama `@p0..`.
