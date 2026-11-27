@@ -53,7 +53,7 @@ Daftar awal pada 24 November menampilkan nomor rawat asal serta dokter dan poli 
 
 Kode: `PatientContextMenu.cs`, `ContextReports.cs`, `ReportView.cs`, `CatatanPasienWindow.cs`, `PatientLabel.cs`, `RegistrasiService.SetStatusAsync`. Tes: `RegistrasiMenuTests.cs`.
 
-- **Set Status:** Berkas R.M. Diterima, Sudah, Belum, Batal, Dirujuk, Dirawat, Meninggal, Pulang Paksa, dan Status Poli Baru/Lama. Ditolak bila pasien punya data kamar inap atau billing (Status Poli tidak terhalang). Batal membuat `biaya_reg` 0; Berkas Diterima juga mencatat `mutasi_berkas`. Berbeda dari Java: perlu hak `edit_registrasi` atau Admin Utama, dibatasi 2x24 jam untuk non-Admin Utama, dan penjagaan kamar inap serta billing berlaku untuk semua pilihan `stts`. Seperti Java, mengembalikan registrasi Batal ke status lain tidak memulihkan biaya. Dirawat membuka Kamar Inap; formulir Rujukan Keluar belum ada.
+- **Set Status:** Berkas R.M. Diterima, Sudah, Belum, Batal, Dirujuk, Dirawat, Meninggal, Pulang Paksa, dan Status Poli Baru/Lama. Ditolak bila pasien punya data kamar inap atau billing (Status Poli tidak terhalang). Batal membuat `biaya_reg` 0; Berkas Diterima juga mencatat `mutasi_berkas`. Berbeda dari Java: perlu hak `edit_registrasi` atau Admin Utama, dibatasi 2x24 jam untuk non-Admin Utama, dan penjagaan kamar inap serta billing berlaku untuk semua pilihan `stts`. Seperti Java, mengembalikan registrasi Batal ke status lain tidak memulihkan biaya. Dirawat membuka Kamar Inap; Dirujuk membuka formulir Rujukan Keluar.
 - **Pasien Meninggal:** Set Status Meninggal membuka formulir `pasien_mati` bagi akun berhak `pasien_meninggal` (`PasienMeninggalWindow.cs`, `PasienMeninggalService.cs`). Data yang sudah ada dimuat lalu diperbarui. Belum ada: pencarian ICD-X, hapus, daftar, serta cetak surat kematian dan angkut jenazah. Fixture memakai tambahan tabel `dokter` dan `pasien_mati`.
 - **Catatan Pasien:** baca, simpan, dan hapus pada `catatan_pasien` dengan hak `catatan_pasien`. Klik kiri nama pasien (tab Registrasi Awal dan Rujukan Internal) memunculkan catatan di bawah tabel bila `set_validasi_catatan.tampilkan_catatan` bernilai Yes.
 - **Laporan, Grafik Analisa, Input Data:** membuka laporan baca-saja yang sudah ada. Laporan pasien disaring persis menurut No. RM. Laporan berperiode tetap memakai periode bawaan layar; ubah tanggal untuk melihat data lama. Berkas digital dan insiden hanya daftar, belum input.
@@ -99,3 +99,25 @@ Kode: `RegistrasiService.NomorAntreanAsync`, `DatabaseSettings`, `KoneksiDatabas
 - Perbaikan: simpan registrasi IGD sebelumnya menomori dari jumlah baris hari itu (bisa bentrok setelah ada yang dihapus), selalu "Lama", dan melewati cek rawat inap. Sekarang memakai layanan registrasi yang sama; dokter wajib dan isian P.J. kosong mengikuti data pasien.
 - Pemeriksaan: MariaDB 11.4.8 sintetis untuk urutan nomor, booking, kuota, dan IGD; satu uji headless sementara untuk simpan IGD dan tampilan jendela koneksi. Dua loket bersamaan dan database RS belum diuji. Untuk mengulang, muat tabel terkait ke `simrs_antrean_fixture` kosong lalu set `SIMRS_ANTREAN_FIXTURE_PORT`.
 - Belum ada: daftar dokter dibatasi jadwal saat kuota aktif, dan tanggal-jam mundur.
+
+## Pencocokan tracker dengan kode (27 November 2026)
+
+Banyak popup masih tercatat "kurang" walau sudah tersambung di aplikasi. 48 popup naik menjadi sebagian: label, barcode dan gelang (15), Check List (4), Lembar Periksa (6), Bukti Register 1 dan 2, permintaan Lab dan Radiologi, periksa Lab PK/PA/MB dan Radiologi, Resep Dokter, laporan RL 3.2 dan frekuensi penyakit, grafik berupa tabel (10), Berkas Digital dan Insiden. Penilaian berdasarkan pembacaan kode dan tes yang sudah ada; menu tidak diklik pada aplikasi dengan database.
+
+Temuan: Java mencetak Bukti Register 1, 2, 3 dari `rptBuktiRegister`, `rptBuktiRegister3`, `rptBuktiRegister8`. Aplikasi saat itu memberi nomor 1, 2, 3 pada `rptBuktiRegister`, `rptBuktiRegister2`, `rptBuktiRegister3`; sudah diperbaiki (lihat bagian berikut).
+
+Masih kurang di klik kanan Registrasi: Data Rekam Medis (133), Surat-Surat selain Bukti Register 1-2 (format 3 ditambahkan kemudian, lihat bagian berikut), menu tab Rujukan Internal, permintaan selain Lab/Radiologi, Operasi, Obat selain Resep Dokter, Billing Parsial, enam laporan, grafik jenis kelamin/pekerjaan/agama, Rujukan Keluar (ditambahkan kemudian), hapus data operasi dan Gabung Nomor Rawat.
+
+## Rujukan Keluar dan Bukti Register (27 November 2026)
+
+- **Rujukan → Keluar** (juga dibuka setelah Set Status Dirujuk) menambah atau mengubah tabel `rujuk` dengan hak `rujukan_keluar` (`RujukanKeluarWindow.cs`, `RujukanKeluarService.cs`). Kunjungan yang sudah dirujuk dibuka pada data terbaru. Nomor `R` + 9 angka diambil dari nomor terbesar di dalam kunci bernama; Java memakai jumlah baris, sehingga klien Java yang berjalan bersamaan masih dapat membuat nomor ganda. Status Dirujuk diubah setelah tersimpan (Java mengubahnya saat formulir dibuka) dan tidak diubah untuk pasien rawat inap. Belum ada: hapus, daftar, cetak daftar, dan pemilih diagnosa.
+- **Bukti Register:** label 1, 2, 3 kini memakai `rptBuktiRegister`, `rptBuktiRegister3`, `rptBuktiRegister8`, sesuai Java. Temuan pada pencocokan tracker di atas sudah diperbaiki. Format 3 memuat logo RS dari `setting.logo`.
+- **Surat Rujukan:** tombol pada formulir mencetak rujukan tersimpan sebagai PDF berkop RS (`SuratRujukanReport.cs`) dengan isi `rptSuratRujukan`: Tindakan merangkum rawat inap dokter, laboratorium, radiologi, dan operasi; Terapi memuat nama obat yang diberikan. QR tanda tangan: lihat bagian QR di bawah.
+- Fixture memakai tambahan tabel `rujuk`, `rawat_inap_dr`, `periksa_lab`, `periksa_radiologi`, `operasi`, `detail_pemberian_obat`, `databarang`.
+
+## Surat Cuti Sakit (27 November 2026)
+
+- **Surat-Surat → Surat Cuti Sakit** menambah atau mengubah tabel `suratsakit` dengan hak `surat_sakit` (`SuratSakitWindow.cs`, `SuratSakitService.cs`). Nomor `SKS` + tanggal awal + 3 angka seperti Java, dibuat di dalam kunci bernama. Lama sakit terisi otomatis dari kedua tanggal ("3 (Tiga)") dan bisa ditulis ulang. Tanggal akhir sebelum tanggal awal ditolak (Java tidak).
+- Cetak memakai isi `rptSuratSakit` ("Cetak Surat Sakit 2") sebagai PDF A5 berkop RS. Belum ada: hapus, daftar, dan empat format lain.
+- **QR tanda tangan** (Surat Rujukan dan Surat Cuti Sakit): teks sama dengan parameter `finger` Java, yaitu nama RS, kabupaten, dokter, ID (SHA-1 `sidikjari` pegawai bila ada, selain itu kode dokter), dan tanggal. Dibuat dengan pustaka QRCoder 1.6.0 (MIT), koreksi galat H. Ini identitas penanda tangan, bukan tanda tangan elektronik tersertifikasi. Pemindaian hasil cetak belum diuji.
+- Fixture memakai tambahan tabel `suratsakit`, `kelurahan`, `kecamatan`, `kabupaten`, `pegawai`, `sidikjari`.

@@ -40,8 +40,8 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
         new("Lembar Periksa Pasien Kanan 3", "rptLembarPeriksa6"),
         new("Lembar Periksa Pasien Kiri 3", "rptLembarPeriksa5"),
         new("Bukti Register 1", "rptBuktiRegister"),
-        new("Bukti Register 2", "rptBuktiRegister2"),
-        new("Bukti Register 3", "rptBuktiRegister3"),
+        new("Bukti Register 2", "rptBuktiRegister3"),
+        new("Bukti Register 3", "rptBuktiRegister8"),
     ];
 
     private static readonly CultureInfo Indonesian = CultureInfo.GetCultureInfo("id-ID");
@@ -71,7 +71,7 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
             ?? throw new InvalidOperationException("Data registrasi pasien sudah tidak tersedia.");
         var hospital = await db.FirstAsync("""
             SELECT nama_instansi AS namars, alamat_instansi AS alamatrs, kabupaten AS kotars,
-                   propinsi AS propinsirs, kontak AS kontakrs
+                   propinsi AS propinsirs, kontak AS kontakrs, logo
             FROM setting ORDER BY (aktifkan = 'Yes') DESC, nama_instansi LIMIT 1
             """);
 
@@ -166,6 +166,14 @@ internal sealed class PatientLabel(XElement layout, Row visit, Row? hospital, Pa
                 DrawText(canvas, text, width, height, paint, Number(font, "size", 10),
                     (string?)font?.Attribute("isBold") == "true",
                     (string?)textElement?.Attribute("textAlignment"), (string?)textElement?.Attribute("verticalAlignment") == "Middle");
+                break;
+            case "image":
+                // Satu-satunya gambar di template adalah logo RS; logo kosong atau rusak dibiarkan blank.
+                if (hospital?["logo"] is byte[] { Length: > 0 } bytes)
+                {
+                    using var logo = SKBitmap.Decode(bytes);
+                    if (logo is not null) canvas.DrawBitmap(logo, new SKRect(0, 0, width, height));
+                }
                 break;
             default:
                 throw new InvalidOperationException($"Elemen template cetak tidak didukung ({type}).");

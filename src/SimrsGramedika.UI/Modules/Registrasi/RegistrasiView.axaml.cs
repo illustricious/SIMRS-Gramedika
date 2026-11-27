@@ -39,7 +39,8 @@ public partial class RegistrasiView : UserControl
         PatientContextMenu.Attach<RegistrasiListItem>(this.FindControl<DataGrid>("RegistrasiGrid")!,
             row => new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, row.StatusRawat == "Ranap"),
             request => PatientMenuRequested?.Invoke(this, request), PatientMenuKind.Registration, OpenSelectedInput,
-            BukaRujukanInternal, BukaRujukanMasuk, HapusDariContext, SetStatusDariContext, SetStatusPoliDariContext);
+            BukaRujukanInternal, BukaRujukanMasuk, HapusDariContext, SetStatusDariContext, SetStatusPoliDariContext,
+            BukaRujukanKeluarDariContext, BukaSuratSakitDariContext);
         PasangCatatanPasien();
 
         // Periode defaults to "today" (matches the legacy app's "Registrasi
@@ -499,7 +500,8 @@ public partial class RegistrasiView : UserControl
         // Khanza membuka formulir lanjutan; yang belum ada di aplikasi ini disebutkan kepada petugas.
         var lanjutan = statusBaru switch
         {
-            "Dirujuk" => " Formulir Rujukan Keluar belum tersedia di aplikasi ini.",
+            "Dirujuk" when AppSession.CurrentUser?.HasPermission(RujukanKeluarService.Izin) != true =>
+                " Data rujukan keluar perlu diisi oleh akun berhak Rujukan Keluar.",
             "Meninggal" when AppSession.CurrentUser?.HasPermission(PasienMeninggalService.Izin) != true =>
                 " Data pasien meninggal perlu diisi oleh akun berhak Pasien Meninggal.",
             _ => "",
@@ -512,6 +514,64 @@ public partial class RegistrasiView : UserControl
             PatientMenuRequested?.Invoke(this,
                 new(row.NoRawat, row.NoRekamMedis, row.NamaPasien, PatientMenuAction.KamarInap));
         if (tersimpan && statusBaru == "Meninggal") await IsiPasienMeninggalAsync(row);
+        if (tersimpan && statusBaru == "Dirujuk") await IsiRujukanKeluarAsync(row, ubahStatus: false);
+    }
+
+    private async void BukaSuratSakitDariContext(RegistrasiListItem row)
+    {
+        _selected = row;
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
+        if (AppSession.CurrentUser is not { } user || !user.HasPermission(SuratSakitService.Izin)) return;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        try
+        {
+            var form = new SuratSakitWindow(new SuratSakitService(DatabaseSettings.Load(), user), row.NoRawat, row.NamaPasien);
+            if (!await form.ShowForAsync(this)) return;
+            status.Classes.Remove("error");
+            status.Classes.Add("saved");
+            status.Text = $"Surat sakit {row.NamaPasien} tersimpan.";
+            status.IsVisible = true;
+        }
+        catch (Exception ex) { ShowInputError(status, $"Gagal membuka surat sakit: {ex.Message}"); }
+    }
+
+    private async void BukaRujukanKeluarDariContext(RegistrasiListItem row)
+    {
+        _selected = row;
+        this.FindControl<DataGrid>("RegistrasiGrid")!.SelectedItem = row;
+        await IsiRujukanKeluarAsync(row, ubahStatus: row.Status != "Dirujuk" && row.StatusRawat != "Ranap");
+    }
+
+    /// <summary>
+    /// Khanza menandai kunjungan "Dirujuk" saat formulir dibuka; di sini status baru diubah setelah rujukan tersimpan.
+    /// </summary>
+    private async Task IsiRujukanKeluarAsync(RegistrasiListItem row, bool ubahStatus)
+    {
+        if (AppSession.CurrentUser is not { } user || !user.HasPermission(RujukanKeluarService.Izin)) return;
+        var status = this.FindControl<TextBlock>("InputStatusText")!;
+        try
+        {
+            var dokter = (this.FindControl<ComboBox>("InputDokterCombo")!.ItemsSource as IEnumerable<Dokter>)?.ToList() ?? [];
+            var form = new RujukanKeluarWindow(new RujukanKeluarService(DatabaseSettings.Load(), user),
+                row.NoRawat, row.NamaPasien, dokter, row.KodeDokter);
+            var tersimpan = await form.ShowForAsync(this);
+            if (!tersimpan && !ubahStatus && row.Status == "Dirujuk") return;
+            if (tersimpan && ubahStatus && (user.HasPermission("edit_registrasi") || user.IsAdminUtama))
+            {
+                // Rujukan sudah tersimpan; penolakan perubahan status ditampilkan oleh TerapkanStatusAsync.
+                await TerapkanStatusAsync(row, service => service.SetStatusAsync(row.NoRawat, "Dirujuk", Akses()),
+                    $"Rujukan keluar {row.NamaPasien} tersimpan dan status diperbarui menjadi Dirujuk.");
+                return;
+            }
+            status.Classes.Remove("error");
+            status.Classes.Remove("saved");
+            if (tersimpan) status.Classes.Add("saved");
+            status.Text = tersimpan
+                ? $"Rujukan keluar {row.NamaPasien} tersimpan."
+                : $"Data rujukan keluar {row.NoRawat} tidak diubah.";
+            status.IsVisible = true;
+        }
+        catch (Exception ex) { ShowInputError(status, $"Gagal membuka rujukan keluar: {ex.Message}"); }
     }
 
     private async Task IsiPasienMeninggalAsync(RegistrasiListItem row)

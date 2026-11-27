@@ -25,7 +25,7 @@ public static class PatientContextMenu
     public static ContextMenu Attach<T>(DataGrid grid, Func<T, PatientMenuTarget?> getPatient, Action<PatientMenuRequest> execute,
         PatientMenuKind kind = PatientMenuKind.Visit, Action<T>? edit = null, Action<T>? rujukInternal = null,
         Action<T>? rujukMasuk = null, Action<T>? delete = null, Action<T, string>? setStatus = null,
-        Action<T, string>? setStatusPoli = null) where T : class
+        Action<T, string>? setStatusPoli = null, Action<T>? rujukKeluar = null, Action<T>? suratSakit = null) where T : class
     {
         var menu = new ContextMenu();
         grid.ContextRequested += (_, e) =>
@@ -200,7 +200,9 @@ public static class PatientContextMenu
                         ReportLink("Registrasi Per Tanggal", "btnGrafikKunjunganPerTanggal", "btnGrafikKunjunganPerTanggal"),
                         ReportLink("Demografi Pendaftar", "btnGrafikDemografiRegistrasi", "btnGrafikDemografiRegistrasi")),
                     Group("Surat-Surat",
-                        PrintFormatGroup("Administrasi - Bukti Register", "rptBuktiRegister")),
+                        [.. suratSakit is null ? [] : new[] { Entry("Surat Cuti Sakit", hasVisit && Can(SuratSakitService.Izin)
+                                ? () => Run(() => suratSakit(clicked)) : null) },
+                            PrintFormatGroup("Administrasi - Bukti Register", "rptBuktiRegister")]),
                     .. (kind is PatientMenuKind.Emergency or PatientMenuKind.EmergencyTriage
                         ? new[] { Entry("Gelang"), Entry("Lembar Periksa Pasien"), Entry("Check List Kelengkapan Pendaftaran") }
                         : new[] { PrintFormatGroup("Check List Kelengkapan Pendaftaran", "rptCheckList"),
@@ -218,7 +220,9 @@ public static class PatientContextMenu
                         Entry("Masuk", hasVisit && rujukMasuk is not null && RujukanMasukService.BisaMengelola(user)
                             ? () => Run(() => rujukMasuk(clicked)) : null),
                         Entry("Poli Internal", hasVisit && RujukanInternalService.BisaMengelola(user)
-                            ? () => Run(() => rujukInternal(clicked)) : null)),
+                            ? () => Run(() => rujukInternal(clicked)) : null),
+                        Entry("Keluar", hasVisit && rujukKeluar is not null && Can(RujukanKeluarService.Izin)
+                            ? () => Run(() => rujukKeluar(clicked)) : null)),
                     Entry("Bridging"),
                     Group("Input Data",
                         PatientNote(),

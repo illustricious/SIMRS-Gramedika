@@ -680,12 +680,12 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanLab": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka OrderRalanView (JenisOrderRalan.LabPk) untuk kunjungan terpilih dengan hak permintaan_lab. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanRadiologi": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Permintaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka OrderRalanView (JenisOrderRalan.Radiologi) dengan hak permintaan_radiologi. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnPermintaan|MnPermintaanRanap": {
     "status": "kurang",
@@ -712,20 +712,20 @@
     "bukti": "DlgReg.java:8398 dan DlgRawatJalan.java:5055 - RawatJalanKunjunganView dibuka di PageHost bagi baris klik kanan, dengan submenu klinis di kiri. Tes headless memverifikasi konteks baris dan kolom kiri. SOAPIE dan Catatan Dokter dapat diinput. Tindakan dan sebagian laporan masih baca saja."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLab": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka PeriksaLabFormView PK berisi kunjungan terpilih dengan hak periksa_lab. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLabPA": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka PeriksaLabFormView PA berisi kunjungan terpilih dengan hak pemeriksaan_lab_pa. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaLabMB": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka PeriksaLabFormView MB berisi kunjungan terpilih dengan hak pemeriksaan_lab_mb. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnPeriksaRadiologi": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Tindakan & Pemeriksaan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka PeriksaRadiologiFormView berisi kunjungan terpilih dengan hak periksa_radiologi. Hanya pasien rawat jalan. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnTindakan|MnOperasi": {
     "status": "kurang",
@@ -744,8 +744,8 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnResepDOkter": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Obat di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi membuka OrderRalanView (JenisOrderRalan.Resep) dengan hak resep_dokter. Resep racikan belum tersedia. Klik menu dan simpan dari aplikasi dengan database belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnObat|MnCopyResep": {
     "status": "kurang",
@@ -772,8 +772,8 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapRawatDarurat": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Laporan > RL 3.2 Rawat Darurat (btnRl32). Dibuka sebagai tabel baca-saja lewat ContextReports; periode bawaan layar. Kesamaan kolom, cetak dan angka dengan Java belum diperiksa."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapKunjunganBulanan": {
     "status": "kurang",
@@ -784,36 +784,36 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapPenyakitRalan": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Laporan > Frekuensi Penyakit Rawat Jalan (btnFrekuensiRalan). Dibuka sebagai tabel baca-saja lewat ContextReports; periode bawaan layar. Kesamaan kolom, cetak dan angka dengan Java belum diperiksa."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu1|MnLaporanRekapPerujuk": {
     "status": "kurang",
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Laporan di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Poli. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Poli. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerpoli2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Poli. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Dokter. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Dokter. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerdokter2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Dokter. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerJK": {
     "status": "kurang",
@@ -828,20 +828,20 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerTahun": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Tahun. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerBulan": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Bulan. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikPerTanggal": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Registrasi Per Tanggal. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu2|ppGrafikDemografi": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Grafik Analisa di Registrasi."
+    "status": "sebagian",
+    "bukti": "Grafik Analisa > Demografi Pendaftar. Hanya tabel agregat baca-saja lewat ContextReports; gambar grafik belum ada."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnSuratKontrol": {
     "status": "kurang",
@@ -880,8 +880,8 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSakit": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi > Surat-Surat > Surat Cuti Sakit membuka SuratSakitWindow dan SuratSakitService (tabel suratsakit, hak surat_sakit). Cetak hanya format Surat Cuti Sakit (rptSuratSakit) dengan QR identitas penanda tangan. Diuji pada MariaDB sintetis dan tes headless; database RS dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|MnCetakSuratSakitPihak2": {
     "status": "kurang",
@@ -912,16 +912,16 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; format mengikuti handler Java. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi dan printer fisik belum diuji. rptBuktiRegister tidak memuat logo dan e-mail RS."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "status": "sebagian",
+    "bukti": "Bukti Register 2 mencetak rptBuktiRegister3. PatientContextMenu membuka PatientLabelPreview; format mengikuti handler Java. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnCetakRegister2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
+    "status": "sebagian",
+    "bukti": "Bukti Register 3 mencetak rptBuktiRegister8 dengan logo dari tabel setting; barcode contoh \"1234\" pada template digambar sebagai Code128, bukan Interleaved 2 of 5. PatientContextMenu membuka PatientLabelPreview; format mengikuti handler Java. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnSuratSurat|jMenu8|MnBuktiPelayananRalan": {
     "status": "kurang",
@@ -1036,112 +1036,112 @@
     "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Surat-Surat di Registrasi."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu3|MnCheckList3": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Check List Kelengkapan Pendaftaran di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList4": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList5": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList6": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList7": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList8": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|jMenu5|MnCheckList9": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Lembar Periksa Pasien di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnLabelTracker3": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcode2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnBarcodeRM9": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang1": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang2": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang3": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang4": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang5": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang6": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnLabel|MnGelang7": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Label & Barcode di Registrasi."
+    "status": "sebagian",
+    "bukti": "PatientContextMenu membuka PatientLabelPreview; PatientLabel menggambar template Jasper Khanza yang sama. RegistrasiMenuTests menggambar semua format dengan data sintetis. Query dari aplikasi, kemiripan hasil cetak dan printer fisik belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnRujukMasuk": {
     "status": "sebagian",
     "bukti": "RegistrasiView.Rujukan.cs dan RujukanMasukService.cs membuka rujukan masuk kunjungan terpilih dengan izin rujukan_masuk, mencari perujuk, serta menambah dan mengubah data. Fixture MariaDB memeriksa simpan, hak akses, duplikat dan perubahan bersamaan. Hapus dan cetak surat balasan belum tersedia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnRujuk": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Rujukan di Registrasi."
+    "status": "sebagian",
+    "bukti": "Klik kanan Registrasi > Rujukan > Keluar membuka RujukanKeluarWindow dan RujukanKeluarService (tabel rujuk, hak rujukan_keluar). Berbeda dari Java: status Dirujuk diubah setelah rujukan tersimpan, bukan saat formulir dibuka, dan mengikuti aturan Set Status. Surat Rujukan dapat dicetak dari formulir. Hapus, daftar per periode dan cetak daftar belum ada. Diuji pada MariaDB sintetis dan tes headless; database RS belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnRujukan|MnPoliInternal": {
     "status": "sebagian",
@@ -1152,12 +1152,12 @@
     "bukti": "CatatanPasienWindow membaca, menyimpan, dan menghapus catatan pasien terpilih; klik nama pasien di Registrasi memunculkan catatan bila set_validasi_catatan aktif. Daftar semua catatan seperti DlgCatatan belum ada di menu ini. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppBerkasDigital": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "Input Data > Berkas Digital Perawatan membuka daftar baca-saja yang disaring menurut No. RM; tambah, ubah dan hapus belum tersedia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MenuInputData|ppIKP": {
-    "status": "kurang",
-    "bukti": "src/SimrsGramedika.UI/Modules/Shared/PatientContextMenu.cs — pilihan ini belum memiliki aksi dari submenu Input Data di Registrasi."
+    "status": "sebagian",
+    "bukti": "Input Data > Insiden Keselamatan Pasien membuka daftar baca-saja yang disaring menurut No. RM; tambah, ubah dan hapus belum tersedia."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnUrut|MnUrutNoRawatDesc": {
     "status": "sebagian",
@@ -1253,7 +1253,7 @@
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDirujuk": {
     "status": "sebagian",
-    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir Rujukan Keluar yang dibuka Java belum tersedia. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
+    "bukti": "RegistrasiService.SetStatusAsync lewat Set Status di PatientContextMenu: hak edit_registrasi atau Admin Utama, batas 2 x 24 jam, ditolak bila ada kamar inap atau billing. Formulir Rujukan Keluar dibuka setelah tersimpan bagi akun berhak rujukan_keluar. Diuji pada MariaDB sintetis (RegistrasiMenuTests); database RS dan klik di aplikasi belum diuji."
   },
   "popup|simrskhanza/DlgReg.java|jPopupMenu1|MnHapusData|MnStatus|MnDIrawat": {
     "status": "sebagian",
@@ -1549,7 +1549,7 @@
   },
   "jendela|simrskhanza/DlgReg.java|DlgReg": {
     "status": "sebagian",
-    "bukti": "RegistrasiView: daftar tanpa IGDK, cari, registrasi baru, ubah, hapus, cetak PDF, klik kanan pasien, pemilih pasien dan daftar rujukan internal baca saja. RujukanInternalService membatasi hak registrasi dan difilter berdasarkan tujuan; fixture MariaDB sintetis serta tes layar headless lulus. Belum: operasi dan menu rujukan internal, pendaftaran pasien dari dialog, grafik/demografi, tanggal-jam mundur dan asal rujukan."
+    "bukti": "RegistrasiView: daftar tanpa IGDK, cari, registrasi baru, pasien baru dari dialog, ubah, hapus satu baris, Set Status, catatan pasien, pasien meninggal, rujukan keluar, surat cuti sakit, rujukan internal dan masuk, cetak daftar berkop RS, serta label/lembar cetak dari klik kanan. Diuji pada MariaDB sintetis dan tes headless. Belum: surat-surat selain cuti sakit dan bukti register, grafik bergambar, tanggal-jam mundur, hapus banyak baris dan uji pada database RS."
   },
   "aksi|simrskhanza/DlgReg.java|BtnSimpan": {
     "status": "sebagian",
@@ -1569,7 +1569,7 @@
   },
   "aksi|simrskhanza/DlgReg.java|BtnPrint": {
     "status": "sebagian",
-    "bukti": "src/SimrsGramedika.UI/Modules/Registrasi/RegistrasiView.axaml.cs OnCetakClick membuat PDF dari RegistrasiReport (QuestPDF) untuk baris di grid. Java memakai rptReg.jasper berkop RS dan mengecualikan IGDK; kop dan kolom belum disamakan."
+    "bukti": "OnCetakClick membuat PDF daftar dari RegistrasiReport (QuestPDF) berkop RS dari tabel setting dengan kolom mengikuti cetakan Khanza. Tata letak tidak memakai berkas Jasper; hasil pada database RS dan printer fisik belum diuji."
   },
   "aksi|simrskhanza/DlgReg.java|BtnAll": {
     "status": "selesai",
@@ -3290,5 +3290,85 @@
   "aksi|simrskhanza/DlgPasienMati.java|BtnDokter": {
     "status": "sebagian",
     "bukti": "Dokter DPJP dipilih dari daftar dokter di PasienMeninggalWindow, bawaan dokter kunjungan. Diuji pada MariaDB sintetis dan uji layar headless sementara; database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "RujukanKeluarWindow dan RujukanKeluarService (tabel rujuk, hak rujukan_keluar). Simpan baris baru dengan nomor R otomatis dan menolak nomor ganda. Diuji pada MariaDB sintetis dan tes headless; database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "RujukanKeluarWindow dan RujukanKeluarService (tabel rujuk, hak rujukan_keluar). Memilih rujukan tersimpan lalu Simpan memperbaruinya; nomor rujuk tidak diubah. Diuji pada MariaDB sintetis dan tes headless; database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnBatal": {
+    "status": "sebagian",
+    "bukti": "Pilihan \"Rujukan baru\" mengosongkan formulir. Diuji pada MariaDB sintetis dan tes headless; database RS belum diuji."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnDokter": {
+    "status": "sebagian",
+    "bukti": "Dokter dipilih dari daftar; tidak ada dialog cari dokter."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnHapus": {
+    "status": "kurang",
+    "bukti": "RujukanKeluarWindow belum menyediakan hapus rujukan."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|BtnPrint": {
+    "status": "kurang",
+    "bukti": "Cetak daftar rujukan keluar (rptRujuk) belum ada."
+  },
+  "aksi|simrskhanza/DlgRujuk.java|btnDiagnosa": {
+    "status": "kurang",
+    "bukti": "Diagnosa diketik manual; pemilih diagnosa belum ada."
+  },
+  "popup|simrskhanza/DlgRujuk.java|jPopupMenu1|MnSuratRujukan": {
+    "status": "sebagian",
+    "bukti": "RujukanKeluarWindow tombol Cetak Surat Rujukan; RujukanKeluarService.SuratAsync dan SuratRujukanReport membuat PDF berkop RS dengan isi rptSuratRujukan untuk rujukan terpilih. QR identitas penanda tangan dibuat dengan teks seperti Java (bukan tanda tangan tersertifikasi); pemindaian belum diuji. Diuji pada MariaDB sintetis; database RS dan printer fisik belum diuji."
+  },
+  "jendela|simrskhanza/DlgRujuk.java|DlgRujuk": {
+    "status": "sebagian",
+    "bukti": "Tambah dan ubah rujukan keluar per kunjungan tersedia dari Registrasi. Belum: daftar per periode, pencarian, hapus, cetak daftar, dan pembukaan dari menu lain."
+  },
+  "popup|surat/SuratSakit.java|jPopupMenu1|MnCetakSuratSakit1": {
+    "status": "sebagian",
+    "bukti": "SuratSakitReport membuat PDF A5 berkop RS dengan isi rptSuratSakit (Cetak Surat Sakit 2). QR identitas penanda tangan dibuat seperti Java, pemindaiannya belum diuji; kata \"dr\" dilewati bila nama dokter sudah memuatnya. Diuji pada MariaDB sintetis dan tes headless; database RS dan printer fisik belum diuji."
+  },
+  "popup|surat/SuratSakit.java|jPopupMenu1|MnCetakSuratSakit": {
+    "status": "kurang",
+    "bukti": "Cetak Surat Sakit 1 (rptSuratSakit5) belum ada."
+  },
+  "popup|surat/SuratSakit.java|jPopupMenu1|MnCetakSuratSakit4": {
+    "status": "kurang",
+    "bukti": "Cetak Surat Sakit 3 (rptSuratSakit3) belum ada."
+  },
+  "popup|surat/SuratSakit.java|jPopupMenu1|MnCetakSuratSakit5": {
+    "status": "kurang",
+    "bukti": "Cetak Surat Sakit 4 (rptSuratSakit4) belum ada."
+  },
+  "popup|surat/SuratSakit.java|jPopupMenu1|MnCetakSuratSakit2": {
+    "status": "kurang",
+    "bukti": "Cetak Surat Sakit Pihak Ke-2 (rptSuratSakit7) belum ada."
+  },
+  "aksi|surat/SuratSakit.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "SuratSakitWindow dan SuratSakitService (tabel suratsakit, hak surat_sakit). Nomor SKS+tanggal+3 angka seperti Java, nomor ganda ditolak. Diuji pada MariaDB sintetis dan tes headless; database RS dan printer fisik belum diuji."
+  },
+  "aksi|surat/SuratSakit.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Memilih surat tersimpan lalu Simpan memperbaruinya; nomor surat tidak diubah. Diuji pada MariaDB sintetis dan tes headless; database RS dan printer fisik belum diuji."
+  },
+  "aksi|surat/SuratSakit.java|BtnBatal": {
+    "status": "sebagian",
+    "bukti": "Pilihan \"Surat baru\" mengosongkan formulir. Diuji pada MariaDB sintetis dan tes headless; database RS dan printer fisik belum diuji."
+  },
+  "aksi|surat/SuratSakit.java|BtnHapus": {
+    "status": "kurang",
+    "bukti": "SuratSakitWindow belum menyediakan hapus surat."
+  },
+  "aksi|surat/SuratSakit.java|BtnPrint": {
+    "status": "kurang",
+    "bukti": "Cetak daftar surat sakit (rptDataSuratSakit) belum ada."
+  },
+  "jendela|surat/SuratSakit.java|SuratSakit": {
+    "status": "sebagian",
+    "bukti": "Tambah, ubah dan satu format cetak per kunjungan tersedia dari Registrasi. Belum: daftar per periode, pencarian, hapus, cetak daftar, empat format cetak lain, dan pembukaan dari menu lain."
   }
 }

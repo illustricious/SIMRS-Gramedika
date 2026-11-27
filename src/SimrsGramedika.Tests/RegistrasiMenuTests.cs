@@ -2,6 +2,7 @@ using System.Xml.Linq;
 using SimrsGramedika.Config;
 using SimrsGramedika.Data;
 using SimrsGramedika.Data.Sql;
+using SimrsGramedika.UI.Modules.Registrasi;
 using SimrsGramedika.UI.Modules.Registrasi.Labels;
 using SimrsGramedika.UI.Modules.Shared;
 
@@ -86,6 +87,7 @@ public class RegistrasiMenuTests
     [Theory]
     [InlineData("rptBuktiRegister")]
     [InlineData("rptBuktiRegister3")]
+    [InlineData("rptBuktiRegister8")]
     public void JenisKelaminBuktiRegisterTidakMemuatArgumenReplaceAll(string template)
     {
         const string expression = "\": \"+$F{jk}.replaceAll(\"L\",\"Laki-Laki\").replaceAll(\"P\",\"Perempuan\")";
@@ -103,7 +105,7 @@ public class RegistrasiMenuTests
         public FixtureFactAttribute()
         {
             if (!int.TryParse(Environment.GetEnvironmentVariable("SIMRS_REGISTRASI_FIXTURE_PORT"), out _))
-                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien, set_validasi_catatan, mutasi_berkas, pasien_mati) pada MariaDB lokal.";
+                Skip = "Memerlukan skema simrs_registrasi_fixture (pasien, reg_periksa, kamar_inap, billing, catatan_pasien, set_validasi_catatan, mutasi_berkas, pasien_mati, rujuk, rawat_inap_dr, periksa_lab, periksa_radiologi, operasi, detail_pemberian_obat, databarang, suratsakit, kelurahan, kecamatan, kabupaten, pegawai, sidikjari) pada MariaDB lokal.";
         }
     }
 
@@ -247,6 +249,198 @@ public class RegistrasiMenuTests
         Assert.Equal(("Sebab baru", "-"), ((await service.MuatAsync(rm))!.Keterangan, (await service.MuatAsync(rm))!.TempatMeninggal));
         Assert.Equal(1, await db.CountAsync("SELECT COUNT(*) FROM pasien_mati WHERE no_rkm_medis=@p0", rm));
     }
+
+    [Fact]
+    public void BuktiRegisterMengikutiTemplateKhanza() =>
+        Assert.Equal(["rptBuktiRegister", "rptBuktiRegister3", "rptBuktiRegister8"],
+            PatientLabel.Formats.Where(f => f.Title.StartsWith("Bukti Register")).Select(f => f.Template));
+
+    [Fact]
+    public async Task RujukanKeluarDitolakSebelumKoneksi()
+    {
+        var settings = new DatabaseSettings { Host = "127.0.0.1", Port = 1 };
+        var data = new RujukanKeluarData("", new DateTime(2026, 11, 27, 8, 0, 0), "RS Tujuan Uji", "Diagnosa uji", "D1");
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            new RujukanKeluarService(settings, new()).SimpanAsync("R1", data));
+        var service = new RujukanKeluarService(settings, new() { Permissions = new HashSet<string> { "rujukan_keluar" } });
+        foreach (var salah in new[]
+        {
+            data with { RujukKe = " " }, data with { RujukKe = new string('A', 151) }, data with { KodeDokter = "" },
+            data with { NoRujuk = new string('1', 41) }, data with { Kategori = "Lain" }, data with { Ambulance = "Lain" },
+        })
+            await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync("R1", salah));
+    }
+
+    [FixtureFact]
+    public async Task RujukanKeluarBernomorTersimpanDanBerubah()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var kode = Guid.NewGuid().ToString("N")[..10];
+        var rawat = "J" + kode;
+        // Dokter dan kunjungan fiktif: foreign key sesi layanan aktif.
+        await db.ExecAsync("INSERT IGNORE INTO dokter(kd_dokter,nm_dokter) VALUES('D1','DOKTER UJI')");
+        await db.ExecAsync("INSERT INTO reg_periksa(no_rawat,tgl_registrasi,jam_reg,no_rkm_medis,stts,biaya_reg,status_lanjut) VALUES(@p0,CURRENT_DATE,'00:00:00',@p0,'Belum',0,'Ralan')", rawat);
+        var service = new RujukanKeluarService(settings, new() { Permissions = new HashSet<string> { "rujukan_keluar" } });
+        Assert.Empty(await service.DaftarAsync(rawat));
+
+        var data = new RujukanKeluarData("", new DateTime(2026, 11, 27, 8, 30, 15), "  RS Tujuan Uji ", " Diagnosa uji ", "D1",
+            "Non Bedah", "AGD", "Catatan uji");
+        var pertama = await service.SimpanAsync(rawat, data);
+        Assert.Matches("^R[0-9]{9}$", pertama);
+        Assert.Equal(data with { NoRujuk = pertama, RujukKe = "RS Tujuan Uji", Diagnosa = "Diagnosa uji" },
+            Assert.Single(await service.DaftarAsync(rawat)));
+
+        await service.SimpanAsync(rawat, data with { RujukKe = "RS Baru", Ambulance = "-" }, pertama);
+        var berubah = Assert.Single(await service.DaftarAsync(rawat));
+        Assert.Equal((pertama, "RS Baru", "-"), (berubah.NoRujuk, berubah.RujukKe, berubah.Ambulance));
+
+        var kedua = await service.SimpanAsync(rawat, data with { Waktu = data.Waktu.AddHours(1) });
+        Assert.Equal(int.Parse(pertama[1..]) + 1, int.Parse(kedua[1..]));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(rawat, data with { NoRujuk = pertama }));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync("LAIN" + kode, data, pertama));
+        Assert.Equal([kedua, pertama], (await service.DaftarAsync(rawat)).Select(r => r.NoRujuk));
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("Diagnosa uji yang panjang. ")]
+    public void SuratRujukanTetapJadi(string diagnosa)
+    {
+        // Teks sangat panjang harus mengalir ke halaman berikutnya, bukan menggagalkan cetak.
+        var panjang = string.Concat(Enumerable.Repeat(diagnosa, 200));
+        var surat = new SuratRujukanData("R000000001", new DateTime(2026, 11, 27), "RS Tujuan Uji", panjang, "DOKTER UJI",
+            "000001", "PASIEN UJI", "ALAMAT UJI", new DateTime(2026, 11, 26), "pemeriksaan laboratorium", panjang);
+        var path = SuratRujukanReport.GeneratePdf(surat, new KopInstansi("RS UJI", "Jalan Uji", "000", "", null) { Kota = "Kota Uji" });
+        try { Assert.True(File.ReadAllBytes(path).AsSpan().StartsWith("%PDF-"u8)); }
+        finally { File.Delete(path); }
+    }
+
+    [FixtureFact]
+    public async Task SuratRujukanMerangkumObatDanLayanan()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var kode = Guid.NewGuid().ToString("N")[..10];
+        var rawat = "S" + kode;
+        await db.ExecAsync("INSERT IGNORE INTO dokter(kd_dokter,nm_dokter) VALUES('D1','DOKTER UJI')");
+        await db.ExecAsync("INSERT INTO pasien(no_rkm_medis,nm_pasien,alamat) VALUES(@p0,'PASIEN UJI','ALAMAT UJI')", rawat);
+        await db.ExecAsync("INSERT INTO reg_periksa(no_rawat,tgl_registrasi,jam_reg,no_rkm_medis,stts,biaya_reg,status_lanjut) VALUES(@p0,'2026-11-26','00:00:00',@p0,'Belum',0,'Ralan')", rawat);
+        var service = new RujukanKeluarService(settings, new() { Permissions = new HashSet<string> { "rujukan_keluar" } });
+        var nomor = await service.SimpanAsync(rawat, new("", new DateTime(2026, 11, 27, 8, 0, 0), "RS Tujuan Uji", "Diagnosa uji", "D1"));
+
+        var kosong = await service.SuratAsync(rawat, nomor);
+        Assert.Equal(("PASIEN UJI", "DOKTER UJI", "ALAMAT UJI", "", ""),
+            (kosong.Pasien, kosong.Dokter, kosong.Alamat, kosong.Tindakan, kosong.Terapi));
+
+        await db.ExecAsync("INSERT INTO databarang(kode_brng,nama_brng) VALUES(@p0,'OBAT UJI')", kode);
+        for (var jam = 1; jam <= 2; jam++)
+            await db.ExecAsync("INSERT INTO detail_pemberian_obat(tgl_perawatan,jam,no_rawat,kode_brng) VALUES('2026-11-26',@p0,@p1,@p2)",
+                $"0{jam}:00:00", rawat, kode);
+        await db.ExecAsync("INSERT INTO periksa_lab(no_rawat) VALUES(@p0)", rawat);
+        await db.ExecAsync("INSERT INTO operasi(no_rawat) VALUES(@p0)", rawat);
+        Assert.Equal("D1", kosong.IdDokter);
+        // Dengan sidik jari, ID QR berupa SHA-1 seperti Khanza.
+        await db.ExecAsync("DELETE FROM sidikjari WHERE id=999001");
+        await db.ExecAsync("REPLACE INTO pegawai(id,nik) VALUES(999001,'D1')");
+        await db.ExecAsync("INSERT INTO sidikjari(id,sidikjari) VALUES(999001,'abc')");
+        try
+        {
+            Assert.Equal("a9993e364706816aba3e25717850c26c9cd0d89d", (await service.SuratAsync(rawat, nomor)).IdDokter);
+        }
+        finally
+        {
+            await db.ExecAsync("DELETE FROM sidikjari WHERE id=999001");
+            await db.ExecAsync("DELETE FROM pegawai WHERE id=999001");
+        }
+        var isi = await service.SuratAsync(rawat, nomor);
+        Assert.Equal(("pemeriksaan laboratorium, operasi", "OBAT UJI"), (isi.Tindakan, isi.Terapi));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SuratAsync(rawat, "TIDAKADA"));
+    }
+
+    [Theory]
+    [InlineData(1, "1 (Satu)")]
+    [InlineData(3, "3 (Tiga)")]
+    [InlineData(11, "11 (Sebelas)")]
+    [InlineData(14, "14 (Empat Belas)")]
+    [InlineData(20, "20 (Dua Puluh)")]
+    [InlineData(45, "45 (Empat Puluh Lima)")]
+    [InlineData(0, "")]
+    [InlineData(100, "")]
+    public void LamaSakitDitulisDenganTerbilang(int hari, string hasil)
+    {
+        var awal = new DateTime(2026, 11, 27);
+        Assert.Equal(hasil, SuratSakitService.LamaSakit(awal, awal.AddDays(hari - 1)));
+    }
+
+    [Fact]
+    public async Task SuratSakitDitolakSebelumKoneksi()
+    {
+        var settings = new DatabaseSettings { Host = "127.0.0.1", Port = 1 };
+        var data = new SuratSakitData("", new DateTime(2026, 11, 27), new DateTime(2026, 11, 28), "2 (Dua)");
+        await Assert.ThrowsAsync<InvalidOperationException>(() => new SuratSakitService(settings, new()).SimpanAsync("R1", data));
+        var service = new SuratSakitService(settings, new() { Permissions = new HashSet<string> { "surat_sakit" } });
+        foreach (var salah in new[]
+        {
+            data with { LamaSakit = " " }, data with { LamaSakit = new string('1', 21) },
+            data with { TanggalAkhir = data.TanggalAwal.AddDays(-1) }, data with { NoSurat = new string('1', 18) },
+        })
+            await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync("R1", salah));
+    }
+
+    [Fact]
+    public void SuratSakitMuatSatuHalaman()
+    {
+        var surat = new SuratSakitCetak(new("SKS20261127001", new DateTime(2026, 11, 27), new DateTime(2026, 11, 29), "3 (Tiga)"),
+            "dr. DOKTER UJI", "PASIEN UJI", "AYAH", "KELUARGA UJI", new DateTime(1990, 2, 3), "Perempuan", "KARYAWAN",
+            "Jalan Contoh No. 1, Kelurahan Uji, Kecamatan Uji, Kabupaten Uji");
+        var kop = new KopInstansi("RS UJI", "Jalan Uji, Kota Uji, Provinsi", "000", "uji@example.test", null) { Kota = "Kota Uji" };
+        var halaman = QuestPDF.Fluent.GenerateExtensions.GenerateImages(SuratSakitReport.Dokumen(surat, kop)).ToList();
+        Assert.Single(halaman);
+        if (Environment.GetEnvironmentVariable("SIMRS_SCREENSHOT_DIR") is { Length: > 0 } shots)
+        {
+            Directory.CreateDirectory(shots);
+            File.WriteAllBytes(Path.Combine(shots, "surat-sakit.png"), halaman[0]);
+        }
+    }
+
+    [FixtureFact]
+    public async Task SuratSakitBernomorTersimpanDanDicetak()
+    {
+        var settings = Fixture();
+        await using var db = await Db.OpenAsync(settings);
+        await db.ExecAsync("SET SESSION sql_mode='',FOREIGN_KEY_CHECKS=0");
+        var kode = Guid.NewGuid().ToString("N")[..10];
+        var rawat = "K" + kode;
+        await db.ExecAsync("INSERT IGNORE INTO dokter(kd_dokter,nm_dokter) VALUES('D1','DOKTER UJI')");
+        await db.ExecAsync("INSERT INTO pasien(no_rkm_medis,nm_pasien,alamat,jk,keluarga,namakeluarga) VALUES(@p0,'PASIEN UJI','ALAMAT UJI','P','AYAH','KELUARGA UJI')", rawat);
+        await db.ExecAsync("INSERT INTO reg_periksa(no_rawat,tgl_registrasi,jam_reg,no_rkm_medis,kd_dokter,stts,biaya_reg,status_lanjut) VALUES(@p0,CURRENT_DATE,'00:00:00',@p0,'D1','Belum',0,'Ralan')", rawat);
+        var service = new SuratSakitService(settings, new() { Permissions = new HashSet<string> { "surat_sakit" } });
+        // Tanggal acak agar nomor urut tidak terpengaruh jalannya tes sebelumnya.
+        var awal = new DateTime(2030, 1, 1).AddDays(Random.Shared.Next(1, 3000));
+        await db.ExecAsync("DELETE FROM suratsakit WHERE tanggalawal=@p0", awal);
+        var awalan = "SKS" + awal.ToString("yyyyMMdd");
+
+        var data = new SuratSakitData("", awal, awal.AddDays(2), " 3 (Tiga) ");
+        var pertama = await service.SimpanAsync(rawat, data);
+        Assert.Equal(awalan + "001", pertama);
+        Assert.Equal(data with { NoSurat = pertama, LamaSakit = "3 (Tiga)" }, Assert.Single(await service.DaftarAsync(rawat)));
+        Assert.Equal(awalan + "002", await service.SimpanAsync(rawat, data));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync(rawat, data with { NoSurat = pertama }));
+
+        await service.SimpanAsync(rawat, data with { LamaSakit = "2 (Dua)", TanggalAkhir = awal.AddDays(1) }, pertama);
+        var cetak = await service.CetakAsync(rawat, pertama);
+        Assert.Equal(("2 (Dua)", "DOKTER UJI", "PASIEN UJI", "AYAH", "KELUARGA UJI", "Perempuan", "ALAMAT UJI"),
+            (cetak.Surat.LamaSakit, cetak.Dokter, cetak.Pasien, cetak.HubunganKeluarga, cetak.NamaKeluarga, cetak.JenisKelamin, cetak.Alamat));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => service.SimpanAsync("LAIN" + kode, data, pertama));
+    }
+
+    [Fact]
+    public void TeksQrTandaTanganSamaDenganKhanza() =>
+        Assert.Equal("Dikeluarkan di RS UJI, Kabupaten/Kota Kota Uji\nDitandatangani secara elektronik oleh DOKTER UJI\nID D1\n27-11-2026",
+            TandaTanganSurat.Teks("RS UJI", "Kota Uji", "DOKTER UJI", "D1", "27-11-2026"));
 
     [FixtureFact]
     public async Task CatatanPasienSimpanUbahHapus()

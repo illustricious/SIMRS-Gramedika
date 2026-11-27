@@ -155,7 +155,7 @@ public static class RegistrasiReport
     }
 
     /// <summary>Kop seperti rptReg Khanza: logo di kiri, identitas rumah sakit di tengah, lalu garis.</summary>
-    private static void Kop(IContainer container, KopInstansi kop) => container
+    internal static void Kop(IContainer container, KopInstansi kop) => container
         // Garis ganda di bawah kop, seperti rptReg.
         .BorderBottom(0.7f).PaddingBottom(1.2f).BorderBottom(0.7f).PaddingBottom(4).Row(row =>
     {

@@ -178,8 +178,8 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
 | Jadwal Operasi | kurang | 2484 |
-| Pemeriksaan Lab | kurang | 2500 |
-| Pemeriksaan Radiologi | kurang | 2516 |
+| Pemeriksaan Lab | sebagian | 2500 |
+| Pemeriksaan Radiologi | sebagian | 2516 |
 | Rawat Inap | kurang | 2532 |
 | Informasi Obat | kurang | 2548 |
 | Konsultasi Medik | kurang | 19768 |
@@ -196,10 +196,10 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
 | Tagihan/Tindakan Rawat Jalan | sebagian | 2592 |
-| Periksa Laborat PK | kurang | 2608 |
-| Periksa Laborat PA | kurang | 2624 |
-| Periksa Laborat MB | kurang | 2640 |
-| Periksa Radiologi | kurang | 2656 |
+| Periksa Laborat PK | sebagian | 2608 |
+| Periksa Laborat PA | sebagian | 2624 |
+| Periksa Laborat MB | sebagian | 2640 |
+| Periksa Radiologi | sebagian | 2656 |
 | Tagihan Operasi/VK | kurang | 2672 |
 | Data Operasi | kurang | 19770 |
 
@@ -209,7 +209,7 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 |---|---|---:|
 | Pemberian Obat/BHP | kurang | 2700 |
 | Input No.Resep | kurang | 2716 |
-| Input Resep Dokter | kurang | 2732 |
+| Input Resep Dokter | sebagian | 2732 |
 | Copy Resep Dokter | kurang | 2748 |
 
 ### Billing/Pembayaran Pasien
@@ -226,29 +226,29 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Laporan Rekap Kunjungan Per Poli | kurang | 2827 |
 | Laporan Rekap Kunjungan Per Dokter | kurang | 2843 |
 | Laporan RL 315 Cara bayar | kurang | 2859 |
-| Laporan RL 32 Rawat Darurat | kurang | 2875 |
+| Laporan RL 32 Rawat Darurat | sebagian | 2875 |
 | Laporan RL 51 | kurang | 2891 |
 | Laporan RL 52 | kurang | 2907 |
-| Laporan Frekuensi Penyakit Ralan | kurang | 2923 |
+| Laporan Frekuensi Penyakit Ralan | sebagian | 2923 |
 | Laporan Rekap Perperujuk | kurang | 2939 |
 
 ### Grafik Analisa
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Grafik Plot Kunjungan Per Poli | kurang | 2967 |
-| Grafik Pie Kunjungan Per Poli | kurang | 2983 |
-| Grafik Batang Kunjungan Per Poli | kurang | 2999 |
-| Grafik Plot Kunjungan Per Dokter | kurang | 3015 |
-| Grafik Pie Kunjungan Per Dokter | kurang | 3031 |
-| Grafik Batang Kunjungan Per Dokter | kurang | 3047 |
+| Grafik Plot Kunjungan Per Poli | sebagian | 2967 |
+| Grafik Pie Kunjungan Per Poli | sebagian | 2983 |
+| Grafik Batang Kunjungan Per Poli | sebagian | 2999 |
+| Grafik Plot Kunjungan Per Dokter | sebagian | 3015 |
+| Grafik Pie Kunjungan Per Dokter | sebagian | 3031 |
+| Grafik Batang Kunjungan Per Dokter | sebagian | 3047 |
 | Grafik Plot Kunjungan Per Jenis Kelamin | kurang | 3063 |
 | Grafik Plot Kunjungan Per Pekerjaan | kurang | 3079 |
 | Grafik Plot Kunjungan Per Agama | kurang | 3095 |
-| Grafik Plot Kunjungan Per Tahun | kurang | 3111 |
-| Grafik Plot Kunjungan Per Bulan | kurang | 3127 |
-| Grafik Kunjungan Per Tanggal | kurang | 3144 |
-| Demografi Pendaftar | kurang | 3161 |
+| Grafik Plot Kunjungan Per Tahun | sebagian | 3111 |
+| Grafik Plot Kunjungan Per Bulan | sebagian | 3127 |
+| Grafik Kunjungan Per Tanggal | sebagian | 3144 |
+| Demografi Pendaftar | sebagian | 3161 |
 
 ### Surat-Surat
 
@@ -263,7 +263,7 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Surat Keterangan Sehat 2 | kurang | 3285 |
 | Surat Keterangan Sehat 3 | kurang | 3301 |
 | Surat Keterangan Bebas Narkoba | kurang | 3317 |
-| Surat Cuti Sakit | kurang | 3333 |
+| Surat Cuti Sakit | sebagian | 3333 |
 | Surat Cuti Sakit Pihak Ke 2 | kurang | 3349 |
 | Surat Keterangan Rawat Inap | kurang | 3365 |
 | Surat Keterangan Hamil/Tidak Hamil | kurang | 3381 |
@@ -271,9 +271,9 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Surat Keterangan Covid | kurang | 3413 |
 | Surat Keterangan Layak Terbang | kurang | 19773 |
 | Surat Keterangan Berobat | kurang | 19774 |
-| Administrasi → Bukti Register 1 | kurang | 3544 |
-| Administrasi → Bukti Register 2 | kurang | 3560 |
-| Administrasi → Bukti Register 3 | kurang | 3576 |
+| Administrasi → Bukti Register 1 | sebagian | 3544 |
+| Administrasi → Bukti Register 2 | sebagian | 3560 |
+| Administrasi → Bukti Register 3 | sebagian | 3576 |
 | Administrasi → Surat Jaminan & Bukti Pelayanan Ralan | kurang | 3592 |
 | Administrasi → Lembar Casemix 1 | kurang | 3608 |
 | Administrasi → Lembar Casemix 2 | kurang | 3624 |
@@ -307,48 +307,48 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Check List Kelengkapan Pendaftaran Kanan | kurang | 3803 |
-| Check List Kelengkapan Pendaftaran Kiri | kurang | 3819 |
-| Check List Kelengkapan Pendaftaran Kanan+Tracker | kurang | 3835 |
-| Check List Kelengkapan Pendaftaran Kiri+Tracker | kurang | 3851 |
+| Check List Kelengkapan Pendaftaran Kanan | sebagian | 3803 |
+| Check List Kelengkapan Pendaftaran Kiri | sebagian | 3819 |
+| Check List Kelengkapan Pendaftaran Kanan+Tracker | sebagian | 3835 |
+| Check List Kelengkapan Pendaftaran Kiri+Tracker | sebagian | 3851 |
 
 ### Lembar Periksa Pasien
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Lembar Periksa Pasien Kanan | kurang | 3880 |
-| Lembar Periksa Pasien Kiri | kurang | 3896 |
-| Lembar Periksa Pasien Kanan 2 | kurang | 3913 |
-| Lembar Periksa Pasien Kiri 2 | kurang | 3929 |
-| Lembar Periksa Pasien Kanan 3 | kurang | 3946 |
-| Lembar Periksa Pasien Kiri 3 | kurang | 3962 |
+| Lembar Periksa Pasien Kanan | sebagian | 3880 |
+| Lembar Periksa Pasien Kiri | sebagian | 3896 |
+| Lembar Periksa Pasien Kanan 2 | sebagian | 3913 |
+| Lembar Periksa Pasien Kiri 2 | sebagian | 3929 |
+| Lembar Periksa Pasien Kanan 3 | sebagian | 3946 |
+| Lembar Periksa Pasien Kiri 3 | sebagian | 3962 |
 
 ### Label & Barcode
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
-| Label Tracker 1 | kurang | 3990 |
-| Label Tracker 2 | kurang | 4006 |
-| Label Tracker 3 | kurang | 4022 |
-| Label Tracker 4 | kurang | 4038 |
-| Barcode Perawatan 1 | kurang | 4054 |
-| Barcode Perawatan 2 | kurang | 4070 |
-| Barcode RM | kurang | 4086 |
-| Label Rekam Medis 10 | kurang | 4102 |
-| Gelang Pasien 1 | kurang | 4118 |
-| Gelang Pasien 2 | kurang | 4134 |
-| Gelang Pasien 3 | kurang | 4150 |
-| Gelang Pasien 4 | kurang | 4166 |
-| Gelang Pasien 5 | kurang | 4182 |
-| Gelang Pasien 6 | kurang | 4198 |
-| Gelang Pasien 7 | kurang | 4214 |
+| Label Tracker 1 | sebagian | 3990 |
+| Label Tracker 2 | sebagian | 4006 |
+| Label Tracker 3 | sebagian | 4022 |
+| Label Tracker 4 | sebagian | 4038 |
+| Barcode Perawatan 1 | sebagian | 4054 |
+| Barcode Perawatan 2 | sebagian | 4070 |
+| Barcode RM | sebagian | 4086 |
+| Label Rekam Medis 10 | sebagian | 4102 |
+| Gelang Pasien 1 | sebagian | 4118 |
+| Gelang Pasien 2 | sebagian | 4134 |
+| Gelang Pasien 3 | sebagian | 4150 |
+| Gelang Pasien 4 | sebagian | 4166 |
+| Gelang Pasien 5 | sebagian | 4182 |
+| Gelang Pasien 6 | sebagian | 4198 |
+| Gelang Pasien 7 | sebagian | 4214 |
 
 ### Rujukan
 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
 | Masuk | sebagian | 4249 |
-| Keluar | kurang | 4265 |
+| Keluar | sebagian | 4265 |
 | Poli Internal | sebagian | 4281 |
 
 ### Input Data
@@ -356,8 +356,8 @@ Sumber Java: simrskhanza/DlgReg.java. Nomor baris menunjukkan lokasi pemasangan 
 | Pilihan dan jalur submenu | Status | Baris Java |
 |---|---|---:|
 | Catatan Untuk Pasien | sebagian | 4574 |
-| Berkas Digital Perawatan | kurang | 4590 |
-| Insiden Keselamatan Pasien | kurang | 4606 |
+| Berkas Digital Perawatan | sebagian | 4590 |
+| Insiden Keselamatan Pasien | sebagian | 4606 |
 
 ### Urutkan Data Berdasar
 

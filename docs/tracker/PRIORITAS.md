@@ -1,12 +1,12 @@
 # Prioritas pekerjaan dan progress
 
-Diperbarui 26 November 2026 setelah penilaian awal Farmasi. Angka cakupan layar dan audit terkini tersedia di [ringkasan otomatis](RINGKASAN.md).
+Diperbarui 27 November 2026 setelah pencocokan tracker Registrasi dengan kode. Angka cakupan layar dan audit terkini tersedia di [ringkasan otomatis](RINGKASAN.md).
 
 Laboratorium dan Radiologi memakai palet serta header Registrasi. Panel filter dan tombol aksi juga dirapikan pada layar layanan yang disentuh, termasuk IGD, Farmasi, Rawat Jalan dan Rawat Inap. Uji visual interaktif setelah login masih terbuka.
 
 | Urutan | Pekerjaan | Kondisi sekarang dan kriteria selesai |
 |---|---|---|
-| Saat ini | Registrasi (DlgReg) | Tambah, hapus satu baris, dan cetak daftar rujukan internal tersedia. Rujukan masuk mendukung tambah, ubah, dan pencarian perujuk. Draf rujukan dapat disimpan dalam satu transaksi dengan registrasi baru. Pasien baru dari dialog dengan penomoran RM Khanza tersedia. Cetak daftar sudah berkop RS. Berikutnya, uji dialog dan cetak dari aplikasi. Lihat [audit](AUDIT_REGISTRASI.md). |
+| Saat ini | Registrasi (DlgReg) | Tambah, hapus satu baris, dan cetak daftar rujukan internal tersedia. Rujukan masuk mendukung tambah, ubah, dan pencarian perujuk. Draf rujukan dapat disimpan dalam satu transaksi dengan registrasi baru. Pasien baru dari dialog dengan penomoran RM Khanza tersedia. Cetak daftar sudah berkop RS. Rujukan keluar dan surat cuti sakit dapat ditambah, diubah dan dicetak. Berikutnya, uji dialog dan cetak dari aplikasi. Lihat [audit](AUDIT_REGISTRASI.md). |
 | 0 | Verifikasi build dan tes | Build Debug dan suite tes berjalan dengan fixture MariaDB sintetis untuk Registrasi. Tinjau advisori NuGet untuk MySqlConnector 2.5.0 serta peringatan EF1002 di `RanapMenuRepository`. |
 | 1 | Uji keselamatan alur pada database uji | Jalankan fixture Rawat Jalan dan Rawat Inap dengan data sintetis, lalu uji aplikasi pada salinan database rumah sakit yang aman. Uji dua koneksi terhadap billing/tindakan dan kesesuaian jurnal; periksa rollback, hak akses, dan hasil dengan Khanza Java. Jangan gunakan database produksi untuk eksperimen. |
 | 2 | Rawat Jalan: tindakan dan kelengkapan klinis | Resep nonracikan, permintaan lab/radiologi, dan tambah/ubah resume tersedia di Alur Kunjungan. Lanjutkan verifikasi dan penyerahan resep di Farmasi, perubahan order, cetak resume, serta uji UI bersama unit penunjang. Formulir klinis tambahan, cetak/template/hapus massal SOAPIE, master tarif dan perilaku billing parsial masih terbuka. [Audit](AUDIT_RAWAT_JALAN.md). |
