@@ -81,7 +81,8 @@ public static class PatientContextMenu
 
             // Bertambah sendiri mengikuti formulir yang sudah bisa diisi.
             MenuItem FormulirMenu() => Group("Formulir Rekam Medis",
-                [.. SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.Select(f => Screen(f.Judul, f.Tile))]);
+                [.. SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.GroupBy(f => f.Kelompok)
+                    .Select(g => Group(g.Key, [.. g.Select(f => Screen(f.Judul, f.Tile))]))]);
 
             MenuItem ScreeningMenu() => Group("Skrining",
                     Screen("Skrining Merokok Usia Sekolah & Remaja", "btnSkriningMerokokUsiaSekolah"),

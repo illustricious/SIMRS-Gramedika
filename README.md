@@ -110,7 +110,7 @@ have limits that are described in the audit documents.
 | Emergency | Registration and triage entry |
 | Outpatient ([audit](docs/tracker/AUDIT_RAWAT_JALAN.md)) | a tabbed visit page like the Java one; SOAPIE notes; doctor notes; doctor and staff procedures with journals; ICD-10/ICD-9 entry; send, edit and cancel prescriptions including compounded ones, lab and radiology requests; write and print the medical resume |
 | Inpatient ([audit](docs/tracker/AUDIT_RAWAT_INAP.md)) | Admission; SOAPIE; procedures with journals, including correction and deletion; obstetric and gynaecology exams; removal of wrongly entered room stays; mother and baby rooming-in with a combined bill; surgery charges with theatre drugs and operative reports; discharge summary and room release; discharge prescriptions from request to validation, handover, and full or partial return |
-| Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print 15 record forms: outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment, and admission and discharge criteria checklists for HCU, ICU, NICU, PICU and isolation |
+| Medical records ([audit](docs/tracker/AUDIT_REKAM_MEDIS.md)) | Fill, edit, delete and print 34 record forms: 19 inpatient observation and monitoring sheets (vital signs, obstetric, post partum, newborn, theatre, restraint, ventilator, haemodialysis, fluid balance, blood glucose, dengue follow-up, transfusion reaction, TOLAC, pain intervention, nutrition care), outpatient nursing notes, emergency observation, nutrition screening, adult fall risk, outpatient medical assessment, and admission and discharge criteria checklists for HCU, ICU, NICU, PICU and isolation |
 | Pharmacy | Validate outpatient and inpatient prescriptions including compounded ones, add or substitute drugs, cancel a validation, record outpatient handover; direct sales to registered patients (non-batch stock, one location); stock transfer, stocktake, outgoing stock and requests |
 | Laboratory and radiology | Record results; post journals on save and reverse them on delete |
 | Cashier ([audit](docs/tracker/AUDIT_PELAYANAN_INTI.md)) | Combined outpatient and inpatient billing and receipt reprint, for one payment account without admin fee; save a bill as a patient receivable with a down payment, record and cancel installments, discounts and write-offs. Deposits, outpatient surgery, returns and adjustments are still settled in Khanza |
@@ -129,8 +129,8 @@ Referral letters, sick-leave letters and the outpatient resume carry a QR code i
 
 1. Run the transactions on a safe copy of a real hospital database and compare journals and stock with Khanza Java.
 2. Test concurrent use alongside Java clients.
-3. Close gaps in the core care flows: room corrections, cashier settlement cases.
-4. Continue the per-action audit, then printing and report parity.
+3. Close gaps in the core care flows: cashier deposits, adjustments and invoice cancellation; inpatient doctor prescriptions.
+4. Add more medical record forms, one group at a time; continue the per-action audit, then printing and report parity.
 5. Bridging (menu L), once specifications and test credentials are available.
 
 The working list is in [PRIORITAS.md](docs/tracker/PRIORITAS.md) (Indonesian).
@@ -200,10 +200,10 @@ On first start the app asks for the database connection (host, port, user, passw
 
 ### Tests
 
-Latest local run (28 November 2026, 269 tests):
+Latest local run (28 November 2026, 271 tests):
 
-- Without a database: **223 passed, 0 failed, 46 skipped** because they need one.
-- Against synthetic MariaDB databases, all fixture suites run by the script passed (109 tests).
+- Without a database: **225 passed, 0 failed, 46 skipped** because they need one.
+- Against synthetic MariaDB databases, all fixture suites run by the script passed (111 tests).
 
 On Windows, `tools\uji-fixture.ps1` starts a temporary MariaDB and runs those suites and then the whole test project.
 Fixture tests are enabled with `SIMRS_<NAME>_FIXTURE_PORT` and expect empty local databases named `simrs_<name>_fixture`; see the

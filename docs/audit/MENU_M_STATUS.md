@@ -2,6 +2,10 @@
 
 Per 22 November 2026, **255 dari 255 kemunculan tile** sudah membuka layar: tile Pasien dan seluruh 254 tile lainnya di Menu M. Tidak ada tile Menu M yang tersisa tanpa rute. Screen coverage tidak berarti seluruh alur legacy sudah direplikasi.
 
+## Formulir isian (28 November 2026)
+
+Sebagian tile catatan klinis kini punya formulir isian lewat tombol **Isi / Ubah Formulir** (34 formulir, termasuk 19 lembar observasi dan pemantauan). Daftar dan batasnya di [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md). Bagian di bawah yang menyebut catatan klinis hanya-baca ditulis sebelum formulir itu ada.
+
 ## Identitas pasien — perubahan 26 November 2026
 
 Memilih pasien pada daftar kini memuat data ke form sebagai mode ubah. Tombol Simpan memperbarui kolom identitas yang tersedia di form dan mempertahankan kolom legacy yang belum tersedia, termasuk kode lokasi serta referensi TNI/POLRI. Tombol Baru mengembalikan form ke mode pembuatan pasien. Nomor RM baru membaca aturan `set_urut_no_rkm_medis` dan nomor terakhir `set_no_rkm_medis`; penyimpanan pasien mengunci urutan, mencari nomor yang belum dipakai, menyimpan pasien dan memperbarui nomor terakhir dalam satu transaksi. Pencarian pasien mendukung nama, No. RM, KTP, telepon, nama ibu, alamat, dan email serta dapat dijalankan dengan Enter.

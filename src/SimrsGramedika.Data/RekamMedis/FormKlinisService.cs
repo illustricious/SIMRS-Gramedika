@@ -172,6 +172,7 @@ public sealed class FormKlinisService(DatabaseSettings settings, AuthenticatedUs
             if (isian.Pilihan is { } pilihan && !pilihan.Contains(teks) && lama?.Isi.GetValueOrDefault(isian.Kolom) != teks)
                 throw new ArgumentException($"Pilih {isian.Label} dari daftar.");
         }
+        if (form.Periksa?.Invoke(nilai) is { } pesan) throw new ArgumentException(pesan);
         return nilai;
     }
 

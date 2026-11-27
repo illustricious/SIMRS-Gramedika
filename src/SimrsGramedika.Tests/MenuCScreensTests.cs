@@ -240,8 +240,11 @@ public class MenuCScreensTests
             Assert.False(Assert.IsType<MenuItem>(billing.Items[1]).IsEnabled);
             // Formulir rekam medis: hanya yang diizinkan aktif, dan permintaannya membawa kunjungan yang diklik.
             var formulir = record.Items.OfType<MenuItem>().Single(item => Equals(item.Header, "Formulir Rekam Medis"));
-            var isian = formulir.Items.OfType<MenuItem>().ToList();
-            Assert.Equal(SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.Select(f => f.Judul), isian.Select(i => (string)i.Header!));
+            var kelompok = formulir.Items.OfType<MenuItem>().ToList();
+            var perKelompok = SimrsGramedika.Data.RekamMedis.FormKlinisKatalog.Semua.GroupBy(f => f.Kelompok).ToList();
+            Assert.Equal(perKelompok.Select(g => g.Key), kelompok.Select(i => (string)i.Header!));
+            var isian = kelompok.SelectMany(i => i.Items.OfType<MenuItem>()).ToList();
+            Assert.Equal(perKelompok.SelectMany(g => g).Select(f => f.Judul), isian.Select(i => (string)i.Header!));
             var observasi = Assert.Single(isian, i => i.IsEnabled);
             observasi.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
             Assert.Equal(new PatientMenuRequest(second.NoRawat, second.NoRekamMedis, second.NamaPasien,

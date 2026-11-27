@@ -28,7 +28,7 @@ dotnet test
 powershell -ExecutionPolicy Bypass -File tools\uji-fixture.ps1
 ```
 
-Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schema_sik.sql` tanpa data rumah sakit, menjalankan suite fixture registrasi, validasi resep, jurnal penunjang, resep pulang, formulir rekam medis, cek tagihan dan alur penunjang rawat jalan, kemudian sepuluh suite pada skema penuh (antrean, diagnosa, kasir farmasi, pasien, pulang, tindakan rawat jalan, rawat inap, rujukan, tindakan rawat inap, kunci tanggal), lalu seluruh tes tanpa database. Server dan datanya dihapus setelah selesai. Skrip berhenti bila port sudah dipakai, dan memakai folder konfigurasi kosong agar profil koneksi tersimpan tidak dibaca.
+Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schema_sik.sql` tanpa data rumah sakit, menjalankan suite fixture registrasi, validasi resep, jurnal penunjang, resep pulang, formulir rekam medis, cek tagihan dan alur penunjang rawat jalan, kemudian tiga belas suite pada skema penuh (antrean, diagnosa, kasir farmasi, pasien, pulang, tindakan rawat jalan, rawat inap, rujukan, tindakan rawat inap, kunci tanggal, rawat gabung, operasi, piutang), lalu seluruh tes tanpa database. Server dan datanya dihapus setelah selesai. Skrip berhenti bila port sudah dipakai, dan memakai folder konfigurasi kosong agar profil koneksi tersimpan tidak dibaca.
 
 MariaDB portabel: skrip mengekstrak `dist\mariadb-test-11.4.8.zip` (tidak di git) ke folder TEMP, atau beri `-MariaDb <folder berisi bin\mariadbd.exe>`. Fixture baru ditambahkan ke daftar tabel dan filter di skrip.
 

@@ -40,12 +40,29 @@ public sealed record FormKlinis(string Tile, string Judul, string Tabel, string 
     /// <summary>Penjelasan yang ditampilkan tetapi tidak disimpan.</summary>
     public Func<IReadOnlyDictionary<string, string>, string>? Keterangan { get; init; }
 
-    public string KolomPemilik => Pemilik switch { PemilikForm.Dokter => "kd_dokter", PemilikForm.Pegawai => "nik", _ => "nip" };
+    /// <summary>Aturan antar isian sebelum disimpan; mengembalikan pesan penolakan atau null.</summary>
+    public Func<IReadOnlyDictionary<string, string>, string?>? Periksa { get; init; }
+
+    /// <summary>Submenu klik kanan pasien.</summary>
+    public string Kelompok { get; init; } = FormKlinisKatalog.Pengkajian;
+
+    /// <summary>Daftar menampilkan semua isian (lembar observasi), bukan beberapa kolom pertama.</summary>
+    public bool DaftarLengkap { get; init; }
+
+    /// <summary>Diisi bila nama kolom pemilik tidak mengikuti jenis pemiliknya.</summary>
+    public string? KolomPemilikKhusus { get; init; }
+
+    public string KolomPemilik => KolomPemilikKhusus
+        ?? Pemilik switch { PemilikForm.Dokter => "kd_dokter", PemilikForm.Pegawai => "nik", _ => "nip" };
     public string SebutanPemilik => Pemilik switch { PemilikForm.Dokter => "dokter", PemilikForm.Pegawai => "pegawai", _ => "petugas" };
 }
 
 public static class FormKlinisKatalog
 {
+    public const string Pengkajian = "Pengkajian & Catatan";
+    public const string Observasi = "Observasi & Pemantauan";
+    public const string KriteriaRuang = "Kriteria Ruang Rawat";
+
     private static readonly string[] Organ = ["Normal", "Abnormal", "Tidak Diperiksa"];
 
     private static string? Ambil(IDictionary<string, string> isi, string kolom) => isi.TryGetValue(kolom, out var v) ? v : null;
@@ -81,7 +98,7 @@ public static class FormKlinisKatalog
             new("gcs", "GCS (E,V,M)", 10), new("td", "TD (mmHg)", 8), new("hr", "HR (x/menit)", 5),
             new("rr", "RR (x/menit)", 5), new("suhu", "Suhu (°C)", 5), new("spo2", "SpO2 (%)", 3),
         ])
-    { KolomTanggal = "tgl_perawatan", KolomJam = "jam_rawat" };
+    { KolomTanggal = "tgl_perawatan", KolomJam = "jam_rawat", Kelompok = Observasi, DaftarLengkap = true };
 
     public static readonly FormKlinis SkriningGizi = new(
         "btnSkriningGiziLanjut", "Skrining Gizi Lanjut", "skrining_gizi", "skrining_gizi", PemilikForm.Petugas,
@@ -186,7 +203,8 @@ public static class FormKlinisKatalog
     { SatuPerKunjungan = true };
 
     public static readonly IReadOnlyList<FormKlinis> Semua =
-        [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan, .. FormKriteriaRuang.Semua];
+        [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan, .. FormKriteriaRuang.Semua,
+            .. FormObservasi.Semua];
 
     public static FormKlinis? Cari(string? tile) => Semua.FirstOrDefault(f => f.Tile == tile);
 }

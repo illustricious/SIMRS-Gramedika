@@ -747,7 +747,7 @@ M	btnResumePasien	Resume Pasien Ralan	RMDataResumePasien	ya	baca saja	tulis seba
 M	btnResumePasienRanap	Resume Pasien Ranap	RMDataResumePasienRanap	ya	baca saja	tulis sebagian
 M	btnSkriningGiziLanjut	Skrining Gizi Lanjut	RMDataSkriningGiziLanjut	ya	formulir	tulis ada
 M	btnAsuhanGizi	Asuhan Gizi	RMDataAsuhanGizi	ya	baca saja	hanya baca
-M	btnMonitoringAsuhanGizi	Monitoring Asuhan Gizi	RMDataMonitoringAsuhanGizi	ya	baca saja	hanya baca
+M	btnMonitoringAsuhanGizi	Monitoring Asuhan Gizi	RMDataMonitoringAsuhanGizi	ya	formulir	tulis ada
 M	btnCatatanADIMEGizi	Catatan ADIME Gizi	RMCatatanADIMEGizi	ya	baca saja	hanya baca
 M	btnSkriningNutrisiDewasa	Skrining Nutrisi Pasien Dewasa	RMSkriningNutrisiDewasa	ya	baca saja	hanya baca
 M	btnSkriningNutrisiLansia	Skrining Nutrisi Pasien Lansia	RMSkriningNutrisiLansia	ya	baca saja	hanya baca
@@ -837,23 +837,23 @@ M	btnPenilaianDerajatDehidrasi	Pengkajian Derajat Dehidrasi	RMPenilaianDerajatDe
 M	btnPenilaianPasienKeracunan	Pengkajian Pasien Keracunan	RMPenilaianPasienKeracunan	ya	baca saja	hanya baca
 M	btnPenilaianLevelKecemasanRanapAnak	Pengkajian Level Kecemasan Ranap Anak	RMPenilaianLevelKecemasanRanapAnak	ya	baca saja	hanya baca
 M	btnCatatanObservasiIGD	Catatan Observasi IGD	RMDataCatatanObservasiIGD	ya	formulir	tulis ada
-M	btnCatatanObservasiRanap	Catatan Observasi Ranap	RMDataCatatanObservasiRanap	ya	baca saja	hanya baca
-M	btnCatatanObservasiRanapKebidanan	Catatan Observasi Ranap Kebidanan	RMDataCatatanObservasiRanapKebidanan	ya	baca saja	hanya baca
-M	btnCatatanObservasiRanapPostPartum	Catatan Observasi Ranap Post Partum	RMDataCatatanObservasiRanapPostPartum	ya	baca saja	hanya baca
-M	btnCatatanObservasiRuangOperasi	Catatan Observasi Ruang Operasi	RMDataCatatanObservasiRuangOperasi	ya	baca saja	hanya baca
-M	btnCatatanObservasiBayi	Catatan Observasi Bayi	RMDataCatatanObservasiBayi	ya	baca saja	hanya baca
-M	btnCatatanObservasiCHBP	Catatan Observasi CHBP	RMDataCatatanObservasiCHBP	ya	baca saja	hanya baca
-M	btnCatatanObservasiInduksiPersalinan	Catatan Observasi Induksi Persalinan	RMDataCatatanObservasiInduksiPersalinan	ya	baca saja	hanya baca
-M	btnCatatanObservasiRestrainNonFramakologi	Catatan Observasi Restrain Nonfarmakologi	RMDataCatatanObservasiRestrainNonFarmakologi	ya	baca saja	hanya baca
-M	btnCatatanObservasiVentilator	Catatan Observasi Ventilator	RMDataCatatanObservasiVentilator	ya	baca saja	hanya baca
-M	btnCatatanObservasiHemodialisa	Catatan Observasi Hemodialisa	RMDataCatatanObservasiHemodialisa	ya	baca saja	hanya baca
-M	btnCatatanKeseimbanganCairan	Keseimbangan Cairan	RMDataCatatanKeseimbanganCairan	ya	baca saja	hanya baca
-M	btnCatatanCairanHemodialisa	Catatan Cairan Hemodialisa	RMDataCatatanCairanHemodialisa	ya	baca saja	hanya baca
-M	btnDataFollowUpDBD	Follow Up DBD	RMDataFollowUpDBD	ya	baca saja	hanya baca
+M	btnCatatanObservasiRanap	Catatan Observasi Ranap	RMDataCatatanObservasiRanap	ya	formulir	tulis ada
+M	btnCatatanObservasiRanapKebidanan	Catatan Observasi Ranap Kebidanan	RMDataCatatanObservasiRanapKebidanan	ya	formulir	tulis ada
+M	btnCatatanObservasiRanapPostPartum	Catatan Observasi Ranap Post Partum	RMDataCatatanObservasiRanapPostPartum	ya	formulir	tulis ada
+M	btnCatatanObservasiRuangOperasi	Catatan Observasi Ruang Operasi	RMDataCatatanObservasiRuangOperasi	ya	formulir	tulis ada
+M	btnCatatanObservasiBayi	Catatan Observasi Bayi	RMDataCatatanObservasiBayi	ya	formulir	tulis ada
+M	btnCatatanObservasiCHBP	Catatan Observasi CHBP	RMDataCatatanObservasiCHBP	ya	formulir	tulis ada
+M	btnCatatanObservasiInduksiPersalinan	Catatan Observasi Induksi Persalinan	RMDataCatatanObservasiInduksiPersalinan	ya	formulir	tulis ada
+M	btnCatatanObservasiRestrainNonFramakologi	Catatan Observasi Restrain Nonfarmakologi	RMDataCatatanObservasiRestrainNonFarmakologi	ya	formulir	tulis ada
+M	btnCatatanObservasiVentilator	Catatan Observasi Ventilator	RMDataCatatanObservasiVentilator	ya	formulir	tulis ada
+M	btnCatatanObservasiHemodialisa	Catatan Observasi Hemodialisa	RMDataCatatanObservasiHemodialisa	ya	formulir	tulis ada
+M	btnCatatanKeseimbanganCairan	Keseimbangan Cairan	RMDataCatatanKeseimbanganCairan	ya	formulir	tulis ada
+M	btnCatatanCairanHemodialisa	Catatan Cairan Hemodialisa	RMDataCatatanCairanHemodialisa	ya	formulir	tulis ada
+M	btnDataFollowUpDBD	Follow Up DBD	RMDataFollowUpDBD	ya	formulir	tulis ada
 M	btnCatatanKeperawatanRalan	Catatan Keperawatan Ralan	RMDataCatatanKeperawatanRalan	ya	formulir	tulis ada
 M	btnCatatanKeperawatanRanap	Catatan Keperawatan Ranap	RMDataCatatanKeperawatanRanap	ya	baca saja	hanya baca
 M	btnCatatanPersalinan	Catatan Persalinan	RMCatatanPersalinan	ya	baca saja	hanya baca
-M	btnMonitoringReaksiTranfusi	Monitoring Reaksi Tranfusi	RMDataMonitoringReaksiTranfusi	ya	baca saja	hanya baca
+M	btnMonitoringReaksiTranfusi	Monitoring Reaksi Tranfusi	RMDataMonitoringReaksiTranfusi	ya	formulir	tulis ada
 M	btnLaporanReaksiTranfusi	Laporan Reaksi Tranfusi	RMReaksiTransfusi	ya	baca saja	hanya baca
 M	btnPenilaianGRACEScore	Penilaian GRACE Score	RMPenilaianGRACE	ya	baca saja	hanya baca
 M	btnPenilaianBISHOPScore	Penilaian BISHOP Score	RMPenilaianBishop	ya	baca saja	hanya baca
@@ -900,8 +900,8 @@ M	btnPenilaianRisikoJatuhNeonatus	Pengkajian Lanjutan Risiko Jatuh Neonatus	RMPe
 M	btnPenilaianRisikoJatuhPsikiatri	Pengkajian Lanjutan Risiko Jatuh Psikiatri	RMPenilaianLanjutanRisikoJatuhPsikiatri	ya	baca saja	hanya baca
 M	btnPenilaianLanjutanSkriningFungsional	Pengkajian Lanjutan Skrining Fungsional	RMPenilaianLanjutanSkriningFungsional	ya	baca saja	hanya baca
 M	btnPenilaianUlangNyeri	Pengkajian Ulang Nyeri	RMPenilaianUlangNyeri	ya	baca saja	hanya baca
-M	btnIntervensiNyeriFarmakologi	Intervensi Nyeri Farmakologi	RMDataIntervensiNyeriFarmakologi	ya	baca saja	hanya baca
-M	btnIntervensiNyeriNonFarmakologi	Intervensi Nyeri Non Farmakologi	RMDataIntervensiNyeriNonFarmakologi	ya	baca saja	hanya baca
+M	btnIntervensiNyeriFarmakologi	Intervensi Nyeri Farmakologi	RMDataIntervensiNyeriFarmakologi	ya	formulir	tulis ada
+M	btnIntervensiNyeriNonFarmakologi	Intervensi Nyeri Non Farmakologi	RMDataIntervensiNyeriNonFarmakologi	ya	formulir	tulis ada
 M	btnPenilaianRisikoDekubitus	Pengkajian Risiko Dekubitus	RMPenilaianRisikoDekubitus	ya	baca saja	hanya baca
 M	btnLayananKedokteranFisikRehabilitasi	Layanan Kedokteran Fisik & Rehabilitasi	RMLayananKedokteranFisikRehabilitasi	ya	baca saja	tulis sebagian
 M	btnLayananProgramKFR	Layanan Program KFR	RMLayananProgramKFR	ya	baca saja	tulis sebagian
@@ -915,7 +915,7 @@ M	btnKonsultasiMedik	Konsultasi Medik	DlgPermintaanKonsultasiMedik	ya	baca saja	
 M	btnKonsultasiPerawat	Konsultasi Perawat	DlgPermintaanKonsultasiPerawat	ya	baca saja	hanya baca
 M	btnTransferPasienAntarRuang	Transfer Pasien Antar Ruang	RMTransferPasienAntarRuang	ya	baca saja	hanya baca
 M	btnPengkajianRestrain	Pengkajian Restrain	RMPengkajianRestrain	ya	baca saja	hanya baca
-M	btnCatatanCekGDS	Catatan Cek GDS	RMDataCatatanCekGDS	ya	baca saja	hanya baca
+M	btnCatatanCekGDS	Catatan Cek GDS	RMDataCatatanCekGDS	ya	formulir	tulis ada
 M	btnRekonsiliasiObat	Rekonsiliasi Obat	RMCariRekonsiliasiObat	ya	baca saja	hanya baca
 M	btnChecklistPemberianFibrinolitik	Check List Pemberian Fibrinolitik	RMChecklistPemberianFibrinolitik	ya	baca saja	hanya baca
 M	btnSkriningManagerPelayananPasien	Skrining Manajer Pelayanan Pasien	RMSkriningMPP	ya	baca saja	hanya baca
@@ -954,7 +954,7 @@ M	btnSkriningDiabetesMelitus	Skrining Diabetes Melitus	RMSkriningDiabetesMelitus
 M	btnSkriningFrailtySyndrome	Skrining Frailty Syndrome	RMSkriningFrailtySyndrome	ya	baca saja	hanya baca
 M	btnSkriningTOLAC	Skrining TOLAC	RMSkriningTOLAC	ya	baca saja	hanya baca
 M	btnAdmisiSkoringTOLAC	Admisi & Skoring TOLAC	RMAdmisiSkoringTOLAC	ya	baca saja	hanya baca
-M	btnMonitoringTOLAC	Monitoring Selama TOLAC	RMDataMonitoringTOLAC	ya	baca saja	hanya baca
+M	btnMonitoringTOLAC	Monitoring Selama TOLAC	RMDataMonitoringTOLAC	ya	formulir	tulis ada
 M	btnHasilPersalinanTOLAC	Resume Hasil Persalinan TOLAC	RMHasilPersalinanTOLAC	ya	baca saja	hanya baca
 M	btnLaporanTindakan	Laporan Tindakan Medis	RMLaporanTindakan	ya	baca saja	hanya baca
 N	btnPengambilanUTD2	Pengambilan BHP Medis	DlgCariPengambilanUTD	ya	baca saja	tulis sebagian

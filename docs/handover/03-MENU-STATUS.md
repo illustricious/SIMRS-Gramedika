@@ -1,6 +1,6 @@
 # Status per menu
 
-Hitungan per 26 November 2026: **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
+Hitungan per 28 November 2026: **1.041 dari 1.224 tile** punya layar. Tile yang muncul di beberapa menu dihitung di tiap menu. Daftar tile belum berlayar ada di [TILE_BACKLOG.md](../audit/TILE_BACKLOG.md).
 
 Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi dicatat di Khanza). **Khusus** = layar dengan alur sendiri.
 
@@ -8,7 +8,7 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 
 | Menu | Area | Tile | Bentuk utama | Rincian |
 |---|---|---:|---|---|
-| A | Registrasi, tagihan, pelayanan | 34 | Khusus + Edit | [MENU_A_STATUS](../audit/MENU_A_STATUS.md). Rawat Inap dan Kasir punya tulis nyata dengan jurnal, pelunasan gabungan Ralan dan Ranap, satu akun bayar tanpa biaya admin |
+| A | Registrasi, tagihan, pelayanan | 34 | Khusus + Edit | [MENU_A_STATUS](../audit/MENU_A_STATUS.md). Rawat Inap dan Kasir punya tulis nyata dengan jurnal, pelunasan gabungan Ralan dan Ranap (satu akun bayar tanpa biaya admin) dan piutang pasien dengan cicilan |
 | B | Barcode, lab kesling | 16 | Khusus | Tindakan/obat via barcode, jurnal lewat `JurnalPoster` |
 | C | Presensi, pegawai, K3, SKP | 61 | Edit + Baca + Khusus | Penggajian, penilaian SKP, rekap |
 | D | Inventori farmasi, stok pasien | 75 | Edit + Baca + Khusus | Transaksi stok (mutasi, opname, stok keluar, permintaan), penerimaan, review resep |
@@ -19,7 +19,7 @@ Legenda: **Edit** = bisa tambah/ubah. **Baca** = daftar hanya-baca (transaksi di
 | I | Olah data tagihan | 60 | Baca | [MENU_BELUM_DAN_PELAJARAN_I](../audit/MENU_BELUM_DAN_PELAJARAN_I.md). Laporan jasa harian/bulanan hanya ralan dan ranap, tanpa lab, radiologi, operasi |
 | J | Penyakit, DKK, RL, internal | 96 | Edit + Baca | [MENU_J_STATUS](../audit/MENU_J_STATUS.md). Master ICD, laporan kunjungan dan diagnosis |
 | K | Tarif, keuangan, akuntansi | 87 | Edit + Baca + Khusus | [MENU_K_STATUS](../audit/MENU_K_STATUS.md). Tarif (total otomatis), master akun, hutang/piutang, bank, jurnal, Posting Jurnal manual |
-| M | Rekam medis, triase, gizi, template | 255 | Edit + Baca | [MENU_M_STATUS](../audit/MENU_M_STATUS.md). Master referensi, template, dan katalog masalah/rencana keperawatan bisa diedit. Catatan klinis, skrining, penilaian, SOAP, dan resume hanya-baca; input tetap di alur pelayanan Khanza |
+| M | Rekam medis, triase, gizi, template | 255 | Edit + Baca | [MENU_M_STATUS](../audit/MENU_M_STATUS.md). Master referensi, template, dan katalog masalah/rencana keperawatan bisa diedit. 34 formulir bisa diisi lewat tombol **Isi / Ubah Formulir** ([audit](../tracker/AUDIT_REKAM_MEDIS.md)); catatan klinis, skrining, penilaian, SOAP, dan resume lain di menu ini hanya-baca |
 | N | Unit transfusi darah (UTD) | 11 | Edit + Baca | [MENU_NR_STATUS](../audit/MENU_NR_STATUS.md). Komponen darah dan pendonor bisa diedit. Donor, stok, penyerahan, dan BHP hanya-baca |
 | O | Analisa, dashboard, infografik | 113 | Baca | [MENU_O_STATUS](../audit/MENU_O_STATUS.md). Tabel agregat hanya-baca, grafik belum digambar |
 | P | Surat, persetujuan, pengumuman e-pasien | 45 | Edit + Baca | [MENU_P_STATUS](../audit/MENU_P_STATUS.md). Register surat masuk/keluar dan referensi bisa diedit. 31 surat pasien dan persetujuan hanya-baca |

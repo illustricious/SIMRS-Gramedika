@@ -12,7 +12,7 @@ internal static class FormKriteriaRuang
         new(kolom, label, Pilihan: YaTidak, Bagian: bagian, Awal: awal);
 
     private static FormKlinis Buat(string tile, string judul, string tabel, string izin, IsianKlinis[] isian) =>
-        new(tile, judul, tabel, izin, PemilikForm.Pegawai, isian);
+        new(tile, judul, tabel, izin, PemilikForm.Pegawai, isian) { Kelompok = FormKlinisKatalog.KriteriaRuang };
 
     private static readonly FormKlinis MasukHCU = Buat(
         "btnChecklistKriteriaMasukHCU", "Check List Kriteria Masuk HCU", "checklist_kriteria_masuk_hcu", "checklist_kriteria_masuk_hcu",

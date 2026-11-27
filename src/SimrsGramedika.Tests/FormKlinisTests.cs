@@ -55,6 +55,45 @@ public sealed class FormKlinisTests
         Assert.Contains(tingkat, form.Keterangan!(isi));
     }
 
+    [Fact]
+    public void KeseimbanganCairanDihitungDanDibatasiLebarKolom()
+    {
+        var form = FormKlinisKatalog.Cari("btnCatatanKeseimbanganCairan")!;
+        var isi = new Dictionary<string, string>
+        {
+            ["infus"] = "500", ["tranfusi"] = "0", ["minum"] = "200", ["urine"] = "400", ["drain"] = "25",
+            ["ngt"] = "0", ["iwl"] = "12.5",
+        };
+        form.Hitung!(isi);
+        Assert.Equal("262.5", isi["keseimbangan"]);
+        Assert.Contains("4 karakter", form.Periksa!(isi));
+        isi["iwl"] = "";
+        isi["minum"] = "x";
+        form.Hitung!(isi);
+        Assert.Equal("", isi["keseimbangan"]);
+        Assert.Contains("Minum", form.Periksa!(isi));
+        isi["minum"] = "0";
+        isi["iwl"] = "125";
+        form.Hitung!(isi);
+        Assert.Equal("-50", isi["keseimbangan"]);
+        Assert.Null(form.Periksa!(isi));
+    }
+
+    /// <summary>Tile formulir harus punya daftar Menu M yang membawa No. Rawat dan permission tile yang sama.</summary>
+    [Fact]
+    public void SetiapFormulirTerhubungKeDaftarDanHakTile()
+    {
+        Assert.Equal(FormKlinisKatalog.Semua.Count, FormKlinisKatalog.Semua.Select(f => f.Tile).Distinct().Count());
+        Assert.Equal(FormKlinisKatalog.Semua.Count, FormKlinisKatalog.Semua.Select(f => f.Tabel).Distinct().Count());
+        foreach (var form in FormKlinisKatalog.Semua)
+        {
+            Assert.True(SimrsGramedika.Data.Master.MenuMSpecs.Reports.TryGetValue(form.Tile, out var daftar), form.Tile);
+            Assert.Contains("no_rawat", daftar!.Sql);
+            var akun = new AuthenticatedUser { UserId = "u", Permissions = new HashSet<string> { form.Izin } };
+            Assert.True(LegacyTilePermissions.CanSeeTile(akun, form.Tile), form.Tile);
+        }
+    }
+
     /// <summary>Definisi formulir harus sama dengan DDL Khanza: kolom lengkap, pilihan sama dengan enum, panjang muat.</summary>
     [Fact]
     public void DefinisiCocokDenganSkemaKhanza()
@@ -92,6 +131,13 @@ public sealed class FormKlinisTests
         }
     }
 
+    private static Dictionary<string, string> Hitungan(FormKlinis form, Dictionary<string, string> isi)
+    {
+        var salinan = new Dictionary<string, string>(isi);
+        form.Hitung?.Invoke(salinan);
+        return salinan;
+    }
+
     [FixtureFact]
     public async Task SimpanUbahHapusMengikutiAturanPemilikDanWaktu()
     {
@@ -125,6 +171,8 @@ public sealed class FormKlinisTests
             FormKlinisService Layanan(AuthenticatedUser u) => new(settings, u, form, "R1");
             var service = Layanan(akun);
             var isi = form.Isian.Where(i => !i.Otomatis).ToDictionary(i => i.Kolom, i => i.Pilihan?[^1] ?? (i.Maks > 0 ? "1" : ""));
+            if (form.Periksa is not null)
+                Assert.Null(form.Periksa(Hitungan(form, isi)));
 
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => Layanan(tanpaHak).MuatAsync());
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => Layanan(tanpaHak).SimpanAsync(sekarang, "P1", isi));

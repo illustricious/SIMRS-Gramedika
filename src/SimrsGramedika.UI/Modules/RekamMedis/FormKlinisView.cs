@@ -42,7 +42,8 @@ public sealed class FormKlinisView : PageView
         _settings = settings ?? DatabaseSettings.Load();
         _service = new(_settings, user, form, noRawat);
 
-        _kolomDaftar = form.Isian.Where(i => i.Kolom.Contains("total") || i.Kolom is "hasil_skrining" or "keputusan" or "indikasi_isolasi")
+        _kolomDaftar = form.DaftarLengkap ? form.Isian : form.Isian
+            .Where(i => i.Kolom.Contains("total") || i.Kolom is "hasil_skrining" or "keputusan" or "indikasi_isolasi")
             .Concat(form.Isian.Where(i => !i.Otomatis)).Distinct().Take(6).ToArray();
         var sebutan = char.ToUpperInvariant(form.SebutanPemilik[0]) + form.SebutanPemilik[1..];
         _grid = Ui.Grid([new("waktu", "Waktu", 145), new("pemilik", sebutan, 160),
@@ -164,12 +165,15 @@ public sealed class FormKlinisView : PageView
         }
         else
         {
-            kontrol = new TextBox
+            var teks = new TextBox
             {
                 MaxLength = f.Otomatis ? 0 : f.Maks, IsReadOnly = f.Otomatis, MinWidth = 120,
                 AcceptsReturn = Panjang(f) && !f.Otomatis, TextWrapping = Panjang(f) ? TextWrapping.Wrap : TextWrapping.NoWrap,
                 MinHeight = Panjang(f) ? 52 : 0,
             };
+            if (_form.Hitung is not null && !f.Otomatis)
+                teks.PropertyChanged += (_, e) => { if (e.Property == TextBox.TextProperty) Hitung(); };
+            kontrol = teks;
         }
         AutomationProperties.SetName(kontrol, f.Label);
         _editors[f.Kolom] = kontrol;

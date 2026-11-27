@@ -22,7 +22,29 @@ Aturan bersama:
 - Ubah dan hapus mengunci baris dan ditolak bila catatan berubah sejak dimuat.
 - Skor gizi dan skala Morse dihitung ulang di layanan saat disimpan.
 
+Klik kanan pasien mengelompokkan formulir: Pengkajian & Catatan, Observasi & Pemantauan, Kriteria Ruang Rawat.
+
 Dibuka dari: tile Menu M (tombol **Isi / Ubah Formulir** pada daftar), klik kanan pasien → Data Rekam Medis → Formulir Rekam Medis, dan menu klinis Rawat Jalan.
+
+## Lembar observasi dan pemantauan (28 November 2026)
+
+Definisi di `Data/RekamMedis/FormObservasi.cs`. Semuanya satu baris per waktu, batas ubah/hapus 2 x 24 jam, waktu minimal registrasi, dan ikut kunci tanggal mundur. Pemilik petugas, kecuali Monitoring TOLAC (pegawai, kolom `nip`).
+
+| Formulir | Sumber Java |
+|---|---|
+| Observasi Rawat Inap, Kebidanan, Post Partum/Post SC, Rawat Bayi, CHBP | `RMDataCatatanObservasiRanap*.java`, `...Bayi`, `...CHBP` |
+| Observasi Induksi Persalinan, Ruang Operasi, Restrain Nonfarmakologi, Ventilator | `RMDataCatatanObservasi*.java` |
+| Observasi Hemodialisa, Cairan Hemodialisa | `RMDataCatatanObservasiHemodialisa.java`, `RMDataCatatanCairanHemodialisa.java` |
+| Keseimbangan Cairan, Cek GDS | `RMDataCatatanKeseimbanganCairan.java`, `RMDataCatatanCekGDS.java` |
+| Follow Up DBD, Reaksi Tranfusi, Selama TOLAC | `RMDataFollowUpDBD.java`, `RMDataMonitoringReaksiTranfusi.java`, `RMDataMonitoringTOLAC.java` |
+| Intervensi Nyeri Farmakologi dan Non Farmakologi | `RMDataIntervensiNyeri*.java` |
+| Monitoring & Evaluasi Asuhan Gizi | `RMDataMonitoringAsuhanGizi.java` |
+
+Perbedaan khusus kelompok ini:
+
+- Keseimbangan cairan selalu dihitung (input dikurangi output) dan tidak bisa diketik. Kolom `keseimbangan` hanya 4 karakter, jadi hasil seperti `-1250` atau `262.5` ditolak dengan pesan; di layar Java hasil yang terlalu panjang tidak masuk ke kotaknya.
+- Cetak satu catatan per halaman; Khanza mencetak tabel banyak catatan. Formulir kosong Khanza (cetak untuk diisi tangan) dan grafik tidak ada.
+- Dari menu klinis Rawat Jalan hanya Monitoring Gizi yang terhubung; lembar lain dibuka dari Menu M atau klik kanan pasien. Belum ada tombol dari layar Rawat Inap.
 
 ## Perbedaan dari Khanza
 
@@ -34,10 +56,12 @@ Dibuka dari: tile Menu M (tombol **Isi / Ubah Formulir** pada daftar), klik kana
 
 ## Pengujian
 
-`FormKlinisTests`: definisi dicocokkan dengan DDL (kolom, enum, panjang, kunci), skor, lalu simpan/ubah/hapus/cetak kelima formulir pada MariaDB sintetis (batasan relasi dilepas) termasuk hak akses, pemilik, batas waktu, duplikat dan dua perubahan bersamaan. Layar diisi dan disimpan lewat uji headless sementara. Belum diuji: klik di aplikasi asli, database RS atau salinannya, dan bersamaan dengan klien Java.
+`FormKlinisTests`: definisi dicocokkan dengan DDL (kolom, enum, panjang, kunci), skor, hitungan cairan, keterhubungan tile, lalu simpan/ubah/hapus/cetak semua formulir pada MariaDB sintetis (batasan relasi dilepas) termasuk hak akses, pemilik, batas waktu, duplikat dan dua perubahan bersamaan. Layar diisi dan disimpan lewat uji headless sementara. Belum diuji: klik di aplikasi asli, database RS atau salinannya, dan bersamaan dengan klien Java.
 
 ## Menambah formulir
 
 Pencocokan struktur pada 27 November: 171 formulir `rekammedis` tampak hanya menulis satu tabel; selain 5 formulir pertama, **115** punya bentuk kunci, satu pemilik dan tipe kolom yang sudah didukung. Angka itu dari pencocokan pola dan dihitung sebelum pemilik `pegawai` didukung, jadi sepuluh check list kriteria tidak mengurangi 115. Label, isian wajib, pilihan, rumus skor dan aturan tiap formulir tetap harus dibaca dari Java sebelum ditambahkan. Yang belum didukung: pemilik ganda, kunci bentuk lain, kolom tanggal atau desimal, dan formulir yang menulis tabel tambahan.
+
+Pada 28 November, survei ulang sebelum lembar observasi mencatat 139 jendela satu tabel yang belum ditulis, 117 di antaranya cocok menurut pola tabel; 19 sudah ditambahkan. Kelompok sisa terbesar: skrining dan penilaian risiko, lalu penilaian awal medis per spesialis.
 
 Langkah: tambah satu `FormKlinis` pada katalog, tambahkan tabelnya ke fixture, jalankan `FormKlinisTests`, lalu perbarui `status.json`.

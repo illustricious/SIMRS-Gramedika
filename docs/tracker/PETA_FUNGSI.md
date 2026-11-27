@@ -11,14 +11,14 @@ Gramedika, tetapi validasi, jurnal, cetak dan cabang layarnya belum tentu setara
 
 | Ukuran | Ada | Total | Persen |
 |---|---:|---:|---:|
-| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 754 | 2202 | 34% |
-| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 377 | 980 | 38% |
-| Jendela Java yang menulis data, seluruh tulisannya ada | 257 | 743 | 35% |
-| Jendela Java yang menulis data, minimal sebagian ada | 407 | 743 | 55% |
+| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 811 | 2202 | 37% |
+| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 396 | 980 | 40% |
+| Jendela Java yang menulis data, seluruh tulisannya ada | 276 | 743 | 37% |
+| Jendela Java yang menulis data, minimal sebagian ada | 426 | 743 | 57% |
 
 Angka di atas tidak memasukkan bridging, tabel sementara, catatan sistem, jurnal dan riwayat stok.
 
-Dari 257 jendela yang seluruh tulisannya ada, 179 tercakup oleh layar master generik (tambah/ubah/hapus satu tabel).
+Dari 276 jendela yang seluruh tulisannya ada, 179 tercakup oleh layar master generik (tambah/ubah/hapus satu tabel).
 
 ## Jendela alur inti
 
@@ -26,12 +26,12 @@ Aksi tulis adalah pasangan tabel dan tambah/ubah/hapus. "Ada" di sini juga batas
 
 | Jendela | Status | Aksi tulis ada | Contoh tabel yang aksinya belum ada |
 |---|---:|---:|---:|
-| DlgReg | tulis sebagian | 45/187 | asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak, bayar_operasi_dokter_anestesi |
-| DlgIGD | tulis sebagian | 43/165 | asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak, bayar_operasi_dokter_anestesi |
+| DlgReg | tulis sebagian | 46/187 | asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak, bayar_operasi_dokter_anestesi |
+| DlgIGD | tulis sebagian | 44/165 | asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak, bayar_operasi_dokter_anestesi |
 | DlgRawatJalan | tulis ada | 20/20 | - |
 | DlgRawatInap | tulis ada | 18/18 | - |
 | DlgKamarInap | tulis ada | 11/11 | - |
-| DlgKasirRalan | tulis sebagian | 78/236 | antripoli, asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak |
+| DlgKasirRalan | tulis sebagian | 79/236 | antripoli, asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak |
 | DlgBilingRalan | tulis sebagian | 7/27 | detail_nota_jalan, detail_piutang_pasien, nota_jalan, pengurangan_biaya, piutang_pasien, tagihan_bpd_jabar |
 | DlgBilingRanap | tulis sebagian | 8/30 | detail_nota_inap, detail_piutang_pasien, nota_inap, pengembalian_deposit, pengurangan_biaya, piutang_pasien |
 | DlgPeriksaLaboratorium | tulis ada | 6/6 | - |
@@ -41,13 +41,13 @@ Aksi tulis adalah pasangan tabel dan tambah/ubah/hapus. "Ada" di sini juga batas
 
 ## Sisa pekerjaan menurut jenis
 
-Jendela yang menulis data dan belum seluruhnya ada: 486. Setiap jendela dihitung sekali, pada baris pertama yang cocok.
+Jendela yang menulis data dan belum seluruhnya ada: 467. Setiap jendela dihitung sekali, pada baris pertama yang cocok.
 
 | Jenis | Jendela | Di antaranya sebagian | Dibuka dari alur inti |
 |---|---:|---:|---:|
 | Transaksi stok (riwayat stok, sebagian besar juga jurnal) | 63 | 39 | 6 |
 | Pembayaran, tagihan dan jurnal tanpa stok | 43 | 14 | 9 |
-| Formulir rekam medis dengan satu tabel isi | 147 | 5 | 142 |
+| Formulir rekam medis dengan satu tabel isi | 128 | 5 | 123 |
 | Formulir rekam medis dengan tabel tambahan | 36 | 2 | 30 |
 | Surat dan persetujuan | 39 | 11 | 30 |
 | Restore data terhapus | 16 | 14 | 0 |
@@ -57,9 +57,9 @@ Jendela yang menulis data dan belum seluruhnya ada: 486. Setiap jendela dihitung
 
 | Status | Jendela |
 |---|---:|
-| tulis ada | 257 |
+| tulis ada | 276 |
 | tulis sebagian | 150 |
-| hanya baca | 330 |
+| hanya baca | 311 |
 | baca ada | 502 |
 | baca sebagian | 14 |
 | belum ada | 8 |
@@ -85,7 +85,7 @@ Jendela yang menulis data dan belum seluruhnya ada: 486. Setiap jendela dihitung
 | pcraicra | 12 | 10 | 0 | 9 | 1 | 0 | 51% |
 | permintaan | 17 | 17 | 7 | 7 | 3 | 0 | 59% |
 | perpustakaan | 16 | 12 | 9 | 2 | 1 | 0 | 70% |
-| rekammedis | 252 | 228 | 45 | 7 | 173 | 3 | 17% |
+| rekammedis | 252 | 228 | 64 | 7 | 154 | 3 | 25% |
 | restore | 18 | 18 | 2 | 14 | 2 | 0 | 51% |
 | setting | 34 | 30 | 16 | 13 | 1 | 0 | 77% |
 | simrskhanza | 71 | 54 | 20 | 27 | 7 | 0 | 38% |
@@ -116,7 +116,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | J | 96 | 6 | 4 | 0 | 2 | 0 | 0 |
 | K | 87 | 54 | 22 | 0 | 32 | 0 | 0 |
 | L | 183 | 97 | 0 | 0 | 0 | 97 | 3 |
-| M | 255 | 242 | 57 | 1 | 184 | 0 | 1 |
+| M | 255 | 242 | 76 | 1 | 165 | 0 | 1 |
 | N | 11 | 11 | 2 | 0 | 9 | 0 | 0 |
 | O | 113 | 0 | 0 | 0 | 0 | 0 | 0 |
 | P | 45 | 43 | 12 | 0 | 31 | 0 | 0 |
@@ -127,7 +127,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | U | 30 | 29 | 21 | 8 | 0 | 0 | 0 |
 
 Tile di luar menu L: 1041. Yang di Java menulis data tetapi tile Gramedika hanya menampilkan:
-**320**.
+**301**.
 
 ## Celah terpenting
 
@@ -142,7 +142,6 @@ membuka jendela itu, lalu jumlah pembuka. Urutan ini ukuran keterhubungan, bukan
 | RMCatatanAnastesiSedasi | rekammedis | 6 | 8 | catatan_anestesi_sedasi hapus, catatan_anestesi_sedasi tambah, catatan_anestesi_sedasi ubah |
 | RMCatatanPengkajianPaskaOperasi | rekammedis | 6 | 8 | catatan_pengkajian_paska_operasi hapus, catatan_pengkajian_paska_operasi tambah, catatan_pengkajian_paska_operasi ubah |
 | RMChecklistPreOperasi | rekammedis | 6 | 8 | checklist_pre_operasi hapus, checklist_pre_operasi tambah, checklist_pre_operasi ubah |
-| RMDataCatatanObservasiRuangOperasi | rekammedis | 6 | 8 | catatan_observasi_ruang_ok hapus, catatan_observasi_ruang_ok tambah, catatan_observasi_ruang_ok ubah |
 | RMMonitoringAldrettePascaAnestesi | rekammedis | 6 | 8 | skor_aldrette_pasca_anestesi hapus, skor_aldrette_pasca_anestesi tambah, skor_aldrette_pasca_anestesi ubah |
 | RMMonitoringBromagePascaAnestesi | rekammedis | 6 | 8 | skor_bromage_pasca_anestesi hapus, skor_bromage_pasca_anestesi tambah, skor_bromage_pasca_anestesi ubah |
 | RMMonitoringStewardPascaAnestesi | rekammedis | 6 | 8 | skor_steward_pasca_anestesi hapus, skor_steward_pasca_anestesi tambah, skor_steward_pasca_anestesi ubah |
@@ -163,18 +162,6 @@ membuka jendela itu, lalu jumlah pembuka. Urutan ini ukuran keterhubungan, bukan
 | RMChecklistKesiapanAnestesi | rekammedis | 6 | 7 | checklist_kesiapan_anestesi hapus, checklist_kesiapan_anestesi tambah, checklist_kesiapan_anestesi ubah |
 | RMChecklistPemberianFibrinolitik | rekammedis | 6 | 7 | checklist_pemberian_fibrinolitik hapus, checklist_pemberian_fibrinolitik tambah, checklist_pemberian_fibrinolitik ubah |
 | RMDataAsuhanGizi | rekammedis | 6 | 7 | asuhan_gizi hapus, asuhan_gizi tambah, asuhan_gizi ubah |
-| RMDataCatatanCairanHemodialisa | rekammedis | 6 | 7 | catatan_cairan_hemodialisa hapus, catatan_cairan_hemodialisa tambah, catatan_cairan_hemodialisa ubah |
-| RMDataCatatanCekGDS | rekammedis | 6 | 7 | catatan_cek_gds hapus, catatan_cek_gds tambah, catatan_cek_gds ubah |
-| RMDataCatatanKeseimbanganCairan | rekammedis | 6 | 7 | catatan_keseimbangan_cairan hapus, catatan_keseimbangan_cairan tambah, catatan_keseimbangan_cairan ubah |
-| RMDataCatatanObservasiBayi | rekammedis | 6 | 7 | catatan_observasi_bayi hapus, catatan_observasi_bayi tambah, catatan_observasi_bayi ubah |
-| RMDataCatatanObservasiCHBP | rekammedis | 6 | 7 | catatan_observasi_chbp hapus, catatan_observasi_chbp tambah, catatan_observasi_chbp ubah |
-| RMDataCatatanObservasiHemodialisa | rekammedis | 6 | 7 | catatan_observasi_hemodialisa hapus, catatan_observasi_hemodialisa tambah, catatan_observasi_hemodialisa ubah |
-| RMDataCatatanObservasiInduksiPersalinan | rekammedis | 6 | 7 | catatan_observasi_induksi_persalinan hapus, catatan_observasi_induksi_persalinan tambah, catatan_observasi_induksi_persalinan ubah |
-| RMDataIntervensiNyeriFarmakologi | rekammedis | 6 | 7 | intervensi_nyeri_farmakologi hapus, intervensi_nyeri_farmakologi tambah, intervensi_nyeri_farmakologi ubah |
-| RMDataIntervensiNyeriNonFarmakologi | rekammedis | 6 | 7 | intervensi_nyeri_nonfarmakologi hapus, intervensi_nyeri_nonfarmakologi tambah, intervensi_nyeri_nonfarmakologi ubah |
-| RMDataMonitoringAsuhanGizi | rekammedis | 6 | 7 | monitoring_asuhan_gizi hapus, monitoring_asuhan_gizi tambah, monitoring_asuhan_gizi ubah |
-| RMDataMonitoringReaksiTranfusi | rekammedis | 6 | 7 | monitoring_reaksi_tranfusi hapus, monitoring_reaksi_tranfusi tambah, monitoring_reaksi_tranfusi ubah |
-| RMDataMonitoringTOLAC | rekammedis | 6 | 7 | monitoring_tolac hapus, monitoring_tolac tambah, monitoring_tolac ubah |
 | RMDataSkriningGiziKehamilan | rekammedis | 6 | 7 | skrining_gizi_kehamilan hapus, skrining_gizi_kehamilan tambah, skrining_gizi_kehamilan ubah |
 | RMHasilPemeriksaanEcho | rekammedis | 6 | 7 | hasil_pemeriksaan_echo_gambar hapus, hasil_pemeriksaan_echo hapus, hasil_pemeriksaan_echo tambah, hasil_pemeriksaan_echo ubah |
 | RMHasilPemeriksaanEchoPediatrik | rekammedis | 6 | 7 | hasil_pemeriksaan_echo_pediatrik_gambar hapus, hasil_pemeriksaan_echo_pediatrik hapus, hasil_pemeriksaan_echo_pediatrik tambah, hasil_pemeriksaan_echo_pediatrik ubah |
@@ -196,6 +183,19 @@ membuka jendela itu, lalu jumlah pembuka. Urutan ini ukuran keterhubungan, bukan
 | RMPenilaianDerajatDehidrasi | rekammedis | 6 | 7 | penilaian_dehidrasi hapus, penilaian_dehidrasi tambah, penilaian_dehidrasi ubah |
 | RMPenilaianKorbanKekerasan | rekammedis | 6 | 7 | penilaian_korban_kekerasan hapus, penilaian_korban_kekerasan tambah, penilaian_korban_kekerasan ubah |
 | RMPenilaianLanjutanRisikoJatuhAnak | rekammedis | 6 | 7 | penilaian_lanjutan_resiko_jatuh_anak hapus, penilaian_lanjutan_resiko_jatuh_anak tambah, penilaian_lanjutan_resiko_jatuh_anak ubah |
+| RMPenilaianLanjutanRisikoJatuhGeriatri | rekammedis | 6 | 7 | penilaian_lanjutan_resiko_jatuh_geriatri hapus, penilaian_lanjutan_resiko_jatuh_geriatri tambah, penilaian_lanjutan_resiko_jatuh_geriatri ubah |
+| RMPenilaianLanjutanRisikoJatuhLansia | rekammedis | 6 | 7 | penilaian_lanjutan_resiko_jatuh_lansia hapus, penilaian_lanjutan_resiko_jatuh_lansia tambah, penilaian_lanjutan_resiko_jatuh_lansia ubah |
+| RMPenilaianLanjutanRisikoJatuhPsikiatri | rekammedis | 6 | 7 | penilaian_lanjutan_resiko_jatuh_psikiatri hapus, penilaian_lanjutan_resiko_jatuh_psikiatri tambah, penilaian_lanjutan_resiko_jatuh_psikiatri ubah |
+| RMPenilaianLanjutanSkriningFungsional | rekammedis | 6 | 7 | penilaian_lanjutan_skrining_fungsional hapus, penilaian_lanjutan_skrining_fungsional tambah, penilaian_lanjutan_skrining_fungsional ubah |
+| RMPenilaianPasienImunitasRendah | rekammedis | 6 | 7 | penilaian_pasien_imunitas_rendah hapus, penilaian_pasien_imunitas_rendah tambah, penilaian_pasien_imunitas_rendah ubah |
+| RMPenilaianPasienPenyakitMenular | rekammedis | 6 | 7 | penilaian_pasien_penyakit_menular hapus, penilaian_pasien_penyakit_menular tambah, penilaian_pasien_penyakit_menular ubah |
+| RMPenilaianPasienTerminal | rekammedis | 6 | 7 | penilaian_pasien_terminal hapus, penilaian_pasien_terminal tambah, penilaian_pasien_terminal ubah |
+| RMPenilaianPsikologi | rekammedis | 6 | 7 | penilaian_psikologi hapus, penilaian_psikologi tambah, penilaian_psikologi ubah |
+| RMPenilaianPsikologiKlinis | rekammedis | 6 | 7 | penilaian_psikologi_klinis hapus, penilaian_psikologi_klinis tambah, penilaian_psikologi_klinis ubah |
+| RMPenilaianRisikoJatuhNeonatus | rekammedis | 6 | 7 | penilaian_risiko_jatuh_neonatus hapus, penilaian_risiko_jatuh_neonatus tambah, penilaian_risiko_jatuh_neonatus ubah |
+| RMPenilaianTambahanBunuhDiri | rekammedis | 6 | 7 | penilaian_tambahan_bunuh_diri hapus, penilaian_tambahan_bunuh_diri tambah, penilaian_tambahan_bunuh_diri ubah |
+| RMPenilaianTambahanGeriatri | rekammedis | 6 | 7 | penilaian_tambahan_geriatri hapus, penilaian_tambahan_geriatri tambah, penilaian_tambahan_geriatri ubah |
+| RMPenilaianTambahanMelarikanDiri | rekammedis | 6 | 7 | penilaian_tambahan_beresiko_melarikan_diri hapus, penilaian_tambahan_beresiko_melarikan_diri tambah, penilaian_tambahan_beresiko_melarikan_diri ubah |
 
 ## Jurnal atau riwayat stok belum terlihat
 
@@ -222,7 +222,7 @@ melakukannya. Perlu diperiksa satu per satu; 15 jendela.
 
 ## Tabel yang sama sekali belum pernah ditulis
 
-603 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `pengurangan_biaya` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `tambahan_biaya` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4).
+584 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `pengurangan_biaya` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `tambahan_biaya` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4).
 
 ## Batas analisis
 

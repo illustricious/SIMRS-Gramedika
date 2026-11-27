@@ -48,7 +48,7 @@ Untuk alur yang bukan daftar/formulir sederhana: `PostingJurnalView` (jurnal man
 
 ## Formulir rekam medis (27 November 2026)
 
-Formulir berpola "satu tabel, catatan per kunjungan" tidak dibuat sebagai layar khusus. Tambahkan satu `FormKlinis` di `Data/RekamMedis/FormKlinis.cs` (tile, tabel, izin, pemilik petugas/dokter, isian, aturan waktu, fungsi skor). `FormKlinisService`, `FormKlinisView` dan `FormKlinisReport` menanganinya, dan submenu klik kanan mengikuti katalog. Langkah dan batas: [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md).
+Formulir berpola "satu tabel, catatan per kunjungan" tidak dibuat sebagai layar khusus. Tambahkan satu `FormKlinis` di `Data/RekamMedis/FormKlinis.cs` (tile, tabel, izin, pemilik petugas/dokter, isian, aturan waktu, fungsi skor). `FormKlinisService`, `FormKlinisView` dan `FormKlinisReport` menanganinya, dan submenu klik kanan mengikuti katalog. Definisi yang banyak ditaruh di berkas per kelompok (`FormKriteriaRuang.cs`, `FormObservasi.cs`). `Kelompok` menentukan submenu klik kanan, `Periksa` aturan antar isian, `DaftarLengkap` menampilkan semua kolom, dan `KolomPemilikKhusus` dipakai bila nama kolom pemilik tidak mengikuti jenisnya. Bahan dari Java: `python tools/survei-formulir.py`. Langkah: [log 13](13-SESSION-2026-11-28.md#pekerjaan-yang-sedang-berjalan-formulir-rekam-medis-per-kelompok); batas: [audit rekam medis](../tracker/AUDIT_REKAM_MEDIS.md).
 
 ## Urutan kunci transaksi
 
