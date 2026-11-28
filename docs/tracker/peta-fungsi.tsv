@@ -490,7 +490,7 @@ inventory	DlgCariPermintaan	tulis sebagian		permintaan_medis|ubah	permintaan_med
 inventory	DlgCariPermintaanResepPulang	tulis ada		permintaan_resep_pulang|hapus			0			inventory/DlgCariPermintaanResepPulang.java
 inventory	DlgCariPermintaanStokPasien	hanya baca			permintaan_stok_obat_pasien|hapus		0			inventory/DlgCariPermintaanStokPasien.java
 inventory	DlgCariPiutang	tulis sebagian		data_batch|ubah gudangbarang|tambah	piutang|hapus		6			inventory/DlgCariPiutang.java
-inventory	DlgCariReturBeli	tulis sebagian		data_batch|ubah gudangbarang|tambah	returbeli|hapus		1			inventory/DlgCariReturBeli.java
+inventory	DlgCariReturBeli	tulis ada		data_batch|ubah gudangbarang|tambah returbeli|hapus			1			inventory/DlgCariReturBeli.java
 inventory	DlgCariReturJual	tulis sebagian		data_batch|ubah gudangbarang|tambah	returjual|hapus		1			inventory/DlgCariReturJual.java
 inventory	DlgCariReturPiutang	tulis sebagian		data_batch|ubah gudangbarang|tambah	returpiutang|hapus		1			inventory/DlgCariReturPiutang.java
 inventory	DlgCariSatuan	baca ada					0			inventory/DlgCariSatuan.java
@@ -516,7 +516,7 @@ inventory	DlgMutasiBarang	tulis ada		gudangbarang|tambah mutasibarang|tambah per
 inventory	DlgObatPenyakit	tulis ada		obat_penyakit|hapus obat_penyakit|tambah			1		J:btnObatPenyakit	inventory/DlgObatPenyakit.java
 inventory	DlgObatPerTanggal	baca ada					2		D:btnObatPerTanggal	inventory/DlgObatPerTanggal.java
 inventory	DlgObatPeresep	baca ada					1		D:btnObatPerResep	inventory/DlgObatPeresep.java
-inventory	DlgPembelian	tulis sebagian		data_batch|tambah databarang|ubah gudangbarang|tambah	detailbeli|tambah pembelian|tambah		0		D:btnPembelian	inventory/DlgPembelian.java
+inventory	DlgPembelian	tulis ada		data_batch|tambah databarang|ubah detailbeli|tambah gudangbarang|tambah pembelian|tambah			0		D:btnPembelian	inventory/DlgPembelian.java
 inventory	DlgPemberianObat	tulis ada		aturan_pakai|hapus data_batch|ubah detail_pemberian_obat|hapus gudangbarang|tambah			2	DlgDaftarPermintaanResep DlgBilingRalan DlgBilingRanap DlgIGD DlgKamarInap DlgKasirRalan DlgRawatInap DlgRawatJalan DlgReg	A:btnBeriObat	inventory/DlgPemberianObat.java
 inventory	DlgPemesanan	tulis ada		data_batch|tambah databarang|ubah detailpesan|tambah gudangbarang|tambah pemesanan|tambah			0		D:btnPemesanan	inventory/DlgPemesanan.java
 inventory	DlgPengambilanUTD	tulis sebagian		data_batch|ubah gudangbarang|tambah	utd_pengambilan_medis|tambah utd_stok_medis|tambah	utd_stok_medis	0		D:btnPengambilanUTD	inventory/DlgPengambilanUTD.java
@@ -539,7 +539,7 @@ inventory	DlgRekapPenerimaan	baca ada					1		D:btnRekapPenerimaanObat	inventory/
 inventory	DlgRekapPermintaan	baca ada					1		D:btnRingkasanPermintaanMedis	inventory/DlgRekapPermintaan.java
 inventory	DlgResepObat	tulis sebagian		aturan_pakai|hapus aturan_pakai|tambah resep_dokter|hapus resep_obat|hapus resep_obat|tambah	obat_racikan|ubah	bukti_penyerahan_resep_obat	10	DlgDaftarPermintaanResep DlgIGD DlgKamarInap DlgKasirRalan DlgReg	A:btnResepObat	inventory/DlgResepObat.java
 inventory	DlgResepPulang	tulis ada		data_batch|ubah gudangbarang|tambah resep_pulang|hapus			4	DlgDaftarPermintaanResep DlgBilingRanap DlgKamarInap	A:btnResepPulang	inventory/DlgResepPulang.java
-inventory	DlgReturBeli	tulis sebagian		data_batch|ubah gudangbarang|tambah	detreturbeli|tambah returbeli|tambah		0		D:btnReturBeli	inventory/DlgReturBeli.java
+inventory	DlgReturBeli	tulis ada		data_batch|ubah detreturbeli|tambah gudangbarang|tambah returbeli|tambah			0		D:btnReturBeli	inventory/DlgReturBeli.java
 inventory	DlgReturJual	tulis sebagian		data_batch|ubah gudangbarang|tambah	detreturjual|tambah returjual|tambah		0	DlgBilingRanap DlgKamarInap	D:btnReturJual	inventory/DlgReturJual.java
 inventory	DlgReturObatPasien	tulis sebagian		data_batch|ubah gudangbarang|tambah	returpasien|hapus		1		D:btnReturPasien	inventory/DlgReturObatPasien.java
 inventory	DlgReturPiutang	tulis sebagian		data_batch|ubah gudangbarang|tambah	detreturpiutang|tambah returpiutang|tambah		0		D:btnReturPiutang	inventory/DlgReturPiutang.java

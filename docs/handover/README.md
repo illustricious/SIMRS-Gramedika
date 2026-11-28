@@ -6,7 +6,7 @@ Status 28 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 
 Agen AI baru mulai dari [AGENTS.md](../../AGENTS.md) dan [handover 15](15-HANDOVER-AGEN-LAIN.md).
 
-1. Buka [log sesi terbaru](14-SESSION-2026-11-28.md) untuk posisi git, progres, pekerjaan berjalan, calon pekerjaan dan prompt pindah sesi. Rincian fitur 27 dan 28 November ada di [log 12](12-SESSION-2026-11-27.md).
+1. Buka [log sesi terbaru](15-SESSION-2026-11-28.md) untuk posisi git, progres, pekerjaan berjalan, calon pekerjaan dan prompt pindah sesi. Rincian fitur 27 dan 28 November ada di [log 12](12-SESSION-2026-11-27.md).
 2. Cek `git status --short` dan `git log -5 --oneline`. Commit source, EXE lokal di `dist/`, dan release GitHub adalah tiga hal terpisah.
 3. Jalankan `powershell -ExecutionPolicy Bypass -File tools\uji-fixture.ps1` untuk memastikan keadaan awal ([runbook](01-RUNBOOK.md#skrip-tes-fixture)).
 4. Buka [peta fungsi](../tracker/AUDIT_PETA_FUNGSI.md), [tracker HTML](../tracker/GRAFIK.html) dan [prioritas](../tracker/PRIORITAS.md). Angka 1.041 dari 1.224 adalah cakupan tile yang punya layar, bukan kesetaraan fungsi. Tile Menu L yang ditunda berjumlah 183; pemilik menyiapkan bridging sebagai aplikasi terpisah ([log 12](12-SESSION-2026-11-27.md#bridging-di-aplikasi-terpisah)).
@@ -20,6 +20,8 @@ Agen AI baru mulai dari [AGENTS.md](../../AGENTS.md) dan [handover 15](15-HANDOV
 | [Arsip](04-HISTORY.md) | Catatan kerja awal |
 | [Log 05](05-SESSION-2026-11-22.md) · [Log 06](06-SESSION-2026-11-23.md) · [Log 07](07-SESSION-2026-11-24.md) · [Log 08](08-SESSION-2026-11-24.md) · [Log 09](09-SESSION-2026-11-24.md) · [Log 10](10-SESSION-2026-11-26.md) · [Log 11](11-SESSION-2026-11-27.md) · [Log 12](12-SESSION-2026-11-27.md) · [Log 13](13-SESSION-2026-11-28.md) · [Log 14](14-SESSION-2026-11-28.md) | Riwayat kerja per sesi |
 | [Handover agen lain](15-HANDOVER-AGEN-LAIN.md) | Posisi, aturan pemilik, lingkungan, uji klik dan pekerjaan berikutnya |
+
+Log terbaru: [Sesi 15 – Pembelian langsung Farmasi](15-SESSION-2026-11-28.md).
 
 ## Posisi terakhir
 
@@ -37,7 +39,7 @@ Agen AI baru mulai dari [AGENTS.md](../../AGENTS.md) dan [handover 15](15-HANDOV
 - Cek "kunjungan sudah ditagih" disatukan di `TagihanKunjungan` dan mengikuti Khanza (hanya baris `billing`).
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
-- Peta fungsi: paling banyak 44% pasangan tabel-aksi tulis jendela Java punya padanan (963 dari 2.202, tanpa bridging); 256 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
+- Peta fungsi: paling banyak 44% pasangan tabel-aksi tulis jendela Java punya padanan (968 dari 2.202, tanpa bridging); 254 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
 - Layar Rawat Inap dan menu klinis Rawat Jalan punya tombol pencarian formulir ([log 14](14-SESSION-2026-11-28.md#tombol-formulir)).
-- Tes terakhir: skrip fixture lulus seluruhnya (87 + 1 + 36 fixture; tanpa database 234 lulus, 50 dilewati).
+- Tes terakhir: skrip fixture lulus seluruhnya (87 + 1 + 38 fixture; tanpa database 234 lulus, 52 dilewati).
 - Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611281617` (dari `66759e7`) memuat semua fitur di atas; catatan ujinya di handover 15. Pre-release GitHub tertinggal dari source.

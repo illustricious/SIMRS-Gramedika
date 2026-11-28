@@ -4762,5 +4762,45 @@
   "popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL": {
     "status": "sebagian",
     "bukti": "Surat Keterangan Lahir dengan susunan sendiri, bukan templat Jasper (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "aksi|inventory/DlgPembelian.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Simpan header, detail, stok per lokasi/batch, riwayat, opsi harga jual dan jurnal (PembelianRepository, PembelianTests). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgPembelian.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "Pencarian barang aktif untuk faktur pembelian (PembelianView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgPembelian.java|BtnTambah": {
+    "status": "sebagian",
+    "bukti": "Barang hasil pencarian ditambahkan ke rincian pembelian (PembelianView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgPembelian.java|BtnSetHarga": {
+    "status": "sebagian",
+    "bukti": "Ubah Harga menghitung harga beli, dasar dan jual; izin obat diperiksa saat simpan (PembelianRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgReturBeli.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Retur dari faktur asal: stok, batch, riwayat dan jurnal; batal tersedia, cetak belum (ReturBeliRepository, ReturBeliTests). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgReturBeli.java|BtnCari": {
+    "status": "sebagian",
+    "bukti": "Mencari faktur pembelian sumber retur (ReturBeliView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgReturBeli.java|BtnTambah": {
+    "status": "sebagian",
+    "bukti": "Jumlah retur diisi pada baris faktur dan dibatasi sisa faktur serta stok (ReturBeliRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgReturBeli.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Baris retur dapat dikeluarkan dari transaksi dengan mengosongkan jumlahnya; tombol hapus baris khusus belum tersedia."
+  },
+  "popup|inventory/DlgCariReturBeli.java|jPopupMenu1|ppHapus": {
+    "status": "sebagian",
+    "bukti": "Batalkan retur: stok dan batch dikembalikan, jurnal asal dibalik (ReturBeliRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|inventory/DlgCariReturBeli.java|BtnPrint": {
+    "status": "kurang",
+    "bukti": "Cetak retur supplier belum tersedia pada layar baru."
   }
 }

@@ -15,9 +15,13 @@ Menulis ulang SIMRS Khanza (Java Swing) menjadi aplikasi C#, .NET 10 dan Avaloni
 | EXE lokal terbaru | `dist/SIMRS-Gramedika-0.3.0-alpha.202611281617-win-x64-single.exe`, dari `66759e7`, 63.811.849 byte, SHA-256 `15C75CCD7B5234D14F76477284CDE2BD7E8D5E495AD3C961677F3A4D1BFF81EC` |
 | Build lama di `dist/` | `202611280738`, belum diminta dihapus. `202611280241` sudah ada di Recycle Bin (dipindah 28 November 07.42, bukan oleh agen) |
 | Release GitHub | Tidak dibuat; pre-release lama tertinggal dari source |
-| Tes | `uji-fixture.ps1` lulus: fixture 87, alur penunjang 1, skema penuh 36, tanpa database 234 lulus dan 50 dilewati |
-| Peta fungsi | 963 dari 2.202 pasangan tabel-aksi tulis (44%), analisis statis dan batas atas |
+| Tes | `uji-fixture.ps1` lulus: fixture 87, alur penunjang 1, skema penuh 38, tanpa database 234 lulus dan 52 dilewati |
+| Peta fungsi | 968 dari 2.202 pasangan tabel-aksi tulis (44%), analisis statis dan batas atas |
 | Formulir rekam medis | 78 |
+
+### Perubahan lokal setelah handover ini
+
+Pada 28 November, atas pilihan pemilik, ditambahkan **Pembelian Obat & BHP** (`PembelianView`, `PembelianRepository`) dan **Retur Ke Suplier** (`ReturBeliView`, `ReturBeliRepository`) mengikuti handler Java masing-masing, beserta fixture transaksi. Ringkasan dan batas uji ada di [log sesi 15](15-SESSION-2026-11-28.md) dan [audit pelayanan inti](../tracker/AUDIT_PELAYANAN_INTI.md). `uji-fixture.ps1` lulus pada 28 November sesudahnya (termasuk `PembelianTests` dan `ReturBeliTests`). Klik layar, database RS dan klien Java belum diuji.
 
 ### Catatan uji EXE `202611281617`
 
@@ -138,11 +142,11 @@ Untuk klik: `button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent))`. Kontrol
 
 ## Pekerjaan berikutnya
 
-Belum ada yang disetujui. Terakhir diusulkan **pembelian dan retur farmasi**; pemilik berpindah alat sebelum menjawab.
+Pembelian langsung dan retur beli Farmasi sudah dikerjakan dan lulus tes fixture; layarnya belum diklik.
 
 | Calon | Acuan dan catatan |
 |---|---|
-| Pembelian, retur beli, retur jual, piutang obat | `inventory/DlgPembelian.java`, `DlgReturBeli.java`, `DlgReturJual.java`, `DlgPiutang.java`. Tabel transaksinya belum ditulis; mutasi stok dan jurnal harus ikut. Lihat kode penerimaan dan jual bebas yang sudah ada sebelum menulis yang baru. |
+| Retur jual, piutang obat | `inventory/DlgReturJual.java`, `DlgPiutang.java`. Telusuri perilaku Java, tabel transaksinya, mutasi stok dan jurnal sebelum implementasi. |
 | Formulir rekam medis kelompok berikutnya | Penilaian awal medis per spesialis (21), lain-lain (19). Langkah di [log 13](13-SESSION-2026-11-28.md#pekerjaan-yang-sedang-berjalan-formulir-rekam-medis-per-kelompok). |
 | Operasi rawat jalan | Operasi baru tersedia untuk rawat inap. |
 | Sisa kelahiran bayi | Buka dari Rawat Inap atau Pasien, cetak daftar, label, templat surat rumah sakit. |

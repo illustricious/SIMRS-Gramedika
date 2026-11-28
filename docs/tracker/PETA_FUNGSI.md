@@ -11,14 +11,14 @@ Gramedika, tetapi validasi, jurnal, cetak dan cabang layarnya belum tentu setara
 
 | Ukuran | Ada | Total | Persen |
 |---|---:|---:|---:|
-| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 963 | 2202 | 44% |
-| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 450 | 980 | 46% |
-| Jendela Java yang menulis data, seluruh tulisannya ada | 321 | 743 | 43% |
+| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 968 | 2202 | 44% |
+| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 454 | 980 | 46% |
+| Jendela Java yang menulis data, seluruh tulisannya ada | 324 | 743 | 44% |
 | Jendela Java yang menulis data, minimal sebagian ada | 471 | 743 | 63% |
 
 Angka di atas tidak memasukkan bridging, tabel sementara, catatan sistem, jurnal dan riwayat stok.
 
-Dari 321 jendela yang seluruh tulisannya ada, 179 tercakup oleh layar master generik (tambah/ubah/hapus satu tabel).
+Dari 324 jendela yang seluruh tulisannya ada, 179 tercakup oleh layar master generik (tambah/ubah/hapus satu tabel).
 
 ## Jendela alur inti
 
@@ -41,11 +41,11 @@ Aksi tulis adalah pasangan tabel dan tambah/ubah/hapus. "Ada" di sini juga batas
 
 ## Sisa pekerjaan menurut jenis
 
-Jendela yang menulis data dan belum seluruhnya ada: 422. Setiap jendela dihitung sekali, pada baris pertama yang cocok.
+Jendela yang menulis data dan belum seluruhnya ada: 419. Setiap jendela dihitung sekali, pada baris pertama yang cocok.
 
 | Jenis | Jendela | Di antaranya sebagian | Dibuka dari alur inti |
 |---|---:|---:|---:|
-| Transaksi stok (riwayat stok, sebagian besar juga jurnal) | 63 | 39 | 6 |
+| Transaksi stok (riwayat stok, sebagian besar juga jurnal) | 60 | 36 | 6 |
 | Pembayaran, tagihan dan jurnal tanpa stok | 43 | 14 | 9 |
 | Formulir rekam medis dengan satu tabel isi | 83 | 5 | 78 |
 | Formulir rekam medis dengan tabel tambahan | 36 | 2 | 30 |
@@ -57,8 +57,8 @@ Jendela yang menulis data dan belum seluruhnya ada: 422. Setiap jendela dihitung
 
 | Status | Jendela |
 |---|---:|
-| tulis ada | 321 |
-| tulis sebagian | 150 |
+| tulis ada | 324 |
+| tulis sebagian | 147 |
 | hanya baca | 266 |
 | baca ada | 502 |
 | baca sebagian | 14 |
@@ -76,7 +76,7 @@ Jendela yang menulis data dan belum seluruhnya ada: 422. Setiap jendela dihitung
 | grafikanalisa | 148 | 0 | 0 | 0 | 0 | 0 | - |
 | informasi | 11 | 0 | 0 | 0 | 0 | 0 | - |
 | inventaris | 35 | 30 | 16 | 0 | 14 | 0 | 54% |
-| inventory | 117 | 63 | 24 | 29 | 9 | 1 | 50% |
+| inventory | 117 | 63 | 27 | 26 | 9 | 1 | 54% |
 | ipsrs | 43 | 22 | 3 | 0 | 19 | 0 | 13% |
 | kepegawaian | 73 | 44 | 41 | 3 | 0 | 0 | 88% |
 | keuangan | 168 | 71 | 23 | 9 | 37 | 2 | 44% |
@@ -107,7 +107,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | A | 34 | 32 | 8 | 23 | 1 | 0 | 1 |
 | B | 16 | 14 | 0 | 14 | 0 | 0 | 0 |
 | C | 61 | 41 | 40 | 1 | 0 | 0 | 2 |
-| D | 75 | 33 | 11 | 8 | 14 | 0 | 0 |
+| D | 75 | 33 | 11 | 10 | 12 | 0 | 0 |
 | E | 33 | 15 | 5 | 0 | 10 | 0 | 0 |
 | F | 27 | 13 | 4 | 0 | 9 | 0 | 0 |
 | G | 28 | 27 | 16 | 0 | 11 | 0 | 0 |
@@ -127,7 +127,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | U | 30 | 29 | 21 | 8 | 0 | 0 | 0 |
 
 Tile di luar menu L: 1041. Yang di Java menulis data tetapi tile Gramedika hanya menampilkan:
-**256**.
+**254**.
 
 ## Celah terpenting
 
@@ -222,7 +222,7 @@ melakukannya. Perlu diperiksa satu per satu; 15 jendela.
 
 ## Tabel yang sama sekali belum pernah ditulis
 
-530 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4), `bayar_rawat_inap_dr` (4), `bayar_rawat_inap_drpr` (4).
+526 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4), `bayar_rawat_inap_dr` (4), `bayar_rawat_inap_drpr` (4).
 
 ## Batas analisis
 

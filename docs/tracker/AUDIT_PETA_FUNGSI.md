@@ -54,9 +54,9 @@ Perlakukan angka "tulis ada" sebagai langit-langit.
 
 ## Temuan utama
 
-1. **Sepertiga lebih aksi tulis Java punya padanan.** 963 dari 2.202 pasangan tabel-aksi (44%), sebelum dikoreksi ke bawah.
+1. **Sepertiga lebih aksi tulis Java punya padanan.** 968 dari 2.202 pasangan tabel-aksi (44%), sebelum dikoreksi ke bawah.
 2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 321 jendela "tulis ada" tercakup layar master satu tabel.
-3. **256 tile hanya menampilkan** data yang di Java bisa diisi; 120 di antaranya Menu M (rekam medis).
+3. **254 tile hanya menampilkan** data yang di Java bisa diisi; 120 di antaranya Menu M (rekam medis).
 4. **Rekam medis adalah kelompok terbesar yang tersisa:** 83 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
    isi" belum berarti muat di mesin formulir; pemilik ganda, bentuk kunci dan tipe kolom harus dicek per formulir.
 5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** pengadaan farmasi, retur beli, retur jual

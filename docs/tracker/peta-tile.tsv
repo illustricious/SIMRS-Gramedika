@@ -131,7 +131,7 @@ D	btnPengajuanBarangMedis	Pengajuan Obat & BHP	InventoryPengajuanBarangMedis	ya	
 D	btnRingkasanPengajuanMedis	Ringkasan Pengajuan Obat & BHP	InventoryRingkasanPengajuanBarangMedis	tidak	baca saja	baca ada
 D	btnSuratPemesananMedis	Surat Pemesanan Obat & BHP	InventorySuratPemesanan	ya	baca saja	hanya baca
 D	btnRingkasanPemesananMedis	Ringkasan Pemesanan Obat & BHP	InventoryRingkasanPemesananBarangMedis	tidak	baca saja	baca ada
-D	btnPembelian	Pengadaan Obat & BHP	DlgPembelian	ya	baca saja	tulis sebagian
+D	btnPembelian	Pengadaan Obat & BHP	DlgPembelian	ya	khusus	tulis ada
 D	btnRingkasanPembelianMedis	Ringkasan Pengadaan Obat & BHP	InventoryRingkasanPembelianBarangMedis	tidak	baca saja	baca ada
 D	btnPemesanan	Penerimaan Obat & BHP	DlgPemesanan	ya	khusus	tulis ada
 D	btnRingkasanPenerimaanMedis	Ringkasan Penerimaan Obat & BHP	InventoryRingkasanPenerimaanBarangMedis	tidak	baca saja	baca ada
@@ -145,7 +145,7 @@ D	btnPiutang	Piutang Obat & BHP	DlgPiutang	ya	baca saja	tulis sebagian
 D	btnRingkasanPiutangObat	Ringkasan Piutang Obat & BHP	InventoryRingkasanPiutangBarangMedis	tidak	baca saja	baca ada
 D	btnStokKeluarMedis	Stok Keluar Medis	DlgPengeluaranApotek	ya	khusus	tulis ada
 D	btnRingkasanStokKeluarObat	Ringkasan Stok Keluar Obat & BHP	InventoryRingkasanStokKeluarBarangMedis	tidak	baca saja	baca ada
-D	btnReturBeli	Retur Ke Suplier	DlgReturBeli	ya	baca saja	tulis sebagian
+D	btnReturBeli	Retur Ke Suplier	DlgReturBeli	ya	khusus	tulis ada
 D	btnRingkasanReturSuplierObat	Ringkasan Retur Suplier Obat & BHP	InventoryRingkasanReturSuplierBarangMedis	tidak	baca saja	baca ada
 D	btnReturJual	Retur Dari Pembeli	DlgReturJual	ya	baca saja	tulis sebagian
 D	btnRingkasanReturJualObat	Ringkasan Retur Pembeli Obat & BHP	InventoryRingkasanReturJualBarangMedis	tidak	baca saja	baca ada
