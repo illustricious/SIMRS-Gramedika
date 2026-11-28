@@ -79,6 +79,62 @@ public sealed class FormKlinisTests
         Assert.Null(form.Periksa!(isi));
     }
 
+    /// <summary>Skor tiap lembar peringatan dini pada catatan baru nol, lalu naik bersama tanda bahayanya.</summary>
+    [Theory]
+    [InlineData("btnPemantauanPEWSDewasa", "parameter_kesadaran", "Unrespon", "7", "Resusitasi")]
+    [InlineData("btnPemantauanPEWSDewasa", "parameter_saturasi_oksigen", "<= 92", "3", "Assement segera oleh perawat senior")]
+    [InlineData("btnPemantauanPEWSAnak", "parameter_perespirasi", "Stridor / O2 7-8 Lpm", "3", "Monitoring 1 sampai 2 jam")]
+    [InlineData("btnPemantauanEWSNeonatus", "parameter1", "<= 29", "2", "Petugas : Perawat Jaga, Monitoring : Per 2 jam")]
+    [InlineData("btnPemantauanMEOWS", "parameter_ketuban", "Busuk", "2", "Assessment segera oleh Bidan respon")]
+    public void SkorPeringatanDiniMengikutiPilihan(string tile, string kolom, string pilihan, string total, string tindakLanjut)
+    {
+        var form = FormKlinisKatalog.Cari(tile)!;
+        var isi = form.Isian.Where(i => i.Pilihan is not null).ToDictionary(i => i.Kolom, i => i.Awal ?? i.Pilihan![0]);
+        form.Hitung!(isi);
+        Assert.Equal("0", isi["skor_total"]);
+        Assert.Contains("7 jam", isi["parameter_total"]);
+
+        isi[kolom] = pilihan;
+        form.Hitung!(isi);
+        Assert.Equal(total, isi["skor_total"]);
+        Assert.StartsWith(tindakLanjut, isi["parameter_total"]);
+    }
+
+    /// <summary>Seperti Khanza, skor warna kulit neonatus disimpan tetapi tidak dijumlahkan; layar mengingatkannya.</summary>
+    [Fact]
+    public void WarnaKulitNeonatusTidakIkutTotalTetapiDiingatkan()
+    {
+        var form = FormKlinisKatalog.Cari("btnPemantauanEWSNeonatus")!;
+        var isi = form.Isian.Where(i => i.Pilihan is not null).ToDictionary(i => i.Kolom, i => i.Awal ?? i.Pilihan![0]);
+        form.Hitung!(isi);
+        Assert.DoesNotContain("Perhatian", form.Keterangan!(isi));
+        isi["parameter8"] = "Pucat";
+        form.Hitung!(isi);
+        Assert.Equal(("2", "0"), (isi["skor8"], isi["skor_total"]));
+        Assert.Contains("Warna Kulit bernilai 2 dan tidak ikut total", form.Keterangan!(isi));
+    }
+
+    /// <summary>Menu klinis Rawat Jalan yang menunjuk formulir harus memakai hak formulirnya, kalau tidak tombolnya mati.</summary>
+    [Fact]
+    public void MenuKlinisDanPencarianMembukaFormulir()
+    {
+        var terhubung = SimrsGramedika.UI.Modules.RawatJalan.MenuKlinisRalanCatalog.Items
+            .Select(i => (Item: i, Form: FormKlinisKatalog.Cari(i.ReportKey))).Where(x => x.Form is not null).ToList();
+        foreach (var (item, form) in terhubung) Assert.Equal((item.Id, form!.Izin), (item.Id, item.Permission));
+        foreach (var tile in new[] { "btnCatatanObservasiCHBP", "btnCatatanCekGDS", "btnCatatanKeseimbanganCairan", "btnMonitoringTOLAC",
+                     "btnMonitoringReaksiTranfusi", "btnSkriningCURB65", "btnPenilaianRisikoJatuhAnak", "btnPemantauanPEWSDewasa",
+                     "btnPemantauanPEWSAnak", "btnPemantauanEWSNeonatus", "btnPemantauanMEOWS" })
+            Assert.Contains(terhubung, x => x.Form!.Tile == tile);
+
+        var admin = new AuthenticatedUser { IsAdminUtama = true };
+        Assert.Equal(FormKlinisKatalog.Semua.Count, PilihFormulir.Cari(admin, "").Count);
+        Assert.Equal("btnCatatanObservasiRanapKebidanan", Assert.Single(PilihFormulir.Cari(admin, "kebidanan observasi rawat")).Tile);
+        var terbatas = new AuthenticatedUser { UserId = "u", Permissions = new HashSet<string> { "catatan_cek_gds" } };
+        Assert.Equal("btnCatatanCekGDS", Assert.Single(PilihFormulir.Cari(terbatas, "")).Tile);
+        Assert.True(PilihFormulir.Ada(terbatas));
+        Assert.False(PilihFormulir.Ada(new AuthenticatedUser { UserId = "u" }));
+    }
+
     /// <summary>Tile formulir harus punya daftar Menu M yang membawa No. Rawat dan permission tile yang sama.</summary>
     [Fact]
     public void SetiapFormulirTerhubungKeDaftarDanHakTile()
@@ -231,7 +287,7 @@ public sealed class FormKlinisTests
             await Assert.ThrowsAsync<InvalidOperationException>(() => Layanan(bukan).SimpanAsync(sekarang, akun.UserId, isi));
             if (form.Isian.FirstOrDefault(i => i.Wajib) is { } wajib)
                 await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "", new Dictionary<string, string>(isi) { [wajib.Kolom] = "  " }));
-            if (form.Isian.FirstOrDefault(i => i.Maks > 0) is { } panjang)
+            if (form.Isian.FirstOrDefault(i => i is { Maks: > 0, Otomatis: false }) is { } panjang)
                 await Assert.ThrowsAsync<ArgumentException>(() => service.SimpanAsync(sekarang, "",
                     new Dictionary<string, string>(isi) { [panjang.Kolom] = new string('x', panjang.Maks + 1) }));
             if (form.Isian.FirstOrDefault(i => i.Pilihan is not null) is { } pilih)

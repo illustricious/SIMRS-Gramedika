@@ -65,13 +65,16 @@ public sealed class FormKlinisView : PageView
             kepala.Children.Add(Ui.Btn($"Pilih {sebutan}", async (_, _) => await JalankanAsync(PilihPemilikAsync)));
         isi.Children.Add(kepala);
         SusunIsian(isi);
-        if (form.Keterangan is not null) isi.Children.Add(_keterangan);
 
         var (panel, toggle) = Ui.InputPanel(new ScrollViewer { Content = isi, MaxHeight = 390 });
         toggle.IsChecked = true;
-        var body = new Avalonia.Controls.Grid { RowDefinitions = new RowDefinitions("Auto,*"), RowSpacing = 6 };
-        Avalonia.Controls.Grid.SetRow(_grid, 1);
+        var body = new Avalonia.Controls.Grid { RowDefinitions = new RowDefinitions("Auto,Auto,*"), RowSpacing = 6 };
+        // Penjelasan hasil hitungan diletakkan di luar bagian yang digulung agar selalu terlihat.
+        _keterangan.IsVisible = form.Keterangan is not null;
+        Avalonia.Controls.Grid.SetRow(_keterangan, 1);
+        Avalonia.Controls.Grid.SetRow(_grid, 2);
         body.Children.Add(panel);
+        body.Children.Add(_keterangan);
         body.Children.Add(_grid);
 
         _commands = Ui.Bar(

@@ -76,6 +76,7 @@ public static class FormKlinisKatalog
 {
     public const string Pengkajian = "Pengkajian & Catatan";
     public const string Observasi = "Observasi & Pemantauan";
+    public const string PeringatanDini = "Peringatan Dini (EWS)";
     public const string KriteriaRuang = "Kriteria Ruang Rawat";
     public const string Skrining = "Skrining";
     public const string Risiko = "Risiko Jatuh, Dekubitus & Fungsional";
@@ -221,7 +222,8 @@ public static class FormKlinisKatalog
 
     public static readonly IReadOnlyList<FormKlinis> Semua =
         [CatatanKeperawatanRalan, ObservasiIgd, SkriningGizi, RisikoJatuhDewasa, MedisRalan, .. FormKriteriaRuang.Semua,
-            .. FormObservasi.Semua, .. FormSkrining.Semua];
+            .. FormObservasi.Semua, .. FormEws.Semua,
+            .. FormSkrining.Semua];
 
     public static FormKlinis? Cari(string? tile) => Semua.FirstOrDefault(f => f.Tile == tile);
 }
