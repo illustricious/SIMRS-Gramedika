@@ -2089,7 +2089,7 @@ aksi|inventory/DlgPeresepanDokter.java|BtnCari	aksi	BtnCari	inventory/DlgPeresep
 aksi|inventory/DlgPeresepanDokter.java|BtnAll	aksi	BtnAll	inventory/DlgPeresepanDokter.java:489	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnTambah	aksi	BtnTambah	inventory/DlgPeresepanDokter.java:526	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnSeek5	aksi	BtnSeek5	inventory/DlgPeresepanDokter.java:538	belum diaudit	
-aksi|inventory/DlgPeresepanDokter.java|BtnSimpan	aksi	BtnSimpan	inventory/DlgPeresepanDokter.java:555	sebagian	Kirim dan ubah resep nonracikan rawat jalan lewat Alur Kunjungan. Racikan dan aturan input lain belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
+aksi|inventory/DlgPeresepanDokter.java|BtnSimpan	aksi	BtnSimpan	inventory/DlgPeresepanDokter.java:555	sebagian	Kirim dan ubah resep, termasuk racikan, untuk rawat jalan dan rawat inap (OrderRalanService). Template, salin resep dan aturan input lain belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|inventory/DlgPeresepanDokter.java|BtnTambah1	aksi	BtnTambah1	inventory/DlgPeresepanDokter.java:567	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnHapus	aksi	BtnHapus	inventory/DlgPeresepanDokter.java:579	belum diaudit	
 aksi|inventory/DlgPeresepanDokter.java|BtnKeluar	aksi	BtnKeluar	inventory/DlgPeresepanDokter.java:591	belum diaudit	
@@ -4054,8 +4054,8 @@ popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPeriksaLab	popup	jPopupMenu1 > 
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPeriksaLabPA	popup	jPopupMenu1 > Input Periksa Lab PA	keuangan/DlgBilingRalan.java:684	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPeriksaLabMB	popup	jPopupMenu1 > Input Periksa Lab MB	keuangan/DlgBilingRalan.java:700	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPeriksaRadiologi	popup	jPopupMenu1 > Input Periksa Radiologi	keuangan/DlgBilingRalan.java:716	belum diaudit	
-popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnTambahan	popup	jPopupMenu1 > Tambahan Biaya	keuangan/DlgBilingRalan.java:732	belum diaudit	
-popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPotongan	popup	jPopupMenu1 > Potongan Biaya	keuangan/DlgBilingRalan.java:748	belum diaudit	
+popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnTambahan	popup	jPopupMenu1 > Tambahan Biaya	keuangan/DlgBilingRalan.java:732	sebagian	Tambahan biaya: layar tambah dan hapus (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPotongan	popup	jPopupMenu1 > Potongan Biaya	keuangan/DlgBilingRalan.java:748	sebagian	Potongan biaya: layar tambah dan hapus (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnOperasi	popup	jPopupMenu1 > Tagihan Operasi/VK	keuangan/DlgBilingRalan.java:764	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnObatLangsung	popup	jPopupMenu1 > Tagihan BHP & Obat	keuangan/DlgBilingRalan.java:780	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPoli	popup	jPopupMenu1 > Ganti Poliklinik	keuangan/DlgBilingRalan.java:796	belum diaudit	
@@ -4078,15 +4078,15 @@ aksi|keuangan/DlgBilingRalan.java|BtnCloseIn	aksi	Tutup	keuangan/DlgBilingRalan.
 aksi|keuangan/DlgBilingRalan.java|BtnSimpan2	aksi	Simpan	keuangan/DlgBilingRalan.java:1091	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnBatal1	aksi	Hapus	keuangan/DlgBilingRalan.java:1109	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnTambah	aksi	Tambah	keuangan/DlgBilingRalan.java:1178	belum diaudit	
-aksi|keuangan/DlgBilingRalan.java|BtnSimpan3	aksi	Simpan	keuangan/DlgBilingRalan.java:1190	belum diaudit	
-aksi|keuangan/DlgBilingRalan.java|BtnHapus	aksi	Hapus	keuangan/DlgBilingRalan.java:1203	belum diaudit	
+aksi|keuangan/DlgBilingRalan.java|BtnSimpan3	aksi	Simpan	keuangan/DlgBilingRalan.java:1190	sebagian	Simpan tambahan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+aksi|keuangan/DlgBilingRalan.java|BtnHapus	aksi	Hapus	keuangan/DlgBilingRalan.java:1203	sebagian	Hapus tambahan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|keuangan/DlgBilingRalan.java|BtnKeluar1	aksi	Tutup	keuangan/DlgBilingRalan.java:1216	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnCloseIn4	aksi	Tutup	keuangan/DlgBilingRalan.java:1241	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnSimpan4	aksi	Simpan	keuangan/DlgBilingRalan.java:1254	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|btnCariPoli	aksi	btnCariPoli	keuangan/DlgBilingRalan.java:1287	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnTambahPotongan	aksi	Tambah	keuangan/DlgBilingRalan.java:1351	belum diaudit	
-aksi|keuangan/DlgBilingRalan.java|BtnSimpanPotongan	aksi	Simpan	keuangan/DlgBilingRalan.java:1363	belum diaudit	
-aksi|keuangan/DlgBilingRalan.java|BtnHapusPotongan	aksi	Hapus	keuangan/DlgBilingRalan.java:1376	belum diaudit	
+aksi|keuangan/DlgBilingRalan.java|BtnSimpanPotongan	aksi	Simpan	keuangan/DlgBilingRalan.java:1363	sebagian	Simpan potongan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+aksi|keuangan/DlgBilingRalan.java|BtnHapusPotongan	aksi	Hapus	keuangan/DlgBilingRalan.java:1376	sebagian	Hapus potongan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|keuangan/DlgBilingRalan.java|BtnKeluarPotongan	aksi	Tutup	keuangan/DlgBilingRalan.java:1389	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnCloseIn5	aksi	Tutup	keuangan/DlgBilingRalan.java:1414	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnSimpan5	aksi	Simpan	keuangan/DlgBilingRalan.java:1427	belum diaudit	
@@ -4119,8 +4119,8 @@ popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPeriksaLabPA	popup	jPopupMenu1 
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPeriksaLabMB	popup	jPopupMenu1 > Input Periksa Lab MB	keuangan/DlgBilingRanap.java:823	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPeriksaRadiologi	popup	jPopupMenu1 > Input Periksa Radiologi	keuangan/DlgBilingRanap.java:839	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnTagihanOperasi	popup	jPopupMenu1 > Tagihan Operasi/VK	keuangan/DlgBilingRanap.java:855	belum diaudit	
-popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnTambahan	popup	jPopupMenu1 > Tambahan Biaya	keuangan/DlgBilingRanap.java:871	belum diaudit	
-popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPotongan	popup	jPopupMenu1 > Potongan Biaya	keuangan/DlgBilingRanap.java:887	belum diaudit	
+popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnTambahan	popup	jPopupMenu1 > Tambahan Biaya	keuangan/DlgBilingRanap.java:871	sebagian	Tambahan biaya: layar tambah dan hapus (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPotongan	popup	jPopupMenu1 > Potongan Biaya	keuangan/DlgBilingRanap.java:887	sebagian	Potongan biaya: layar tambah dan hapus (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnUbahLamaInap	popup	jPopupMenu1 > Ubah Lama Inap	keuangan/DlgBilingRanap.java:903	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnObatLangsung	popup	jPopupMenu1 > Tagihan BHP & Obat Langsung	keuangan/DlgBilingRanap.java:919	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnReturJual	popup	jPopupMenu1 > Retur Obat/Barang/Alkes	keuangan/DlgBilingRanap.java:935	belum diaudit	
@@ -4152,12 +4152,12 @@ aksi|keuangan/DlgBilingRanap.java|BtnCloseIn	aksi	Tutup	keuangan/DlgBilingRanap.
 aksi|keuangan/DlgBilingRanap.java|BtnSimpan2	aksi	Simpan	keuangan/DlgBilingRanap.java:1348	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnBatal1	aksi	Hapus	keuangan/DlgBilingRanap.java:1366	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnTambah	aksi	Tambah	keuangan/DlgBilingRanap.java:1435	belum diaudit	
-aksi|keuangan/DlgBilingRanap.java|BtnSimpan3	aksi	Simpan	keuangan/DlgBilingRanap.java:1448	belum diaudit	
-aksi|keuangan/DlgBilingRanap.java|BtnHapus	aksi	Hapus	keuangan/DlgBilingRanap.java:1461	belum diaudit	
+aksi|keuangan/DlgBilingRanap.java|BtnSimpan3	aksi	Simpan	keuangan/DlgBilingRanap.java:1448	sebagian	Simpan tambahan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+aksi|keuangan/DlgBilingRanap.java|BtnHapus	aksi	Hapus	keuangan/DlgBilingRanap.java:1461	sebagian	Hapus tambahan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|keuangan/DlgBilingRanap.java|BtnKeluar1	aksi	Keluar	keuangan/DlgBilingRanap.java:1474	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnTambahPotongan	aksi	Tambah	keuangan/DlgBilingRanap.java:1539	belum diaudit	
-aksi|keuangan/DlgBilingRanap.java|BtnSimpanPotongan	aksi	Simpan	keuangan/DlgBilingRanap.java:1552	belum diaudit	
-aksi|keuangan/DlgBilingRanap.java|BtnHapusPotongan	aksi	Hapus	keuangan/DlgBilingRanap.java:1565	belum diaudit	
+aksi|keuangan/DlgBilingRanap.java|BtnSimpanPotongan	aksi	Simpan	keuangan/DlgBilingRanap.java:1552	sebagian	Simpan potongan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+aksi|keuangan/DlgBilingRanap.java|BtnHapusPotongan	aksi	Hapus	keuangan/DlgBilingRanap.java:1565	sebagian	Hapus potongan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|keuangan/DlgBilingRanap.java|BtnKeluarPotongan	aksi	Keluar	keuangan/DlgBilingRanap.java:1578	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnSimpanUbahLama	aksi	Simpan	keuangan/DlgBilingRanap.java:1642	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnKeluarUbahLama	aksi	Keluar	keuangan/DlgBilingRanap.java:1655	belum diaudit	
@@ -6937,7 +6937,7 @@ aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari1	aksi	BtnCari1	permintaan
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari3	aksi	BtnCari3	permintaan/DlgPermintaanLaboratorium.java:836	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCariMB	aksi	BtnCariMB	permintaan/DlgPermintaanLaboratorium.java:1047	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnCari5	aksi	BtnCari5	permintaan/DlgPermintaanLaboratorium.java:1094	belum diaudit	
-aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanLaboratorium.java:1135	sebagian	Kirim dan ubah permintaan lab PK/PA/MB rawat jalan selama belum diambil sampel atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
+aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanLaboratorium.java:1135	sebagian	Kirim dan ubah permintaan lab PK/PA/MB rawat jalan dan rawat inap selama belum diambil sampel atau dibayar. Cetak belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnBatal	aksi	Baru	permintaan/DlgPermintaanLaboratorium.java:1153	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnHapus	aksi	Hapus	permintaan/DlgPermintaanLaboratorium.java:1171	belum diaudit	
 aksi|permintaan/DlgPermintaanLaboratorium.java|BtnPrint	aksi	Cetak	permintaan/DlgPermintaanLaboratorium.java:1189	belum diaudit	
@@ -6962,7 +6962,7 @@ aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnRiwayatPasien	aksi	R
 aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnJawabanApoteker	aksi	Jawaban Apoteker	permintaan/DlgPermintaanPelayananInformasiObat.java:1056	belum diaudit	
 aksi|permintaan/DlgPermintaanPelayananInformasiObat.java|BtnDokumentasiPIO	aksi	Dokumentasi PIO	permintaan/DlgPermintaanPelayananInformasiObat.java:1073	belum diaudit	
 jendela|permintaan/DlgPermintaanPelayananInformasiObat.java|DlgPermintaanPelayananInformasiObat	jendela	DlgPermintaanPelayananInformasiObat	permintaan/DlgPermintaanPelayananInformasiObat.java:1	belum diaudit	
-aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanRadiologi.java:234	sebagian	Kirim dan ubah permintaan radiologi rawat jalan selama belum diproses atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji.
+aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan	aksi	Simpan	permintaan/DlgPermintaanRadiologi.java:234	sebagian	Kirim dan ubah permintaan radiologi rawat jalan dan rawat inap selama belum diproses atau dibayar. Cetak belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnBatal	aksi	Baru	permintaan/DlgPermintaanRadiologi.java:252	belum diaudit	
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnPrint	aksi	Cetak	permintaan/DlgPermintaanRadiologi.java:270	belum diaudit	
 aksi|permintaan/DlgPermintaanRadiologi.java|BtnCari	aksi	Cari	permintaan/DlgPermintaanRadiologi.java:292	belum diaudit	
@@ -8625,11 +8625,11 @@ aksi|rekammedis/RMPelaporanEfekSampingObat.java|NoSurat	aksi	NoSurat	rekammedis/
 aksi|rekammedis/RMPelaporanEfekSampingObat.java|BtnCari	aksi	BtnCari	rekammedis/RMPelaporanEfekSampingObat.java:3162	belum diaudit	
 jendela|rekammedis/RMPelaporanEfekSampingObat.java|RMPelaporanEfekSampingObat	jendela	RMPelaporanEfekSampingObat	rekammedis/RMPelaporanEfekSampingObat.java:1	belum diaudit	
 popup|rekammedis/RMPemantauanEWSD.java|jPopupMenu1|MnPemantauanPEWS	popup	jPopupMenu1 > Lembar Pemantauan EWS	rekammedis/RMPemantauanEWSD.java:254	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSD.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanEWSD.java:316	belum diaudit	
+aksi|rekammedis/RMPemantauanEWSD.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanEWSD.java:316	sebagian	Pemantauan EWS Pasien Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanEWSD.java|BtnBatal	aksi	Baru	rekammedis/RMPemantauanEWSD.java:334	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSD.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanEWSD.java:352	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSD.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanEWSD.java:370	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSD.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanEWSD.java:388	belum diaudit	
+aksi|rekammedis/RMPemantauanEWSD.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanEWSD.java:352	sebagian	Pemantauan EWS Pasien Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanEWSD.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanEWSD.java:370	sebagian	Pemantauan EWS Pasien Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanEWSD.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanEWSD.java:388	sebagian	Pemantauan EWS Pasien Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanEWSD.java|BtnKeluar	aksi	Keluar	rekammedis/RMPemantauanEWSD.java:417	belum diaudit	
 aksi|rekammedis/RMPemantauanEWSD.java|BtnCari	aksi	BtnCari	rekammedis/RMPemantauanEWSD.java:481	belum diaudit	
 aksi|rekammedis/RMPemantauanEWSD.java|BtnAll	aksi	BtnAll	rekammedis/RMPemantauanEWSD.java:498	belum diaudit	
@@ -8637,11 +8637,11 @@ aksi|rekammedis/RMPemantauanEWSD.java|btnPetugas	aksi	btnPetugas	rekammedis/RMPe
 aksi|rekammedis/RMPemantauanEWSD.java|ChkInput	aksi	.: Input Data	rekammedis/RMPemantauanEWSD.java:948	belum diaudit	
 jendela|rekammedis/RMPemantauanEWSD.java|RMPemantauanEWSD	jendela	RMPemantauanEWSD	rekammedis/RMPemantauanEWSD.java:1	belum diaudit	
 popup|rekammedis/RMPemantauanEWSNeonatus.java|jPopupMenu1|MnPemantauanEWS	popup	jPopupMenu1 > Lembar Pemantauan EWS	rekammedis/RMPemantauanEWSNeonatus.java:267	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanEWSNeonatus.java:329	belum diaudit	
+aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanEWSNeonatus.java:329	sebagian	Pemantauan EWS Pasien Neonatus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnBatal	aksi	Baru	rekammedis/RMPemantauanEWSNeonatus.java:347	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanEWSNeonatus.java:365	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanEWSNeonatus.java:383	belum diaudit	
-aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanEWSNeonatus.java:401	belum diaudit	
+aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanEWSNeonatus.java:365	sebagian	Pemantauan EWS Pasien Neonatus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanEWSNeonatus.java:383	sebagian	Pemantauan EWS Pasien Neonatus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanEWSNeonatus.java:401	sebagian	Pemantauan EWS Pasien Neonatus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnKeluar	aksi	Keluar	rekammedis/RMPemantauanEWSNeonatus.java:430	belum diaudit	
 aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnCari	aksi	BtnCari	rekammedis/RMPemantauanEWSNeonatus.java:494	belum diaudit	
 aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnAll	aksi	BtnAll	rekammedis/RMPemantauanEWSNeonatus.java:511	belum diaudit	
@@ -8649,11 +8649,11 @@ aksi|rekammedis/RMPemantauanEWSNeonatus.java|btnPetugas	aksi	btnPetugas	rekammed
 aksi|rekammedis/RMPemantauanEWSNeonatus.java|ChkInput	aksi	.: Input Data	rekammedis/RMPemantauanEWSNeonatus.java:1007	belum diaudit	
 jendela|rekammedis/RMPemantauanEWSNeonatus.java|RMPemantauanEWSNeonatus	jendela	RMPemantauanEWSNeonatus	rekammedis/RMPemantauanEWSNeonatus.java:1	belum diaudit	
 popup|rekammedis/RMPemantauanMEOWS.java|jPopupMenu1|MnPemantauanMEOWS	popup	jPopupMenu1 > Lembar Pemantauan MEOWS	rekammedis/RMPemantauanMEOWS.java:311	belum diaudit	
-aksi|rekammedis/RMPemantauanMEOWS.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanMEOWS.java:376	belum diaudit	
+aksi|rekammedis/RMPemantauanMEOWS.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanMEOWS.java:376	sebagian	Pemantauan MEOWS Pasien Obstetri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanMEOWS.java|BtnBatal	aksi	Baru	rekammedis/RMPemantauanMEOWS.java:394	belum diaudit	
-aksi|rekammedis/RMPemantauanMEOWS.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanMEOWS.java:412	belum diaudit	
-aksi|rekammedis/RMPemantauanMEOWS.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanMEOWS.java:430	belum diaudit	
-aksi|rekammedis/RMPemantauanMEOWS.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanMEOWS.java:448	belum diaudit	
+aksi|rekammedis/RMPemantauanMEOWS.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanMEOWS.java:412	sebagian	Pemantauan MEOWS Pasien Obstetri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanMEOWS.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanMEOWS.java:430	sebagian	Pemantauan MEOWS Pasien Obstetri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanMEOWS.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanMEOWS.java:448	sebagian	Pemantauan MEOWS Pasien Obstetri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanMEOWS.java|BtnKeluar	aksi	Keluar	rekammedis/RMPemantauanMEOWS.java:477	belum diaudit	
 aksi|rekammedis/RMPemantauanMEOWS.java|BtnCari	aksi	BtnCari	rekammedis/RMPemantauanMEOWS.java:541	belum diaudit	
 aksi|rekammedis/RMPemantauanMEOWS.java|BtnAll	aksi	BtnAll	rekammedis/RMPemantauanMEOWS.java:558	belum diaudit	
@@ -8661,11 +8661,11 @@ aksi|rekammedis/RMPemantauanMEOWS.java|BtnPetugas	aksi	BtnPetugas	rekammedis/RMP
 aksi|rekammedis/RMPemantauanMEOWS.java|ChkInput	aksi	.: Input Data	rekammedis/RMPemantauanMEOWS.java:1117	belum diaudit	
 jendela|rekammedis/RMPemantauanMEOWS.java|RMPemantauanMEOWS	jendela	RMPemantauanMEOWS	rekammedis/RMPemantauanMEOWS.java:1	belum diaudit	
 popup|rekammedis/RMPemantauanPEWS.java|jPopupMenu1|MnPemantauanPEWS	popup	jPopupMenu1 > Lembar Pemantauan PEWS	rekammedis/RMPemantauanPEWS.java:222	belum diaudit	
-aksi|rekammedis/RMPemantauanPEWS.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanPEWS.java:283	belum diaudit	
+aksi|rekammedis/RMPemantauanPEWS.java|BtnSimpan	aksi	Simpan	rekammedis/RMPemantauanPEWS.java:283	sebagian	Pemantauan PEWS Pasien Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanPEWS.java|BtnBatal	aksi	Baru	rekammedis/RMPemantauanPEWS.java:301	belum diaudit	
-aksi|rekammedis/RMPemantauanPEWS.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanPEWS.java:319	belum diaudit	
-aksi|rekammedis/RMPemantauanPEWS.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanPEWS.java:337	belum diaudit	
-aksi|rekammedis/RMPemantauanPEWS.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanPEWS.java:355	belum diaudit	
+aksi|rekammedis/RMPemantauanPEWS.java|BtnHapus	aksi	Hapus	rekammedis/RMPemantauanPEWS.java:319	sebagian	Pemantauan PEWS Pasien Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanPEWS.java|BtnEdit	aksi	Ganti	rekammedis/RMPemantauanPEWS.java:337	sebagian	Pemantauan PEWS Pasien Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
+aksi|rekammedis/RMPemantauanPEWS.java|BtnPrint	aksi	Cetak	rekammedis/RMPemantauanPEWS.java:355	sebagian	Pemantauan PEWS Pasien Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md.
 aksi|rekammedis/RMPemantauanPEWS.java|BtnKeluar	aksi	Keluar	rekammedis/RMPemantauanPEWS.java:384	belum diaudit	
 aksi|rekammedis/RMPemantauanPEWS.java|BtnCari	aksi	BtnCari	rekammedis/RMPemantauanPEWS.java:448	belum diaudit	
 aksi|rekammedis/RMPemantauanPEWS.java|BtnAll	aksi	BtnAll	rekammedis/RMPemantauanPEWS.java:465	belum diaudit	
@@ -11391,8 +11391,8 @@ popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnDataRM|MnEdukasi|MnPelaksanaan
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnDataRM|ppResume	popup	jPopupMenu1 > Data Rekam Medis > Resume	simrskhanza/DlgKamarInap.java:21743	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnDataRM|ppRiwayat	popup	jPopupMenu1 > Data Rekam Medis > Riwayat Perawatan	simrskhanza/DlgKamarInap.java:21744	sebagian	simrskhanza/DlgKamarInap.java:21744 - PatientContextMenu dan MainWindow.HandlePatientMenuAsync membuka PatientHistoryWindow pada pasien terpilih. Kesetaraan seluruh riwayat Java belum diverifikasi.
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnJadwalOperasi	popup	jPopupMenu1 > Permintaan > Jadwal Operasi	simrskhanza/DlgKamarInap.java:2378	belum diaudit	
-popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanLab	popup	jPopupMenu1 > Permintaan > Pemeriksaan Lab	simrskhanza/DlgKamarInap.java:2394	belum diaudit	
-popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanRadiologi	popup	jPopupMenu1 > Permintaan > Pemeriksaan Radiologi	simrskhanza/DlgKamarInap.java:2410	belum diaudit	
+popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanLab	popup	jPopupMenu1 > Permintaan > Pemeriksaan Lab	simrskhanza/DlgKamarInap.java:2394	sebagian	Permintaan lab rawat inap PK/PA/MB lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
+popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanRadiologi	popup	jPopupMenu1 > Permintaan > Pemeriksaan Radiologi	simrskhanza/DlgKamarInap.java:2410	sebagian	Permintaan radiologi rawat inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanInformasiObat	popup	jPopupMenu1 > Permintaan > Informasi Obat	simrskhanza/DlgKamarInap.java:2426	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanKonsultasiMedik	popup	jPopupMenu1 > Permintaan > Konsultasi Medik	simrskhanza/DlgKamarInap.java:21752	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanKonsultasiPerawat	popup	jPopupMenu1 > Permintaan > Konsultasi Perawat	simrskhanza/DlgKamarInap.java:21753	belum diaudit	
@@ -11408,7 +11408,7 @@ popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnTindakan|MnDataOperasi	popup	j
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnPemberianObat	popup	jPopupMenu1 > Obat > Data Pemberian Obat/BHP	simrskhanza/DlgKamarInap.java:2594	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnInputResep	popup	jPopupMenu1 > Obat > Input Resep Pulang	simrskhanza/DlgKamarInap.java:2610	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnNoResep	popup	jPopupMenu1 > Obat > Input No.Resep	simrskhanza/DlgKamarInap.java:2626	belum diaudit	
-popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnResepDOkter	popup	jPopupMenu1 > Obat > Input Resep Dokter	simrskhanza/DlgKamarInap.java:2642	belum diaudit	
+popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnResepDOkter	popup	jPopupMenu1 > Obat > Input Resep Dokter	simrskhanza/DlgKamarInap.java:2642	sebagian	Resep dokter rawat inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnPermintaanStokObatPasien	popup	jPopupMenu1 > Obat > Permintaan Stok Obat Pasien	simrskhanza/DlgKamarInap.java:2658	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnPermintaanResepPulang	popup	jPopupMenu1 > Obat > Permintaan Resep Pulang	simrskhanza/DlgKamarInap.java:2674	belum diaudit	
 popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnStokObatPasien	popup	jPopupMenu1 > Obat > Data Stok Obat Pasien	simrskhanza/DlgKamarInap.java:2690	belum diaudit	
@@ -12258,15 +12258,15 @@ aksi|simrskhanza/DlgRawatInap.java|ChkInput2	aksi	.: Input Data	simrskhanza/DlgR
 aksi|simrskhanza/DlgRawatInap.java|ChkJln	aksi	ChkJln	simrskhanza/DlgRawatInap.java:3010	kurang	simrskhanza/DlgRawatInap.java:5313 - Kontrol klinis Java tidak punya jalur setara di RawatInapView.
 aksi|simrskhanza/DlgRawatInap.java|ChkAccor	aksi	ChkAccor	simrskhanza/DlgRawatInap.java:3036	kurang	simrskhanza/DlgRawatInap.java:6620 - Kontrol klinis Java tidak punya jalur setara di RawatInapView.
 aksi|simrskhanza/DlgRawatInap.java|BtnRiwayat	aksi	Riwayat Pasien	simrskhanza/DlgRawatInap.java:3063	sebagian	simrskhanza/DlgRawatInap.java:6830 - PatientContextMenu dan MainWindow.HandlePatientMenuAsync membuka PatientHistoryWindow dari daftar kamar dengan konteks pasien. Tombol di layar klinis belum tersedia.
-aksi|simrskhanza/DlgRawatInap.java|BtnResepObat	aksi	Input Resep	simrskhanza/DlgRawatInap.java:3079	kurang	simrskhanza/DlgRawatInap.java:6624 - Handler membuka DlgPeresepanDokter dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
+aksi|simrskhanza/DlgRawatInap.java|BtnResepObat	aksi	Input Resep	simrskhanza/DlgRawatInap.java:3079	sebagian	Resep dokter rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|simrskhanza/DlgRawatInap.java|BtnCopyResep	aksi	Copy Resep	simrskhanza/DlgRawatInap.java:3095	kurang	simrskhanza/DlgRawatInap.java:6644 - Handler membuka DlgCopyResep dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanStok	aksi	Permintaan Stok Pasien	simrskhanza/DlgRawatInap.java:3111	kurang	simrskhanza/DlgRawatInap.java:6903 - Handler membuka DlgPermintaanStokPasien dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanResepPulang	aksi	Permintaan Resep Pulang	simrskhanza/DlgRawatInap.java:3127	sebagian	Rawat Inap membuat permintaan resep per kunjungan dengan izin permintaan_resep_pulang. Farmasi dengan izin resep_pulang memvalidasi stok dan mencatat penerima, petugas dan waktu serah terima. Rawat Inap menampilkan ketiga status. Rawat Inap dapat membatalkan seluruh permintaan sebelum validasi. Pembatalan dan validasi memakai kunci kunjungan yang sama. Ubah Permintaan memuat ulang draf tersimpan dan menolak simpan atau validasi dari salinan lama. Bukti serah terima dapat disimpan sebagai PDF dari kunjungan yang tercatat. Retur dan uji UI terintegrasi masih terbuka.
 aksi|simrskhanza/DlgRawatInap.java|BtnInputObat	aksi	Input Obat & BHP	simrskhanza/DlgRawatInap.java:3143	kurang	simrskhanza/DlgRawatInap.java:6661 - Handler membuka DlgCariObat3 dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnObatBhp	aksi	Data Obat & BHP	simrskhanza/DlgRawatInap.java:3159	kurang	simrskhanza/DlgRawatInap.java:6688 - Handler membuka DlgPemberianObat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnBerkasDigital	aksi	Berkas Digital	simrskhanza/DlgRawatInap.java:3175	kurang	simrskhanza/DlgRawatInap.java:6705 - Handler membuka DlgBerkasRawat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
-aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanLab	aksi	Permintaan Lab	simrskhanza/DlgRawatInap.java:3191	kurang	simrskhanza/DlgRawatInap.java:6730 - Handler membuka DlgPermintaanLaboratorium dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
-aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanRad	aksi	Permintaan Rad	simrskhanza/DlgRawatInap.java:3207	kurang	simrskhanza/DlgRawatInap.java:6747 - Handler membuka DlgPermintaanRadiologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
+aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanLab	aksi	Permintaan Lab	simrskhanza/DlgRawatInap.java:3191	sebagian	Permintaan lab rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
+aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanRad	aksi	Permintaan Rad	simrskhanza/DlgRawatInap.java:3207	sebagian	Permintaan radiologi rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|simrskhanza/DlgRawatInap.java|BtnJadwalOperasi	aksi	Jadwal Operasi	simrskhanza/DlgRawatInap.java:3223	kurang	simrskhanza/DlgRawatInap.java:6965 - Handler membuka DlgBookingOperasi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnSKDP	aksi	Surat Kontrol	simrskhanza/DlgRawatInap.java:3239	kurang	simrskhanza/DlgRawatInap.java:6764 - Handler membuka SuratKontrol dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.
 aksi|simrskhanza/DlgRawatInap.java|BtnRujukKeluar	aksi	Rujuk Keluar	simrskhanza/DlgRawatInap.java:3255	kurang	simrskhanza/DlgRawatInap.java:6780 - Handler membuka DlgRujuk dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi.

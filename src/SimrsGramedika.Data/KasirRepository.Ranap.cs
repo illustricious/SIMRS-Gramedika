@@ -26,12 +26,17 @@ public partial class KasirRepository
             if (ppn > 0) rows.Add(new(Obat, PpnObat, ppn, 1, ppn));
         }
 
+        rows.AddRange(await MuatPenyesuaianAsync(rawat, ct));
+        var deposit = await db.Database.SqlQuery<decimal>($"""
+            SELECT CAST(COALESCE(SUM(besar_deposit),0) AS DECIMAL(20,4)) AS Value FROM deposit WHERE no_rawat={rawat}
+            """).SingleAsync(ct);
+
         var alasan = bill.AlasanBelumBisaBayar;
         // Khanza hanya menagih satu bayi per ibu; data dengan lebih dari satu diselesaikan di sana.
         if (alasan is null && bayi.Count > 1) alasan = BayarDiKhanza;
         foreach (var kunjungan in bayi.Prepend(rawat))
         {
-            alasan ??= await CekKomponenLainAsync(kunjungan, ct);
+            alasan ??= await CekKomponenLainAsync(kunjungan, bayi: kunjungan != rawat, ct);
             if (alasan is null && kunjungan != rawat && await db.Database.SqlQuery<bool>($"""
                 SELECT (EXISTS(SELECT 1 FROM kamar_inap WHERE no_rawat={kunjungan}) OR
                     EXISTS(SELECT 1 FROM billing WHERE no_rawat={kunjungan})) AS Value
@@ -43,7 +48,10 @@ public partial class KasirRepository
                 alasan = "Masih ada permintaan penunjang atau resep yang menunggu. Selesaikan atau batalkan sebelum pelunasan.";
         }
 
-        return bill with { Rincian = rows, Total = rows.Sum(r => r.Total), AlasanBelumBisaBayar = alasan };
+        var total = rows.Sum(r => r.Total);
+        if (alasan is null && rows.Any(NilaiTidakWajar)) alasan = BayarDiKhanza;
+        if (alasan is null && total < 0) alasan = PotonganBerlebih;
+        return bill with { Rincian = rows, Total = total, Deposit = deposit, AlasanBelumBisaBayar = alasan };
     }
 
     private Task<List<string>> BayiGabungAsync(string noRawatIbu, CancellationToken ct) =>
@@ -77,6 +85,7 @@ public partial class KasirRepository
             TambahKredit(lines, akunUmum.GetValueOrDefault("PPN_Keluaran", ""), PpnObat, ppn);
         }
 
+        TambahJurnalPenyesuaian(lines, bill, akun, "Ranap");
         TambahKredit(lines, akun.GetValueOrDefault("Resep_Pulang_Ranap", ""), ResepPulang,
             bill.Rincian.Where(r => r.Jenis == ResepPulang).Sum(r => r.Total));
 

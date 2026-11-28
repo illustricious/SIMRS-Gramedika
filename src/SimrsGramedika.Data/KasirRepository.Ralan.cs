@@ -65,6 +65,9 @@ public partial class KasirRepository
 
         var pending = await AdaPermintaanTertundaAsync(noRawat, false, ct);
 
+        rows.AddRange(await MuatPenyesuaianAsync(noRawat, ct));
+
+        // Billing rawat jalan Khanza tidak memperhitungkan deposit.
         var unsupported = await db.Database.SqlQuery<bool>($"""
             SELECT (
                 EXISTS(SELECT 1 FROM deposit WHERE no_rawat={noRawat}) OR
@@ -76,12 +79,11 @@ public partial class KasirRepository
                 EXISTS(SELECT 1 FROM beri_obat_operasi WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM tagihan_obat_langsung WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM returpasien WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM tambahan_biaya WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM pengurangan_biaya WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM temporary_tambahan_potongan WHERE no_rawat={noRawat})
             ) AS Value
             """).SingleAsync(ct);
-        var alasan = unsupported || rows.Any(r => r.Total < 0) ? BayarDiKhanza
+        var alasan = unsupported || rows.Any(NilaiTidakWajar) ? BayarDiKhanza
+            : rows.Sum(r => r.Total) < 0 ? PotonganBerlebih
             : pending ? "Resep atau permintaan penunjang masih menunggu proses. Selesaikan atau batalkan permintaan sebelum pelunasan."
             : null;
         return bill with { Rincian = rows, Total = rows.Sum(r => r.Total), AlasanBelumBisaBayar = alasan };
@@ -93,6 +95,7 @@ public partial class KasirRepository
         var akun = await JurnalPoster.ReadAkunAsync(conn, tx, "set_akun_ralan", ct);
         var lines = new List<JurnalLine>(debit);
         TambahKredit(lines, akun.GetValueOrDefault("Registrasi_Ralan", ""), Registrasi, bill.BiayaReg);
+        TambahJurnalPenyesuaian(lines, bill, akun, "Ralan");
         var ppn = bill.Rincian.Where(r => r.Jenis == Obat && r.Nama == PpnObat).Sum(r => r.Total);
         if (ppn > 0)
         {

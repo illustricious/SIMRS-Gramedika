@@ -34,7 +34,7 @@ public partial class KasirRepository
                    CAST(COALESCE(sisapiutang,0) AS DECIMAL(20,4)) AS Sisa,CAST(tgltempo AS DATETIME) AS JatuhTempo
             FROM detail_piutang_pasien WHERE no_rawat={noRawat} ORDER BY nama_bayar
             """).ToListAsync(ct);
-        if (bill.Total > 0 && pembayaran.Count == 0 && piutang.Count == 0) return null;
+        if (bill.HarusDibayar > 0 && pembayaran.Count == 0 && piutang.Count == 0) return null;
 
         await tx.CommitAsync(ct);
         return new(bill, waktu.Value, pembayaran) { Piutang = piutang };

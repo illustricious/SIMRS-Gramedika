@@ -31,7 +31,7 @@ public partial class KasirRepository
         var tunai = total;
         if (piutang is not null)
         {
-            if (total <= 0) throw new InvalidOperationException("Tagihan nol tidak dapat dicatat sebagai piutang.");
+            if (total <= 0) throw new InvalidOperationException("Tidak ada sisa tagihan untuk dicatat sebagai piutang.");
             if (piutang.UangMuka < 0 || piutang.UangMuka >= total || piutang.UangMuka != Bulatkan(piutang.UangMuka))
                 throw new ArgumentException("Uang muka harus 0 atau lebih, kurang dari total tagihan, dan paling banyak empat desimal.");
             if (piutang.JatuhTempo < hariIni) throw new ArgumentException("Jatuh tempo tidak boleh sebelum hari ini.");
@@ -39,14 +39,14 @@ public partial class KasirRepository
         }
 
         var debit = new List<JurnalLine>();
-        if (tunai > 0 || piutang is null)
+        if (tunai > 0)
         {
             if (string.IsNullOrWhiteSpace(akunBayar)) throw new ArgumentException("Pilih akun bayar.");
             var rekening = await db.Database.SqlQuery<string>($"""
                 SELECT kd_rek AS Value FROM akun_bayar
                 WHERE nama_bayar={akunBayar} AND COALESCE(ppn,0)=0 AND COALESCE(kd_rek,'')<>''
                 """).SingleOrDefaultAsync(ct) ?? throw new InvalidOperationException("Akun bayar belum valid atau memiliki biaya admin.");
-            if (tunai > 0) debit.Add(new(rekening, akunBayar, (double)tunai, 0));
+            debit.Add(new(rekening, akunBayar, (double)tunai, 0));
         }
         if (piutang is null) return new(tunai, 0, null, debit);
 
@@ -60,12 +60,13 @@ public partial class KasirRepository
 
     /// <summary>Menulis piutang_pasien dan detailnya dalam transaksi pelunasan yang sedang berjalan.</summary>
     private async Task SimpanPiutangAsync(
-        string noRawat, string noRekamMedis, decimal total, Penerimaan terima, KasirPiutang piutang, DateOnly tanggal, CancellationToken ct)
+        string noRawat, string noRekamMedis, decimal total, Penerimaan terima, KasirPiutang piutang, DateOnly tanggal, CancellationToken ct,
+        decimal deposit = 0)
     {
         // Khanza mengisi piutang_pasien.tgltempo dengan tanggal nota; jatuh tempo pilihan ada di detail.
         await db.Database.ExecuteSqlInterpolatedAsync($"""
             INSERT INTO piutang_pasien(no_rawat,tgl_piutang,no_rkm_medis,status,totalpiutang,uangmuka,sisapiutang,tgltempo)
-            VALUES ({noRawat},{tanggal},{noRekamMedis},'Belum Lunas',{total},{terima.Tunai},{terima.Piutang},{tanggal})
+            VALUES ({noRawat},{tanggal},{noRekamMedis},'Belum Lunas',{total},{terima.Tunai + deposit},{terima.Piutang},{tanggal})
             """, ct);
         await db.Database.ExecuteSqlInterpolatedAsync($"""
             INSERT INTO detail_piutang_pasien(no_rawat,nama_bayar,kd_pj,totalpiutang,sisapiutang,tgltempo)

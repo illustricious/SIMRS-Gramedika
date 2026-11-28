@@ -28,6 +28,11 @@ public record KasirBillItem(
     public string? NoRawatIbu { get; init; }
     /// <summary>Isi piutang_pasien.status bila tagihan disimpan sebagai piutang.</summary>
     public string? StatusPiutang { get; init; }
+    /// <summary>Jumlah deposit rawat inap yang diperhitungkan pada tagihan ini.</summary>
+    public decimal Deposit { get; init; }
+    public decimal HarusDibayar => Math.Max(Total - Deposit, 0);
+    /// <summary>Kelebihan deposit yang dicatat sebagai pengembalian kepada pasien.</summary>
+    public decimal SisaDeposit => Math.Max(Deposit - Total, 0);
 }
 
 public interface IKasirRepository
@@ -43,6 +48,7 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
     private const string Harian = "Harian";
     private const string BiayaMasuk = "Biaya Masuk";
     private const string BayarDiKhanza = "Ada komponen yang harus diselesaikan di Kasir Khanza.";
+    private const string PotonganBerlebih = "Potongan biaya melebihi tagihan. Perbaiki potongan sebelum menyimpan.";
 
     private sealed class Kunjungan
     {
@@ -120,7 +126,7 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         for (var i = 0; i < bill.Rincian.Count; i++)
         {
             var line = bill.Rincian[i];
-            var tambahan = line.Total - line.Tarif * line.Jumlah;
+            var tambahan = SelisihBaris(line);
             await db.Database.ExecuteSqlInterpolatedAsync($"""
                 INSERT INTO billing(noindex,no_rawat,tgl_byr,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
                 VALUES ({i},{rawat},{tanggal},'',{line.Nama},':',{line.Tarif},{line.Jumlah},{tambahan},{line.Total},{line.Jenis})
@@ -130,12 +136,13 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             INSERT INTO billing(noindex,no_rawat,tgl_byr,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
             VALUES ({bill.Rincian.Count},{rawat},{tanggal},'','Total Tagihan',':',0,0,0,{bill.Total},'Tagihan')
             """, ct);
-        if (bill.Total > 0)
+        if (terima.Tunai > 0)
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO detail_nota_jalan(no_rawat,nama_bayar,besarppn,besar_bayar) VALUES ({rawat},{akunBayar},0,{terima.Tunai})
+                """, ct);
+        // Tagihan yang habis oleh potongan tetap dijurnal; tagihan tanpa nilai tidak menghasilkan baris.
+        if (bill.Rincian.Any(r => r.Total != 0))
         {
-            if (terima.Tunai > 0)
-                await db.Database.ExecuteSqlInterpolatedAsync($"""
-                    INSERT INTO detail_nota_jalan(no_rawat,nama_bayar,besarppn,besar_bayar) VALUES ({rawat},{akunBayar},0,{terima.Tunai})
-                    """, ct);
             var conn = (MySqlConnection)db.Database.GetDbConnection();
             var sqlTx = (MySqlTransaction)tx.GetDbTransaction();
             var lines = await BuatJurnalRalanAsync(bill, terima.Debit, conn, sqlTx, ct);
@@ -183,14 +190,13 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         if (!bill.Ranap) throw new InvalidOperationException("Kunjungan ini bukan rawat inap.");
         bill = await LengkapiTagihanRanapAsync(bill, ct);
         if (bill.AlasanBelumBisaBayar is { } alasan) throw new InvalidOperationException(alasan);
-        if (dilihat.NoRekamMedis != bill.NoRekamMedis || dilihat.Total != bill.Total || !dilihat.Rincian.SequenceEqual(bill.Rincian))
+        if (dilihat.NoRekamMedis != bill.NoRekamMedis || dilihat.Total != bill.Total || dilihat.Deposit != bill.Deposit
+            || !dilihat.Rincian.SequenceEqual(bill.Rincian))
             throw new InvalidOperationException("Rincian tagihan berubah. Muat ulang dan konfirmasi jumlah terbaru.");
-        if (bill.Total < 0 || bill.Rincian.Any(r => r.Total < 0))
-            throw new InvalidOperationException("Ada biaya negatif yang perlu diperiksa di Kasir Khanza.");
 
         var now = await db.Database.SqlQuery<DateTime>($"SELECT NOW() AS Value").SingleAsync(ct);
         var tanggal = DateOnly.FromDateTime(now);
-        var terima = await SiapkanPenerimaanAsync(bill.Total, akunBayar, piutang, tanggal, ct);
+        var terima = await SiapkanPenerimaanAsync(bill.HarusDibayar, akunBayar, piutang, tanggal, ct);
         var urut = (await db.Database.SqlQuery<long>($"""
             SELECT IFNULL(MAX(CAST(RIGHT(no_nota,4) AS SIGNED)),0) AS Value FROM nota_inap
             WHERE tanggal={tanggal} FOR UPDATE
@@ -199,7 +205,7 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         var noNota = $"{now:yyyy'/'MM'/'dd}/RI{urut:0000}";
         await db.Database.ExecuteSqlInterpolatedAsync($"""
             INSERT INTO nota_inap (no_rawat,no_nota,tanggal,jam,Uang_Muka)
-            VALUES ({reg.NoRawat},{noNota},{tanggal},{now.TimeOfDay},0)
+            VALUES ({reg.NoRawat},{noNota},{tanggal},{now.TimeOfDay},{bill.Deposit})
             """, ct);
         for (var i = 0; i < bill.Rincian.Count; i++)
         {
@@ -207,20 +213,20 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             var status = line.Jenis == BiayaMasuk ? Kamar : line.Jenis;
             await db.Database.ExecuteSqlInterpolatedAsync($"""
                 INSERT INTO billing (noindex,no_rawat,tgl_byr,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
-                VALUES ({i},{reg.NoRawat},{tanggal},{line.Jenis},{line.Nama},':',{line.Tarif},{line.Jumlah},{line.Total - line.Tarif * line.Jumlah},{line.Total},{status})
+                VALUES ({i},{reg.NoRawat},{tanggal},{line.Jenis},{line.Nama},':',{line.Tarif},{line.Jumlah},{SelisihBaris(line)},{line.Total},{status})
                 """, ct);
         }
         await db.Database.ExecuteSqlInterpolatedAsync($"""
             INSERT INTO billing (noindex,no_rawat,tgl_byr,no,nm_perawatan,pemisah,biaya,jumlah,tambahan,totalbiaya,status)
             VALUES ({bill.Rincian.Count},{reg.NoRawat},{tanggal},'','Total Tagihan',':',0,0,0,{bill.Total},'Tagihan')
             """, ct);
-        if (bill.Total > 0)
+        if (terima.Tunai > 0)
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO detail_nota_inap (no_rawat,nama_bayar,besarppn,besar_bayar)
+                VALUES ({reg.NoRawat},{akunBayar},0,{terima.Tunai})
+                """, ct);
+        if (bill.Deposit > 0 || bill.Rincian.Any(r => r.Total != 0))
         {
-            if (terima.Tunai > 0)
-                await db.Database.ExecuteSqlInterpolatedAsync($"""
-                    INSERT INTO detail_nota_inap (no_rawat,nama_bayar,besarppn,besar_bayar)
-                    VALUES ({reg.NoRawat},{akunBayar},0,{terima.Tunai})
-                    """, ct);
             var conn = (MySqlConnection)db.Database.GetDbConnection();
             var sqlTx = (MySqlTransaction)tx.GetDbTransaction();
             var akun = await JurnalPoster.ReadAkunAsync(conn, sqlTx, "set_akun_ranap", ct);
@@ -232,13 +238,21 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             TambahKredit(lines, akun2.GetValueOrDefault("Harian_Ranap", ""), Harian,
                 bill.Rincian.Where(r => r.Jenis == Harian).Sum(r => r.Total));
             await TambahJurnalLayananRanapAsync(bill, lines, akun, conn, sqlTx, ct);
+            TambahDebit(lines, akun2.GetValueOrDefault("Uang_Muka_Ranap", ""), "Kontra Akun Uang Muka", bill.Deposit);
+            TambahKredit(lines, akun2.GetValueOrDefault("Sisa_Uang_Muka_Ranap", ""), "Sisa Uang Muka Ranap", bill.SisaDeposit);
             var judul = piutang is null ? "PEMBAYARAN" : "PIUTANG";
             await JurnalPoster.PostAsync(conn, sqlTx, reg.NoRawat,
                 $"{judul} PASIEN RAWAT INAP {reg.NoRawat} {bill.NoRekamMedis} {bill.NamaPasien}, DIPOSTING OLEH {petugas}", lines, ct);
         }
         if (piutang is not null)
-            await SimpanPiutangAsync(reg.NoRawat, bill.NoRekamMedis, bill.Total, terima, piutang, tanggal, ct);
-        if (piutang is null || terima.Tunai > 0)
+            await SimpanPiutangAsync(reg.NoRawat, bill.NoRekamMedis, bill.Total, terima, piutang, tanggal, ct, bill.Deposit);
+        if (bill.SisaDeposit > 0)
+            await db.Database.ExecuteSqlInterpolatedAsync($"""
+                INSERT INTO pengembalian_deposit (no_rawat,tanggal,petugas,besar_pengembalian)
+                VALUES ({reg.NoRawat},{now},{petugas},{bill.SisaDeposit})
+                """, ct);
+        // Seperti Khanza, kelebihan deposit tidak dicatat sebagai penerimaan.
+        else if (piutang is null || terima.Tunai > 0)
         {
             var (jenis, status) = piutang is null ? ("Pelunasan", "Sudah") : ("Uang Muka", "Belum");
             await db.Database.ExecuteSqlInterpolatedAsync($"""
@@ -258,19 +272,24 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
         if (jumlah > 0) lines.Add(new(akun, nama, 0, (double)jumlah));
     }
 
-    private async Task<string?> CekKomponenLainAsync(string noRawat, CancellationToken ct)
+    private async Task<string?> CekKomponenLainAsync(string noRawat, bool bayi, CancellationToken ct)
     {
+        // Deposit, tambahan dan potongan dihitung pada No. Rawat yang ditagih; milik bayi gabung tetap diselesaikan di Khanza.
+        if (bayi && await db.Database.SqlQuery<bool>($"""
+                SELECT (EXISTS(SELECT 1 FROM deposit WHERE no_rawat={noRawat}) OR
+                    EXISTS(SELECT 1 FROM tambahan_biaya WHERE no_rawat={noRawat}) OR
+                    EXISTS(SELECT 1 FROM pengurangan_biaya WHERE no_rawat={noRawat})) AS Value
+                """).SingleAsync(ct))
+            return BayarDiKhanza;
         var lainnya = await db.Database.SqlQuery<bool>($"""
             SELECT (
-                EXISTS(SELECT 1 FROM deposit WHERE no_rawat={noRawat}) OR
+                EXISTS(SELECT 1 FROM pengembalian_deposit WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM piutang_pasien WHERE no_rawat={noRawat}) OR
                 (EXISTS(SELECT 1 FROM beri_obat_operasi WHERE no_rawat={noRawat}) AND
                     EXISTS(SELECT 1 FROM set_nota WHERE centangobatranap='No')) OR
                 EXISTS(SELECT 1 FROM tagihan_obat_langsung WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM returpasien WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM penjualan WHERE LEFT(nota_jual,17)={noRawat}) OR
-                EXISTS(SELECT 1 FROM tambahan_biaya WHERE no_rawat={noRawat}) OR
-                EXISTS(SELECT 1 FROM pengurangan_biaya WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM temporary_tambahan_potongan WHERE no_rawat={noRawat}) OR
                 EXISTS(SELECT 1 FROM set_service_ranap WHERE besar<>0 AND (kamar='Yes' OR registrasi='Yes' OR harian='Yes'
                     OR laborat='Yes' OR radiologi='Yes' OR operasi='Yes' OR obat='Yes' OR resep_Pulang='Yes'
@@ -368,12 +387,13 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             FROM billing
             """).Where(r => ranapIds.Contains(r.NoRawat)).OrderBy(r => r.Urut).ToListAsync(ct);
         var notes = ranapIds.Count == 0 ? [] : await db.Database.SqlQuery<NotaSimpan>($"""
-            SELECT no_rawat AS NoRawat,no_nota AS NoNota FROM nota_inap
+            SELECT no_rawat AS NoRawat,no_nota AS NoNota,CAST(COALESCE(Uang_Muka,0) AS DECIMAL(20,4)) AS UangMuka
+            FROM nota_inap
             """).Where(n => ranapIds.Contains(n.NoRawat)).ToListAsync(ct);
 
         var perKamar = fees.ToLookup(f => f.KodeKamar, StringComparer.OrdinalIgnoreCase);
         var perTagihan = detail.ToLookup(r => r.NoRawat);
-        var perNota = notes.ToDictionary(r => r.NoRawat, r => r.NoNota);
+        var perNota = notes.ToDictionary(r => r.NoRawat);
         return visits.Select(v =>
         {
             var reg = v.Reg;
@@ -381,7 +401,8 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
             var periode = byVisit[reg.NoRawat].ToArray();
             var lunas = reg.StatusBayar == StatusBayar.SudahBayar;
             var ranap = reg.StatusLanjut == StatusLanjut.RawatInap || periode.Length > 0;
-            perNota.TryGetValue(reg.NoRawat, out var nota);
+            perNota.TryGetValue(reg.NoRawat, out var tersimpan);
+            var nota = tersimpan?.NoNota;
             if (historis.Length == 0 && ibuDari.TryGetValue(reg.NoRawat, out var noRawatIbu))
                 return new KasirBillItem(reg.NoRawat, reg.NoRekamMedis, v.Pasien, 0, 0, 0, null)
                 {
@@ -405,7 +426,10 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
                 rows.Where(r => r.Jenis == Registrasi).Sum(r => r.Total),
                 rows.Where(r => r.Jenis == Kamar).Sum(r => r.Total), totalDisimpan ?? rows.Sum(r => r.Total),
                 lunas ? "Sudah Bayar" : reg.StatusBayar is null ? null : "Belum Bayar")
-            { Ranap = ranap, Rincian = rows, RincianTersimpan = historis.Length > 0, NoNota = nota, AlasanBelumBisaBayar = alasan };
+            {
+                Ranap = ranap, Rincian = rows, RincianTersimpan = historis.Length > 0, NoNota = nota, AlasanBelumBisaBayar = alasan,
+                Deposit = tersimpan?.UangMuka ?? 0,
+            };
         }).ToList();
     }
 
@@ -469,5 +493,6 @@ public partial class KasirRepository(SimrsGramedikaDbContext db) : IKasirReposit
     {
         public string NoRawat { get; set; } = "";
         public string? NoNota { get; set; }
+        public decimal UangMuka { get; set; }
     }
 }

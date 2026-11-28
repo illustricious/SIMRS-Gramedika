@@ -95,11 +95,12 @@ public partial class KasirView : UserControl
             this.FindControl<Button>("BuktiButton")!.IsVisible = BisaCetakBukti(bill);
             var akun = this.FindControl<ComboBox>("AkunBayarBox")!;
             var akunRow = this.FindControl<StackPanel>("AkunBayarRow")!;
-            akunRow.IsVisible = bill.StatusBayar == "Belum Bayar" && bill.AlasanBelumBisaBayar is null;
+            var bisaBayar = bill.StatusBayar == "Belum Bayar" && bill.AlasanBelumBisaBayar is null;
+            akunRow.IsVisible = bisaBayar && (bill.HarusDibayar > 0);
             var daftarAkun = akunRow.IsVisible ? await repo.AkunBayarRanapAsync() : [];
             akun.ItemsSource = daftarAkun;
             akun.SelectedIndex = -1;
-            var daftarPiutang = akunRow.IsVisible && bill.Total > 0 ? await repo.AkunPiutangAsync() : [];
+            var daftarPiutang = akunRow.IsVisible ? await repo.AkunPiutangAsync() : [];
             var akunPiutang = this.FindControl<ComboBox>("AkunPiutangBox")!;
             akunPiutang.ItemsSource = daftarPiutang;
             akunPiutang.SelectedIndex = -1;
@@ -116,8 +117,10 @@ public partial class KasirView : UserControl
             var status = bill.NoNota is { } nota ? $"{bill.StatusBayar ?? "-"} · Nota {nota}" : bill.StatusBayar ?? "-";
             this.FindControl<TextBlock>("StatusBayarText")!.Text =
                 bill.StatusPiutang is { } piutang ? $"{status} · Piutang {piutang}" : status;
+            TampilkanDeposit(bill);
+            TampilkanTombolPenyesuaian(bill);
             var bayar = this.FindControl<Button>("BayarButton")!;
-            bayar.IsEnabled = bill.StatusBayar == "Belum Bayar" && bill.AlasanBelumBisaBayar is null;
+            bayar.IsEnabled = bisaBayar;
             bayar.Content = bill.StatusPiutang is not null ? "Tercatat sebagai Piutang" : lunas ? "Sudah Lunas" : "Catat Pelunasan";
             var catatan = bill.AlasanBelumBisaBayar;
             if (akunRow.IsVisible && daftarAkun.Count == 0)
@@ -154,7 +157,8 @@ public partial class KasirView : UserControl
             { Status("Pilih akun piutang dan jatuh tempo."); return; }
             piutang = new(akunPiutang, uangMuka, DateOnly.FromDateTime(tempo));
         }
-        if (akun is null && (piutang is null || piutang.UangMuka > 0)) { Status("Pilih akun bayar terlebih dahulu."); return; }
+        if (akun is null && bill.HarusDibayar > 0 && (piutang is null || piutang.UangMuka > 0))
+        { Status("Pilih akun bayar terlebih dahulu."); return; }
 
         _paying = true;
         var tombol = this.FindControl<Button>("BayarButton")!;
@@ -162,11 +166,8 @@ public partial class KasirView : UserControl
         var selesai = false;
         try
         {
-            var pesan = piutang is null ? $"Catat pembayaran {Rupiah(bill.Total)} untuk {bill.NamaPasien} melalui {akun}?"
-                : $"Simpan tagihan {Rupiah(bill.Total)} untuk {bill.NamaPasien}? Uang muka {Rupiah(piutang.UangMuka)}" +
-                  (piutang.UangMuka > 0 ? $" melalui {akun}" : "") +
-                  $", piutang {Rupiah(bill.Total - piutang.UangMuka)} pada {piutang.AkunPiutang}, jatuh tempo {piutang.JatuhTempo:dd/MM/yyyy}.";
-            if (!await Dialogs.ConfirmAsync(this, piutang is null ? "Konfirmasi Pelunasan" : "Konfirmasi Piutang", pesan)) return;
+            if (!await Dialogs.ConfirmAsync(this, piutang is null ? "Konfirmasi Pelunasan" : "Konfirmasi Piutang",
+                    PesanKonfirmasi(bill, akun, piutang))) return;
             using var db = SimrsGramedikaDbContextFactory.Create(DatabaseSettings.Load());
             var repo = new KasirRepository(db);
             if (bill.Ranap)
@@ -185,6 +186,54 @@ public partial class KasirView : UserControl
             tombol.IsEnabled = !selesai;
         }
         if (selesai) await CariAsync(bill.NoRawat);
+    }
+
+    private static string PesanKonfirmasi(KasirBillItem bill, string? akun, KasirPiutang? piutang)
+    {
+        var deposit = bill.Deposit > 0 ? $" Tagihan {Rupiah(bill.Total)}, deposit {Rupiah(bill.Deposit)}." : "";
+        if (piutang is not null)
+            return $"Simpan tagihan {Rupiah(bill.Total)} untuk {bill.NamaPasien}?{deposit} Uang muka {Rupiah(piutang.UangMuka)}" +
+                (piutang.UangMuka > 0 ? $" melalui {akun}" : "") +
+                $", piutang {Rupiah(bill.HarusDibayar - piutang.UangMuka)} pada {piutang.AkunPiutang}, jatuh tempo {piutang.JatuhTempo:dd/MM/yyyy}.";
+        if (bill.HarusDibayar > 0)
+            return $"Catat pembayaran {Rupiah(bill.HarusDibayar)} untuk {bill.NamaPasien} melalui {akun}?{deposit}";
+        var sisa = bill.SisaDeposit > 0
+            ? $" Sisa deposit {Rupiah(bill.SisaDeposit)} dicatat sebagai pengembalian; serahkan kepada pasien." : "";
+        return $"Selesaikan tagihan {bill.NamaPasien} tanpa pembayaran baru?{deposit}{sisa}";
+    }
+
+    private void TampilkanDeposit(KasirBillItem bill)
+    {
+        var teks = this.FindControl<TextBlock>("DepositText")!;
+        teks.IsVisible = this.FindControl<TextBlock>("DepositLabel")!.IsVisible = bill.Deposit > 0;
+        teks.Text = bill.SisaDeposit > 0
+            ? $"{Rupiah(bill.Deposit)} · sisa dikembalikan {Rupiah(bill.SisaDeposit)}"
+            : $"{Rupiah(bill.Deposit)} · kekurangan dibayar {Rupiah(bill.HarusDibayar)}";
+    }
+
+    private void TampilkanTombolPenyesuaian(KasirBillItem bill)
+    {
+        var bisaDiubah = bill is { StatusBayar: "Belum Bayar", RincianTersimpan: false, NoNota: null, NoRawatIbu: null };
+        var tambahan = Boleh(JenisPenyesuaian.Tambahan);
+        var potongan = Boleh(JenisPenyesuaian.Potongan);
+        this.FindControl<Button>("TambahanButton")!.IsVisible = tambahan;
+        this.FindControl<Button>("PotonganButton")!.IsVisible = potongan;
+        this.FindControl<StackPanel>("PenyesuaianRow")!.IsVisible = bisaDiubah && (tambahan || potongan);
+
+        static bool Boleh(JenisPenyesuaian jenis) =>
+            AppSession.CurrentUser?.HasPermission(KasirRepository.IzinPenyesuaian(jenis)) == true;
+    }
+
+    private async void OnTambahanClick(object? sender, RoutedEventArgs e) => await UbahBiayaAsync(JenisPenyesuaian.Tambahan);
+
+    private async void OnPotonganClick(object? sender, RoutedEventArgs e) => await UbahBiayaAsync(JenisPenyesuaian.Potongan);
+
+    private async Task UbahBiayaAsync(JenisPenyesuaian jenis)
+    {
+        if (_loading || _paying || _current is not { } bill || AppSession.CurrentUser is not { } user
+            || TopLevel.GetTopLevel(this) is not Window owner) return;
+        await new PenyesuaianWindow(user, bill.NoRawat, bill.NamaPasien, jenis).ShowDialog(owner);
+        await CariAsync(bill.NoRawat);
     }
 
     private static string Rupiah(decimal nilai) => $"Rp {nilai.ToString("#,0.####", CultureInfo.GetCultureInfo("id-ID"))}";
@@ -256,6 +305,10 @@ public partial class KasirView : UserControl
                     });
                     var judulTotal = kuitansi.Piutang.Count > 0 ? "Total tagihan" : "Total tagihan lunas";
                     body.Item().PaddingTop(10).AlignRight().Text($"{judulTotal}  {Rupiah(bill.Total)}").Bold();
+                    if (bill.Deposit > 0)
+                        body.Item().AlignRight().Text($"Deposit diperhitungkan  {Rupiah(bill.Deposit)}");
+                    if (bill.SisaDeposit > 0)
+                        body.Item().AlignRight().Text($"Sisa deposit dikembalikan  {Rupiah(bill.SisaDeposit)}");
                     foreach (var pembayaran in kuitansi.Pembayaran)
                     {
                         body.Item().AlignRight().Text($"{pembayaran.AkunBayar}  {Rupiah(pembayaran.Jumlah)}");

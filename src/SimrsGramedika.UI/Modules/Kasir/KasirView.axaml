@@ -33,11 +33,17 @@
                         <DataGridTextColumn Header="Total (Rp)" Binding="{Binding Total, StringFormat='#,0.####'}" Width="130"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Grid ColumnDefinitions="180,*" RowDefinitions="Auto,Auto">
+                <StackPanel Name="PenyesuaianRow" Orientation="Horizontal" Spacing="8" IsVisible="False">
+                    <Button Name="TambahanButton" Content="Tambahan Biaya" Click="OnTambahanClick" />
+                    <Button Name="PotonganButton" Content="Potongan Biaya" Click="OnPotonganClick" />
+                </StackPanel>
+                <Grid ColumnDefinitions="180,*" RowDefinitions="Auto,Auto,Auto">
                     <TextBlock Text="Total Tagihan" FontWeight="Bold" />
                     <TextBlock Grid.Column="1" Name="TotalText" FontWeight="Bold" />
                     <TextBlock Grid.Row="1" Text="Status Bayar" />
                     <TextBlock Grid.Row="1" Grid.Column="1" Name="StatusBayarText" />
+                    <TextBlock Grid.Row="2" Name="DepositLabel" Text="Deposit" IsVisible="False" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Name="DepositText" TextWrapping="Wrap" IsVisible="False" />
                 </Grid>
                 <StackPanel Name="AkunBayarRow" Orientation="Horizontal" Spacing="8" IsVisible="False">
                     <TextBlock Text="Akun Bayar" VerticalAlignment="Center" />
