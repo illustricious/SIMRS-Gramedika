@@ -27,12 +27,12 @@ Status 28 November 2026. Repo GitHub `illustricious/SIMRS-Gramedika`, branch `ma
 - Operasi/VK rawat inap bisa diinput dan dihapus beserta obat kamar operasi, laporan dan jurnalnya, dan ikut tagihan rawat inap ([log 12](12-SESSION-2026-11-27.md#operasi-rawat-inap)).
 - Dokter bisa mengirim dan mengubah resep racikan rawat jalan ([log 12](12-SESSION-2026-11-27.md#resep-racikan-dari-dokter)).
 - Kasir bisa menyimpan tagihan sebagai piutang, menerima cicilan dan membatalkannya ([log 12](12-SESSION-2026-11-27.md#piutang-pasien)).
-- Kasir menagih tambahan biaya, potongan biaya dan deposit rawat inap; ada juga empat lembar EWS ([log 14](14-SESSION-2026-11-28.md#kasir-deposit-tambahan-dan-potongan)). Belum di-commit.
-- Layar Rawat Inap bisa mengirim resep dokter serta permintaan lab dan radiologi ([log 14](14-SESSION-2026-11-28.md#order-rawat-inap)). Belum di-commit.
+- Kasir menagih tambahan biaya, potongan biaya dan deposit rawat inap; ada juga empat lembar EWS ([log 14](14-SESSION-2026-11-28.md#kasir-deposit-tambahan-dan-potongan)).
+- Layar Rawat Inap bisa mengirim resep dokter serta permintaan lab dan radiologi ([log 14](14-SESSION-2026-11-28.md#order-rawat-inap)).
 - Cek "kunjungan sudah ditagih" disatukan di `TagihanKunjungan` dan mengikuti Khanza (hanya baris `billing`).
 - Pengaturan tanggal mundur Khanza tersedia pada profil koneksi.
 - Order rawat jalan yang belum diproses bisa dibatalkan; layar laporan generik bisa dicetak PDF berkop.
 - Peta fungsi: paling banyak 43% pasangan tabel-aksi tulis jendela Java punya padanan (948 dari 2.202, tanpa bridging); 257 tile hanya menampilkan data yang di Java bisa diisi. Analisis statis, angka batas atas.
-- Layar Rawat Inap dan menu klinis Rawat Jalan punya tombol pencarian formulir ([log 14](14-SESSION-2026-11-28.md#tombol-formulir)); belum di-commit.
+- Layar Rawat Inap dan menu klinis Rawat Jalan punya tombol pencarian formulir ([log 14](14-SESSION-2026-11-28.md#tombol-formulir)).
 - Tes terakhir: skrip fixture lulus seluruhnya (87 + 1 + 33 fixture; tanpa database 233 lulus, 48 dilewati).
-- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611280241` (dari `08201cb`) memuat lembar observasi dan skrining, belum memuat tombol formulir, perubahan Kasir, EWS dan order rawat inap. Commit 28 November belum di-push. Pre-release GitHub tertinggal dari source.
+- Belum diuji pada database RS, bersama klien Java, atau dengan klik di aplikasi memakai database. EXE lokal terbaru `202611280738` (dari `b38f9e3`) memuat semua fitur di atas. Commit 28 November belum di-push. Pre-release GitHub tertinggal dari source.
