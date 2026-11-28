@@ -277,7 +277,7 @@ public class PasienBaruService(DatabaseSettings settings, AuthenticatedUser peng
     }
 
     /// <summary>Kode wilayah dicari menurut nama; nama baru ditambahkan ke master dalam transaksi pemanggil.</summary>
-    private static async Task TerapkanWilayahAsync(SimrsGramedikaDbContext context, Pasien pasien, Wilayah wilayah, CancellationToken ct)
+    internal static async Task TerapkanWilayahAsync(SimrsGramedikaDbContext context, Pasien pasien, Wilayah wilayah, CancellationToken ct)
     {
         // Nama tabel dan kolom berupa konstanta; hanya nama wilayah yang berasal dari pengguna.
 #pragma warning disable EF1002 // hanya konstanta yang diinterpolasi

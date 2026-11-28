@@ -290,6 +290,7 @@ public partial class MainWindow : Window
 
             // [C] Presensi, Manajemen & Penggajian Pegawai (most tiles are data — see MenuCSpecs below)
             case "btnPemesanan": await OpenPageAsync(new Modules.Farmasi.PenerimaanView()); return;
+            case "btnLahir": await OpenPageAsync(new Modules.RekamMedis.KelahiranBayiView()); return;
             case "btnPenggajian": await OpenPageAsync(new Modules.Kepegawaian.PenggajianView()); return;
             case "btnSKPPenilaianPegawai": await OpenPageAsync(new Modules.Kepegawaian.SkpPenilaianView()); return;
             case "btnSKPRekapitulasiPenilaian": await OpenPageAsync(new Modules.Kepegawaian.SkpRekapView()); return;

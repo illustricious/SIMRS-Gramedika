@@ -265,19 +265,6 @@ public static class MenuMSpecs
 
     public static readonly IReadOnlyDictionary<string, ReportSpec> Reports = new Dictionary<string, ReportSpec>
     {
-        ["btnLahir"] = ReadOnly("Kelahiran Bayi",
-            """
-            SELECT b.no_rkm_medis,p.nm_pasien,b.nama_ayah,b.umur_ayah,b.umur_ibu,b.berat_badan,b.panjang_badan,
-                   b.lingkar_kepala,b.lingkar_dada,b.lingkar_perut,b.proses_lahir,b.anakke,b.jam_lahir,b.penolong,b.diagnosa,b.keterangan
-            FROM pasien_bayi b LEFT JOIN pasien p ON p.no_rkm_medis=b.no_rkm_medis
-            WHERE CONCAT_WS(' ',b.no_rkm_medis,p.nm_pasien,b.nama_ayah,b.proses_lahir,b.penolong,b.diagnosa,b.keterangan) LIKE @p0
-            ORDER BY p.nm_pasien,b.no_rkm_medis
-            """,
-            [("no_rkm_medis", "No. RM"), ("nm_pasien", "Bayi"), ("nama_ayah", "Ayah"), ("umur_ayah", "Umur Ayah"),
-             ("umur_ibu", "Umur Ibu"), ("berat_badan", "Berat"), ("panjang_badan", "Panjang"), ("lingkar_kepala", "Lingkar Kepala"),
-             ("lingkar_dada", "Lingkar Dada"), ("lingkar_perut", "Lingkar Perut"), ("proses_lahir", "Proses Lahir"),
-             ("anakke", "Anak Ke"), ("jam_lahir", "Jam Lahir"), ("penolong", "Penolong"), ("diagnosa", "Diagnosa"), ("keterangan", "Keterangan")]),
-
         ["btnCatatanPasien"] = ReadOnly("Catatan Pasien",
             "SELECT c.no_rkm_medis,p.nm_pasien,c.catatan FROM catatan_pasien c LEFT JOIN pasien p ON p.no_rkm_medis=c.no_rkm_medis WHERE CONCAT_WS(' ',c.no_rkm_medis,p.nm_pasien,c.catatan) LIKE @p0 ORDER BY p.nm_pasien,c.no_rkm_medis",
             [("no_rkm_medis", "No. RM"), ("nm_pasien", "Pasien"), ("catatan", "Catatan")]),

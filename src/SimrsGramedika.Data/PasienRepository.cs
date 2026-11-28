@@ -14,7 +14,9 @@ public interface IPasienRepository
     Task<string> NextNoRekamMedisAsync(CancellationToken ct = default);
 
     /// <param name="sebelumSimpan">Langkah tambahan di dalam transaksi yang sama, misalnya kode wilayah.</param>
-    Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default);
+    /// <param name="sesudahSimpan">Langkah di dalam transaksi yang sama yang memerlukan baris pasien sudah ada.</param>
+    Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default,
+        Func<CancellationToken, Task>? sesudahSimpan = null);
 }
 
 public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
@@ -55,7 +57,8 @@ public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
         }
     }
 
-    public async Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default)
+    public async Task SaveNewAsync(Pasien pasien, Func<CancellationToken, Task>? sebelumSimpan = null, CancellationToken ct = default,
+        Func<CancellationToken, Task>? sesudahSimpan = null)
     {
         await using var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.Serializable, ct);
         var connection = db.Database.GetDbConnection();
@@ -73,6 +76,7 @@ public class PasienRepository(SimrsGramedikaDbContext db) : IPasienRepository
         if (sebelumSimpan is not null) await sebelumSimpan(ct);
         db.PasienSet.Add(pasien);
         await db.SaveChangesAsync(ct);
+        if (sesudahSimpan is not null) await sesudahSimpan(ct);
 
         await db.Database.ExecuteSqlRawAsync("DELETE FROM set_no_rkm_medis", ct);
         await db.Database.ExecuteSqlRawAsync("INSERT INTO set_no_rkm_medis(no_rkm_medis) VALUES ({0})", [candidate], ct);
