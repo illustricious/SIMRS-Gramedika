@@ -32,6 +32,10 @@ Skrip membuat MariaDB sementara di `127.0.0.1:33177` berisi struktur dari `schem
 
 MariaDB portabel: skrip mengekstrak `dist\mariadb-test-11.4.8.zip` (tidak di git) ke folder TEMP, atau beri `-MariaDb <folder berisi bin\mariadbd.exe>`. Fixture baru ditambahkan ke daftar tabel dan filter di skrip.
 
+## Uji klik headless
+
+`tools\klik-headless.ps1` menjalankan tes sementara `ZzSementaraKlikTests` pada MariaDB sementara. Cara dan contohnya di [handover 15](15-HANDOVER-AGEN-LAIN.md#uji-klik-headless).
+
 ## Exe tunggal lokal (portabel)
 
 ```powershell
