@@ -22,9 +22,16 @@ Aturan bersama:
 - Ubah dan hapus mengunci baris dan ditolak bila catatan berubah sejak dimuat.
 - Skor gizi dan skala Morse dihitung ulang di layanan saat disimpan.
 
-Klik kanan pasien mengelompokkan formulir: Pengkajian & Catatan, Observasi & Pemantauan, Kriteria Ruang Rawat, Skrining, serta Risiko Jatuh, Dekubitus & Fungsional.
+Klik kanan pasien mengelompokkan formulir: Pengkajian & Catatan, Observasi & Pemantauan, Kriteria Ruang Rawat, Peringatan Dini (EWS), Skrining, serta Risiko Jatuh, Dekubitus & Fungsional.
 
-Dibuka dari: tile Menu M (tombol **Isi / Ubah Formulir** pada daftar), klik kanan pasien → Data Rekam Medis → Formulir Rekam Medis, dan menu klinis Rawat Jalan.
+Dibuka dari:
+
+- Tile Menu M, tombol **Isi / Ubah Formulir** pada daftar.
+- Klik kanan pasien → Data Rekam Medis → Formulir Rekam Medis.
+- Layar Rawat Inap, tombol **Formulir Rekam Medis** untuk pasien terpilih.
+- Menu klinis Rawat Jalan: tombol Khanza yang formulirnya sudah ada, ditambah **Cari Formulir Rekam Medis…** di paling atas untuk semua formulir.
+
+Kedua tombol baru membuka pencarian (`UI/Modules/RekamMedis/PilihFormulir.cs`) yang hanya memuat formulir yang boleh diakses akun. Tombol menu klinis memakai hak formulirnya; pada Khanza tombol Observasi CHBP tampil memakai hak observasi post partum, di sini memakai `catatan_observasi_chbp`.
 
 ## Lembar observasi dan pemantauan (28 November 2026)
 
@@ -44,7 +51,7 @@ Perbedaan khusus kelompok ini:
 
 - Keseimbangan cairan selalu dihitung (input dikurangi output) dan tidak bisa diketik. Kolom `keseimbangan` hanya 4 karakter, jadi hasil seperti `-1250` atau `262.5` ditolak dengan pesan; di layar Java hasil yang terlalu panjang tidak masuk ke kotaknya.
 - Cetak satu catatan per halaman; Khanza mencetak tabel banyak catatan. Formulir kosong Khanza (cetak untuk diisi tangan) dan grafik tidak ada.
-- Dari menu klinis Rawat Jalan hanya Monitoring Gizi yang terhubung; lembar lain dibuka dari Menu M atau klik kanan pasien. Belum ada tombol dari layar Rawat Inap.
+- Tombol menu klinis dan layar Rawat Inap ditambahkan sesudah kelompok ini ditulis; lihat daftar "Dibuka dari" di atas.
 
 ## Skrining dan penilaian risiko (28 November 2026)
 
@@ -104,7 +111,7 @@ Isian "usulan" (misalnya kesimpulan CURB-65, SRQ, ACRS, AMT, ESAT, TBC, TOLAC, h
 
 Perbedaan dari Khanza pada kelompok ini:
 
-- **SDQ.** Layar Java membandingkan ambang "Ambang/Boderline" tiap subskala dan skor kesulitan dengan total 25 butir, dan satu cabang masalah perilaku menulis ke kotak emosional. Di sini tiap kesimpulan memakai nilai subskalanya sendiri, jadi hasilnya bisa berbeda dari Khanza.
+- **SDQ.** Layar Java membandingkan ambang "Ambang/Boderline" tiap subskala dan skor kesulitan dengan total 25 butir, dan satu cabang masalah perilaku menulis ke kotak emosional. Di sini tiap kesimpulan memakai nilai subskalanya sendiri, jadi hasilnya bisa berbeda dari Khanza. Pemilik menyetujui perbedaan ini (28 November): beda dari Khanza diterima bila lebih akurat dan efisien.
 - **Risiko jatuh anak** total 12 ke atas: layar Java tidak menampilkan teks tingkat risiko; di sini tampil "Risiko Tinggi (>= 12)". Teks ini tidak disimpan.
 - **Thalassemia.** Java mengikuti hasil lab yang terakhir diubah; di sini saran rujuk muncul bila salah satu hasil tidak normal.
 - Nilai yang di Java bisa diketik (kotak skor, pilihan nilai nutrisi dewasa) di sini selalu dihitung.
@@ -116,6 +123,24 @@ Belum ditambahkan:
 - Skrining Perilaku Merokok Usia Sekolah: perlu pemilih master sekolah.
 - Skrining Mental Emosional: layar Java menulis ke tabel `skrining_instrumen_acrs`, sama dengan ACRS.
 - MPP Form B: punya kolom tanggal tambahan.
+
+## Peringatan dini / EWS (28 November 2026)
+
+Empat lembar di `Data/RekamMedis/FormEws.cs`. Satu baris per waktu, pemilik petugas, batas ubah/hapus 2 x 24 jam, waktu minimal registrasi dan ikut kunci tanggal mundur.
+
+| Formulir | Sumber Java |
+|---|---|
+| Pemantauan EWS Pasien Dewasa | `RMPemantauanEWSD.java` |
+| Pemantauan PEWS Pasien Anak | `RMPemantauanPEWS.java` |
+| Pemantauan EWS Pasien Neonatus | `RMPemantauanEWSNeonatus.java` |
+| Pemantauan MEOWS Pasien Obstetri | `RMPemantauanMEOWS.java` |
+
+Skor, total dan kalimat tindak lanjut dibandingkan dengan method Java yang diterjemahkan ke JavaScript pada seluruh 218.344 kombinasi pilihan; isian awal dicocokkan dengan `emptTeks`. Alat pembanding sementara tidak disimpan. Total dan tindak lanjut juga ditampilkan di bawah bagian isian agar terlihat tanpa menggulung.
+
+- **EWS Neonatus, Warna Kulit:** layar Java mewajibkan, menyimpan dan mencetak skornya (Pucat = 2), tetapi `isjml` tidak menjumlahkannya. Di sini sama; layar menampilkan peringatan bila skornya tidak nol. Pemilik meminta dijumlahkan hanya bila sesuai aturan WHO atau Kemenkes. Pencarian web 28 November tidak menemukan skor peringatan dini neonatus resmi dari WHO maupun naskah pedoman Kemenkes yang memuat tabel skornya (portal pelatihan Kemenkes hanya mencantumkan sesinya), jadi syarat itu belum terpenuhi. Bila SPO rumah sakit menjumlahkannya, hapus `diluarTotal` pada `FormEws.cs`. Selisihnya: 2 poin pada 2.160 dari 4.320 kombinasi, dan tindak lanjut naik pada 1.023.
+- Kalimat tindak lanjut disalin apa adanya, termasuk salah ketik pada EWS Dewasa.
+- Code Blue (Neonatus, MEOWS) dipilih petugas, tidak terisi dari skor, sama seperti Java.
+- Cetak satu catatan per halaman; formulir grafik cetak Khanza (`rptFormulirPemantauan*`) tidak ada.
 
 ## Perbedaan dari Khanza
 

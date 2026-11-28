@@ -89,15 +89,15 @@
   },
   "aksi|inventory/DlgPeresepanDokter.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "Kirim dan ubah resep nonracikan rawat jalan lewat Alur Kunjungan. Racikan dan aturan input lain belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+    "bukti": "Kirim dan ubah resep, termasuk racikan, untuk rawat jalan dan rawat inap (OrderRalanService). Template, salin resep dan aturan input lain belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "aksi|permintaan/DlgPermintaanLaboratorium.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "Kirim dan ubah permintaan lab PK/PA/MB rawat jalan selama belum diambil sampel atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+    "bukti": "Kirim dan ubah permintaan lab PK/PA/MB rawat jalan dan rawat inap selama belum diambil sampel atau dibayar. Cetak belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "aksi|permintaan/DlgPermintaanRadiologi.java|BtnSimpan": {
     "status": "sebagian",
-    "bukti": "Kirim dan ubah permintaan radiologi rawat jalan selama belum diproses atau dibayar. Rawat inap belum. Diuji pada MariaDB sintetis; klik di aplikasi dan database RS belum diuji."
+    "bukti": "Kirim dan ubah permintaan radiologi rawat jalan dan rawat inap selama belum diproses atau dibayar. Cetak belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "popup|rekammedis/RMDataResumePasien.java|jPopupMenu1|MnLaporanResume": {
     "status": "sebagian",
@@ -2880,8 +2880,8 @@
     "bukti": "simrskhanza/DlgRawatInap.java:6830 - PatientContextMenu dan MainWindow.HandlePatientMenuAsync membuka PatientHistoryWindow dari daftar kamar dengan konteks pasien. Tombol di layar klinis belum tersedia."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnResepObat": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:6624 - Handler membuka DlgPeresepanDokter dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "Resep dokter rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnCopyResep": {
     "status": "kurang",
@@ -2908,12 +2908,12 @@
     "bukti": "simrskhanza/DlgRawatInap.java:6705 - Handler membuka DlgBerkasRawat dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanLab": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:6730 - Handler membuka DlgPermintaanLaboratorium dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "Permintaan lab rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnPermintaanRad": {
-    "status": "kurang",
-    "bukti": "simrskhanza/DlgRawatInap.java:6747 - Handler membuka DlgPermintaanRadiologi dari konteks klinis. RawatInapView tidak menyediakan rute itu dari kunjungan. Kesetaraan tile terpisah belum diverifikasi."
+    "status": "sebagian",
+    "bukti": "Permintaan radiologi rawat inap, dibuka dari layar Rawat Inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   },
   "aksi|simrskhanza/DlgRawatInap.java|BtnJadwalOperasi": {
     "status": "kurang",
@@ -4610,5 +4610,129 @@
   "aksi|rekammedis/RMSkriningTalasemia.java|BtnPrint": {
     "status": "sebagian",
     "bukti": "Skrining Thalassemia: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSD.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Dewasa: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSD.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Dewasa: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSD.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Dewasa: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSD.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Dewasa: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanPEWS.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Pemantauan PEWS Pasien Anak: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanPEWS.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Pemantauan PEWS Pasien Anak: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanPEWS.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Pemantauan PEWS Pasien Anak: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanPEWS.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Pemantauan PEWS Pasien Anak: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Neonatus: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Neonatus: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Neonatus: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanEWSNeonatus.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Pemantauan EWS Pasien Neonatus: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanMEOWS.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Pemantauan MEOWS Pasien Obstetri: Simpan lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanMEOWS.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Pemantauan MEOWS Pasien Obstetri: Ubah lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanMEOWS.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Pemantauan MEOWS Pasien Obstetri: Hapus lewat mesin formulir (FormKlinisService) dengan hak menu, pemilik catatan dan batas waktu mengikuti handler Java. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "aksi|rekammedis/RMPemantauanMEOWS.java|BtnPrint": {
+    "status": "sebagian",
+    "bukti": "Pemantauan MEOWS Pasien Obstetri: cetak umum berkop RS dengan QR pemilik catatan, bukan templat Jasper Khanza. Diuji pada MariaDB sintetis; klik di aplikasi asli dan database RS belum diuji. Lihat AUDIT_REKAM_MEDIS.md."
+  },
+  "popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnTambahan": {
+    "status": "sebagian",
+    "bukti": "Tambahan biaya: layar tambah dan hapus (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPotongan": {
+    "status": "sebagian",
+    "bukti": "Potongan biaya: layar tambah dan hapus (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRalan.java|BtnSimpan3": {
+    "status": "sebagian",
+    "bukti": "Simpan tambahan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRalan.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Hapus tambahan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRalan.java|BtnSimpanPotongan": {
+    "status": "sebagian",
+    "bukti": "Simpan potongan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRalan.java|BtnHapusPotongan": {
+    "status": "sebagian",
+    "bukti": "Hapus potongan biaya (Rawat Jalan) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnTambahan": {
+    "status": "sebagian",
+    "bukti": "Tambahan biaya: layar tambah dan hapus (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnPotongan": {
+    "status": "sebagian",
+    "bukti": "Potongan biaya: layar tambah dan hapus (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRanap.java|BtnSimpan3": {
+    "status": "sebagian",
+    "bukti": "Simpan tambahan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRanap.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Hapus tambahan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRanap.java|BtnSimpanPotongan": {
+    "status": "sebagian",
+    "bukti": "Simpan potongan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "aksi|keuangan/DlgBilingRanap.java|BtnHapusPotongan": {
+    "status": "sebagian",
+    "bukti": "Hapus potongan biaya (Rawat Inap) di Kasir (KasirRepository.Penyesuaian), ikut tagihan dan jurnal. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanLab": {
+    "status": "sebagian",
+    "bukti": "Permintaan lab rawat inap PK/PA/MB lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnPermintaan|MnPermintaanRadiologi": {
+    "status": "sebagian",
+    "bukti": "Permintaan radiologi rawat inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnResepDOkter": {
+    "status": "sebagian",
+    "bukti": "Resep dokter rawat inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   }
 }

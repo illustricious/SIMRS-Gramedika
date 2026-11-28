@@ -39,6 +39,21 @@ Sejak 28 November 2026 piutang dapat dicatat di Kasir ([bagian piutang](#piutang
 
 Kasir dapat menyimpan tagihan sebagai piutang dengan uang muka, dan jendela **Piutang Pasien** mencatat serta membatalkan cicilan (`KasirRepository.Piutang.cs`, `PiutangPasienService`, pembanding `DlgBilingRalan`, `DlgBilingRanap`, `DlgBayarPiutang`). Rincian, perbedaan dari Khanza dan bagian yang belum ada di [log 12](../handover/12-SESSION-2026-11-27.md#piutang-pasien). Uji memakai MariaDB sintetis; belum diuji pada database RS atau bersama klien Java.
 
+## Deposit, tambahan dan potongan biaya di Kasir (28 November 2026)
+
+Bagian ini menggantikan batas pada dua bagian sebelumnya untuk deposit rawat inap, tambahan dan potongan biaya. Pembanding: `DlgBilingRalan.java` dan `DlgBilingRanap.java` (`MnTambahan`, `MnPotongan`, `isKembali` dan simpan nota).
+
+- Kasir menambah dan menghapus **Tambahan Biaya** (hak `tambahan_biaya`) dan **Potongan Biaya** (hak `potongan_biaya`) pada kunjungan yang belum ditagih (`KasirRepository.Penyesuaian.cs`, `PenyesuaianWindow`). Nama paling panjang 60 huruf, unik per kunjungan; nilai lebih dari nol, paling banyak empat desimal. Perubahan memakai kunci kunjungan yang sama dengan pelunasan. Biaya bayi rawat gabung dicatat pada No. Rawat ibu.
+- Keduanya masuk tagihan Rawat Jalan dan Rawat Inap sebagai baris `Tambahan` dan `Potongan` (negatif), disimpan ke `billing` seperti Khanza, dan dijurnal ke `Tambahan_Ralan`/`Potongan_Ralan` atau `Tambahan_Ranap`/`Potongan_Ranap`.
+- Potongan yang melebihi tagihan, atau nilai negatif pada tabel tambahan/potongan, menahan pelunasan. Tagihan yang habis oleh potongan disimpan tanpa akun bayar dan tetap dijurnal.
+- Deposit rawat inap (jumlah `deposit.besar_deposit`) mengurangi yang harus dibayar. Nota menyimpan `Uang_Muka`, jurnal mendebit `Uang_Muka_Ranap`, dan `tagihan_sadewa` mencatat total tagihan dengan jumlah bayar total dikurangi deposit.
+- Deposit melebihi tagihan: tanpa pembayaran baru, selisih dikredit ke `Sisa_Uang_Muka_Ranap` dan dicatat di `pengembalian_deposit`; `tagihan_sadewa` tidak ditulis, mengikuti Khanza. Judul jurnalnya "PEMBAYARAN", sedangkan Khanza menulis "PIUTANG" pada cabang ini.
+- Piutang bersama deposit: `piutang_pasien.uangmuka` berisi uang muka ditambah deposit.
+- Kuitansi PDF menampilkan deposit yang diperhitungkan dan sisa yang dikembalikan.
+- Masih diarahkan ke Kasir Khanza: deposit pada kunjungan rawat jalan (billing Khanza tidak memperhitungkannya), deposit atau penyesuaian pada bayi rawat gabung, kunjungan yang sudah punya catatan pengembalian deposit, tambahan per baris di `temporary_tambahan_potongan`, retur obat, obat langsung, dan biaya service.
+- Belum ada: batal nota, dan tombol input deposit di layar Kasir (deposit tetap dari layar **Deposit Pasien**).
+- `KasirPenyesuaianTests` lulus pada MariaDB sintetis. Alur tambah biaya lalu bayar diklik lewat tes headless sementara dengan database sementara. Belum diuji: database RS atau salinannya dan bersamaan dengan klien Java.
+
 ## Validasi, pembatalan dan penyerahan resep (27 November 2026)
 
 Layar **Farmasi > Daftar Resep Dokter** (`DaftarResepView`, `PilihObatWindow`, `ValidasiResepService`) kini dapat memproses resep, sebelumnya baca saja. Pembanding: `inventory/DlgDaftarPermintaanResep.java`, `DlgCariObat.java`, `DlgCariObat2.java`, `DlgPemberianObat.java` dan `webapps/penyerahanresep`.

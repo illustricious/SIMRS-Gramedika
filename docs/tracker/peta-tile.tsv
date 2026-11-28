@@ -857,10 +857,10 @@ M	btnMonitoringReaksiTranfusi	Monitoring Reaksi Tranfusi	RMDataMonitoringReaksiT
 M	btnLaporanReaksiTranfusi	Laporan Reaksi Tranfusi	RMReaksiTransfusi	ya	baca saja	hanya baca
 M	btnPenilaianGRACEScore	Penilaian GRACE Score	RMPenilaianGRACE	ya	baca saja	hanya baca
 M	btnPenilaianBISHOPScore	Penilaian BISHOP Score	RMPenilaianBishop	ya	baca saja	hanya baca
-M	btnPemantauanPEWSAnak	Pemantauan PEWS Pasien Anak	RMPemantauanPEWS	ya	baca saja	hanya baca
-M	btnPemantauanPEWSDewasa	Pemantauan EWS Pasien Dewasa	RMPemantauanEWSD	ya	baca saja	hanya baca
-M	btnPemantauanMEOWS	Pemantauan MEOWS Pasien Obstetri	RMPemantauanMEOWS	ya	baca saja	hanya baca
-M	btnPemantauanEWSNeonatus	Pemantauan EWS Pasien Neonatus	RMPemantauanEWSNeonatus	ya	baca saja	hanya baca
+M	btnPemantauanPEWSAnak	Pemantauan PEWS Pasien Anak	RMPemantauanPEWS	ya	formulir	tulis ada
+M	btnPemantauanPEWSDewasa	Pemantauan EWS Pasien Dewasa	RMPemantauanEWSD	ya	formulir	tulis ada
+M	btnPemantauanMEOWS	Pemantauan MEOWS Pasien Obstetri	RMPemantauanMEOWS	ya	formulir	tulis ada
+M	btnPemantauanEWSNeonatus	Pemantauan EWS Pasien Neonatus	RMPemantauanEWSNeonatus	ya	formulir	tulis ada
 M	btnHemodialisa	Hemodialisa	RMHemodialisa	ya	baca saja	hanya baca
 M	btnFisioterapi	Awal Fisioterapi	RMPenilaianFisioterapi	ya	baca saja	hanya baca
 M	btnPenilaianTerapiWicara	Pengkajian Terapi Wicara	RMPenilaianTerapiWicara	ya	baca saja	hanya baca

@@ -103,3 +103,22 @@ Diuji pada fixture MariaDB sintetis. Penguncian dengan dua koneksi hanya diuji p
 ## Operasi/VK (27 November 2026)
 
 `OperasiService` mengikuti `DlgTagihanOperasi.java:2906` dan `DlgCariTagihanOperasi.java:1832`; baris tagihan mengikuti `DlgBilingRanap.prosesCariOperasi`. Rincian, perbedaan dan batasnya di [log 12](../handover/12-SESSION-2026-11-27.md#operasi-rawat-inap). Jurnal belum dibandingkan dengan Khanza pada data rumah sakit.
+
+## Resep dokter dan permintaan penunjang (28 November 2026)
+
+Layar Rawat Inap mendapat tombol **Resep Dokter**, **Permintaan Lab** dan **Permintaan Radiologi**; klik kanan pasien rawat inap (**Obat** dan **Permintaan**) membuka layar yang sama. Layar dan layanan memakai milik rawat jalan (`OrderRalanView`, `OrderRalanService` dengan `ranap`). Pembanding: `DlgPeresepanDokter.java`, `DlgPermintaanLaboratorium.java`, `DlgPermintaanRadiologi.java`, serta menu di `DlgKamarInap.java` dan tombol di `DlgRawatInap.java`.
+
+- Hak `resep_dokter`, `permintaan_lab`, `permintaan_radiologi`. Resep termasuk racikan; lab PK, PA dan MB.
+- Order disimpan dengan status `ranap`, sehingga masuk daftar rawat inap di Farmasi, Lab dan Radiologi, dan menahan pelunasan sampai diproses atau dibatalkan.
+- Tarif pemeriksaan mengikuti kelas kamar yang sedang ditempati (atau `-`) bila `set_tarif` membatasi kelas. Bayi rawat gabung memakai kamar ibu, dengan order atas No. Rawat bayi.
+- Pengirim adalah dokter yang login. Admin Utama mengirim atas nama DPJP, atau dokter registrasi bila belum ada DPJP.
+- Ubah dan batal: sebelum diproses atau dibayar, oleh dokter pengirim atau Admin Utama, sama dengan rawat jalan.
+
+Lebih ketat daripada Khanza:
+
+- Pasien harus sedang menempati kamar. Khanza hanya memeriksa billing; obat untuk dibawa pulang di sini memakai Resep Pulang.
+- Akun biasa harus terhubung ke dokter dan tidak bisa memilih dokter lain, sehingga perawat belum bisa memasukkan order atas nama dokter.
+
+Belum ada: stok dan harga obat saat meresepkan, template dan salin resep, cetak resep dan permintaan, input parsial, serta dokter perujuk pilihan.
+
+`OrderRanapTests` lulus pada MariaDB sintetis. Tombol sampai resep terkirim diklik lewat tes headless sementara. Belum diuji: database RS atau salinannya dan bersamaan dengan klien Java.

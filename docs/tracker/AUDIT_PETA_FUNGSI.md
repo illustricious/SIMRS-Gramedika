@@ -47,20 +47,19 @@ Tiga contoh yang masih terlalu tinggi di peta, karena dinilai per tabel:
 
 - `DlgBilingParsialRalan` "sebagian": Gramedika tidak punya billing parsial sama sekali; tabelnya ditulis alur lain.
 - `DlgIKBBayi` "sebagian": data bayi (`pasien_bayi`) tidak ditulis; yang tercakup hanya pendaftaran pasien biasa.
-- `DlgPermintaanRadiologi` "tulis ada": Gramedika hanya membuat order rawat jalan; cabang rawat inap belum ada.
+- `DlgPermintaanRadiologi` "tulis ada": saat sampel dicek, Gramedika hanya membuat order rawat jalan. Cabang rawat inap ditambahkan 28 November.
 
 Perkiraan dari sampel kecil: sekitar 1 dari 5 jendela alur inti yang berstatus "ada" dinilai lebih tinggi dari kenyataan.
 Perlakukan angka "tulis ada" sebagai langit-langit.
 
 ## Temuan utama
 
-1. **Sepertiga lebih aksi tulis Java punya padanan.** 931 dari 2.202 pasangan tabel-aksi (42%), sebelum dikoreksi ke bawah.
-2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 317 jendela "tulis ada" tercakup layar master satu tabel.
-3. **261 tile hanya menampilkan** data yang di Java bisa diisi; 125 di antaranya Menu M (rekam medis).
-4. **Rekam medis adalah kelompok terbesar yang tersisa:** 87 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
+1. **Sepertiga lebih aksi tulis Java punya padanan.** 948 dari 2.202 pasangan tabel-aksi (43%), sebelum dikoreksi ke bawah.
+2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 321 jendela "tulis ada" tercakup layar master satu tabel.
+3. **257 tile hanya menampilkan** data yang di Java bisa diisi; 121 di antaranya Menu M (rekam medis).
+4. **Rekam medis adalah kelompok terbesar yang tersisa:** 83 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
    isi" belum berarti muat di mesin formulir; pemilik ganda, bentuk kunci dan tipe kolom harus dicek per formulir.
-5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** pengurangan dan tambahan
-   biaya, data bayi lahir, pengadaan farmasi,
+5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** data bayi lahir, pengadaan farmasi,
    retur beli, retur jual dan piutang obat.
 6. Pembelian, pemesanan, pengeluaran dan retur Dapur, Non Medis dan Toko hanya tampil; master barangnya yang bisa diedit.
 7. Tiga berkas Data tidak dipakai antarmuka: `DokterRepository`, `PenunjangRepository`, `RawatJalanRepository`.
@@ -76,6 +75,6 @@ berguna untuk menentukan prioritas.
 
 1. Daftar menu yang dipakai sehari-hari dari rumah sakit, lalu saring [peta-fungsi.tsv](peta-fungsi.tsv) dengannya.
 2. Uji alur inti pada salinan database RS (perlu persetujuan pemilik sistem).
-3. Celah alur uang dan pasien: deposit dan penyesuaian di kasir.
+3. Celah alur uang dan pasien: batal nota, retur dan penjualan di kasir.
 4. Formulir rekam medis per kelompok lewat mesin formulir.
 5. Transaksi stok non-farmasi.
