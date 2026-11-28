@@ -201,12 +201,21 @@ public sealed class RawatJalanKunjunganView : UserControl
     {
         _menu.Children.Clear();
         var search = _search.Text?.Trim() ?? "";
+        // Pintu ke semua formulir, termasuk yang tidak punya tombol sendiri pada menu Khanza.
+        if (Modules.RekamMedis.PilihFormulir.Ada(_user))
+        {
+            var semua = Ui.Btn("Cari Formulir Rekam Medis…", async (_, _) => await CariFormulirAsync());
+            semua.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _menu.Children.Add(semua);
+        }
+        var tetap = _menu.Children.Count;
         foreach (var item in MenuKlinisRalanCatalog.Items.Where(item => _user.HasPermission(item.Permission) &&
             item.Id != "BtnResepIterasiBPJS" && item.Label.Contains(search, StringComparison.CurrentCultureIgnoreCase)))
         {
             var spec = CariLaporan(item);
             var input = item.Id is "BtnResepObat" or "BtnPermintaanLab" or "BtnPermintaanRad" or "BtnResume";
-            var available = input || spec is not null || FormKlinisKatalog.Cari(item.ReportKey) is not null;
+            var available = input || spec is not null
+                || FormKlinisKatalog.Cari(item.ReportKey) is { } isian && _user.HasPermission(isian.Izin);
             var label = new TextBlock
             {
                 Text = available ? item.Label : $"{item.Label} · Belum tersedia",
@@ -223,7 +232,7 @@ public sealed class RawatJalanKunjunganView : UserControl
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             _menu.Children.Add(button);
         }
-        if (_menu.Children.Count == 0) _menu.Children.Add(Ui.Hint("Menu tidak ditemukan."));
+        if (_menu.Children.Count == tetap) _menu.Children.Add(Ui.Hint("Menu tidak ditemukan."));
     }
 
     private void BukaAlurKunjungan(string id, string judul)
@@ -241,6 +250,13 @@ public sealed class RawatJalanKunjunganView : UserControl
             _alurKunjungan[id] = view;
         }
         TampilkanMenu(judul, view);
+    }
+
+    private async Task CariFormulirAsync()
+    {
+        if (!_ready || TopLevel.GetTopLevel(this) is not Window owner) return;
+        if (await Modules.RekamMedis.PilihFormulir.TampilkanAsync(owner, _user, _patient.NamaPasien) is { } form)
+            await BukaFormulirAsync(form);
     }
 
     private async Task BukaFormulirAsync(FormKlinis form)

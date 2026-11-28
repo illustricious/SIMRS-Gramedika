@@ -4,7 +4,7 @@
         Title="Cari Data"
         Width="480" Height="420"
         WindowStartupLocation="CenterOwner"
-        Background="#2E4057">
+        Background="{DynamicResource ThemeSurfaceBrush}">
 
     <!--
         Generic search/pick popup — replaces the legacy 16-strong Dlg*Cari*
@@ -14,14 +14,15 @@
     -->
     <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="16">
         <TextBlock Name="TitleText" Grid.Row="0" Text="Cari Data"
-                   FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,8" />
+                   FontSize="16" FontWeight="Bold" Foreground="{DynamicResource ThemeTextBrush}" Margin="0,0,0,8" />
 
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
             <TextBox Name="QueryBox" Grid.Column="0" PlaceholderText="Ketik untuk mencari..." />
-            <Button Name="SearchButton" Grid.Column="1" Content="Cari" Margin="8,0,0,0" Click="OnSearchClick" />
+            <Button Name="SearchButton" Grid.Column="1" Content="Cari" Margin="8,0,0,0" Click="OnSearchClick" IsDefault="True" />
         </Grid>
 
-        <ListBox Name="ResultsList" Grid.Row="2" Background="#1B2A41"
+        <ListBox Name="ResultsList" Grid.Row="2" Background="{DynamicResource ThemeSurfaceBrush}"
+                  BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
                   DoubleTapped="OnResultDoubleTapped" />
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0" Spacing="8">

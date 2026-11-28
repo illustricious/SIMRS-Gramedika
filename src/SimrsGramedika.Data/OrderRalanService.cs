@@ -21,7 +21,12 @@ public sealed record DrafOrderRalan(string Nomor, string Dokter, string Diagnosa
     internal string Sidik => System.Text.Json.JsonSerializer.Serialize(this);
 }
 
-public sealed class OrderRalanService(DatabaseSettings settings, string noRawat, string noRm, AuthenticatedUser user, JenisOrderRalan jenis)
+/// <summary>
+/// Resep dokter serta permintaan lab dan radiologi satu kunjungan: rawat jalan, atau rawat inap bila
+/// <paramref name="ranap"/> (DlgPeresepanDokter, DlgPermintaanLaboratorium dan DlgPermintaanRadiologi).
+/// </summary>
+public sealed class OrderRalanService(DatabaseSettings settings, string noRawat, string noRm, AuthenticatedUser user, JenisOrderRalan jenis,
+    bool ranap = false)
 {
     private sealed record FormatOrder(string Izin, string Header, string Detail, string Prefix, int Digit, string Kategori = "", string? Template = null);
     private readonly FormatOrder _format = jenis switch
@@ -35,6 +40,16 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
     };
 
     private bool Resep => jenis == JenisOrderRalan.Resep;
+    /// <summary>Nilai kolom status pada resep_obat dan tabel permintaan.</summary>
+    private string Status => ranap ? "ranap" : "ralan";
+
+    /// <summary>Kelas tarif pemeriksaan: kelas kamar yang sedang ditempati (kamar ibu untuk bayi rawat gabung).</summary>
+    private string KelasKunjungan => !ranap ? "'Rawat Jalan'" : $"""
+        (SELECT km.kelas FROM kamar_inap ki JOIN kamar km ON km.kd_kamar=ki.kd_kamar
+         WHERE ki.no_rawat={RawatGabungService.PemilikKamar("r.no_rawat")} AND ki.stts_pulang='-'
+         ORDER BY ki.tgl_masuk DESC,ki.jam_masuk DESC LIMIT 1)
+        """;
+
     private string SyaratTarif
     {
         get
@@ -46,7 +61,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             return $"""
                 m.status='1' AND {kategori}
                 AND (COALESCE((SELECT {bayar} FROM set_tarif LIMIT 1),'Yes')<>'Yes' OR m.kd_pj IN ('-',r.kd_pj))
-                AND (COALESCE((SELECT {kelas} FROM set_tarif LIMIT 1),'Yes')<>'Yes' OR m.kelas IN ('-','Rawat Jalan'))
+                AND (COALESCE((SELECT {kelas} FROM set_tarif LIMIT 1),'Yes')<>'Yes' OR m.kelas='-' OR m.kelas={KelasKunjungan})
                 """;
         }
     }
@@ -109,7 +124,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                     IF(h.tgl_penyerahan>'0000-00-00','Diserahkan',IF(h.tgl_perawatan>'0000-00-00','Diverifikasi','Menunggu farmasi')) status
                 FROM resep_obat h JOIN reg_periksa r ON r.no_rawat=h.no_rawat
                 LEFT JOIN resep_dokter d ON d.no_resep=h.no_resep LEFT JOIN databarang m ON m.kode_brng=d.kode_brng
-                WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status='ralan' AND h.tgl_peresepan>'0000-00-00'
+                WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status=@p2 AND h.tgl_peresepan>'0000-00-00'
                     AND (d.no_resep IS NOT NULL OR NOT EXISTS(SELECT 1 FROM resep_dokter_racikan x WHERE x.no_resep=h.no_resep))
                 UNION ALL
                 SELECT h.no_resep,h.tgl_peresepan,
@@ -117,16 +132,16 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
                     IF(h.tgl_penyerahan>'0000-00-00','Diserahkan',IF(h.tgl_perawatan>'0000-00-00','Diverifikasi','Menunggu farmasi'))
                 FROM resep_obat h JOIN reg_periksa r ON r.no_rawat=h.no_rawat
                 JOIN resep_dokter_racikan x ON x.no_resep=h.no_resep LEFT JOIN metode_racik c ON c.kd_racik=x.kd_racik
-                WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status='ralan' AND h.tgl_peresepan>'0000-00-00'
+                WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status=@p2 AND h.tgl_peresepan>'0000-00-00'
                 ORDER BY 1 DESC,3
-                """, noRawat, noRm);
+                """, noRawat, noRm, Status);
         return await db.QueryAsync($"""
             SELECT h.noorder nomor,h.tgl_permintaan tanggal,m.nm_perawatan nama,h.diagnosa_klinis diagnosa,
                 h.informasi_tambahan informasi,IF(h.tgl_hasil>'0000-00-00','Hasil dicatat',IF(h.tgl_sampel>'0000-00-00','Diproses','Menunggu')) status
             FROM {_format.Header} h JOIN reg_periksa r ON r.no_rawat=h.no_rawat
             LEFT JOIN {_format.Detail} d ON d.noorder=h.noorder LEFT JOIN {MasterPemeriksaan} m ON m.kd_jenis_prw=d.kd_jenis_prw
-            WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status='ralan' ORDER BY h.noorder DESC,m.nm_perawatan
-            """, noRawat, noRm);
+            WHERE h.no_rawat=@p0 AND r.no_rkm_medis=@p1 AND h.status=@p2 ORDER BY h.noorder DESC,m.nm_perawatan
+            """, noRawat, noRm, Status);
     }
 
     private void Periksa(IReadOnlyList<BarisOrderRalan> baris, string diagnosa, string informasi, BahanPaRalan? bahan,
@@ -190,18 +205,38 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             ',NO_ZERO_DATE,',','),',NO_ZERO_IN_DATE,',','))
         """);
 
-    /// <summary>Kunci kunjungan; order hanya boleh dibuat atau diubah selama kunjungan rawat jalan belum ditagih.</summary>
+    /// <summary>
+    /// Kunci kunjungan; order hanya boleh dibuat atau diubah selama kunjungan belum ditagih. Rawat jalan tidak boleh
+    /// sudah masuk kamar, sedangkan rawat inap harus sedang menempati kamar.
+    /// </summary>
     private async Task<Row> KunciKunjunganAsync(Db db)
     {
         var visit = await db.FirstAsync("""
             SELECT kd_dokter,status_bayar,NOW() waktu FROM reg_periksa
-            WHERE no_rawat=@p0 AND no_rkm_medis=@p1 AND status_lanjut='Ralan' AND stts<>'Batal' FOR UPDATE
-            """, noRawat, noRm) ?? throw new InvalidOperationException("Kunjungan rawat jalan tidak aktif.");
-        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat) ||
-            await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
-            throw new InvalidOperationException("Kunjungan telah masuk billing atau rawat inap.");
+            WHERE no_rawat=@p0 AND no_rkm_medis=@p1 AND status_lanjut=@p2 AND stts<>'Batal' FOR UPDATE
+            """, noRawat, noRm, ranap ? "Ranap" : "Ralan")
+            ?? throw new InvalidOperationException($"Kunjungan rawat {(ranap ? "inap" : "jalan")} tidak aktif.");
+        if (!ranap)
+        {
+            if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat) ||
+                await db.CountAsync("SELECT COUNT(*) FROM kamar_inap WHERE no_rawat=@p0", noRawat) > 0)
+                throw new InvalidOperationException("Kunjungan telah masuk billing atau rawat inap.");
+            return visit;
+        }
+        if (await TagihanKunjungan.SudahDitagihAsync(db, noRawat))
+            throw new InvalidOperationException("Kunjungan telah masuk billing.");
+        if (await db.FirstAsync($"""
+                SELECT kd_kamar FROM kamar_inap
+                WHERE no_rawat={RawatGabungService.PemilikKamar("@p0")} AND stts_pulang='-' LIMIT 1 FOR UPDATE
+                """, noRawat) is null)
+            throw new InvalidOperationException("Pasien tidak sedang menempati kamar. Obat untuk dibawa pulang memakai Resep Pulang.");
         return visit;
     }
+
+    /// <summary>Dokter pengirim bagi Admin Utama: DPJP rawat inap bila ada, selain itu dokter registrasi.</summary>
+    private async Task<string> DokterBawaanAsync(Db db, Row visit) =>
+        ranap && await db.FirstAsync("SELECT kd_dokter FROM dpjp_ranap WHERE no_rawat=@p0 ORDER BY kd_dokter LIMIT 1", noRawat) is { } dpjp
+            ? dpjp.S("kd_dokter") : visit.S("kd_dokter");
 
     public async Task<DrafOrderRalan> MuatOrderAsync(string nomor)
     {
@@ -281,8 +316,8 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         {
             var h = await db.FirstAsync("""
                 SELECT kd_dokter,IF(tgl_perawatan>'0000-00-00' OR tgl_penyerahan>'0000-00-00',1,0) proses
-                FROM resep_obat WHERE no_resep=@p0 AND no_rawat=@p1 AND status='ralan' AND tgl_peresepan>'0000-00-00' FOR UPDATE
-                """, nomor, noRawat) ?? throw new InvalidOperationException("Resep tidak ditemukan pada kunjungan ini.");
+                FROM resep_obat WHERE no_resep=@p0 AND no_rawat=@p1 AND status=@p2 AND tgl_peresepan>'0000-00-00' FOR UPDATE
+                """, nomor, noRawat, Status) ?? throw new InvalidOperationException("Resep tidak ditemukan pada kunjungan ini.");
             if (h.D("proses") != 0) throw new InvalidOperationException("Resep sudah divalidasi Farmasi dan tidak bisa diubah atau dibatalkan.");
             var obat = await db.QueryAsync("""
                 SELECT d.kode_brng,d.jml,d.aturan_pakai,m.nama_brng FROM resep_dokter d
@@ -301,8 +336,8 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         {
             var h = await db.FirstAsync($"""
                 SELECT dokter_perujuk,diagnosa_klinis,informasi_tambahan,IF(tgl_sampel>'0000-00-00' OR tgl_hasil>'0000-00-00',1,0) proses
-                FROM {_format.Header} WHERE noorder=@p0 AND no_rawat=@p1 AND status='ralan' FOR UPDATE
-                """, nomor, noRawat) ?? throw new InvalidOperationException("Permintaan tidak ditemukan pada kunjungan ini.");
+                FROM {_format.Header} WHERE noorder=@p0 AND no_rawat=@p1 AND status=@p2 FOR UPDATE
+                """, nomor, noRawat, Status) ?? throw new InvalidOperationException("Permintaan tidak ditemukan pada kunjungan ini.");
             if (h.D("proses") != 0)
                 throw new InvalidOperationException("Permintaan sudah diproses unit penunjang dan tidak bisa diubah atau dibatalkan.");
             var items = await db.QueryAsync($"""
@@ -379,7 +414,7 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
             try
             {
                 var visit = await KunciKunjunganAsync(db);
-                var dokter = user.IsAdminUtama ? visit.S("kd_dokter") : user.UserId;
+                var dokter = user.IsAdminUtama ? await DokterBawaanAsync(db, visit) : user.UserId;
                 if (await db.CountAsync("SELECT COUNT(*) FROM dokter WHERE kd_dokter=@p0", dokter) != 1)
                     throw new InvalidOperationException("Akun harus terhubung ke dokter yang terdaftar.");
                 var waktu = visit.Dt("waktu") ?? throw new InvalidOperationException("Waktu server tidak tersedia.");
@@ -421,13 +456,13 @@ public sealed class OrderRalanService(DatabaseSettings settings, string noRawat,
         return Resep
             ? db.ExecAsync("""
                 INSERT INTO resep_obat(no_resep,tgl_perawatan,jam,no_rawat,kd_dokter,tgl_peresepan,jam_peresepan,status,tgl_penyerahan,jam_penyerahan)
-                VALUES(@p0,'0000-00-00','00:00:00',@p1,@p2,@p3,@p4,'ralan','0000-00-00','00:00:00')
-                """, nomor, noRawat, dokter, waktu.Date, jam)
+                VALUES(@p0,'0000-00-00','00:00:00',@p1,@p2,@p3,@p4,@p5,'0000-00-00','00:00:00')
+                """, nomor, noRawat, dokter, waktu.Date, jam, Status)
             : db.ExecAsync($"""
                 INSERT INTO {_format.Header}(noorder,no_rawat,tgl_permintaan,jam_permintaan,tgl_sampel,jam_sampel,tgl_hasil,jam_hasil,
                     dokter_perujuk,status,informasi_tambahan,diagnosa_klinis)
-                VALUES(@p0,@p1,@p3,@p4,'0000-00-00','00:00:00','0000-00-00','00:00:00',@p2,'ralan',@p5,@p6)
-                """, nomor, noRawat, dokter, waktu.Date, jam, informasi, diagnosa);
+                VALUES(@p0,@p1,@p3,@p4,'0000-00-00','00:00:00','0000-00-00','00:00:00',@p2,@p7,@p5,@p6)
+                """, nomor, noRawat, dokter, waktu.Date, jam, informasi, diagnosa, Status);
     }
 
     private async Task SimpanBarisAsync(Db db, string nomor, BarisOrderRalan row)

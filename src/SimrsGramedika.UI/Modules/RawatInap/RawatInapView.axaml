@@ -136,6 +136,10 @@
             <Button Name="PindahButton" Content="Pindah" Click="OnPindahClick" />
             <Button Name="BillingButton" Content="Billing / Kasir" Click="OnBillingClick" />
             <Button Name="PemeriksaanButton" Content="SOAPIE" Click="OnPemeriksaanClick" />
+            <Button Name="ResepDokterButton" Content="Resep Dokter" Click="OnResepDokterClick" />
+            <Button Name="PermintaanLabButton" Content="Permintaan Lab" Click="OnPermintaanLabClick" />
+            <Button Name="PermintaanRadButton" Content="Permintaan Radiologi" Click="OnPermintaanRadClick" />
+            <Button Name="FormulirButton" Content="Formulir Rekam Medis" Click="OnFormulirClick" />
             <Button Name="BuatResepPulangButton" Content="Buat Resep Pulang" Click="OnBuatResepPulangClick" />
             <Button Name="ResepPulangButton" Content="Status Resep Pulang" Click="OnResepPulangClick" />
             <Button Name="ResumePulangButton" Content="Resume Pulang" Click="OnResumePulangClick" />

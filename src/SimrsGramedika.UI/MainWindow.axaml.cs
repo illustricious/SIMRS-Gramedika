@@ -1431,7 +1431,8 @@ public partial class MainWindow : Window
     {
         var header = new TextBlock
         {
-            Text = $"{request.NamaPasien}  ·  No. RM {request.NoRekamMedis}  ·  No. Rawat {request.NoRawat}",
+            Text = $"{request.NamaPasien}  ·  No. RM {request.NoRekamMedis}  ·  No. Rawat {request.NoRawat}" +
+                (request.Ranap ? "  ·  Rawat Inap" : ""),
             Classes = { "pageSubtitle" },
             Margin = new Avalonia.Thickness(10, 10, 10, 0),
             TextWrapping = Avalonia.Media.TextWrapping.Wrap,
@@ -1439,7 +1440,7 @@ public partial class MainWindow : Window
         DockPanel.SetDock(header, Dock.Top);
         var window = new Window
         {
-            Title = title,
+            Title = request.Ranap ? $"{title} Rawat Inap" : title,
             Width = 980,
             Height = 710,
             MinWidth = 670,
@@ -1452,7 +1453,7 @@ public partial class MainWindow : Window
                 VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Stretch,
                 Content = new DockPanel
                 {
-                    Children = { header, new Modules.RawatJalan.OrderRalanView(request.NoRawat, request.NoRekamMedis, user, jenis) },
+                    Children = { header, new Modules.RawatJalan.OrderRalanView(request.NoRawat, request.NoRekamMedis, user, jenis, request.Ranap) },
                 },
             },
         };

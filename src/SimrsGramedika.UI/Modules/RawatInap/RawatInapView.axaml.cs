@@ -43,6 +43,11 @@ public partial class RawatInapView : UserControl
 
         var grid = Grid();
         this.FindControl<Button>("BillingButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("billing_ranap") == true;
+        this.FindControl<Button>("FormulirButton")!.IsVisible = Modules.RekamMedis.PilihFormulir.Ada(AppSession.CurrentUser);
+        this.FindControl<Button>("ResepDokterButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("resep_dokter") == true;
+        this.FindControl<Button>("PermintaanLabButton")!.IsVisible = AppSession.CurrentUser?.HasPermission("permintaan_lab") == true;
+        this.FindControl<Button>("PermintaanRadButton")!.IsVisible =
+            AppSession.CurrentUser?.HasPermission("permintaan_radiologi") == true;
         this.FindControl<Button>("PemeriksaanButton")!.IsVisible =
             AppSession.CurrentUser?.HasPermission(PemeriksaanRanapService.Izin) == true;
         this.FindControl<Button>("TindakanButton")!.IsVisible =
@@ -458,6 +463,33 @@ public partial class RawatInapView : UserControl
         if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
             return;
         await new PemeriksaanRanapWindow(visit, user).ShowDialog(owner);
+    }
+
+    private async void OnFormulirClick(object? sender, RoutedEventArgs e)
+    {
+        if (_saving || AppSession.CurrentUser is not { } user) return;
+        if (!RequireSelected(mustBeActive: false) || Selected is not { } visit || TopLevel.GetTopLevel(this) is not Window owner)
+            return;
+        if (await Modules.RekamMedis.PilihFormulir.TampilkanAsync(owner, user, visit.NamaPasien) is { } form)
+            PatientMenuRequested?.Invoke(this,
+                new(visit.NoRawat, visit.NoRekamMedis, visit.NamaPasien, PatientMenuAction.Skrining, form.Tile));
+    }
+
+    private void OnResepDokterClick(object? sender, RoutedEventArgs e) =>
+        MintaOrder(PatientMenuAction.ResepDokter, "resep_dokter");
+
+    private void OnPermintaanLabClick(object? sender, RoutedEventArgs e) =>
+        MintaOrder(PatientMenuAction.PermintaanLab, "permintaan_lab");
+
+    private void OnPermintaanRadClick(object? sender, RoutedEventArgs e) =>
+        MintaOrder(PatientMenuAction.PermintaanRadiologi, "permintaan_radiologi");
+
+    /// <summary>Order untuk pasien yang masih dirawat; bayi rawat gabung memakai No. Rawat bayi.</summary>
+    private void MintaOrder(PatientMenuAction aksi, string izin)
+    {
+        if (_saving || AppSession.CurrentUser?.HasPermission(izin) != true) return;
+        if (!RequireSelected(mustBeActive: true) || Selected is not { } visit) return;
+        PatientMenuRequested?.Invoke(this, new(visit.NoRawat, visit.NoRekamMedis, visit.NamaPasien, aksi, Ranap: true));
     }
 
     private async void OnTindakanClick(object? sender, RoutedEventArgs e)

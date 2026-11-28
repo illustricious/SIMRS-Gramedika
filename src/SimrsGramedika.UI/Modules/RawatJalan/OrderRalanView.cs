@@ -29,6 +29,7 @@ internal sealed class OrderRalanView : UserControl
     private readonly List<RacikanOrder> _racikan = [];
     private readonly Grid _layout;
     private readonly JenisOrderRalan _jenis;
+    private readonly bool _ranap;
     private BahanPaRalan? _bahanPa;
     private bool _busy;
     private DrafOrderRalan? _diubah;
@@ -41,10 +42,11 @@ internal sealed class OrderRalanView : UserControl
             1 => JenisOrderRalan.LabPa,
             2 => JenisOrderRalan.LabMb,
             _ => JenisOrderRalan.LabPk
-        } : _jenis);
+        } : _jenis, _ranap);
 
-    public OrderRalanView(string noRawat, string noRm, AuthenticatedUser user, JenisOrderRalan jenis)
+    public OrderRalanView(string noRawat, string noRm, AuthenticatedUser user, JenisOrderRalan jenis, bool ranap = false)
     {
+        _ranap = ranap;
         _noRawat = noRawat;
         _noRm = noRm;
         _user = user;
