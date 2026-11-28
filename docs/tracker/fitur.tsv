@@ -4068,7 +4068,7 @@ popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnCariPeriksaLabPA	popup	jPopupMe
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnCariPeriksaLabMB	popup	jPopupMenu1 > Data Pemeriksaan Lab MB	keuangan/DlgBilingRalan.java:908	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnCariRadiologi	popup	jPopupMenu1 > Data Pemeriksaan Radiologi	keuangan/DlgBilingRalan.java:924	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnPenjualan	popup	jPopupMenu1 > Penjualan Obat/Alkes/Barang	keuangan/DlgBilingRalan.java:940	belum diaudit	
-popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnHapusTagihan	popup	jPopupMenu1 > Hapus Nota Salah	keuangan/DlgBilingRalan.java:956	belum diaudit	
+popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnHapusTagihan	popup	jPopupMenu1 > Hapus Nota Salah	keuangan/DlgBilingRalan.java:956	sebagian	Batal nota pelunasan dan piutang rawat jalan di Kasir (KasirRepository.Batal.cs, KasirBatalNotaTests); billing parsial belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 popup|keuangan/DlgBilingRalan.java|PopupBayar|ppBersihkan	popup	PopupBayar > Bersihkan Pembayaran	keuangan/DlgBilingRalan.java:1485	belum diaudit	
 popup|keuangan/DlgBilingRalan.java|PopupPiutang|ppBersihkan1	popup	PopupPiutang > Bersihkan Piutang	keuangan/DlgBilingRalan.java:1503	belum diaudit	
 aksi|keuangan/DlgBilingRalan.java|BtnCloseIn1	aksi	Tutup	keuangan/DlgBilingRalan.java:972	belum diaudit	
@@ -4145,7 +4145,7 @@ popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnBayi|MnDataResepPulang1	popup	j
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnBayi|MnReturJual1	popup	jPopupMenu1 > Tagihan Bayi > Retur Obat/Barang/Alkes	keuangan/DlgBilingRanap.java:1250	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnBayi|MnCariPeriksaLab1	popup	jPopupMenu1 > Tagihan Bayi > Data Pemeriksaan Lab	keuangan/DlgBilingRanap.java:1266	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnBayi|MnCariRadiologi1	popup	jPopupMenu1 > Tagihan Bayi > Data Pemeriksaan Radiologi	keuangan/DlgBilingRanap.java:1282	belum diaudit	
-popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnHapusTagihan	popup	jPopupMenu1 > Hapus Nota Salah	keuangan/DlgBilingRanap.java:1300	belum diaudit	
+popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnHapusTagihan	popup	jPopupMenu1 > Hapus Nota Salah	keuangan/DlgBilingRanap.java:1300	sebagian	Batal nota pelunasan dan piutang rawat inap di Kasir (KasirRepository.Batal.cs, KasirBatalNotaTests); billing parsial belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 popup|keuangan/DlgBilingRanap.java|PopupPiutang|ppBersihkanPiutang	popup	PopupPiutang > Bersihkan Piutang	keuangan/DlgBilingRanap.java:1754	belum diaudit	
 popup|keuangan/DlgBilingRanap.java|PopupBayar|ppBersihkanBayar	popup	PopupBayar > Bersihkan Pembayaran	keuangan/DlgBilingRanap.java:1771	belum diaudit	
 aksi|keuangan/DlgBilingRanap.java|BtnCloseIn	aksi	Tutup	keuangan/DlgBilingRanap.java:1330	belum diaudit	
@@ -11210,7 +11210,7 @@ popup|simrskhanza/DlgIKBBayi.java|Popup|jMenu5|ppGrafikproseslahirlaki	popup	Pop
 popup|simrskhanza/DlgIKBBayi.java|Popup|jMenu5|ppGrafikproseslahirwn	popup	Popup > Grafik Proses Lahir > Perempuan	simrskhanza/DlgIKBBayi.java:808	belum diaudit	
 popup|simrskhanza/DlgIKBBayi.java|Popup|MnKartu	popup	Popup > Kartu Berobat	simrskhanza/DlgIKBBayi.java:824	belum diaudit	
 popup|simrskhanza/DlgIKBBayi.java|Popup|MnInformasiBayi	popup	Popup > Label Informasi Bayi	simrskhanza/DlgIKBBayi.java:838	belum diaudit	
-popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL	popup	Popup > Surat Keterangan Lahir 1	simrskhanza/DlgIKBBayi.java:852	belum diaudit	
+popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL	popup	Popup > Surat Keterangan Lahir 1	simrskhanza/DlgIKBBayi.java:852	sebagian	Surat Keterangan Lahir dengan susunan sendiri, bukan templat Jasper (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL1	popup	Popup > Surat Keterangan Lahir 2	simrskhanza/DlgIKBBayi.java:866	belum diaudit	
 popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL2	popup	Popup > Surat Keterangan Lahir 3	simrskhanza/DlgIKBBayi.java:880	belum diaudit	
 aksi|simrskhanza/DlgIKBBayi.java|BtnKeluar2	aksi	Keluar	simrskhanza/DlgIKBBayi.java:909	belum diaudit	
@@ -11222,10 +11222,10 @@ aksi|simrskhanza/DlgIKBBayi.java|BtnCari3	aksi	BtnCari3	simrskhanza/DlgIKBBayi.j
 aksi|simrskhanza/DlgIKBBayi.java|BtnCari4	aksi	BtnCari4	simrskhanza/DlgIKBBayi.java:1244	belum diaudit	
 aksi|simrskhanza/DlgIKBBayi.java|BtnCari5	aksi	BtnCari5	simrskhanza/DlgIKBBayi.java:1359	belum diaudit	
 aksi|simrskhanza/DlgIKBBayi.java|BtnCari	aksi	BtnCari	simrskhanza/DlgIKBBayi.java:1534	belum diaudit	
-aksi|simrskhanza/DlgIKBBayi.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgIKBBayi.java:1567	belum diaudit	
+aksi|simrskhanza/DlgIKBBayi.java|BtnSimpan	aksi	Simpan	simrskhanza/DlgIKBBayi.java:1567	sebagian	Simpan data kelahiran, termasuk pendaftaran bayi sebagai pasien baru (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|simrskhanza/DlgIKBBayi.java|BtnBatal	aksi	Baru	simrskhanza/DlgIKBBayi.java:1585	belum diaudit	
-aksi|simrskhanza/DlgIKBBayi.java|BtnHapus	aksi	Hapus	simrskhanza/DlgIKBBayi.java:1603	belum diaudit	
-aksi|simrskhanza/DlgIKBBayi.java|BtnEdit	aksi	Ganti	simrskhanza/DlgIKBBayi.java:1621	belum diaudit	
+aksi|simrskhanza/DlgIKBBayi.java|BtnHapus	aksi	Hapus	simrskhanza/DlgIKBBayi.java:1603	sebagian	Hapus data kelahiran, pasien tetap ada (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
+aksi|simrskhanza/DlgIKBBayi.java|BtnEdit	aksi	Ganti	simrskhanza/DlgIKBBayi.java:1621	sebagian	Ubah data kelahiran dan identitas bayi; No. RM tidak bisa diganti (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 aksi|simrskhanza/DlgIKBBayi.java|BtnPrint	aksi	Cetak	simrskhanza/DlgIKBBayi.java:1639	belum diaudit	
 aksi|simrskhanza/DlgIKBBayi.java|BtnAll	aksi	Semua	simrskhanza/DlgIKBBayi.java:1657	belum diaudit	
 aksi|simrskhanza/DlgIKBBayi.java|BtnKeluar	aksi	Keluar	simrskhanza/DlgIKBBayi.java:1686	belum diaudit	
@@ -15334,7 +15334,7 @@ tile|M|btnJabatanPolri	tile	M > Jabatan POLRI	LegacyMenuCatalog.cs	layar tersedi
 tile|M|btnPangkatPolri	tile	M > Pangkat POLRI	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|M|btnCacatFisik	tile	M > Cacat Fisik	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|M|btnPasien	tile	M > Pasien	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
-tile|M|btnLahir	tile	M > Kelahiran Bayi	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.
+tile|M|btnLahir	tile	M > Kelahiran Bayi	LegacyMenuCatalog.cs	sebagian	Tambah, ubah, hapus dan surat lahir tersedia; bridging Dukcapil, grafik dan cetak daftar belum (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md.
 tile|M|btnCatatanPasien	tile	M > Catatan Pasien	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|M|btnPasienMati	tile	M > Pasien Meninggal	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|M|btnDiagnosa	tile	M > Diagnosa Pasien	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuMSpecs.cs. Kesetaraan fungsi belum diaudit.

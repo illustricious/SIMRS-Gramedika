@@ -64,6 +64,8 @@
                         HorizontalAlignment="Left" Margin="0,8,0,0" />
                 <Button Name="BuktiButton" Content="Cetak Ulang Kuitansi / Nota (PDF)" Click="OnBuktiClick"
                         HorizontalAlignment="Left" IsVisible="False" />
+                <Button Name="BatalNotaButton" Content="Batalkan Nota" Click="OnBatalNotaClick"
+                        HorizontalAlignment="Left" IsVisible="False" />
             </StackPanel>
             </StackPanel>
           </Border>

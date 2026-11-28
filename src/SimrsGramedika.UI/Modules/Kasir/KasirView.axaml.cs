@@ -93,6 +93,8 @@ public partial class KasirView : UserControl
 
             var lunas = bill.StatusBayar == "Sudah Bayar";
             this.FindControl<Button>("BuktiButton")!.IsVisible = BisaCetakBukti(bill);
+            this.FindControl<Button>("BatalNotaButton")!.IsVisible = !string.IsNullOrWhiteSpace(bill.NoNota)
+                && AppSession.CurrentUser is { } petugas && KasirRepository.BolehBatalkanNota(petugas, bill.Ranap);
             var akun = this.FindControl<ComboBox>("AkunBayarBox")!;
             var akunRow = this.FindControl<StackPanel>("AkunBayarRow")!;
             var bisaBayar = bill.StatusBayar == "Belum Bayar" && bill.AlasanBelumBisaBayar is null;
@@ -234,6 +236,51 @@ public partial class KasirView : UserControl
             || TopLevel.GetTopLevel(this) is not Window owner) return;
         await new PenyesuaianWindow(user, bill.NoRawat, bill.NamaPasien, jenis).ShowDialog(owner);
         await CariAsync(bill.NoRawat);
+    }
+
+    private async void OnBatalNotaClick(object? sender, RoutedEventArgs e)
+    {
+        if (_paying || _loading || _current is not { NoNota.Length: > 0 } bill || AppSession.CurrentUser is not { } user) return;
+        _paying = true;
+        var tombol = this.FindControl<Button>("BatalNotaButton")!;
+        tombol.IsEnabled = false;
+        RencanaBatalNota? dibatalkan = null;
+        try
+        {
+            var settings = DatabaseSettings.Load();
+            RencanaBatalNota rencana;
+            using (var db = SimrsGramedikaDbContextFactory.Create(settings))
+                rencana = await new KasirRepository(db).RencanaBatalNotaAsync(bill.NoRawat, user);
+            if (rencana.NoNota != bill.NoNota) { Status("Nota berubah. Muat ulang tagihan."); return; }
+            if (!await Dialogs.ConfirmAsync(this, "Batalkan Nota", PesanBatalNota(rencana))) return;
+            using (var db = SimrsGramedikaDbContextFactory.Create(settings))
+                await new KasirRepository(db).BatalkanNotaAsync(rencana, user);
+            dibatalkan = rencana;
+        }
+        catch (Exception ex)
+        {
+            Status($"Nota tidak dibatalkan: {ex.Message}");
+        }
+        finally
+        {
+            _paying = false;
+            tombol.IsEnabled = true;
+        }
+        if (dibatalkan is null) return;
+        await CariAsync(bill.NoRawat);
+        Status($"Nota {dibatalkan.NoNota} dibatalkan. {_current?.AlasanBelumBisaBayar}".TrimEnd());
+    }
+
+    private static string PesanBatalNota(RencanaBatalNota r)
+    {
+        var pesan = $"Batalkan nota {(r.Piutang ? "piutang" : "pelunasan")} {r.NoNota} atas nama {r.NamaPasien}? " +
+            $"Nota, rincian billing{(r.Piutang ? " dan piutangnya" : "")} dihapus{(r.NoJurnal is null ? "" : ", jurnalnya dibalik")}, " +
+            "dan tagihan terbuka lagi.";
+        if (r.Tunai > 0) pesan += $" Uang {Rupiah(r.Tunai)} yang tercatat diterima harus diselesaikan dengan pasien.";
+        if (r.Deposit > 0) pesan += $" Deposit {Rupiah(r.Deposit)} tetap tercatat untuk tagihan berikutnya.";
+        if (r.PengembalianDeposit > 0)
+            pesan += $" Catatan pengembalian deposit {Rupiah(r.PengembalianDeposit)} dihapus; pastikan uangnya diperhitungkan lagi.";
+        return pesan;
     }
 
     private static string Rupiah(decimal nilai) => $"Rp {nilai.ToString("#,0.####", CultureInfo.GetCultureInfo("id-ID"))}";
