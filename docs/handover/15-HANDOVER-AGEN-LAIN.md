@@ -10,10 +10,10 @@ Menulis ulang SIMRS Khanza (Java Swing) menjadi aplikasi C#, .NET 10 dan Avaloni
 
 | Hal | Keadaan |
 |---|---|
-| Commit fitur terakhir | `372617e` batal nota di Kasir, `e8a4ba7` data kelahiran bayi, `66759e7` dokumennya. Commit handover ini menyusul. |
-| Push | Pemilik meminta push bersama handover ini. Cek `git status -sb` untuk memastikan. |
+| Commit terakhir | `372617e` batal nota di Kasir, `e8a4ba7` data kelahiran bayi, `66759e7` dokumennya, `87e2b51` handover ini |
+| Push | Sudah di-push bersama handover ini; cek tracker di CI untuk `87e2b51` lulus. Pastikan dengan `git status -sb`. |
 | EXE lokal terbaru | `dist/SIMRS-Gramedika-0.3.0-alpha.202611281617-win-x64-single.exe`, dari `66759e7`, 63.811.849 byte, SHA-256 `15C75CCD7B5234D14F76477284CDE2BD7E8D5E495AD3C961677F3A4D1BFF81EC` |
-| Build lama di `dist/` | `202611280241` dan `202611280738`, belum diminta dihapus |
+| Build lama di `dist/` | `202611280738`, belum diminta dihapus. `202611280241` sudah ada di Recycle Bin (dipindah 28 November 07.42, bukan oleh agen) |
 | Release GitHub | Tidak dibuat; pre-release lama tertinggal dari source |
 | Tes | `uji-fixture.ps1` lulus: fixture 87, alur penunjang 1, skema penuh 36, tanpa database 234 lulus dan 50 dilewati |
 | Peta fungsi | 963 dari 2.202 pasangan tabel-aksi tulis (44%), analisis statis dan batas atas |
