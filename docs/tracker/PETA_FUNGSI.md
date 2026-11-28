@@ -11,8 +11,8 @@ Gramedika, tetapi validasi, jurnal, cetak dan cabang layarnya belum tentu setara
 
 | Ukuran | Ada | Total | Persen |
 |---|---:|---:|---:|
-| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 948 | 2202 | 43% |
-| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 443 | 980 | 45% |
+| Pasangan tabel dan aksi tulis (tambah/ubah/hapus) yang dilakukan jendela Java | 963 | 2202 | 44% |
+| Tabel yang ditulis jendela Java dan juga ditulis Gramedika | 450 | 980 | 46% |
 | Jendela Java yang menulis data, seluruh tulisannya ada | 321 | 743 | 43% |
 | Jendela Java yang menulis data, minimal sebagian ada | 471 | 743 | 63% |
 
@@ -31,13 +31,13 @@ Aksi tulis adalah pasangan tabel dan tambah/ubah/hapus. "Ada" di sini juga batas
 | DlgRawatJalan | tulis ada | 20/20 | - |
 | DlgRawatInap | tulis ada | 18/18 | - |
 | DlgKamarInap | tulis ada | 11/11 | - |
-| DlgKasirRalan | tulis sebagian | 81/236 | antripoli, asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak |
-| DlgBilingRalan | tulis sebagian | 11/27 | detail_nota_jalan, detail_piutang_pasien, nota_jalan, piutang_pasien, tagihan_bpd_jabar, tagihan_bpd_jateng |
-| DlgBilingRanap | tulis sebagian | 13/30 | detail_nota_inap, detail_piutang_pasien, nota_inap, pengembalian_deposit, piutang_pasien, tagihan_bpd_jabar |
+| DlgKasirRalan | tulis sebagian | 87/236 | antripoli, asuhan_gizi, aturan_pakai, bayar_detail_periksa_lab_perujuk, bayar_detail_periksa_lab, bayar_operasi_dokter_anak |
+| DlgBilingRalan | tulis sebagian | 20/27 | tagihan_bpd_jabar, tagihan_bpd_jateng, tagihan_bpd_papua, tagihan_briva, tagihan_mandiri, tagihan_obat_langsung |
+| DlgBilingRanap | tulis sebagian | 23/30 | tagihan_bpd_jabar, tagihan_bpd_jateng, tagihan_bpd_papua, tagihan_briva, tagihan_mandiri, tagihan_obat_langsung |
 | DlgPeriksaLaboratorium | tulis ada | 6/6 | - |
 | DlgPeriksaRadiologi | tulis sebagian | 6/8 | gambar_radiologi, order_out |
 | DlgDaftarPermintaanResep | tulis sebagian | 2/8 | antriapotek2, antriapotek3, bukti_penyerahan_resep_obat, permintaan_stok_obat_pasien |
-| DlgPasien | tulis sebagian | 12/45 | bayar_piutang, booking_periksa_diterima, booking_registrasi, bridging_dukcapil, diagnosa_corona, pasien_bayi |
+| DlgPasien | tulis sebagian | 13/45 | bayar_piutang, booking_periksa_diterima, booking_registrasi, bridging_dukcapil, diagnosa_corona, pasien_corona |
 
 ## Sisa pekerjaan menurut jenis
 
@@ -79,7 +79,7 @@ Jendela yang menulis data dan belum seluruhnya ada: 422. Setiap jendela dihitung
 | inventory | 117 | 63 | 24 | 29 | 9 | 1 | 50% |
 | ipsrs | 43 | 22 | 3 | 0 | 19 | 0 | 13% |
 | kepegawaian | 73 | 44 | 41 | 3 | 0 | 0 | 88% |
-| keuangan | 168 | 71 | 23 | 9 | 37 | 2 | 39% |
+| keuangan | 168 | 71 | 23 | 9 | 37 | 2 | 44% |
 | laporan | 107 | 11 | 3 | 1 | 7 | 0 | 26% |
 | parkir | 3 | 2 | 2 | 0 | 0 | 0 | 100% |
 | pcraicra | 12 | 10 | 0 | 9 | 1 | 0 | 51% |
@@ -88,7 +88,7 @@ Jendela yang menulis data dan belum seluruhnya ada: 422. Setiap jendela dihitung
 | rekammedis | 252 | 228 | 109 | 7 | 109 | 3 | 42% |
 | restore | 18 | 18 | 2 | 14 | 2 | 0 | 51% |
 | setting | 34 | 30 | 16 | 13 | 1 | 0 | 77% |
-| simrskhanza | 71 | 54 | 20 | 27 | 7 | 0 | 39% |
+| simrskhanza | 71 | 54 | 20 | 27 | 7 | 0 | 41% |
 | smsui | 3 | 0 | 0 | 0 | 0 | 0 | - |
 | surat | 47 | 43 | 4 | 11 | 28 | 0 | 17% |
 | toko | 34 | 24 | 3 | 16 | 5 | 0 | 18% |
@@ -116,7 +116,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | J | 96 | 6 | 4 | 0 | 2 | 0 | 0 |
 | K | 87 | 54 | 22 | 0 | 32 | 0 | 0 |
 | L | 183 | 97 | 0 | 0 | 0 | 97 | 3 |
-| M | 255 | 242 | 120 | 1 | 121 | 0 | 1 |
+| M | 255 | 242 | 120 | 2 | 120 | 0 | 1 |
 | N | 11 | 11 | 2 | 0 | 9 | 0 | 0 |
 | O | 113 | 0 | 0 | 0 | 0 | 0 | 0 |
 | P | 45 | 43 | 12 | 0 | 31 | 0 | 0 |
@@ -127,7 +127,7 @@ tulisnya lihat status jendelanya. "?" berarti jendela Java tidak terpetakan dari
 | U | 30 | 29 | 21 | 8 | 0 | 0 | 0 |
 
 Tile di luar menu L: 1041. Yang di Java menulis data tetapi tile Gramedika hanya menampilkan:
-**257**.
+**256**.
 
 ## Celah terpenting
 
@@ -222,7 +222,7 @@ melakukannya. Perlu diperiksa satu per satu; 15 jendela.
 
 ## Tabel yang sama sekali belum pernah ditulis
 
-537 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4), `bayar_rawat_inap_dr` (4), `bayar_rawat_inap_drpr` (4).
+530 tabel. Tiga puluh yang paling banyak dipakai jendela Java: `pembayaran_pihak_ke3_bankmandiri` (15), `utd_stok_medis` (7), `utd_stok_penunjang` (7), `dapurpemesanan` (6), `inventaris_pemesanan` (6), `ipsrspemesanan` (6), `riwayat_persalinan_pasien` (6), `inventaris` (5), `pcare_obat_diberikan` (5), `penilaian_awal_keperawatan_kebidanan_ranap` (5), `penilaian_medis_ralan_anak` (5), `resep_luar` (5), `returpasien` (5), `tagihan_obat_langsung` (5), `asuhan_gizi` (4), `bayar_detail_periksa_lab` (4), `bayar_detail_periksa_lab_perujuk` (4), `bayar_operasi_dokter_anak` (4), `bayar_operasi_dokter_anestesi` (4), `bayar_operasi_dokter_pjanak` (4), `bayar_operasi_dokter_umum` (4), `bayar_operasi_operator1` (4), `bayar_operasi_operator2` (4), `bayar_operasi_operator3` (4), `bayar_periksa_lab` (4), `bayar_periksa_lab_perujuk` (4), `bayar_periksa_radiologi` (4), `bayar_periksa_radiologi_perujuk` (4), `bayar_rawat_inap_dr` (4), `bayar_rawat_inap_drpr` (4).
 
 ## Batas analisis
 

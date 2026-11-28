@@ -122,3 +122,25 @@ Lebih ketat daripada Khanza:
 Belum ada: stok dan harga obat saat meresepkan, template dan salin resep, cetak resep dan permintaan, input parsial, serta dokter perujuk pilihan.
 
 `OrderRanapTests` lulus pada MariaDB sintetis. Tombol sampai resep terkirim diklik lewat tes headless sementara. Belum diuji: database RS atau salinannya dan bersamaan dengan klien Java.
+
+## Data kelahiran bayi (28 November 2026)
+
+Tile Menu M **Kelahiran Bayi** kini bisa menambah, mengubah dan menghapus data kelahiran serta mencetak Surat Keterangan Lahir (`KelahiranBayiService`, `KelahiranBayiView`, `KelahiranBayiReport`). Sebelumnya hanya menampilkan daftar. Pembanding: `DlgIKBBayi.java`. Hak `kelahiran_bayi`.
+
+- Bayi yang belum terdaftar didaftarkan sebagai pasien baru dengan isian bawaan Khanza (`-`, penanggung jawab ayah) dan penomoran RM Khanza. Pasien yang sudah terdaftar bisa dipilih; identitasnya tidak diubah.
+- No. SKL kosong dibuat otomatis `0001/RM-SKL/bulan/tahun` menurut bulan lahir; No. SKL boleh diisi sendiri dan harus unik.
+- Penolong (data pegawai), nama bayi, jam lahir dan APGAR menit 1, 5 dan 10 wajib. Nilai APGAR dijumlahkan otomatis.
+- **Pilih Ibu** mengisi nama, umur dan alamat ibu, serta nama ayah bila penanggung jawab ibu adalah suami.
+- Hapus hanya menghapus data kelahiran dan catatan `bridging_dukcapil`; data pasien tetap ada.
+
+Berbeda dari Khanza:
+
+- Pendaftaran pasien dan data kelahiran satu transaksi. Khanza menghapus pasien secara terpisah bila data kelahirannya gagal disimpan.
+- Ubah dan hapus ditolak bila data sudah berubah sejak dibuka.
+- APGAR hanya menerima 0, 1 atau 2.
+- Saat mengubah, nama keluarga pasien hanya diganti dengan nama ayah bila penanggung jawabnya memang ayah. Khanza selalu menimpanya.
+- No. RM tidak bisa diganti dari layar ini.
+
+Belum ada: bridging Dukcapil, cetak daftar, grafik, label informasi bayi, kartu berobat dari layar ini, dan tiga templat Surat Keterangan Lahir Khanza (surat di sini susunan sendiri, tanpa QR). Layar ini belum dibuka dari Rawat Inap atau Pasien.
+
+`KelahiranBayiTests` lulus pada MariaDB sintetis. Simpan, ubah dan hapus diklik lewat tes headless sementara dengan database sementara; surat hanya dilihat sebagai gambar. Belum diuji: printer, database RS atau salinannya, dan bersamaan dengan klien Java.

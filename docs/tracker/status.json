@@ -4734,5 +4734,33 @@
   "popup|simrskhanza/DlgKamarInap.java|jPopupMenu1|MnObat|MnResepDOkter": {
     "status": "sebagian",
     "bukti": "Resep dokter rawat inap lewat OrderRalanService. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "popup|keuangan/DlgBilingRalan.java|jPopupMenu1|MnHapusTagihan": {
+    "status": "sebagian",
+    "bukti": "Batal nota pelunasan dan piutang rawat jalan di Kasir (KasirRepository.Batal.cs, KasirBatalNotaTests); billing parsial belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "popup|keuangan/DlgBilingRanap.java|jPopupMenu1|MnHapusTagihan": {
+    "status": "sebagian",
+    "bukti": "Batal nota pelunasan dan piutang rawat inap di Kasir (KasirRepository.Batal.cs, KasirBatalNotaTests); billing parsial belum. Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md."
+  },
+  "tile|M|btnLahir": {
+    "status": "sebagian",
+    "bukti": "Tambah, ubah, hapus dan surat lahir tersedia; bridging Dukcapil, grafik dan cetak daftar belum (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "aksi|simrskhanza/DlgIKBBayi.java|BtnSimpan": {
+    "status": "sebagian",
+    "bukti": "Simpan data kelahiran, termasuk pendaftaran bayi sebagai pasien baru (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "aksi|simrskhanza/DlgIKBBayi.java|BtnEdit": {
+    "status": "sebagian",
+    "bukti": "Ubah data kelahiran dan identitas bayi; No. RM tidak bisa diganti (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "aksi|simrskhanza/DlgIKBBayi.java|BtnHapus": {
+    "status": "sebagian",
+    "bukti": "Hapus data kelahiran, pasien tetap ada (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
+  },
+  "popup|simrskhanza/DlgIKBBayi.java|Popup|MnSKL": {
+    "status": "sebagian",
+    "bukti": "Surat Keterangan Lahir dengan susunan sendiri, bukan templat Jasper (KelahiranBayiService, KelahiranBayiTests). Diuji pada MariaDB sintetis; database RS belum diuji. Lihat AUDIT_RAWAT_INAP.md."
   }
 }

@@ -715,7 +715,7 @@ M	btnJabatanPolri	Jabatan POLRI	DlgJabatanPolri	ya	master	tulis sebagian
 M	btnPangkatPolri	Pangkat POLRI	DlgPangkatPolri	ya	master	tulis sebagian
 M	btnCacatFisik	Cacat Fisik	DlgCacatFisik	ya	master	tulis sebagian
 M	btnPasien	Pasien	DlgPasien	ya	khusus	tulis sebagian
-M	btnLahir	Kelahiran Bayi	DlgIKBBayi	ya	baca saja	tulis sebagian
+M	btnLahir	Kelahiran Bayi	DlgIKBBayi	ya	khusus	tulis sebagian
 M	btnCatatanPasien	Catatan Pasien	DlgLhtCatatanPasien	tidak	baca saja	baca ada
 M	btnPasienMati	Pasien Meninggal	DlgPasienMati	ya	baca saja	tulis ada
 M	btnDiagnosa	Diagnosa Pasien	DlgDiagnosaPenyakit	tidak	baca saja	baca ada

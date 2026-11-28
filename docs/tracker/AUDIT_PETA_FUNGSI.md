@@ -3,7 +3,7 @@
 Pemetaan seluruh jendela dan tile Khanza terhadap Gramedika. Angka ada di [PETA_FUNGSI.md](PETA_FUNGSI.md) (dibuat otomatis),
 rincian di [peta-fungsi.tsv](peta-fungsi.tsv) per jendela Java dan [peta-tile.tsv](peta-tile.tsv) per tile.
 
-Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi, resep racikan dokter, piutang pasien, lembar observasi serta skrining dan penilaian risiko; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
+Angka temuan diperbarui sesudah [fitur rawat inap](../handover/12-SESSION-2026-11-27.md#fitur-rawat-inap), rawat gabung, operasi, resep racikan dokter, piutang pasien, lembar observasi, skrining dan penilaian risiko batal nota serta data kelahiran bayi; hasil cek sampel berlaku untuk peta sebelum perubahan itu.
 
 ## Cara kerja
 
@@ -46,7 +46,7 @@ ditemukan penulisan antrean yang nama tabelnya dirakit dan sudah didaftarkan. Sa
 Tiga contoh yang masih terlalu tinggi di peta, karena dinilai per tabel:
 
 - `DlgBilingParsialRalan` "sebagian": Gramedika tidak punya billing parsial sama sekali; tabelnya ditulis alur lain.
-- `DlgIKBBayi` "sebagian": data bayi (`pasien_bayi`) tidak ditulis; yang tercakup hanya pendaftaran pasien biasa.
+- `DlgIKBBayi` "sebagian": saat sampel dicek, data bayi (`pasien_bayi`) tidak ditulis. Layar Kelahiran Bayi ditambahkan 28 November.
 - `DlgPermintaanRadiologi` "tulis ada": saat sampel dicek, Gramedika hanya membuat order rawat jalan. Cabang rawat inap ditambahkan 28 November.
 
 Perkiraan dari sampel kecil: sekitar 1 dari 5 jendela alur inti yang berstatus "ada" dinilai lebih tinggi dari kenyataan.
@@ -54,13 +54,13 @@ Perlakukan angka "tulis ada" sebagai langit-langit.
 
 ## Temuan utama
 
-1. **Sepertiga lebih aksi tulis Java punya padanan.** 948 dari 2.202 pasangan tabel-aksi (43%), sebelum dikoreksi ke bawah.
+1. **Sepertiga lebih aksi tulis Java punya padanan.** 963 dari 2.202 pasangan tabel-aksi (44%), sebelum dikoreksi ke bawah.
 2. **Sebagian besar yang "lengkap" adalah master.** 179 dari 321 jendela "tulis ada" tercakup layar master satu tabel.
-3. **257 tile hanya menampilkan** data yang di Java bisa diisi; 121 di antaranya Menu M (rekam medis).
+3. **256 tile hanya menampilkan** data yang di Java bisa diisi; 120 di antaranya Menu M (rekam medis).
 4. **Rekam medis adalah kelompok terbesar yang tersisa:** 83 formulir satu tabel isi dan 36 dengan tabel tambahan. "Satu tabel
    isi" belum berarti muat di mesin formulir; pemilik ganda, bentuk kunci dan tipe kolom harus dicek per formulir.
-5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** data bayi lahir, pengadaan farmasi,
-   retur beli, retur jual dan piutang obat.
+5. **Fungsi inti yang dikonfirmasi tidak ada penulisannya:** pengadaan farmasi, retur beli, retur jual
+   dan piutang obat. Data bayi lahir sudah bisa ditulis sejak 28 November.
 6. Pembelian, pemesanan, pengeluaran dan retur Dapur, Non Medis dan Toko hanya tampil; master barangnya yang bisa diedit.
 7. Tiga berkas Data tidak dipakai antarmuka: `DokterRepository`, `PenunjangRepository`, `RawatJalanRepository`.
 

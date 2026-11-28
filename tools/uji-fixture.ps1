@@ -80,6 +80,7 @@ $lain = [ordered]@{
     RANAP = 'BillingRanapTests'; RUJUKAN = 'RujukanInternalTests'; TINDAKAN_RANAP = 'TindakanRanapInputTests'
     KUNCI = 'KunciTanggalTests'; GABUNG = 'RawatGabungTests'; OPERASI = 'OperasiTests'
     PIUTANG = 'PiutangPasienTests'; BIAYA = 'KasirPenyesuaianTests'; ORDER_RANAP = 'OrderRanapTests'
+    BATAL = 'KasirBatalNotaTests'; BAYI = 'KelahiranBayiTests'
 }
 $tabelPenuh = New-Object 'System.Collections.Generic.HashSet[string]'
 $ddlPenuh = ''

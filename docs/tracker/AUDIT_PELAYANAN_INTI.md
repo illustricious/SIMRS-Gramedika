@@ -51,8 +51,30 @@ Bagian ini menggantikan batas pada dua bagian sebelumnya untuk deposit rawat ina
 - Piutang bersama deposit: `piutang_pasien.uangmuka` berisi uang muka ditambah deposit.
 - Kuitansi PDF menampilkan deposit yang diperhitungkan dan sisa yang dikembalikan.
 - Masih diarahkan ke Kasir Khanza: deposit pada kunjungan rawat jalan (billing Khanza tidak memperhitungkannya), deposit atau penyesuaian pada bayi rawat gabung, kunjungan yang sudah punya catatan pengembalian deposit, tambahan per baris di `temporary_tambahan_potongan`, retur obat, obat langsung, dan biaya service.
-- Belum ada: batal nota, dan tombol input deposit di layar Kasir (deposit tetap dari layar **Deposit Pasien**).
+- Belum ada: tombol input deposit di layar Kasir (deposit tetap dari layar **Deposit Pasien**).
 - `KasirPenyesuaianTests` lulus pada MariaDB sintetis. Alur tambah biaya lalu bayar diklik lewat tes headless sementara dengan database sementara. Belum diuji: database RS atau salinannya dan bersamaan dengan klien Java.
+
+## Batal nota di Kasir (28 November 2026)
+
+Tombol **Batalkan Nota** di Kasir (`KasirRepository.Batal.cs`) tampil pada kunjungan yang sudah punya nota. Pembanding: menu **Hapus Nota Salah** (`MnHapusTagihan`) pada `DlgBilingRalan.java` dan `DlgBilingRanap.java`.
+
+- Hak `hapus_nota_salah` ditambah hak billing jenis kunjungannya (`billing_ranap`, atau `kasir_ralan`/`billing_ralan`).
+- Konfirmasi menampilkan nomor nota, uang yang tercatat diterima, deposit dan pengembalian deposit. Rencana yang dikonfirmasi diperiksa ulang di dalam transaksi; bila nota berubah, pembatalan ditolak.
+- Dalam satu transaksi: jurnal dibalik, lalu `billing`, nota dan detail penerimaannya, `piutang_pasien` dan detailnya, `tagihan_sadewa`, `pengembalian_deposit` (rawat inap) serta tagihan bank berstatus `Pending` (BPD Jateng, Papua, Jabar, Mandiri, BRIVA) dihapus, dan `status_bayar` kembali `Belum Bayar`. Deposit pasien tidak dihapus.
+- Bayi rawat gabung dibuka bersama ibunya, kecuali bayi yang punya baris `billing` sendiri. Pembatalan dari No. Rawat bayi tanpa nota diarahkan ke ibunya.
+- Judul jurnal mengikuti Khanza: `PEMBATALAN PEMBAYARAN ...` atau `PEMBATALAN PIUTANG ...`.
+
+Berbeda dari Khanza:
+
+- **Jurnal dibalik dari jurnal pelunasan yang tersimpan**, baris demi baris. Khanza menghitung ulang dari rincian billing dan pengaturan rekening saat pembatalan, sehingga bisa berbeda bila rekening sudah diganti. Yang dipakai adalah jurnal terbaru di antara pelunasan dan pembatalan kunjungan itu, dan total debetnya harus mencakup uang diterima ditambah piutang.
+- Ditolak bila sudah ada cicilan (`bayar_piutang`), piutang sudah masuk penagihan (`detail_penagihan_piutang`), atau status maupun sisa piutang sudah berubah. Khanza tidak memeriksanya.
+- Ditolak bila jurnal pelunasan tidak ditemukan atau tidak cocok, termasuk billing parsial, dan bila kunjungan punya nota rawat jalan sekaligus rawat inap. Selesaikan lewat Khanza.
+
+Nota rawat jalan yang disimpan aplikasi ini tidak bisa dibatalkan lewat Khanza: `billing.no` kosong, sedangkan Khanza menganggap nota tanpa baris `No.Nota` sebagai billing parsial. Batalkan dari aplikasi ini.
+
+Belum ada: batal billing parsial, pembatasan tanggal pembatalan (Khanza juga tidak membatasinya), dan pencatatan alasan pembatalan.
+
+`KasirBatalNotaTests` lulus pada MariaDB sintetis. Bayar lalu batalkan nota rawat jalan diklik lewat tes headless sementara dengan database sementara. Belum diuji: database RS atau salinannya dan bersamaan dengan klien Java.
 
 ## Validasi, pembatalan dan penyerahan resep (27 November 2026)
 
