@@ -146,7 +146,6 @@ public static class MenuDLists
 
     public static readonly IReadOnlyDictionary<string, ReportSpec> Reports = new Dictionary<string, ReportSpec>
     {
-        ["btnPembelian"] = Daftar("Pengadaan Obat & BHP", "pembelian", "detailbeli", "no_faktur", "tgl_beli", "jumlah", "total", SuplierJoin, "sp.nama_suplier"),
         ["btnHibahObatBHP"] = Daftar("Hibah Obat & BHP", "hibah_obat_bhp", "detailhibah_obat_bhp", "no_hibah", "tgl_hibah", "jumlah", "subtotaldiakui",
             "LEFT JOIN pemberihibah ph ON ph.kode_pemberi=h.kode_pemberi", "ph.nama_pemberi"),
         ["btnPengajuanBarangMedis"] = Daftar("Pengajuan Obat & BHP", "pengajuan_barang_medis", "detail_pengajuan_barang_medis", "no_pengajuan", "tanggal",
@@ -154,7 +153,6 @@ public static class MenuDLists
         ["btnSuratPemesananMedis"] = Daftar("Surat Pemesanan Obat & BHP", "surat_pemesanan_medis", "detail_surat_pemesanan_medis", "no_pemesanan", "tanggal",
             "jumlah", "total", SuplierJoin, "sp.nama_suplier"),
         ["btnPiutang"] = Daftar("Piutang Obat & BHP", "piutang", "detailpiutang", "nota_piutang", "tgl_piutang", "jumlah", "total", "", "h.nm_pasien"),
-        ["btnReturBeli"] = Daftar("Retur Ke Suplier", "returbeli", "detreturbeli", "no_retur_beli", "tgl_retur", "jml_retur", "total", SuplierJoin, "sp.nama_suplier"),
         ["btnReturJual"] = Daftar("Retur Dari Pembeli", "returjual", "detreturjual", "no_retur_jual", "tgl_retur", "jml_retur", "subtotal",
             "LEFT JOIN pasien ps ON ps.no_rkm_medis=h.no_rkm_medis", "ps.nm_pasien",
             "Daftar retur penjualan bebas (input retur belum dibuat di aplikasi baru)."),

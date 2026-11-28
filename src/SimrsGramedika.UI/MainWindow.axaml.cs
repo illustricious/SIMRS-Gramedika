@@ -290,6 +290,7 @@ public partial class MainWindow : Window
 
             // [C] Presensi, Manajemen & Penggajian Pegawai (most tiles are data — see MenuCSpecs below)
             case "btnPemesanan": await OpenPageAsync(new Modules.Farmasi.PenerimaanView()); return;
+            case "btnPembelian": await OpenPageAsync(new Modules.Farmasi.PembelianView()); return;
             case "btnLahir": await OpenPageAsync(new Modules.RekamMedis.KelahiranBayiView()); return;
             case "btnPenggajian": await OpenPageAsync(new Modules.Kepegawaian.PenggajianView()); return;
             case "btnSKPPenilaianPegawai": await OpenPageAsync(new Modules.Kepegawaian.SkpPenilaianView()); return;
@@ -355,6 +356,11 @@ public partial class MainWindow : Window
         if (SimrsGramedika.Data.Farmasi.MenuDLists.Masters.TryGetValue(key, out var listD))
         {
             await OpenPageAsync(new Modules.Shared.MasterView(listD));
+            return;
+        }
+        if (key == "btnReturBeli")
+        {
+            await OpenPageAsync(new Modules.Farmasi.ReturBeliView());
             return;
         }
         if (SimrsGramedika.Data.Farmasi.MenuDLists.Reports.TryGetValue(key, out var listReportD))

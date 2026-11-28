@@ -1727,10 +1727,10 @@ aksi|inventory/DlgCariPiutang.java|BtnKeluar	aksi	Keluar	inventory/DlgCariPiutan
 aksi|inventory/DlgCariPiutang.java|btnPasien	aksi	btnPasien	inventory/DlgCariPiutang.java:614	belum diaudit	
 aksi|inventory/DlgCariPiutang.java|BtnPetugas	aksi	BtnPetugas	inventory/DlgCariPiutang.java:627	belum diaudit	
 jendela|inventory/DlgCariPiutang.java|DlgCariPiutang	jendela	DlgCariPiutang	inventory/DlgCariPiutang.java:1	belum diaudit	
-popup|inventory/DlgCariReturBeli.java|jPopupMenu1|ppHapus	popup	jPopupMenu1 > Hapus Retur	inventory/DlgCariReturBeli.java:184	belum diaudit	
+popup|inventory/DlgCariReturBeli.java|jPopupMenu1|ppHapus	popup	jPopupMenu1 > Hapus Retur	inventory/DlgCariReturBeli.java:184	sebagian	Batalkan retur: stok dan batch dikembalikan, jurnal asal dibalik (ReturBeliRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgCariReturBeli.java|BtnCari	aksi	BtnCari	inventory/DlgCariReturBeli.java:249	belum diaudit	
 aksi|inventory/DlgCariReturBeli.java|BtnAll	aksi	Semua	inventory/DlgCariReturBeli.java:278	belum diaudit	
-aksi|inventory/DlgCariReturBeli.java|BtnPrint	aksi	Cetak	inventory/DlgCariReturBeli.java:296	belum diaudit	
+aksi|inventory/DlgCariReturBeli.java|BtnPrint	aksi	Cetak	inventory/DlgCariReturBeli.java:296	kurang	Cetak retur supplier belum tersedia pada layar baru.
 aksi|inventory/DlgCariReturBeli.java|BtnKeluar	aksi	Keluar	inventory/DlgCariReturBeli.java:314	belum diaudit	
 aksi|inventory/DlgCariReturBeli.java|btnSatuan	aksi	btnSatuan	inventory/DlgCariReturBeli.java:363	belum diaudit	
 aksi|inventory/DlgCariReturBeli.java|btnBarang	aksi	btnBarang	inventory/DlgCariReturBeli.java:398	belum diaudit	
@@ -1987,13 +1987,13 @@ aksi|inventory/DlgObatPeresep.java|BtnKeluar	aksi	Keluar	inventory/DlgObatPerese
 jendela|inventory/DlgObatPeresep.java|DlgObatPeresep	jendela	DlgObatPeresep	inventory/DlgObatPeresep.java:1	belum diaudit	
 popup|inventory/DlgPembelian.java|Popup|ppBersihkan	popup	Popup > Bersihkan Jumlah	inventory/DlgPembelian.java:233	belum diaudit	
 popup|inventory/DlgPembelian.java|Popup|ppStok1	popup	Popup > Cek Stok Lokasi	inventory/DlgPembelian.java:248	belum diaudit	
-aksi|inventory/DlgPembelian.java|BtnSimpan	aksi	Simpan	inventory/DlgPembelian.java:310	belum diaudit	
+aksi|inventory/DlgPembelian.java|BtnSimpan	aksi	Simpan	inventory/DlgPembelian.java:310	sebagian	Simpan header, detail, stok per lokasi/batch, riwayat, opsi harga jual dan jurnal (PembelianRepository, PembelianTests). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgPembelian.java|BtnCari1	aksi	BtnCari1	inventory/DlgPembelian.java:344	belum diaudit	
-aksi|inventory/DlgPembelian.java|BtnCari	aksi	Cari	inventory/DlgPembelian.java:378	belum diaudit	
+aksi|inventory/DlgPembelian.java|BtnCari	aksi	Cari	inventory/DlgPembelian.java:378	sebagian	Pencarian barang aktif untuk faktur pembelian (PembelianView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgPembelian.java|BtnKeluar	aksi	Keluar	inventory/DlgPembelian.java:397	belum diaudit	
-aksi|inventory/DlgPembelian.java|BtnTambah	aksi	BtnTambah	inventory/DlgPembelian.java:495	belum diaudit	
+aksi|inventory/DlgPembelian.java|BtnTambah	aksi	BtnTambah	inventory/DlgPembelian.java:495	sebagian	Barang hasil pencarian ditambahkan ke rincian pembelian (PembelianView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgPembelian.java|BtnAll	aksi	BtnAll	inventory/DlgPembelian.java:509	belum diaudit	
-aksi|inventory/DlgPembelian.java|BtnSetHarga	aksi	BtnSetHarga	inventory/DlgPembelian.java:527	belum diaudit	
+aksi|inventory/DlgPembelian.java|BtnSetHarga	aksi	BtnSetHarga	inventory/DlgPembelian.java:527	sebagian	Ubah Harga menghitung harga beli, dasar dan jual; izin obat diperiksa saat simpan (PembelianRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgPembelian.java|btnSuplier	aksi	btnSuplier	inventory/DlgPembelian.java:624	belum diaudit	
 aksi|inventory/DlgPembelian.java|btnPetugas	aksi	btnPetugas	inventory/DlgPembelian.java:637	belum diaudit	
 aksi|inventory/DlgPembelian.java|btnGudang	aksi	btnGudang	inventory/DlgPembelian.java:673	belum diaudit	
@@ -2267,11 +2267,11 @@ aksi|inventory/DlgResepPulang.java|BtnCari	aksi	BtnCari	inventory/DlgResepPulang
 aksi|inventory/DlgResepPulang.java|btnBarang	aksi	btnBarang	inventory/DlgResepPulang.java:486	belum diaudit	
 aksi|inventory/DlgResepPulang.java|ChkInput	aksi	.: Input Data	inventory/DlgResepPulang.java:527	belum diaudit	
 jendela|inventory/DlgResepPulang.java|DlgResepPulang	jendela	DlgResepPulang	inventory/DlgResepPulang.java:1	belum diaudit	
-aksi|inventory/DlgReturBeli.java|BtnTambah	aksi	Tambah	inventory/DlgReturBeli.java:262	belum diaudit	
-aksi|inventory/DlgReturBeli.java|BtnHapus	aksi	Hapus	inventory/DlgReturBeli.java:280	belum diaudit	
-aksi|inventory/DlgReturBeli.java|BtnSimpan	aksi	Simpan	inventory/DlgReturBeli.java:309	belum diaudit	
+aksi|inventory/DlgReturBeli.java|BtnTambah	aksi	Tambah	inventory/DlgReturBeli.java:262	sebagian	Jumlah retur diisi pada baris faktur dan dibatasi sisa faktur serta stok (ReturBeliRepository). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
+aksi|inventory/DlgReturBeli.java|BtnHapus	aksi	Hapus	inventory/DlgReturBeli.java:280	sebagian	Baris retur dapat dikeluarkan dari transaksi dengan mengosongkan jumlahnya; tombol hapus baris khusus belum tersedia.
+aksi|inventory/DlgReturBeli.java|BtnSimpan	aksi	Simpan	inventory/DlgReturBeli.java:309	sebagian	Retur dari faktur asal: stok, batch, riwayat dan jurnal; batal tersedia, cetak belum (ReturBeliRepository, ReturBeliTests). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgReturBeli.java|BtnBatal	aksi	Clear	inventory/DlgReturBeli.java:327	belum diaudit	
-aksi|inventory/DlgReturBeli.java|BtnCari	aksi	Cari	inventory/DlgReturBeli.java:345	belum diaudit	
+aksi|inventory/DlgReturBeli.java|BtnCari	aksi	Cari	inventory/DlgReturBeli.java:345	sebagian	Mencari faktur pembelian sumber retur (ReturBeliView). Tes fixture lulus pada MariaDB sintetis; layar belum diklik, database RS belum diuji. Lihat AUDIT_PELAYANAN_INTI.md.
 aksi|inventory/DlgReturBeli.java|BtnKeluar	aksi	Keluar	inventory/DlgReturBeli.java:363	belum diaudit	
 aksi|inventory/DlgReturBeli.java|BtnBrg	aksi	BtnBrg	inventory/DlgReturBeli.java:414	belum diaudit	
 aksi|inventory/DlgReturBeli.java|BtnKnv	aksi	BtnKnv	inventory/DlgReturBeli.java:427	belum diaudit	
@@ -14750,7 +14750,7 @@ tile|D|btnPengajuanBarangMedis	tile	D > Pengajuan Obat & BHP	LegacyMenuCatalog.c
 tile|D|btnRingkasanPengajuanMedis	tile	D > Ringkasan Pengajuan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnSuratPemesananMedis	tile	D > Surat Pemesanan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDLists.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanPemesananMedis	tile	D > Ringkasan Pemesanan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
-tile|D|btnPembelian	tile	D > Pengadaan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDLists.cs. Kesetaraan fungsi belum diaudit.
+tile|D|btnPembelian	tile	D > Pengadaan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanPembelianMedis	tile	D > Ringkasan Pengadaan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnPemesanan	tile	D > Penerimaan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanPenerimaanMedis	tile	D > Ringkasan Penerimaan Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
@@ -14764,7 +14764,7 @@ tile|D|btnPiutang	tile	D > Piutang Obat & BHP	LegacyMenuCatalog.cs	layar tersedi
 tile|D|btnRingkasanPiutangObat	tile	D > Ringkasan Piutang Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnStokKeluarMedis	tile	D > Stok Keluar Medis	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanStokKeluarObat	tile	D > Ringkasan Stok Keluar Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
-tile|D|btnReturBeli	tile	D > Retur Ke Suplier	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDLists.cs. Kesetaraan fungsi belum diaudit.
+tile|D|btnReturBeli	tile	D > Retur Ke Suplier	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MainWindow.axaml.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanReturSuplierObat	tile	D > Ringkasan Retur Suplier Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnReturJual	tile	D > Retur Dari Pembeli	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDLists.cs. Kesetaraan fungsi belum diaudit.
 tile|D|btnRingkasanReturJualObat	tile	D > Ringkasan Retur Pembeli Obat & BHP	LegacyMenuCatalog.cs	layar tersedia	Rute layar di MenuDSpecs.cs. Kesetaraan fungsi belum diaudit.

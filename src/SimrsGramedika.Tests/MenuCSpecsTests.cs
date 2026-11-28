@@ -45,7 +45,7 @@ public class MenuCSpecsTests
     public void EveryMenuDTile_HasAScreen()
     {
         string[] custom = ["btnMutasiBarang", "btnOpname", "btnStokKeluarMedis", "btnPermintaanMedis", "btnPemesanan", "btnPermintaanStokObatPasien",
-                           "btnPenjualan", "btnDaftarPermintaanResep"];
+                           "btnPenjualan", "btnDaftarPermintaanResep", "btnPembelian", "btnReturBeli"];
         var tiles = SimrsGramedika.UI.Modules.Shared.LegacyMenuCatalog.Tiles[3].Select(t => t.Key);
         var missing = tiles.Where(k => !custom.Contains(k)
             && !SimrsGramedika.Data.Farmasi.MenuDSpecs.Masters.ContainsKey(k) && !SimrsGramedika.Data.Farmasi.MenuDSpecs.Reports.ContainsKey(k)
